@@ -27,9 +27,8 @@ class Mio:
             self.load(module)
 
     def eval(self, code):
-        code = code + "\n"
         message = parse(tokenize(code))
-        return message.call(Lobby)
+        return message(Lobby)
 
     def load(self, filename):
         return self.eval(open(filename, "r").read())

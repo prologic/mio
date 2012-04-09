@@ -5,26 +5,21 @@ from bootstrap import Lobby
 
 class Message(Object):
     
-    def __init__(self, name, line):
+    def __init__(self, name, args=None, next=None):
         self.name = name
-        self.line = line
+        self.args = args or ()
+        self.next = next
 
-        self.args = []
-
+        # XXX: Implement this...
         self.cached_value = None
-        # Cache some messages/values
-        #if re.match(r"^\d+", name):
-        #    self.cached_value = Lobby["Number"].clone(int(name))
-        #elif re.match(r"^\"(.*)\"$", name):
-        #    m = re.match(r"^\"(.*)\"$", name)
-        #    self.cached_value = Lobby["String"].clone(m.group(1))
-      
-        self.terminator = name in [".", "\n"]
+
+        self.terminator = name in ["\n", ";"]
 
         super(Message, self).__init__(Lobby["Message"])
     
     def __repr__(self):
-        return "<Message(%r)" % self.name
+        args = repr(self.args) if self.args else ""
+        return "<Message[%s%s]" % (self.name, args)
 
     def __call__(self, receiver, context=None, *args):
         if context is None:
@@ -35,7 +30,7 @@ class Message(Object):
         elif self.cached_value:
             value = self.cached_value
         else:
-            slot = receiver[name]
+            slot = receiver[self.name]
             value = slot.call(receiver, context, *self.args)
       
         if self.next:

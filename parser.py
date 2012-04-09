@@ -14,15 +14,17 @@ op = lambda name: a(Token('op', name))
 op_ = lambda name: skip(op(name))
 Spec = lambda name, value: (name, (value,))
 
+
 def name_parser_vars(vars):
     """Name parsers after their variables.
 
     Named parsers are nice for debugging and error reporting.
 
-    The typical usage is to define all the parsers of the grammar in the same
-    scope and run `name_parser_vars(locals())` to name them all instead of calling
-    `Parser.named()` manually for each parser.
+    The typical usage is to define all the parsers of the grammar in
+    the same scope and run `name_parser_vars(locals())` to name them
+    all instead of calling `Parser.named()` manually for each parser.
     """
+
     for k, v in vars.items():
         if isinstance(v, Parser):
             v.named(k)
@@ -96,6 +98,14 @@ def make_arguments(n):
 def make_message(n):
     return Message(n[0], n[1])
 
+
+def make_chain(messages):
+    def f(x, y):
+        x.next = y
+        return x
+
+    return reduce(f, messages)
+
 id = sometok("name") >> make_id
 number = sometok("number") >> make_number
 string = sometok("string") >> make_string
@@ -116,9 +126,10 @@ message = (symbol + maybe(arguments)) >> make_message
 
 exp_list = many(message + skip(many(terminator)))
 
-exp.define(exp_list + skip(eof))
+exp.define((exp_list >> make_chain) + skip(eof))
 
 name_parser_vars(locals())
+
 
 def parse(seq):
     'Sequence(Token) -> object'

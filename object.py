@@ -5,12 +5,15 @@ class Object(object):
     def __init__(self, proto=None, value=None):
         super(Object, self).__init__()
 
-        self.protos = proto
+        self.protos = proto or ()
         self.value = value
 
         self.slots = {}
     
     def __getitem__(self, name):
+        import pdb
+        pdb.set_trace()
+
         if name in self.slots:
             return self.slots[name]
 
