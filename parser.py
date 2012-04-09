@@ -47,12 +47,8 @@ def tokenize(str):
     return [x for x in t(str) if x.type not in useless]
 
 
-def make_arguments(n):
-    return [n[0]] + n[1]
-
-
-def make_message(n):
-    return Message(n[0], n[1])
+def make_message(name, args):
+    return Message(name, args)
 
 
 def make_chain(messages):
@@ -69,14 +65,14 @@ symbol = id | number | string
 terminator = sometok("newline") | op(";")
 
 exp = fwd()
+message = fwd()
 
-arguments = (
-    op_("(") +
-    maybe(exp + many(op_(",") + exp)) +
-    op_(")")
-    >> make_arguments)
+arguments = many(message + skip(maybe(op_(","))))
 
-message = (symbol + maybe(arguments)) >> make_message
+message.define((
+        symbol
+        + maybe(skip(op_("(") + arguments + skip(op_(")"))))
+        ) >> make_message)
 
 exp_list = many(message + skip(many(terminator)))
 
