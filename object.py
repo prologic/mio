@@ -1,3 +1,5 @@
+from copy import copy
+
 from errors import SlotError
 
 class Object(object):
@@ -30,7 +32,7 @@ class Object(object):
         self.slots[name] = message
     
     def clone(self, value=None):
-        return Object(self, value)
+        return Object(self, value if value else copy(self.value))
 
     def __repr__(self):
         return repr(self.value)
