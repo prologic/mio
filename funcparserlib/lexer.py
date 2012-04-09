@@ -1,0 +1,127 @@
+# -*- coding: utf-8 -*-
+
+# Copyright (c) 2008/2011 Andrey Vlasovskikh
+#
+# Permission is hereby granted, free of charge, to any person obtaining
+# a copy of this software and associated documentation files (the
+# "Software"), to deal in the Software without restriction, including
+# without limitation the rights to use, copy, modify, merge, publish,
+# distribute, sublicense, and/or sell copies of the Software, and to
+# permit persons to whom the Software is furnished to do so, subject to
+# the following conditions:
+#
+# The above copyright notice and this permission notice shall be included
+# in all copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+# EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+# MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+# IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+# CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+# TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+# SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+__all__ = ['make_tokenizer', 'make_comment', 'make_multiline_comment',
+        'Spec', 'Token', 'LexerError']
+
+import re
+from re import MULTILINE
+from .util import SyntaxError, pos_to_str
+
+class LexerError(SyntaxError):
+    def __init__(self, msg, pos):
+        SyntaxError.__init__(self, u'cannot tokenize data: "%s"' % msg, pos)
+
+class Token(object):
+    __slots__ = ['type', 'value', 'pos']
+
+    def __init__(self, type, value, pos=None):
+        self.type = type
+        self.value = value
+        self.pos = pos
+
+    def __repr__(self):
+        return 'Token(%r, %r)' % (self.type, self.value)
+
+    def __eq__(self, other):
+        # FIXME: Case sensitivity is assumed here
+        if not isinstance(other, Token):
+            return False
+        return (self.type == other.type and
+                (self.value is None or
+                 other.value is None or
+                 self.value == other.value))
+
+    def __hash__(self):
+        return hash(self.type) ^ hash(self.value) ^ hash(self.pos)
+
+    def __unicode__(self):
+        return (u"%s '%s'" % (self.type, self.value)
+                if self.value is not None
+                else self.type)
+
+    def __str__(self):
+        return unicode(self).encode()
+
+    def pformat(self):
+        return u"%s %s '%s'" % (pos_to_str(self.pos).ljust(20),
+            self.type.ljust(14), self.value)
+
+    @property
+    def name(self):
+        return self.value
+
+    def ebnf(self):
+        return (u"'%s'" % (self.value,)
+                if self.value is not None
+                else u' %s ' % (self.type,))
+
+class Spec(object):
+    def __init__(self, type, regexp, flags=0):
+        self.type = type
+        self._regexp = regexp
+        self._flags = flags
+        # Maybe the regexp should be compiled lazily
+        self.re = re.compile(regexp, flags)
+
+    def __repr__(self):
+        return 'Spec(%r, %r, %r)' % (self.type, self._regexp, self._flags)
+
+# Common tokens
+newline = Spec('newline', r'[\r\n]+')
+space = Spec('space', r'[ \t\r\n]+')
+
+def make_comment(start):
+    return Spec('comment', r'%s.*' % start)
+
+def make_multiline_comment(open, close):
+    return Spec('comment', r'%s(.|[\r\n])*?%s' % (open, close), MULTILINE)
+
+def make_tokenizer(specs):
+    '[Spec] -> (str -> Iterable(Token))'
+    def tokenize(s):
+        length = len(s)
+        line, pos = 1, 0
+        i = 0
+        while i < length:
+            for spec in specs:
+                m = spec.re.match(s, i)
+                if m is not None:
+                    value = m.group()
+                    nls = value.count('\n')
+                    n_line = line + nls
+                    value_len = len(value)
+                    if nls == 0:
+                        n_pos = pos + value_len
+                    else:
+                        n_pos = value_len - value.rfind('\n') - 1
+                    yield Token(spec.type, value,
+                                ((line, pos + 1), (n_line, n_pos)))
+                    line, pos = n_line, n_pos
+                    i += value_len
+                    break
+            else:
+                errline = s.splitlines()[line - 1]
+                raise LexerError(errline,
+                                 ((line, pos + 1), (line, len(errline))))
+    return tokenize
