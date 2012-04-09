@@ -2,11 +2,30 @@
 
 import re
 
-from funcparserlib import Spec
-from funcparserlib import make_comment, make_multiline_comment, make_tokenizer
+from funcparserlib.lexer import make_tokenizer, Token
 
-from funcparserlib import ebnf_grammar, name_parser_vars
-from funcparserlib import a, eof, fwd, many, maybe, op_, sometok, skip
+from funcparserlib.parser import a, many, maybe, skip, some, Parser
+from funcparserlib.parser import finished as eof
+from funcparserlib.parser import forward_decl as fwd
+
+tokval = lambda tok: tok.value
+sometok = lambda type: (some(lambda t: t.type == type) >> tokval)
+op = lambda name: a(Token('op', name))
+op_ = lambda name: skip(op(name))
+Spec = lambda name, value: (name, (value,))
+
+def name_parser_vars(vars):
+    """Name parsers after their variables.
+
+    Named parsers are nice for debugging and error reporting.
+
+    The typical usage is to define all the parsers of the grammar in the same
+    scope and run `name_parser_vars(locals())` to name them all instead of calling
+    `Parser.named()` manually for each parser.
+    """
+    for k, v in vars.items():
+        if isinstance(v, Parser):
+            v.named(k)
 
 from message import Message
 
@@ -26,8 +45,6 @@ re_esc = re.compile(regexps['escaped'], re.VERBOSE)
 def tokenize(str):
     'str -> Sequence(Token)'
     specs = [
-        make_multiline_comment(r'"""', r'"""'),
-        make_comment(r'#'),
         Spec("newline",       r'[\r\n]+'),
         Spec('whitespace',    r'[ \t]+'),
         Spec('string',        r'"[^"]*"'),
@@ -85,7 +102,7 @@ string = sometok("string") >> make_string
 
 symbol = id | number | string
 
-terminator = a("eof") | a("newline") | op_(";")
+terminator = sometok("newline") | op(";")
 
 exp = fwd()
 
@@ -97,12 +114,11 @@ arguments = (
 
 message = (symbol + maybe(arguments)) >> make_message
 
-exp_list = many(message | terminator)
+exp_list = many(message + skip(many(terminator)))
 
 exp.define(exp_list + skip(eof))
 
 name_parser_vars(locals())
-
 
 def parse(seq):
     'Sequence(Token) -> object'
