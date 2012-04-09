@@ -6,11 +6,12 @@ class Object(object):
 
     __slots__ = ("slots", "protos", "value",)
 
-    def __init__(self, proto=None, value=None):
+    def __init__(self, value=None, proto=None):
         super(Object, self).__init__()
 
-        self.protos = proto or ()
         self.value = value
+
+        self.protos = (proto,) if proto is not None else ()
 
         self.slots = {}
     
@@ -32,10 +33,15 @@ class Object(object):
         self.slots[name] = message
     
     def clone(self, value=None):
-        return Object(self, value if value else copy(self.value))
+        return Object(value if value else copy(self.value), proto=self)
 
     def __repr__(self):
-        return repr(self.value)
+        if self.value is not None:
+            return repr(self.value)
+        else:
+            slots = "\n".join(["  %s = %s" % (k, v)
+                for k, v in self.slots.items()])
+            return "<Object_%s\n%s\n>" % (id(self), slots)
 
     def __call__(self):
         return self

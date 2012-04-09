@@ -66,10 +66,10 @@ def main():
         print(mio.load(args[0]))
     else:
         readline.clear_history()
-        print("mio %s," % __version__)
+        print("mio %s" % __version__)
         while True:
             try:
-                print(mio.eval(raw_input(">>> ")))
+                print("==> %s" % mio.eval(raw_input(">>> ")))
             except EOFError, KeyboardInterrupt:
                 raise SystemExit(0)
 
