@@ -41,3 +41,13 @@ class Message(Object):
             return self.next(value, context)
         else:
             return value
+
+    def pprint(self):
+        next = self
+        messages = []
+        while next is not None:
+            messages.append(repr(next))
+            next = next.next
+
+        return "\n".join(["%s%s" % (" " * i, x)
+            for i, x in enumerate(messages)])

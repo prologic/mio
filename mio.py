@@ -21,8 +21,10 @@ modules = (
 
 class Mio:
 
-    #def __init__(self):
-    #    3elf.load_modules()
+    def __init__(self, opts):
+        self.opts = opts
+
+        #3elf.load_modules()
 
     def load_modules(self):
         for module in modules:
@@ -30,6 +32,9 @@ class Mio:
 
     def eval(self, code):
         message = parse(tokenize(code))
+        if self.opts.debug:
+            print(message.pprint())
+
         try:
             return message(Lobby)
         except Error as e:
@@ -60,7 +65,7 @@ def main():
 
     signal(SIGINT, SIG_IGN)
 
-    mio = Mio()
+    mio = Mio(opts)
 
     if args:
         print(mio.load(args[0]))
