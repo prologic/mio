@@ -2,7 +2,9 @@
 
 import readline
 from optparse import OptionParser
+from signal import signal, SIGINT, SIG_IGN
 
+from errors import Error
 from bootstrap import Lobby
 from parser import tokenize, parse
 
@@ -28,10 +30,13 @@ class Mio:
 
     def eval(self, code):
         message = parse(tokenize(code))
-        return message(Lobby)
+        try:
+            return message(Lobby)
+        except Error as e:
+            return e
 
     def load(self, filename):
-        return self.eval(open(filename, "r").read())
+        self.eval(open(filename, "r").read())
 
 
 def parse_options():
@@ -53,6 +58,8 @@ def parse_options():
 def main():
     opts, args = parse_options()
 
+    signal(SIGINT, SIG_IGN)
+
     mio = Mio()
 
     if args:
@@ -63,7 +70,7 @@ def main():
         while True:
             try:
                 print(mio.eval(raw_input(">>> ")))
-            except KeyboardInterrupt:
+            except EOFError, KeyboardInterrupt:
                 raise SystemExit(0)
 
 if __name__ == "__main__":

@@ -1,3 +1,5 @@
+from errors import SlotError
+
 class Object(object):
 
     __slots__ = ("slots", "protos", "value",)
@@ -22,7 +24,7 @@ class Object(object):
         if message:
             return message
         else:
-            raise KeyError("Missing slot: %s" % name)
+            raise SlotError(name)
 
     def __setitem__(self, name, message):
         self.slots[name] = message
