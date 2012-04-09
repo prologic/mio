@@ -35,9 +35,9 @@ class Message(Object):
             value = self.cached_value
         else:
             slot = receiver[self.name]
-            value = slot.call(receiver, context, *self.args)
+            value = slot(receiver, context, *self.args)
       
         if self.next:
-            return self.next.call(value, context)
+            return self.next(value, context)
         else:
             return value
