@@ -45,29 +45,23 @@ def tokenize(str):
     return [x for x in t(str) if x.type not in useless]
 
 
-def make_id(n):
-    return str(n)
-
-
 def make_arguments(n):
-    if n is None:
-        return []
-    else:
-        return [n[0]] + n[1]
+    return [n[0]] + n[1]
 
 
 def make_message(n):
     return Message(n[0], n[1])
 
 
-def make_chain(messages):
-    def f(x, y):
-        x.next = y
-        return x
+def make_chain(xs):
+    a = xs[0]
+    for x in xs[1:]:
+        a.next = x
+        a = x
+    return xs[0]
 
-    return reduce(f, messages)
 
-id = sometok("name") >> make_id
+id = sometok("name")
 number = sometok("number")
 string = sometok("string")
 
