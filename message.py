@@ -20,6 +20,10 @@ class Message(Object):
         self.terminator = name in ["\n", ";"]
 
         super(Message, self).__init__(Lobby["Message"])
+
+    def __add__(self, message):
+        self.next = message
+        return message
     
     def __repr__(self):
         args = repr(self.args) if self.args else ""

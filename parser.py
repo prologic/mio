@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 
+from operator import add
+
 from funcparserlib.lexer import make_tokenizer, Token
 
 from funcparserlib.parser import a, many, maybe, skip, some, Parser
@@ -53,12 +55,9 @@ def make_message(n):
     return Message(n[0], n[1])
 
 
-def make_chain(xs):
-    a = xs[0]
-    for x in xs[1:]:
-        a.next = x
-        a = x
-    return xs[0]
+def make_chain(messages):
+    reduce(add, messages)
+    return messages[0]
 
 
 id = sometok("name")
