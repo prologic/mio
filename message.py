@@ -23,7 +23,7 @@ class Message(Object):
     
     def __repr__(self):
         args = repr(self.args) if self.args else ""
-        return "<Message[%s%s]" % (self.name, args)
+        return "<Message[%s%s]>" % (self.name, args)
 
     def __call__(self, receiver, context=None, *args):
         if context is None:
