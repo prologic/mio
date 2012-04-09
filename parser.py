@@ -35,6 +35,7 @@ from message import Message
 def tokenize(str):
     'str -> Sequence(Token)'
     specs = [
+        Spec("comment",       r'#.*'),
         Spec("newline",       r'[\r\n]+'),
         Spec('whitespace',    r'[ \t]+'),
         Spec('string',        r'"[^"]*"'),
