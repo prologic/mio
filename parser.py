@@ -47,8 +47,13 @@ def tokenize(str):
     return [x for x in t(str) if x.type not in useless]
 
 
-def make_message(name, args):
-    return Message(name, args)
+def make_message(n):
+    name, args = n
+    if args is not None:
+        args = tuple(args)
+    else:
+        args = ()
+    return Message(name, *args)
 
 
 def make_chain(messages):
@@ -71,7 +76,7 @@ arguments = many(message + skip(maybe(op_(","))))
 
 message.define((
         symbol
-        + maybe(skip(op_("(") + arguments + skip(op_(")"))))
+        + maybe(op_("(") + arguments + op_(")"))
         ) >> make_message)
 
 exp_list = many(message + skip(many(terminator)))

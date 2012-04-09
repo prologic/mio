@@ -5,10 +5,11 @@ from bootstrap import Lobby
 
 class Message(Object):
     
-    def __init__(self, name, args=None, next=None):
+    def __init__(self, name, *args):
         self.name = name
-        self.args = args or ()
-        self.next = next
+        self.args = args
+
+        self.next = None
 
         if re.match("(\d+)", self.name):
             self.cached_value = Lobby["Number"].clone(eval(self.name))
