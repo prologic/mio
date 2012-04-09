@@ -11,9 +11,6 @@ class Object(object):
         self.slots = {}
     
     def __getitem__(self, name):
-        import pdb
-        pdb.set_trace()
-
         if name in self.slots:
             return self.slots[name]
 
