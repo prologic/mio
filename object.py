@@ -43,5 +43,5 @@ class Object(object):
                 for k, v in self.slots.items()])
             return "<Object_%s\n%s\n>" % (id(self), slots)
 
-    def __call__(self):
+    def __call__(self, *args, **kwargs):
         return self
