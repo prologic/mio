@@ -32,5 +32,8 @@ class Object(object):
     def clone(self, value=None):
         return Object(self, value)
 
+    def __repr__(self):
+        return repr(self.value)
+
     def __call__(self):
         return self

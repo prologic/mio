@@ -10,8 +10,12 @@ class Message(Object):
         self.args = args or ()
         self.next = next
 
-        # XXX: Implement this...
-        self.cached_value = None
+        if re.match("(\d+)", self.name):
+            self.cached_value = Lobby["Number"].clone(eval(self.name))
+        elif re.match("\"(.*)\"", self.name):
+            self.cached_value = Lobby["String"].clone(eval(self.name))
+        else:
+            self.cached_value = None
 
         self.terminator = name in ["\n", ";"]
 

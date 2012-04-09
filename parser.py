@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
 
-import re
-
 from funcparserlib.lexer import make_tokenizer, Token
 
 from funcparserlib.parser import a, many, maybe, skip, some, Parser
@@ -31,18 +29,6 @@ def name_parser_vars(vars):
 
 from message import Message
 
-regexps = {
-    'escaped': ur'''
-        \\                                  # Escape
-          ((?P<standard>["\\/bfnrt])        # Standard escapes
-        | (u(?P<unicode>[0-9A-Fa-f]{4})))   # uXXXX
-        ''',
-    'unescaped': ur'''
-        [\x20-\x21\x23-\x5b\x5d-\uffff]     # Unescaped: avoid ["\\]
-        ''',
-}
-re_esc = re.compile(regexps['escaped'], re.VERBOSE)
-
 
 def tokenize(str):
     'str -> Sequence(Token)'
@@ -61,31 +47,6 @@ def tokenize(str):
 
 def make_id(n):
     return str(n)
-
-
-def make_number(n):
-    try:
-        return int(n)
-    except ValueError:
-        return float(n)
-
-
-def unescape(s):
-    std = {
-        '"': '"', '\\': '\\', '/': '/', 'b': '\b', 'f': '\f', 'n': '\n',
-        'r': '\r', 't': '\t',
-    }
-
-    def sub(m):
-        if m.group('standard') is not None:
-            return std[m.group('standard')]
-        else:
-            return unichr(int(m.group('unicode'), 16))
-    return re_esc.sub(sub, s)
-
-
-def make_string(n):
-    return unescape(n[1:-1])
 
 
 def make_arguments(n):
@@ -107,8 +68,8 @@ def make_chain(messages):
     return reduce(f, messages)
 
 id = sometok("name") >> make_id
-number = sometok("number") >> make_number
-string = sometok("string") >> make_string
+number = sometok("number")
+string = sometok("string")
 
 symbol = id | number | string
 
