@@ -68,7 +68,7 @@ def main():
     mio = Mio(opts)
 
     if args:
-        print(mio.load(args[0]))
+        mio.load(args[0])
     else:
         readline.clear_history()
         print("mio %s" % __version__)
