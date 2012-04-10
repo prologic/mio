@@ -7,7 +7,10 @@ object = Object()
 
 
 def __clone(receiver, context, value=None):
-    return receiver.clone(value(context))
+    if value is not None:
+        value = value(context)
+
+    return receiver.clone(value)
 
 object["clone"] = __clone
 
