@@ -49,7 +49,7 @@ class Object(object):
         if self.value is not Null:
             return repr(self.value)
         else:
-            slots = "\n".join([" %s = %s" % (k, v)
+            slots = "\n".join(["  %s = %s" % (str(k).ljust(15), v)
                 for k, v in self.slots.items() if not v is self])
             return "Object_%s:\n%s" % (id(self), slots)
 
