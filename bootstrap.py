@@ -1,7 +1,6 @@
 import sys
 
 from object import Object
-from method import Method
 
 object = Object()
 
@@ -40,6 +39,28 @@ Lobby["String"] = object.clone("")
 Lobby["List"] = object.clone([])
 Lobby["Message"] = object.clone()
 Lobby["Method"] = object.clone()
+
+
+class Method(Object):
+
+    def __init__(self, context, message):
+        self.definition_context = context
+        self.message = message
+
+        super(Method, self).__init__(Lobby["Method"])
+
+    def __call__(self, receiver, calling_context, *args):
+        method_context = self.definition_context.clone()
+        method_context["self"] = receiver
+        method_context["arguments"] = Lobby["List"].clone(args)
+
+        def __eval_arg(receiver, context, at):
+            return (args[at.call(context).value] or Lobby["nil"]).call(
+                    calling_context)
+
+        method_context["eval_arg"] = __eval_arg
+
+        return self.message(method_context)
 
 
 def __method(receiver, context, message):
