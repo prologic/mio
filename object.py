@@ -50,7 +50,7 @@ class Object(object):
             return repr(self.value)
         else:
             slots = "\n".join([" %s = %s" % (k, v)
-                for k, v in self.slots.items()])
+                for k, v in self.slots.items() if not v is self])
             return "Object_%s:\n%s" % (id(self), slots)
 
     def __call__(self, *args, **kwargs):
