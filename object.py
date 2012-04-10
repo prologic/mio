@@ -33,7 +33,8 @@ class Object(object):
         self.slots[name] = message
     
     def clone(self, value=None):
-        return Object(value if value else copy(self.value), proto=self)
+        return Object(value if value is not None else copy(self.value),
+                proto=self)
 
     def __repr__(self):
         if self.value is not None:
