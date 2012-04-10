@@ -4,9 +4,8 @@ from operator import add
 
 from funcparserlib.lexer import make_tokenizer, Token
 
-from funcparserlib.parser import a, many, maybe, skip, some, Parser
-from funcparserlib.parser import finished as eof
 from funcparserlib.parser import forward_decl as fwd
+from funcparserlib.parser import a, many, maybe, skip, some
 
 from message import Message
 
@@ -21,12 +20,11 @@ Spec = lambda name, value: (name, (value,))
 def tokenize(str):
     specs = [
         Spec("comment",       r'#.*'),
-        Spec("terminator",    r'[\n;]'),
         Spec('whitespace',    r'[ \t]+'),
         Spec('string',        r'"[^"]*"'),
         Spec('number',        r'-?(\.[0-9]+)|([0-9]+(\.[0-9]*)?)'),
         Spec('name',          r'[A-Za-z][A-Za-z0-9_]*'),
-        Spec('op',            r'[\(\)\[\]=+-/*]'),
+        Spec('op',            r'[\(\),\n;]'),
     ]
     useless = ['comment', 'whitespace']
     t = make_tokenizer(specs)
