@@ -51,7 +51,7 @@ def make_chain(messages):
         reduce(add, messages)
         return messages[0]
     else:
-        return Message("nil")
+        return Message("None")
 
 
 identifier = sometok("name")
