@@ -6,8 +6,8 @@ from method import Method
 object = Object()
 
 
-def __clone(receiver, context):
-    return receiver.clone()
+def __clone(receiver, context, value=None):
+    return receiver.clone(value(context))
 
 object["clone"] = __clone
 
