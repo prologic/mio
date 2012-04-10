@@ -34,13 +34,10 @@ def tokenize(str):
 
 
 def make_arguments(n):
-    print "make_arguments", n
-    #return (n[0],) + (n[1][0],)
     return (n[0],) + tuple(n[1])
 
 
 def make_message(n):
-    print "make_message", n
     name, args = n
     if args is not None:
         args = tuple(args)
