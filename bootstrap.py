@@ -31,9 +31,9 @@ Lobby = object.clone()
 
 Lobby["Lobby"] = Lobby
 Lobby["Object"] = object
-Lobby["nil"] = object.clone(None)
-Lobby["true"] = object.clone(True)
-Lobby["false"] = object.clone(False)
+Lobby["None"] = object.clone(None)
+Lobby["True"] = object.clone(True)
+Lobby["False"] = object.clone(False)
 Lobby["Number"] = object.clone(0)
 Lobby["String"] = object.clone("")
 Lobby["List"] = object.clone([])
