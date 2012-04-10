@@ -47,20 +47,25 @@ def make_message(n):
 
 
 def make_chain(messages):
-    reduce(add, messages)
-    return messages[0]
+    if messages:
+        reduce(add, messages)
+        return messages[0]
+    else:
+        return Message("nil")
 
 
 identifier = sometok("name")
 number = sometok("number")
 string = sometok("string")
 
+exp = fwd()
 message = fwd()
 arguments = fwd()
 symbol = fwd()
 terminator = fwd()
 
-exp = many(message | terminator) >> make_chain
+exp.define((
+    many(message | terminator)) >> make_chain)
 
 message.define((
     symbol +

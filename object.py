@@ -1,12 +1,14 @@
 from copy import copy
 
+from utils import Null
 from errors import SlotError
+
 
 class Object(object):
 
     __slots__ = ("slots", "protos", "value",)
 
-    def __init__(self, value=None, proto=None):
+    def __init__(self, value=Null, proto=None):
         super(Object, self).__init__()
 
         self.value = value
@@ -14,7 +16,7 @@ class Object(object):
         self.protos = (proto,) if proto is not None else ()
 
         self.slots = {}
-    
+
     def __getitem__(self, name):
         if name in self.slots:
             return self.slots[name]
@@ -31,13 +33,20 @@ class Object(object):
 
     def __setitem__(self, name, message):
         self.slots[name] = message
-    
-    def clone(self, value=None):
-        return Object(value if value is not None else copy(self.value),
-                proto=self)
+
+    def clone(self, value=Null):
+        if value is not Null:
+            value = value
+        else:
+            if self.value is not Null:
+                value = copy(self.value)
+            else:
+                value = Null
+
+        return Object(value, proto=self)
 
     def __repr__(self):
-        if self.value is not None:
+        if self.value is not Null:
             return repr(self.value)
         else:
             slots = "\n".join([" %s = %s" % (k, v)
