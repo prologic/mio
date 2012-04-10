@@ -14,6 +14,7 @@ object["clone"] = __clone
 
 def __set_slot(receiver, context, name, value):
     receiver[name(context).value] = value(context)
+    return receiver[name(context).value]
 
 object["set_slot"] = __set_slot
 
