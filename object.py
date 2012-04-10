@@ -39,9 +39,9 @@ class Object(object):
         if self.value is not None:
             return repr(self.value)
         else:
-            slots = "\n".join(["  %s = %s" % (k, v)
+            slots = "\n".join([" %s = %s" % (k, v)
                 for k, v in self.slots.items()])
-            return "<Object_%s\n%s\n>" % (id(self), slots)
+            return "Object_%s:\n%s" % (id(self), slots)
 
     def __call__(self, *args, **kwargs):
         return self
