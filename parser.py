@@ -18,13 +18,16 @@ Spec = lambda name, value: (name, (value,))
 
 
 def tokenize(str):
+
+    operators = r"[+-\\*/=<>%@^]|(!=)|(==)|(&&)|(\|\|)"
+
     specs = [
-        Spec("comment",       r'#.*'),
-        Spec('whitespace',    r'[ \t]+'),
-        Spec('string',        r'"[^"]*"'),
-        Spec('number',        r'-?(\.[0-9]+)|([0-9]+(\.[0-9]*)?)'),
-        Spec('name',          r'[A-Za-z][A-Za-z0-9_]*'),
-        Spec('op',            r'[\(\),\n;]'),
+        Spec("comment",    r'#.*'),
+        Spec('whitespace', r'[ \t]+'),
+        Spec('string',     r'"[^"]*"'),
+        Spec('number',     r'-?(\.[0-9]+)|([0-9]+(\.[0-9]*)?)'),
+        Spec('name',       r'(%s)|([A-Za-z][A-Za-z0-9_]*)' % operators),
+        Spec('op',         r'[\(\),\n;]'),
     ]
     useless = ['comment', 'whitespace']
     t = make_tokenizer(specs)
