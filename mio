@@ -5,6 +5,9 @@ try:
 except ImportError:
     pass
 
+import sys
+sys.path.insert(0, ".")
+
 from optparse import OptionParser
 from signal import signal, SIGINT, SIG_IGN
 
