@@ -19,7 +19,7 @@ Spec = lambda name, value: (name, (value,))
 
 def tokenize(str):
 
-    operators = r"[+-\\*/=<>%@^]|(!=)|(==)|(&&)|(\|\|)"
+    #operators = r"[+-\\*/=<>%@^]|(!=)|(==)|(&&)|(\|\|)"
 
     specs = [
         Spec("comment",    r'#.*'),
