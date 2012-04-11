@@ -38,9 +38,13 @@ class Mio:
             self.load(module)
 
     def eval(self, code):
-        message = parse(tokenize(code))
         if self.opts.debug:
-            print(message.pprint())
+            tokens = tokenize(code)
+            message = parse(tokens)
+            print("Tokens:\n%s\n" % tokens)
+            print("Messages:\n%s\n" % message.pprint())
+        else:
+            message = parse(tokenize(code))
 
         try:
             return message(Lobby)
