@@ -46,6 +46,10 @@ def Object__clone(receiver, context, value=None):
     return receiver.clone(value)
 
 
+def Object__slots(receiver, context):
+    return Lobby["List"].clone(receiver.slots.keys())
+
+
 def Object__set_slot(receiver, context, name, value):
     receiver[name(context).value] = value(context)
     return receiver[name(context).value]
@@ -66,6 +70,7 @@ def Lobby__exit(receiver, context, status=0):
 
 Object["set_slot"] = Object__set_slot
 Object["method"] = Object__method
+Object["slots"] = Object__slots
 Object["print"] = Object__print
 Object["clone"] = Object__clone
 
