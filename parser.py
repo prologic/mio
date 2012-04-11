@@ -40,11 +40,11 @@ def make_arguments(n):
 
 
 def make_message(n):
+    if isinstance(n, Token):
+        return Message(n.value)
+
     name, args = n
-    if args is not None:
-        args = tuple(args)
-    else:
-        args = ()
+    args = tuple(args) if args is not None else ()
     return Message(name, *args)
 
 
@@ -52,8 +52,8 @@ def make_chain(messages):
     if messages:
         reduce(add, messages)
         return messages[0]
-    else:
-        return Message("None")
+
+    return Message("None")
 
 
 identifier = sometok("name")
@@ -80,7 +80,8 @@ arguments.define((
 
 symbol.define(identifier | number | string)
 
-terminator.define(op("\n") | op(";"))
+terminator.define((
+    op("\n") | op(";")) >> make_message)
 
 
 def parse(seq):
