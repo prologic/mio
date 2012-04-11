@@ -55,8 +55,7 @@ class Method(Object):
         method_context["arguments"] = Lobby["List"].clone(args)
 
         def __eval_arg(receiver, context, at):
-            return (args[at.call(context).value] or Lobby["nil"]).call(
-                    calling_context)
+            return (args[at(context).value] or Lobby["nil"])(calling_context)
 
         method_context["eval_arg"] = __eval_arg
 
