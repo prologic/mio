@@ -30,7 +30,7 @@ Number["sub"] = Number__sub
 Number["mul"] = Number__mul
 Number["div"] = Number__div
 
-Lobby["Number"] = Number
+Lobby["Number"] = Number.clone(0)
 
 Lobby["Message"] = Object.clone()
 Lobby["String"] = Object.clone("")
