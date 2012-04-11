@@ -1,3 +1,11 @@
 syntax: glob
 
 *.pyc
+*.pyo
+tmp
+dist
+build
+.coverage*
+coverage
+docs/build
+mio.egg-info
