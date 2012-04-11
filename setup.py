@@ -58,6 +58,9 @@ setup(
     [console_scripts]
     mio = mio.__main__:main
     """,
+    install_requires = [
+        "funcparserlib",
+    ],
     zip_safe=False,
     test_suite="tests.main.runtests",
 )
