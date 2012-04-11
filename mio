@@ -5,15 +5,12 @@ try:
 except ImportError:
     pass
 
-import sys
-sys.path.insert(0, ".")
-
 from optparse import OptionParser
 from signal import signal, SIGINT, SIG_IGN
 
-from errors import Error
-from bootstrap import Lobby
-from parser import tokenize, parse
+from .errors import Error
+from .bootstrap import Lobby
+from .parser import tokenize, parse
 
 __version__ = "0.1"
 

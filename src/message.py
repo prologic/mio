@@ -1,7 +1,7 @@
 import re
 
-from object import Object
-from bootstrap import Lobby
+from .object import Object
+from .bootstrap import Lobby
 
 class Message(Object):
     

@@ -1,6 +1,6 @@
 import sys
 
-from object import Object
+from .object import Object
 
 object = Object()
 

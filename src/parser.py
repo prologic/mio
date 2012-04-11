@@ -7,7 +7,7 @@ from funcparserlib.lexer import make_tokenizer, Token
 from funcparserlib.parser import forward_decl as fwd
 from funcparserlib.parser import a, many, maybe, skip, some
 
-from message import Message
+from .message import Message
 
 
 tokval = lambda tok: tok.value
