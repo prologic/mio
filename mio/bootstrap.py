@@ -10,7 +10,28 @@ Lobby["Lobby"] = Lobby
 Lobby["Object"] = Object
 Lobby["List"] = Object.clone([])
 Lobby["Method"] = Object.clone()
-Lobby["Number"] = Object.clone(0)
+
+def Number__add(receiver, context, value):
+    return receiver.value + value(context).value
+
+def Number__sub(receiver, context, value):
+    return receiver.value - value(context).value
+
+def Number__mul(receiver, context, value):
+    return receiver.value * value(context).value
+
+def Number__div(receiver, context, value):
+    return receiver.value / value(context).value
+
+Number = Object.clone()
+
+Number["add"] = Number__add
+Number["sub"] = Number__sub
+Number["mul"] = Number__mul
+Number["div"] = Number__div
+
+Lobby["Number"] = Number
+
 Lobby["Message"] = Object.clone()
 Lobby["String"] = Object.clone("")
 Lobby["None"] = Object.clone(None)
