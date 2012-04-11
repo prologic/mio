@@ -84,6 +84,4 @@ terminator.define((
     op("\n") | op(";")) >> make_message)
 
 
-def parse(seq):
-    'Sequence(Token) -> object'
-    return exp.parse(seq)
+parse = exp.parse
