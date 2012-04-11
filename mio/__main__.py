@@ -3,7 +3,7 @@
 try:
     import readline
 except ImportError:
-    pass
+    readline = None
 
 import sys
 sys.path.insert(0, "./src")
@@ -81,7 +81,9 @@ def main():
     if args:
         mio.load(args[0])
     else:
-        readline.clear_history()
+        if readline is not None:
+            readline.clear_history()
+
         print("mio %s" % __version__)
         while True:
             try:
