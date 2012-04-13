@@ -56,7 +56,7 @@ class Mio:
         print("mio %s" % __version__)
         while True:
             try:
-                print("==> %s" % self.eval(raw_input(">>> ")))
+                print("==> %r" % self.eval(raw_input(">>> ")))
             except EOFError, KeyboardInterrupt:
                 raise SystemExit(0)
 
@@ -89,7 +89,7 @@ def main():
     mio = Mio(opts)
 
     if opts.cmd:
-        print(mio.eval(opts.cmd))
+        print(repr(mio.eval(opts.cmd)))
     elif args:
         mio.load(args[0])
         if opts.inspect:
