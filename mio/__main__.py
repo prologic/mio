@@ -21,6 +21,7 @@ USAGE = "%prog [options] ... [-c cmd | file | -] [arg] ..."
 VERSION = "%prog v" + __version__
 
 modules = (
+        "lib/operators.mio",
         "lib/boolean.mio",
         "lib/if.mio",
 )
