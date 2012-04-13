@@ -6,6 +6,8 @@ from bootstrap import Lobby
 class Message(Object):
     
     def __init__(self, name, *args):
+        super(Message, self).__init__(name, proto=Lobby["Object"])
+
         self.name = name
         self.args = args
 
@@ -20,7 +22,6 @@ class Message(Object):
 
         self.terminator = name in ["\n", ";"]
 
-        super(Message, self).__init__(Lobby["Message"])
 
     def __add__(self, message):
         self.next = message
