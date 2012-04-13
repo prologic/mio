@@ -47,7 +47,7 @@ class Mio:
         try:
             return message(Lobby)
         except Error as e:
-            return e
+            print("%s\n%r" % (str(e), message))
 
     def load(self, filename):
         self.eval(open(filename, "r").read())

@@ -25,8 +25,8 @@ class Object(object):
 
         # Setup Python Methods
         predicate = lambda x: getattr(x, "pymethod", False)
-        for name, pymethod in getmembers(self, predicate):
-            self.slots[pymethod.name] = PyMethod(name)
+        for _, method in getmembers(self, predicate):
+            self.slots[method.name] = PyMethod(method)
 
     def __getitem__(self, key):
         if key in self.slots:
