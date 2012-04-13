@@ -52,6 +52,14 @@ class Mio:
     def load(self, filename):
         self.eval(open(filename, "r").read())
 
+    def repl(self):
+        print("mio %s" % __version__)
+        while True:
+            try:
+                print("==> %s" % self.eval(raw_input(">>> ")))
+            except EOFError, KeyboardInterrupt:
+                raise SystemExit(0)
+
 
 def parse_options():
     parser = OptionParser(usage=USAGE, version=VERSION)
@@ -59,6 +67,10 @@ def parse_options():
     parser.add_option("-c", "",
             action="store", default=None, dest="cmd", metavar="cmd",
             help="program passed in as string (terminates option list)")
+
+    parser.add_option("-i", "",
+            action="store_true", default=False, dest="inspect",
+            help="inspect interactively after running script")
 
     parser.add_option("-d", "",
             action="store_true", default=False, dest="debug",
@@ -76,18 +88,14 @@ def main():
 
     mio = Mio(opts)
 
-    if args:
+    if opts.cmd:
+        print(mio.eval(opts.cmd))
+    elif args:
         mio.load(args[0])
+        if opts.inspect:
+            mio.repl()
     else:
-        if readline is not None:
-            readline.clear_history()
-
-        print("mio %s" % __version__)
-        while True:
-            try:
-                print("==> %s" % mio.eval(raw_input(">>> ")))
-            except EOFError, KeyboardInterrupt:
-                raise SystemExit(0)
+        mio.repl()
 
 if __name__ == "__main__":
     main()
