@@ -28,8 +28,17 @@ class Message(Object):
         return message
     
     def __repr__(self):
-        args = repr(self.args) if self.args else ""
-        return "<Message[%s%s]>" % (self.name, args)
+        messages = []
+
+        next = self
+        while next is not None:
+            messages.append(next.name)
+            if next.args:
+                args = ",".join([repr(arg) for arg in next.args])
+                messages.append("(%s)" % args)
+            next = next.next
+
+        return " ".join(messages)
 
     def __call__(self, receiver, context=None, *args):
         if context is None:
