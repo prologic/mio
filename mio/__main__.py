@@ -5,9 +5,6 @@ try:
 except ImportError:
     readline = None
 
-import sys
-sys.path.insert(0, "./src")
-
 from optparse import OptionParser
 from signal import signal, SIGINT, SIG_IGN
 
