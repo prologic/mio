@@ -5,12 +5,22 @@ class Error(Exception):
 class ArgsError(Error):
     """Args Error"""
 
-    def __init__(self, x, y):
-        self.x = x
-        self.y = y
+    def __init__(self, nargs, method):
+        self.nargs = nargs
+        self.method = method
 
     def __str__(self):
-        return "Args Error: expected %d got %d" % (self.x, self.y)
+        actual = self.nargs
+        method = self.method
+        expected = method.nargs[0]
+
+        if len(method.nargs) == 1:
+            plural = "exactly"
+        else:
+            plural = "at least"
+
+        return "Args Error: %s takes %s %d arguments(s), %d provided" % (
+                method.name, plural, expected, actual)
 
 
 class SlotError(Error):
