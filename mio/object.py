@@ -46,22 +46,22 @@ class Object(object):
         for name, method in getmembers(self, predicate):
             self.slots[method.name] = Method(name)
 
-    def __getitem__(self, name):
-        if name in self.slots:
-            return self.slots[name]
+    def __getitem__(self, key):
+        if key in self.slots:
+            return self.slots[key]
 
         message = None
 
         for proto in self.protos:
-            message = proto[name]
+            message = proto[key]
 
         if message:
             return message
         else:
-            raise SlotError(name)
+            raise SlotError(key)
 
-    def __setitem__(self, name, message):
-        self.slots[name] = message
+    def __setitem__(self, key, value):
+        self.slots[key] = value
 
     def __repr__(self):
         if self.value is not Null:
