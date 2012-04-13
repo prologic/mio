@@ -7,14 +7,14 @@ Object set_slot("or", method(
   self
 ))
 
-# ... except nil and false which are false
+# ... except None and False which are False
 
-nil set_slot("and", nil)
-nil set_slot("or", method(
+None set_slot("and", None)
+None set_slot("or", method(
   eval_arg(0)
 ))
 
-false set_slot("and", false)
-false set_slot("or", method(
+False set_slot("and", False)
+False set_slot("or", method(
   eval_arg(0)
 ))
