@@ -31,7 +31,7 @@ class Mio:
     def __init__(self, opts):
         self.opts = opts
 
-        self.load_modules()
+        #self.load_modules()
 
     def load_modules(self):
         for module in modules:
