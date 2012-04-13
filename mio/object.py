@@ -54,6 +54,12 @@ class Object(object):
             #    for k, v in self.slots.items() if not v is self])
             return "Object_%s:\n%s" % (id(self), slots)
 
+    def __str__(self):
+        if self.value is not Null:
+            return str(self.value)
+        else:
+            return ""
+
     def __call__(self, *args, **kwargs):
         return self
 
