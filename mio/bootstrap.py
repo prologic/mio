@@ -3,6 +3,8 @@ import sys
 from object import Object
 from method import Method
 
+from core.number import Number
+
 Object = Object()
 Lobby = Object.clone()
 
@@ -11,26 +13,7 @@ Lobby["Object"] = Object
 Lobby["List"] = Object.clone([])
 Lobby["Method"] = Object.clone()
 
-def Number__add(receiver, context, value):
-    return receiver.value + value(context).value
-
-def Number__sub(receiver, context, value):
-    return receiver.value - value(context).value
-
-def Number__mul(receiver, context, value):
-    return receiver.value * value(context).value
-
-def Number__div(receiver, context, value):
-    return receiver.value / value(context).value
-
-Number = Object.clone()
-
-Number["add"] = Number__add
-Number["sub"] = Number__sub
-Number["mul"] = Number__mul
-Number["div"] = Number__div
-
-Lobby["Number"] = Number.clone(0)
+Lobby["Number"] = Number(0, Object)
 
 Lobby["Message"] = Object.clone()
 Lobby["String"] = Object.clone("")
