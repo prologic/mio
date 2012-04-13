@@ -22,27 +22,6 @@ Lobby["True"] = Object.clone(True)
 Lobby["False"] = Object.clone(False)
 
 
-def Object__clone(receiver, context, value=None):
-    if value is not None:
-        value = value(context)
-
-    return receiver.clone(value)
-
-
-def Object__slots(receiver, context):
-    return Lobby["List"].clone(receiver.slots.keys())
-
-
-def Object__set_slot(receiver, context, name, value):
-    receiver[name(context).value] = value(context)
-    return receiver[name(context).value]
-
-
-def Object__print(receiver, context):
-    sys.stdout.write("%s" % receiver.value)
-    return receiver
-
-
 def Object__method(receiver, context, *args):
     arguments, message = args[:-1], args[-1:][0]
     return Method(Lobby, context, arguments, message)
@@ -51,10 +30,6 @@ def Object__method(receiver, context, *args):
 def Lobby__exit(receiver, context, status=0):
     raise SystemExit(status)
 
-Object["set_slot"] = Object__set_slot
 Object["method"] = Object__method
-Object["slots"] = Object__slots
-Object["print"] = Object__print
-Object["clone"] = Object__clone
 
 Lobby["exit"] = Lobby__exit

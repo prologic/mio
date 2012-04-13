@@ -63,6 +63,27 @@ class Object(object):
     def __setitem__(self, name, message):
         self.slots[name] = message
 
+    def __repr__(self):
+        if self.value is not Null:
+            return repr(self.value)
+        else:
+            slots = "\n".join(["  %s = %s" % (str(k).ljust(15), v)
+                for k, v in self.slots.items() if not v is self])
+            return "Object_%s:\n%s" % (id(self), slots)
+
+    def __call__(self, *args, **kwargs):
+        return self
+
+    @method("print")
+    def _print(self):
+        print(self)
+        return self
+
+    @method("slots")
+    def _slots(self):
+        return Lobby["List"].clone(receiver.slots.keys())
+
+    @method()
     def clone(self, value=Null):
         obj = copy(self)
         obj.protos = (self,)
@@ -74,13 +95,7 @@ class Object(object):
 
         return obj
 
-    def __repr__(self):
-        if self.value is not Null:
-            return repr(self.value)
-        else:
-            slots = "\n".join(["  %s = %s" % (str(k).ljust(15), v)
-                for k, v in self.slots.items() if not v is self])
-            return "Object_%s:\n%s" % (id(self), slots)
-
-    def __call__(self, *args, **kwargs):
-        return self
+    @method()
+    def set_slot(self, name, value):
+        self[name.value] = value
+        return value
