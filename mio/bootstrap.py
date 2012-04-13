@@ -1,7 +1,7 @@
 import sys
 
-from .object import Object
-from .method import Method
+from object import Object
+from method import Method
 
 Object = Object()
 Lobby = Object.clone()

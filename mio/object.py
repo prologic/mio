@@ -1,7 +1,7 @@
 from copy import copy
 
-from .utils import Null
-from .errors import SlotError
+from utils import Null
+from errors import SlotError
 
 
 class Object(object):
