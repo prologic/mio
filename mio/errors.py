@@ -12,12 +12,17 @@ class ArgsError(Error):
     def __str__(self):
         actual = self.nargs
         method = self.method
-        expected = method.nargs[0]
 
         if len(method.nargs) == 1:
             plural = "exactly"
+            expected = method.nargs[0]
         else:
-            plural = "at least"
+            if len(actual) > method.nargs[1]:
+                plural = "at most"
+                expected = method.nargs[1]
+            else:
+                plural = "at least"
+                expected = method.nargs[0]
 
         return "Args Error: %s takes %s %d arguments(s), %d provided" % (
                 method.name, plural, expected, actual)
