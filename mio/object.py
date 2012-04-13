@@ -64,15 +64,15 @@ class Object(object):
         self.slots[name] = message
 
     def clone(self, value=Null):
-        if value is not Null:
-            value = value
-        else:
-            if self.value is not Null:
-                value = copy(self.value)
-            else:
-                value = Null
+        obj = copy(self)
+        obj.protos = (self,)
 
-        return Object(value, proto=self)
+        if value is not Null:
+            obj.value = value
+
+        obj.slots = {}
+
+        return obj
 
     def __repr__(self):
         if self.value is not Null:
