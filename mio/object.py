@@ -74,6 +74,11 @@ class Object(object):
         from bootstrap import Lobby
         return Lobby["List"].clone(self.slots.keys())
 
+    @pymethod("protos")
+    def _protos(self):
+        from bootstrap import Lobby
+        return Lobby["List"].clone(self.protos)
+
     @pymethod()
     def clone(self, value=Null):
         obj = copy(self)
