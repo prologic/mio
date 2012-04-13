@@ -1,14 +1,10 @@
 #!/usr/bin/env python
 
-try:
-    import readline
-except ImportError:
-    readline = None
-
 from optparse import OptionParser
 from signal import signal, SIGINT, SIG_IGN
 
 from mio.errors import Error
+from mio.utils import tryimport
 from mio.bootstrap import Lobby
 from mio.parser import tokenize, parse
 
@@ -53,11 +49,14 @@ class Mio:
         self.eval(open(filename, "r").read())
 
     def repl(self):
+        tryimport("readline")
+
         print("mio %s" % __version__)
+
         while True:
             try:
                 print("==> %r" % self.eval(raw_input(">>> ")))
-            except EOFError, KeyboardInterrupt:
+            except (EOFError, KeyboardInterrupt):
                 raise SystemExit(0)
 
 

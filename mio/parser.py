@@ -19,14 +19,16 @@ Spec = lambda name, value: (name, (value,))
 
 def tokenize(str):
 
-    operators = r"(\*\*)|(==)|(<=)|(>=)|(\+=)|(-=)|(\*=)|(/=)|[+]|[-]|[*]|[/]|[=]|[<]|[>]"
+    sops = r"[+]|[-]|[*]|[/]|[=]|[<]|[>]"
+    dops = r"(\*\*)|(==)|(<=)|(>=)|(\+=)|(-=)|(\*=)|(/=)"
 
     specs = [
         Spec("comment",    r'#.*'),
         Spec('whitespace', r'[ \t]+'),
         Spec('string',     r'"[^"]*"'),
         Spec('number',     r'-?(\.[0-9]+)|([0-9]+(\.[0-9]*)?)'),
-        Spec('name',       r'%s' % operators),
+        Spec('name',       dops),
+        Spec('name',       sops),
         Spec('name',       r'[A-Za-z_][A-Za-z0-9_]*'),
         Spec('op',         r'[\(\),\n;]'),
     ]

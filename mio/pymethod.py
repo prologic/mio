@@ -2,6 +2,7 @@ from inspect import getargspec
 
 from mio.errors import ArgsError
 
+
 class PyMethod(object):
 
     def __init__(self, method):

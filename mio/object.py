@@ -5,6 +5,7 @@ from utils import Null
 from errors import SlotError
 from pymethod import pymethod, PyMethod
 
+
 class Object(object):
 
     __slots__ = ("slots", "protos", "value",)

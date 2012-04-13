@@ -1,6 +1,7 @@
 from object import Object
 from bootstrap import Lobby
 
+
 class Method(Object):
 
     def __init__(self, context, args, message):
@@ -23,14 +24,12 @@ class Method(Object):
                 method_context[arg.name] = Lobby["None"](
                         calling_context)
 
-
         def __eval_arg(receiver, context, at):
             index = at(context).value
             if index is not None and index < len(args):
                 return args[index](calling_context)
             else:
                 return Lobby["None"](calling_context)
-
 
         method_context["eval_arg"] = __eval_arg
 

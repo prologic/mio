@@ -3,8 +3,9 @@ import re
 from object import Object
 from bootstrap import Lobby
 
+
 class Message(Object):
-    
+
     def __init__(self, name, *args):
         super(Message, self).__init__(name, proto=Lobby["Object"])
 
@@ -22,11 +23,10 @@ class Message(Object):
 
         self.terminator = name in ["\n", ";"]
 
-
     def __add__(self, message):
         self.next = message
         return message
-    
+
     def __repr__(self):
         messages = []
 
@@ -51,7 +51,7 @@ class Message(Object):
         else:
             slot = receiver[self.name]
             value = slot(receiver, context, *self.args)
-      
+
         if self.next:
             return self.next(value, context)
         else:
