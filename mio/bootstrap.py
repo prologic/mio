@@ -7,7 +7,9 @@ Object = Object()
 Lobby = Lobby(proto=Object)
 
 Lobby["Lobby"] = Lobby
+Object["Lobby"] = Lobby
 Lobby["Object"] = Object
+Object["Object"] = Object
 
 Lobby["Number"] = Number(0, Object)
 
