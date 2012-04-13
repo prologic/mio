@@ -34,7 +34,7 @@ class Message(Object):
         while next is not None:
             messages.append(next.name)
             if next.args:
-                args = ",".join([repr(arg) for arg in next.args])
+                args = ", ".join([repr(arg) for arg in next.args])
                 messages.append("(%s)" % args)
             next = next.next
 
