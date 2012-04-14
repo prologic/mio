@@ -2,7 +2,7 @@ from copy import copy
 from inspect import getmembers, ismethod
 
 from errors import SlotError
-from utils import alias, Null
+from utils import method, Null
 from pymethod import pymethod, PyMethod
 
 
@@ -20,14 +20,12 @@ class Object(object):
         self.slots = {}
 
         # Setup method
-        predicate = lambda x: ismethod(x) and not x.__name__.startswith("_")
-        for name, method in getmembers(self, predicate):
-            if hasattr(method, "name"):
-                name = method.name
-            self.slots[name] = method
+        predicate = lambda x: ismethod(x) and getattr(x, "method", False)
+        for _, method in getmembers(self, predicate):
+            self.slots[method.name] = method
 
         # Setup Python Methods
-        predicate = lambda x: getattr(x, "pymethod", False)
+        predicate = lambda x: ismethod(x) and getattr(x, "pymethod", False)
         for _, method in getmembers(self, predicate):
             self.slots[method.name] = PyMethod(method)
 
@@ -47,10 +45,22 @@ class Object(object):
         if self.value is not Null:
             return repr(self.value)
         else:
+            slots = {}
+            for k, v in self.slots.items():
+                if isinstance(v, Object):
+                    name = v.__class__.__name__
+                    slots[k] = "%s_%s" % (name, id(v))
+                elif isinstance(v, PyMethod):
+                    slots[k] = repr(v)
+                elif ismethod(v):
+                    name = getattr(v, "name", "__name__")
+                    slots[k] = "%s(...)" % name
+                else:
+                    print("Unknown Type:")
+                    print(k, type(v))
+            slots = "\n".join(["  %s = %s" % (str(k).ljust(15), v)
+                for k, v in slots.items()])
             name = self.__class__.__name__
-            slots = "\n".join(self.slots.keys())
-            #slots = "\n".join(["  %s = %s" % (str(k).ljust(15), v)
-            #    for k, v in self.slots.items() if not v is self])
             return "%s_%s:\n%s" % (name, id(self), slots)
 
     def __str__(self):
@@ -61,6 +71,12 @@ class Object(object):
 
     def __call__(self, *args, **kwargs):
         return self
+
+    @method()
+    def method(self, receiver, context, *args):
+        from method import Method
+        arguments, message = args[:-1], args[-1:][0]
+        return Method(context, arguments, message)
 
     @pymethod("print")
     def _print(self):
@@ -91,11 +107,6 @@ class Object(object):
             obj.init(value)
 
         return obj
-
-    def method(self, receiver, context, *args):
-        from method import Method
-        arguments, message = args[:-1], args[-1:][0]
-        return Method(context, arguments, message)
 
     @pymethod()
     def set_slot(self, name, value):

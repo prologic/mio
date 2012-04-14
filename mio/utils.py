@@ -1,6 +1,14 @@
 from warnings import warn
 
 
+def method(name=None):
+    def wrapper(f):
+        f.name = name or f.__name__
+        f.method = True
+        return f
+    return wrapper
+
+
 def tryimport(modules, message=None):
     if isinstance(modules, str):
         modules = (modules,)
@@ -14,12 +22,6 @@ def tryimport(modules, message=None):
     if message:
         warn(message)
 
-
-def alias(name=None):
-    def wrapper(f):
-        f.name = name or f.__name__
-        return f
-    return wrapper
 
 
 class MetaNull(type):

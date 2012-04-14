@@ -11,6 +11,9 @@ class Method(Object):
         self.args = args
         self.message = message
 
+    def __repr__(self):
+        return "method(...)"
+
     def __call__(self, receiver, calling_context, *args):
         method_context = self.definition_context.clone()
 
