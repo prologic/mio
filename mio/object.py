@@ -35,15 +35,10 @@ class Object(object):
         if key in self.slots:
             return self.slots[key]
 
-        message = None
-
         for proto in self.protos:
-            message = proto[key]
+            return proto[key]
 
-        if message:
-            return message
-        else:
-            raise SlotError(key)
+        raise SlotError(key)
 
     def __setitem__(self, key, value):
         self.slots[key] = value
