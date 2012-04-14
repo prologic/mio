@@ -1,5 +1,7 @@
 # Standard Operators
 
+Object set_slot("=", method(self set_slot(eval_arg(0), eval_arg(1))))
+
 Object set_slot("+", method(other, self add(other)))
 
 Object set_slot("<", method(other, self lt(other)))
