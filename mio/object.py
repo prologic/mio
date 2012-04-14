@@ -1,8 +1,8 @@
 from copy import copy
 from inspect import getmembers, ismethod
 
-from utils import Null
 from errors import SlotError
+from utils import alias, Null
 from pymethod import pymethod, PyMethod
 
 
@@ -22,6 +22,8 @@ class Object(object):
         # Setup method
         predicate = lambda x: ismethod(x) and not x.__name__.startswith("_")
         for name, method in getmembers(self, predicate):
+            if hasattr(method, "name"):
+                name = method.name
             self.slots[name] = method
 
         # Setup Python Methods
