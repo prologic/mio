@@ -24,8 +24,8 @@ class Number(Object):
     # Type Conversion
 
     @pymethod()
-    def str(self):
-        return self["Lobby"]["String"].clone(str(self.value)) 
+    def bool(self):
+        return self["Lobby"]["True"] if self.value else self["Lobby"]["False"]
 
     @pymethod()
     def int(self):
@@ -34,3 +34,8 @@ class Number(Object):
     @pymethod()
     def float(self):
         return self.clone(float(self.value))
+
+    @pymethod()
+    def str(self):
+        return self["Lobby"]["String"].clone(str(self.value)) 
+
