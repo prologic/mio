@@ -1,11 +1,16 @@
+from mio.utils import Null
 from mio.object import Object
 from mio.pymethod import pymethod
+
 
 class List(Object):
 
     @pymethod()
-    def init(self, value=None):
-        self.value = list(value)
+    def init(self, value=Null):
+        if value is Null:
+            self.value = []
+        else:
+            self.value = list(value)
 
     # General Operations
 
@@ -26,4 +31,4 @@ class List(Object):
 
     @pymethod()
     def repr(self):
-        return self["Lobby"]["String"].clone(repr(self.value)) 
+        return self["Lobby"]["String"].clone(repr(self.value))
