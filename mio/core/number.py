@@ -24,6 +24,10 @@ class Number(Object):
     # Type Conversion
 
     @pymethod()
+    def __str__(self):
+        return self["Lobby"]["String"].clone(str(self.value)) 
+
+    @pymethod()
     def __int__(self):
         return self.clone(self.value.__int__())
 
