@@ -4,8 +4,8 @@ from mio.pymethod import pymethod
 class List(Object):
 
     @pymethod()
-    def init(self):
-        self.value = []
+    def init(self, value=None):
+        self.value = list(value)
 
     # General Operations
 

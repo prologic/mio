@@ -4,9 +4,6 @@ from mio.pymethod import pymethod
 
 class String(Object):
 
-    def init(self):
-        self.value = ""
-
     # General Operations
 
     @pymethod()
