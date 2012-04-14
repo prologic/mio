@@ -45,4 +45,5 @@ class List(Object):
 
     @pymethod()
     def repr(self):
-        return self["Lobby"]["String"].clone(repr(self.value))
+        values = ", ".join([repr(x) for x in self.value])
+        return self["Lobby"]["String"].clone("List(%s)" % values)
