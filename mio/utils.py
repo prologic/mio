@@ -15,6 +15,13 @@ def tryimport(modules, message=None):
         warn(message)
 
 
+def alias(name=None):
+    def wrapper(f):
+        f.name = name or f.__name__
+        return f
+    return wrapper
+
+
 class MetaNull(type):
     """Meta Class for Null"""
 
