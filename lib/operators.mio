@@ -1,6 +1,8 @@
 # Standard Operators
 
-Number set_slot("*", method(other, self __mul__(other)))
-Number set_slot("/", method(other, self __div__(other)))
-Number set_slot("+", method(other, self __add__(other)))
-Number set_slot("-", method(other, self __sub__(other)))
+Number set_slot("*", method(other, self mul(other)))
+Number set_slot("/", method(other, self div(other)))
+Number set_slot("+", method(other, self add(other)))
+Number set_slot("-", method(other, self sub(other)))
+
+String set_slot("+", method(other, self add(other)))
