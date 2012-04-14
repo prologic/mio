@@ -22,6 +22,20 @@ class String(Object):
     def upper(self, other):
         return self.clone(self.value.upper())
 
+    # Boolean Operations
+
+    @pymethod()
+    def lt(self, other):
+        return self["Lobby"]["Boolean"].clone(bool(self.value < other.value))
+
+    @pymethod()
+    def gt(self, other):
+        return self["Lobby"]["Boolean"].clone(bool(self.value > other.value))
+
+    @pymethod()
+    def eq(self, other):
+        return self["Lobby"]["Boolean"].clone(bool(self.value == other.value))
+
     # Type Conversion
 
     @pymethod()

@@ -21,6 +21,20 @@ class Number(Object):
     def div(self, other):
         return self.clone(self.value / other.value)
 
+    # Boolean Operations
+
+    @pymethod()
+    def lt(self, other):
+        return self["Lobby"]["Boolean"].clone(bool(self.value < other.value))
+
+    @pymethod()
+    def gt(self, other):
+        return self["Lobby"]["Boolean"].clone(bool(self.value > other.value))
+
+    @pymethod()
+    def eq(self, other):
+        return self["Lobby"]["Boolean"].clone(bool(self.value == other.value))
+
     # Type Conversion
 
     @pymethod()

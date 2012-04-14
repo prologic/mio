@@ -23,6 +23,20 @@ class List(Object):
     def count(self):
         return self["Lobby"]["Number"].clone(self.value.count())
 
+    # Boolean Operations
+
+    @pymethod()
+    def lt(self, other):
+        return self["Lobby"]["Boolean"].clone(bool(self.value < other.value))
+
+    @pymethod()
+    def gt(self, other):
+        return self["Lobby"]["Boolean"].clone(bool(self.value > other.value))
+
+    @pymethod()
+    def eq(self, other):
+        return self["Lobby"]["Boolean"].clone(bool(self.value == other.value))
+
     # Type Conversion
 
     @pymethod()
