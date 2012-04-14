@@ -62,6 +62,10 @@ class Object(object):
     def __call__(self, *args, **kwargs):
         return self
 
+    @pymethod()
+    def init(self):
+        pass
+
     @pymethod("print")
     def _print(self):
         print(self)
@@ -86,6 +90,8 @@ class Object(object):
             obj.value = value
 
         obj.slots = {}
+
+        obj.init()
 
         return obj
 

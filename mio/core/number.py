@@ -36,6 +36,9 @@ class Number(Object):
         return self.clone(float(self.value))
 
     @pymethod()
+    def repr(self):
+        return self["Lobby"]["String"].clone(repr(self.value)) 
+
+    @pymethod()
     def str(self):
         return self["Lobby"]["String"].clone(str(self.value)) 
-
