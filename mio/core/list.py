@@ -5,8 +5,6 @@ class List(Object):
 
     @pymethod()
     def init(self):
-        import pdb
-        pdb.set_trace()
         self.value = []
 
     # General Operations
