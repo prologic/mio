@@ -3,6 +3,7 @@ from object import Object
 
 from core.list import List
 from core.number import Number
+from core.string import String
 from core.boolean import Boolean
 
 Object = Object()
