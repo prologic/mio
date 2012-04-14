@@ -10,6 +10,10 @@ class String(Object):
     # General Operations
 
     @pymethod()
+    def add(self, other):
+        return self.clone(self.value + other.value)
+
+    @pymethod()
     def index(self, sub, start=None, end=None):
         return self["Lobby"]["Number"].clone(self.index(sub, start, end))
 
