@@ -6,31 +6,31 @@ class Number(Object):
     # General Arithmetic
 
     @pymethod()
-    def __add__(self, other):
-        return self.clone(self.value.__add__(other.value))
+    def add(self, other):
+        return self.clone(self.value + other.value)
 
     @pymethod()
-    def __sub__(self, other):
-        return self.clone(self.value.__sub__(other.value))
+    def sub(self, other):
+        return self.clone(self.value - other.value)
 
     @pymethod()
-    def __mul__(self, other):
-        return self.clone(self.value.__mul__(other.value))
+    def mul(self, other):
+        return self.clone(self.value * other.value)
 
     @pymethod()
-    def __div__(self, other):
-        return self.clone(self.value.__div__(other.value))
+    def div(self, other):
+        return self.clone(self.value / other.value)
 
     # Type Conversion
 
     @pymethod()
-    def __str__(self):
+    def str(self):
         return self["Lobby"]["String"].clone(str(self.value)) 
 
     @pymethod()
-    def __int__(self):
-        return self.clone(self.value.__int__())
+    def int(self):
+        return self.clone(nt(self.value))
 
     @pymethod()
-    def __float__(self):
-        return self.clone(self.value.__float__())
+    def float(self):
+        return self.clone(float(self.value))
