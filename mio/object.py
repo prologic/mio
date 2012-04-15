@@ -1,9 +1,9 @@
 from copy import copy
-from inspect import getargspec, getmembers, isfunction, ismethod
+from inspect import  getmembers, isfunction, ismethod
 
 from errors import SlotError
-from utils import method, Null
 from pymethod import pymethod, PyMethod
+from utils import format_method, method, Null
 
 
 class Object(object):
@@ -54,14 +54,8 @@ class Object(object):
                     slots[k] = "%s_%s" % (name, id(v))
                 elif isinstance(v, PyMethod):
                     slots[k] = repr(v)
-                elif ismethod(v):
-                    name = getattr(v, "name", "__name__")
-                    slots[k] = "%s(...)" % name
-                elif isfunction(v):
-                    name = v.__name__
-                    args = getargspec(v)[0]
-                    args = ", ".join(args) if args else "..."
-                    slots[k] = "%s(%s)" % (name, args)
+                elif ismethod(v) or isfunction(v):
+                    slots[k] = format_method(v)
                 else:
                     print("Unknown Type:")
                     print(k, type(v))

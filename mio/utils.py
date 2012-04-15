@@ -1,4 +1,17 @@
 from warnings import warn
+from inspect import getargspec
+
+
+def format_method(f):
+    name = getattr(f, "name", getattr(f, "__name__"))
+    argspec = getargspec(f)
+    args = list(argspec.args)
+    varargs = argspec.varargs
+    for arg in ("self", "receiver", "context"):
+        if arg in args:
+            del args[0]
+    args = ", ".join(args) if args else ("*%s" % varargs if varargs else "")
+    return "%s(%s)" % (name, args)
 
 
 def method(name=None):

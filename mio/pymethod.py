@@ -1,6 +1,7 @@
 from inspect import getargspec
 
-from mio.errors import ArgsError
+from errors import ArgsError
+from utils import format_method
 
 
 def pymethod(name=None):
@@ -45,11 +46,4 @@ class PyMethod(object):
         return getattr(receiver, method)(*args)
 
     def __repr__(self):
-        name = self.method.name
-
-        if self.method.args:
-            args = ", ".join(self.method.args)
-        else:
-            args = "..."
-
-        return "%s(%s)" % (name, args)
+        return format_method(self.method)
