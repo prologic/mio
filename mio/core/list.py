@@ -27,6 +27,10 @@ class List(Object):
     def len(self):
         return self["Lobby"]["Number"].clone(leN(self.value))
 
+    @pymethod()
+    def at(self, i):
+        return self.value[i.value]
+
     # Boolean Operations
 
     @pymethod()
