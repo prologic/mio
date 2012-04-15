@@ -3,61 +3,17 @@
 from optparse import OptionParser
 from signal import signal, SIGINT, SIG_IGN
 
-from mio.errors import Error
-from mio.utils import tryimport
-from mio.bootstrap import Lobby
-from mio.parser import tokenize, parse
-
-__version__ = "0.1"
+import mio
+from mio.interpreter import Interpreter
 
 USAGE = "%prog [options] ... [-c cmd | file | -] [arg] ..."
-VERSION = "%prog v" + __version__
+VERSION = "%prog v" + mio.__version__
 
 modules = (
         "lib/operators.mio",
         "lib/boolean.mio",
         "lib/if.mio",
 )
-
-
-class Mio:
-
-    def __init__(self, opts):
-        self.opts = opts
-
-        self.load_modules()
-
-    def load_modules(self):
-        for module in modules:
-            self.load(module)
-
-    def eval(self, code):
-        if self.opts.debug:
-            tokens = tokenize(code)
-            message = parse(tokens)
-            print("Tokens:\n%s\n" % tokens)
-            print("Messages:\n%s\n" % message.pprint())
-        else:
-            message = parse(tokenize(code))
-
-        try:
-            return message(Lobby)
-        except Error as e:
-            print("%s\n%r" % (str(e), message))
-
-    def load(self, filename):
-        self.eval(open(filename, "r").read())
-
-    def repl(self):
-        tryimport("readline")
-
-        print("mio %s" % __version__)
-
-        while True:
-            try:
-                print("==> %r" % self.eval(raw_input(">>> ")))
-            except (EOFError, KeyboardInterrupt):
-                raise SystemExit(0)
 
 
 def parse_options():
@@ -85,16 +41,16 @@ def main():
 
     signal(SIGINT, SIG_IGN)
 
-    mio = Mio(opts)
+    interpreter = Interpreter(opts, modules)
 
     if opts.cmd:
-        print(repr(mio.eval(opts.cmd)))
+        print(repr(interpreter.eval(opts.cmd)))
     elif args:
-        mio.load(args[0])
+        interpreter.load(args[0])
         if opts.inspect:
-            mio.repl()
+            interpreter.repl()
     else:
-        mio.repl()
+        interpreter.repl()
 
 if __name__ == "__main__":
     main()
