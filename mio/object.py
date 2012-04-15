@@ -125,5 +125,5 @@ class Object(object):
     @method()
     def set_slot(self, receiver, context, key, value):
         key = key(context).value if key.type else key.name
-        self[key] = value(context)
-        return self[key]
+        receiver[key] = value(context)
+        return receiver[key]
