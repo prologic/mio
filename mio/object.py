@@ -33,12 +33,11 @@ class Object(object):
     def __getitem__(self, key):
         if key in self.slots:
             return self.slots[key]
-        else:
-            for proto in self.protos:
-                if key in proto:
-                    return proto[key]
-            else:
-                raise SlotError(key)
+
+        for proto in self.protos:
+            return proto[key]
+
+        raise SlotError(key)
 
     def __setitem__(self, key, value):
         self.slots[key] = value
