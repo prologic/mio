@@ -85,8 +85,8 @@ class Object(object):
         except SlotError:
             return at(context)
 
-    @method()
-    def method(self, receiver, context, *args):
+    @method("method")
+    def _method(self, receiver, context, *args):
         from method import Method
         from bootstrap import Lobby
         arguments, message = args[:-1], args[-1:][0]
@@ -122,7 +122,8 @@ class Object(object):
 
         return obj
 
-    @pymethod()
-    def set_slot(self, name, value):
-        self[name.value] = value
-        return value
+    @method()
+    def set_slot(self, receiver, context, key, value):
+        key = key(context).value if key.type else key.name
+        self[key] = value(context)
+        return self[key]

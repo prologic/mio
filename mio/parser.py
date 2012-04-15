@@ -106,6 +106,14 @@ def reshuffle(messages):
 def make_chain(messages):
     if messages:
         messages = reshuffle(messages)
+
+        eq = Message("=")
+        if eq in messages:
+            index = messages.index(eq)
+            key, value = messages[:index], messages[(index + 1):]
+            args = reduce(add, key), reduce(add, value)
+            return Message("set_slot", *args)
+
         reduce(add, messages)
         return messages[0]
 

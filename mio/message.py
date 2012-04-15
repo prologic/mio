@@ -25,6 +25,9 @@ class Message(Object):
 
         self.terminator = name in ["\n", ";"]
 
+    def __eq__(self, other):
+        return isinstance(other, Message) and other.name == self.name
+
     def __add__(self, message):
         self.next = message
         return message
