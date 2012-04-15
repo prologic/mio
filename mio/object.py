@@ -73,7 +73,7 @@ class Object(object):
         return self
 
     @method()
-    def eval_arg(self, receiver, context, at):
+    def eval_arg(self, receiver, context, at, default=None):
         from bootstrap import Lobby
         try:
             index = at(context).value
@@ -82,7 +82,10 @@ class Object(object):
             if index is not None and index < len(args):
                 return args[index](caller)
             else:
-                return Lobby["None"](caller)
+                if default is not None:
+                    return default(caller)
+                else:
+                    return Lobby["None"](caller)
         except SlotError:
             return at(context)
 
