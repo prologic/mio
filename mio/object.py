@@ -74,13 +74,16 @@ class Object(object):
 
     @method()
     def eval_arg(self, receiver, context, at):
-        index = at(context).value
-        caller = context["caller"]
-        args = context["args"].value
-        if index is not None and index < len(args):
-            return args[index](caller)
-        else:
-            return Lobby["None"](caller)
+        try:
+            index = at(context).value
+            caller = context["caller"]
+            args = context["args"].value
+            if index is not None and index < len(args):
+                return args[index](caller)
+            else:
+                return Lobby["None"](caller)
+        except SlotError:
+            return at(context)
 
     @method()
     def method(self, receiver, context, *args):
