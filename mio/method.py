@@ -1,3 +1,4 @@
+from utils import method
 from object import Object
 from bootstrap import Lobby
 
@@ -18,6 +19,7 @@ class Method(Object):
         method_context = self.definition_context.clone()
 
         method_context["self"] = receiver
+        method_context["caller"] = calling_context
         method_context["arguments"] = Lobby["List"].clone(args)
 
         for i, arg in enumerate(self.args):
@@ -27,13 +29,14 @@ class Method(Object):
                 method_context[arg.name] = Lobby["None"](
                         calling_context)
 
-        def __eval_arg(receiver, context, at):
-            index = at(context).value
-            if index is not None and index < len(args):
-                return args[index](calling_context)
-            else:
-                return Lobby["None"](calling_context)
-
-        method_context["eval_arg"] = __eval_arg
-
         return self.message(method_context)
+
+    @method()
+    def eval_arg(self, receiver, context, at):
+        args = context["args"]
+        index = at(context).value
+        caller = context["caller"]
+        if index is not None and index < len(args):
+            return args[index](caller)
+        else:
+            return Lobby["None"](caller)

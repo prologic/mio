@@ -1,5 +1,5 @@
 from copy import copy
-from inspect import getmembers, ismethod
+from inspect import getargspec, getmembers, isfunction, ismethod
 
 from errors import SlotError
 from utils import method, Null
@@ -57,6 +57,11 @@ class Object(object):
                 elif ismethod(v):
                     name = getattr(v, "name", "__name__")
                     slots[k] = "%s(...)" % name
+                elif isfunction(v):
+                    name = v.__name__
+                    args = getargspec(v)[0]
+                    args = ", ".join(args) if args else "..."
+                    slots[k] = "%s(%s)" % (name, args)
                 else:
                     print("Unknown Type:")
                     print(k, type(v))
