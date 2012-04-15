@@ -13,13 +13,15 @@ class Message(Object):
         self.args = args
 
         self.next = None
+        self.type = None
+        self.value = None
 
         if re.match("(\d+)", self.name):
-            self.cached_value = Lobby["Number"].clone(eval(self.name))
+            self.type = "number"
+            self.value = Lobby["Number"].clone(eval(self.name))
         elif re.match("\"(.*)\"", self.name):
-            self.cached_value = Lobby["String"].clone(eval(self.name))
-        else:
-            self.cached_value = None
+            self.type = "string"
+            self.value = Lobby["String"].clone(eval(self.name))
 
         self.terminator = name in ["\n", ";"]
 
@@ -46,8 +48,8 @@ class Message(Object):
 
         if self.terminator:
             value = context
-        elif self.cached_value:
-            value = self.cached_value
+        elif self.value:
+            value = self.value
         else:
             slot = receiver[self.name]
             value = slot(receiver, context, *self.args)
