@@ -5,8 +5,8 @@ from bootstrap import Lobby
 
 class Method(Object):
 
-    def __init__(self, context, args, message):
-        super(Method, self).__init__()
+    def __init__(self, context, args, message, proto=None):
+        super(Method, self).__init__(proto=proto)
 
         self.definition_context = context
         self.args = args
@@ -20,7 +20,7 @@ class Method(Object):
 
         method_context["self"] = receiver
         method_context["caller"] = calling_context
-        method_context["arguments"] = Lobby["List"].clone(args)
+        method_context["args"] = Lobby["List"].clone(args)
 
         for i, arg in enumerate(self.args):
             if i < len(args):
@@ -30,13 +30,3 @@ class Method(Object):
                         calling_context)
 
         return self.message(method_context)
-
-    @method()
-    def eval_arg(self, receiver, context, at):
-        args = context["args"]
-        index = at(context).value
-        caller = context["caller"]
-        if index is not None and index < len(args):
-            return args[index](caller)
-        else:
-            return Lobby["None"](caller)

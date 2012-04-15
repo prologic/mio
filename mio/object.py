@@ -73,10 +73,21 @@ class Object(object):
         return self
 
     @method()
+    def eval_arg(self, receiver, context, at):
+        index = at(context).value
+        caller = context["caller"]
+        args = context["args"].value
+        if index is not None and index < len(args):
+            return args[index](caller)
+        else:
+            return Lobby["None"](caller)
+
+    @method()
     def method(self, receiver, context, *args):
         from method import Method
+        from bootstrap import Lobby
         arguments, message = args[:-1], args[-1:][0]
-        return Method(context, arguments, message)
+        return Method(context, arguments, message, proto=Lobby["Object"])
 
     @pymethod("print")
     def _print(self):
