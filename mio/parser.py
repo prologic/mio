@@ -50,7 +50,7 @@ def make_message(n):
     args = tuple(args) if args is not None else ()
     return Message(name, *args)
 
-prec = {"*": 4, "/": 3, "+": 2, "-": 1}
+prec = {"*": 4, "/": 3, "+": 2, "-": 1, "=": 1}
 right = {}
 
 
@@ -63,10 +63,7 @@ def reshuffle(messages):
     output = []
 
     for message in messages:
-        if message.type == "number" and \
-                re.match(r'-?(\.[0-9]+)|([0-9]+(\.[0-9]*)?)', message.name):
-            output.append(message)
-        elif message.type is None and getprec(message.name) > 0:
+        if getprec(message.name) > 0:
             pr = getprec(message.name)
             if message.name in right:
                 while ops and pr < getprec(ops[-1]):
