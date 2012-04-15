@@ -74,6 +74,7 @@ class Object(object):
 
     @method()
     def eval_arg(self, receiver, context, at):
+        from bootstrap import Lobby
         try:
             index = at(context).value
             caller = context["caller"]
