@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 
-import re
 from operator import add
 
 from funcparserlib.lexer import make_tokenizer, Token
