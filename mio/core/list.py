@@ -20,8 +20,12 @@ class List(Object):
         return self
 
     @pymethod()
-    def count(self):
-        return self["Lobby"]["Number"].clone(self.value.count())
+    def count(self, value):
+        return self["Lobby"]["Number"].clone(self.value.count(value))
+
+    @pymethod()
+    def len(self):
+        return self["Lobby"]["Number"].clone(leN(self.value))
 
     # Boolean Operations
 
