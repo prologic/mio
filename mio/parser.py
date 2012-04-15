@@ -49,7 +49,7 @@ def make_message(n):
     args = tuple(args) if args is not None else ()
     return Message(name, *args)
 
-prec = {"*": 4, "/": 3, "+": 2, "-": 1, "=": 1}
+prec = {"*": 4, "/": 3, "+": 2, "-": 1}
 right = {}
 
 
