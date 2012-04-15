@@ -3,6 +3,32 @@ from inspect import getargspec
 from mio.errors import ArgsError
 
 
+def pymethod(name=None):
+    def wrapper(f):
+        f.name = name or f.__name__
+        f.type = "python"
+        f.method = True
+
+        argspec = getargspec(f)
+        args = argspec.args
+        defaults = argspec.defaults or ()
+
+        for arg in ("self", "receiver", "context",):
+            if args and args[0] == arg:
+                del args[0]
+
+        max_args = len(args)
+        min_args = max_args - len(defaults)
+
+        f.args = args
+        f.dargs = defaults
+        f.nargs = range(min_args, (max_args + 1))
+
+        return f
+
+    return wrapper
+
+
 class PyMethod(object):
 
     def __init__(self, method):
@@ -27,28 +53,3 @@ class PyMethod(object):
             args = "..."
 
         return "%s(%s)" % (name, args)
-
-
-def pymethod(name=None):
-    def wrapper(f):
-        f.name = name or f.__name__
-        f.pymethod = True
-
-        argspec = getargspec(f)
-        args = argspec.args
-        defaults = argspec.defaults or ()
-
-        for arg in ("self", "receiver", "context",):
-            if args and args[0] == arg:
-                del args[0]
-
-        max_args = len(args)
-        min_args = max_args - len(defaults)
-
-        f.args = args
-        f.dargs = defaults
-        f.nargs = range(min_args, (max_args + 1))
-
-        return f
-
-    return wrapper

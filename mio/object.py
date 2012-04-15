@@ -19,15 +19,13 @@ class Object(object):
 
         self.slots = {}
 
-        # Setup method
+        # Setup Methods
         predicate = lambda x: ismethod(x) and getattr(x, "method", False)
         for _, method in getmembers(self, predicate):
-            self.slots[method.name] = method
-
-        # Setup Python Methods
-        predicate = lambda x: ismethod(x) and getattr(x, "pymethod", False)
-        for _, method in getmembers(self, predicate):
-            self.slots[method.name] = PyMethod(method)
+            if method.type == "python":
+                self.slots[method.name] = PyMethod(method)
+            else:
+                self.slots[method.name] = method
 
     def __getitem__(self, key):
         if key in self.slots:
