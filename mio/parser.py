@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+import re
 from operator import add
 
 from funcparserlib.lexer import make_tokenizer, Token
@@ -49,9 +50,68 @@ def make_message(n):
     args = tuple(args) if args is not None else ()
     return Message(name, *args)
 
+prec = {"*": 4, "/": 3, "+": 2, "-": 1}
+right = {}
+
+
+def getprec(op):
+    return prec.get(op, -1)
+
+
+def reshuffle(messages):
+    ops = []
+    output = []
+
+    for message in messages:
+        if message.type == "number" and \
+                re.match(r'-?(\.[0-9]+)|([0-9]+(\.[0-9]*)?)', message.name):
+            output.append(message)
+        elif message.type is None and getprec(message.name) > 0:
+            pr = getprec(message.name)
+            if message.name in right:
+                while ops and pr < getprec(ops[-1]):
+                    output.append(ops.pop())
+            else:
+                while ops and pr <= getprec(ops[-1]):
+                    output.append(ops.pop())
+
+            ops.append(message)
+        else:
+            output.append(message)
+
+    if not ops:
+        return output
+
+    ops.reverse()
+    output.reverse()
+
+    m = ops.pop()
+    root = o = output.pop()
+
+    prev = None
+    while output:
+        if prev is not None:
+            prev.args = (o,)
+
+        o.next = m
+        prev = m
+
+        if ops:
+            m = ops.pop()
+
+        o = output.pop()
+
+    if prev is not None:
+        prev.args = (o,)
+
+    print(repr(root))
+
+    return [root]
+
 
 def make_chain(messages):
     if messages:
+        messages = reshuffle(messages)
         reduce(add, messages)
         return messages[0]
 
