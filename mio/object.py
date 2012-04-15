@@ -27,14 +27,18 @@ class Object(object):
             else:
                 self.slots[method.name] = method
 
+    def __contains__(self, key):
+        return key in self.slots
+
     def __getitem__(self, key):
         if key in self.slots:
             return self.slots[key]
-
-        for proto in self.protos:
-            return proto[key]
-
-        raise SlotError(key)
+        else:
+            for proto in self.protos:
+                if key in proto:
+                    return proto[key]
+            else:
+                raise SlotError(key)
 
     def __setitem__(self, key, value):
         self.slots[key] = value
