@@ -100,8 +100,6 @@ def reshuffle(messages):
     if prev is not None:
         prev.args = (o,)
 
-    print(repr(root))
-
     return [root]
 
 
