@@ -129,6 +129,11 @@ class Object(object):
 
     # Introspection
 
+    @pymethod("id")
+    def _id(self):
+        from bootstrap import Lobby
+        return Lobby["Number"].clone(id(self))
+
     @pymethod("slots")
     def _slots(self):
         from bootstrap import Lobby
