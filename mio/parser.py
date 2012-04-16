@@ -159,7 +159,19 @@ def make_chain(messages):
         if eq in messages:
             index = messages.index(eq)
             key, value = messages[:index], messages[(index + 1):]
-            args = reduce(add, key), reduce(add, value)
+
+            if len(key) > 1:
+                obj = key[:-1]
+                key = key[-1:]
+                reduce(add, obj)
+                reduce(add, key)
+                args = key[0], value[0]
+                obj[0].next = Message("set_slot", *args)
+                return obj[0]
+
+            reduce(add, key)
+            reduce(add, value)
+            args = key[0], value[0]
             return Message("set_slot", *args)
 
         reduce(add, messages)
