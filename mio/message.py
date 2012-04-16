@@ -1,5 +1,6 @@
 import re
 
+from utils import method
 from object import Object
 from bootstrap import Lobby
 
@@ -71,3 +72,7 @@ class Message(Object):
 
         return "\n".join(["%s%s" % (" " * i, x)
             for i, x in enumerate(messages)])
+
+    @method("call")
+    def _call(self, receiver, context, *args):
+        return self(reciver, context, *args)
