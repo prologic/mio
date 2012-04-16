@@ -126,6 +126,19 @@ class Object(object):
 
         return obj
 
+    @method("if")
+    def _if(self, reciver, context, *args):
+        condition = args[0](context).value == True
+        index = 1 if condition else 2
+        if index < len(args):
+            return args[index](context)
+
+        if condition(context).bool():
+            return messages[0](context)
+        else:
+            from bootstrap import Lobby
+            return Lobby["Boolean"].clone(condition)
+
     @pymethod("and")
     def _and(self, other):
         return self.clone(self.value and other.value)
