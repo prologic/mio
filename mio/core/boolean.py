@@ -4,20 +4,6 @@ from mio.pymethod import pymethod
 
 class Boolean(Object):
 
-    # General Boolean Logic
-
-    @pymethod("and")
-    def _and(self, other):
-        return self.clone(self.value and other.value)
-
-    @pymethod("or")
-    def _or(self, other):
-        return self.clone(self.value or other.value)
-
-    @pymethod("not")
-    def _not(self, other):
-        return self.clone(not self.value)
-
     # Boolean Operations
 
     @pymethod()

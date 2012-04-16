@@ -126,6 +126,18 @@ class Object(object):
 
         return obj
 
+    @pymethod("and")
+    def _and(self, other):
+        return self.clone(self.value and other.value)
+
+    @pymethod("or")
+    def _or(self, other):
+        return self.clone(self.value or other.value)
+
+    @pymethod("not")
+    def _not(self, other):
+        return self.clone(not self.value)
+
     @method()
     def set_slot(self, receiver, context, key, value):
         key = key(context).value if key.type else key.name
