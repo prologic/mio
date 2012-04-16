@@ -73,6 +73,12 @@ class Object(object):
         return self
 
     @method()
+    def set_slot(self, receiver, context, key, value):
+        key = key(context).value if key.type else key.name
+        receiver[key] = value(context)
+        return receiver[key]
+
+    @method()
     def eval_arg(self, receiver, context, at, default=None):
         from bootstrap import Lobby
         try:
@@ -95,6 +101,16 @@ class Object(object):
         from bootstrap import Lobby
         arguments, message = args[:-1], args[-1:][0]
         return Method(context, arguments, message, proto=Lobby["Object"])
+
+    @method("if")
+    def _if(self, reciver, context, *args):
+        condition = args[0](context).value == True
+        index = 1 if condition else 2
+        if index < len(args):
+            return args[index](context)
+
+        from bootstrap import Lobby
+        return Lobby["Boolean"].clone(condition)
 
     @pymethod("print")
     def _print(self):
@@ -126,19 +142,6 @@ class Object(object):
 
         return obj
 
-    @method("if")
-    def _if(self, reciver, context, *args):
-        condition = args[0](context).value == True
-        index = 1 if condition else 2
-        if index < len(args):
-            return args[index](context)
-
-        if condition(context).bool():
-            return messages[0](context)
-        else:
-            from bootstrap import Lobby
-            return Lobby["Boolean"].clone(condition)
-
     @pymethod("and")
     def _and(self, other):
         return self.clone(self.value and other.value)
@@ -150,9 +153,3 @@ class Object(object):
     @pymethod("not")
     def _not(self, other):
         return self.clone(not self.value)
-
-    @method()
-    def set_slot(self, receiver, context, key, value):
-        key = key(context).value if key.type else key.name
-        receiver[key] = value(context)
-        return receiver[key]
