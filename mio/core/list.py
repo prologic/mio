@@ -31,6 +31,15 @@ class List(Object):
     def at(self, i):
         return self.value[i.value]
 
+    @pymethod()
+    def sort(self):
+        self.value.sort()
+        return self
+
+    @pymethod()
+    def sorted(self):
+        return self.clone(sorted(self.value))
+
     # Boolean Operations
 
     @pymethod()
