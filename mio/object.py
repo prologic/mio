@@ -72,11 +72,15 @@ class Object(object):
     def __call__(self, *args, **kwargs):
         return self
 
+    # Slot Operations
+
     @method()
     def set_slot(self, receiver, context, key, value):
         key = key(context).value if key.type else key.name
         receiver[key] = value(context)
         return receiver[key]
+
+    # Argument Operations
 
     @method()
     def eval_arg(self, receiver, context, at, default=None):
@@ -95,12 +99,16 @@ class Object(object):
         except SlotError:
             return at(context)
 
+    # Method Operations
+
     @method("method")
     def _method(self, receiver, context, *args):
         from method import Method
         from bootstrap import Lobby
         arguments, message = args[:-1], args[-1:][0]
         return Method(context, arguments, message, proto=Lobby["Object"])
+
+    # Flow Control
 
     @method("if")
     def _if(self, reciver, context, *args):
@@ -112,10 +120,14 @@ class Object(object):
         from bootstrap import Lobby
         return Lobby["Boolean"].clone(condition)
 
+    # I/O
+
     @pymethod("print")
     def _print(self):
         print(self)
         return self
+
+    # Introspection
 
     @pymethod("slots")
     def _slots(self):
@@ -126,6 +138,8 @@ class Object(object):
     def _protos(self):
         from bootstrap import Lobby
         return Lobby["List"].clone(self.protos)
+
+    # Object Operations
 
     @pymethod()
     def clone(self, value=Null):
@@ -141,6 +155,8 @@ class Object(object):
             obj.init(value)
 
         return obj
+
+    # Boolean Operations
 
     @pymethod("and")
     def _and(self, other):
