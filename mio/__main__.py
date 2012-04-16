@@ -9,12 +9,6 @@ from mio.interpreter import Interpreter
 USAGE = "%prog [options] ... [-c cmd | file | -] [arg] ..."
 VERSION = "%prog v" + mio.__version__
 
-modules = (
-        "lib/operators.mio",
-        "lib/boolean.mio",
-        "lib/if.mio",
-)
-
 
 def parse_options():
     parser = OptionParser(usage=USAGE, version=VERSION)
@@ -41,7 +35,7 @@ def main():
 
     signal(SIGINT, SIG_IGN)
 
-    interpreter = Interpreter(opts, modules)
+    interpreter = Interpreter(opts)
 
     if opts.cmd:
         print(repr(interpreter.eval(opts.cmd)))

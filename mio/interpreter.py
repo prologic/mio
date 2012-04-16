@@ -1,3 +1,5 @@
+from glob import glob
+
 import mio
 from errors import Error
 from bootstrap import Lobby
@@ -7,14 +9,10 @@ from parser import parse, tokenize
 
 class Interpreter:
 
-    def __init__(self, opts, modules=None):
+    def __init__(self, opts):
         self.opts = opts
-        self.modules = modules or ()
 
-        self.load_modules()
-
-    def load_modules(self):
-        for module in self.modules:
+        for module in glob("./lib/*.mio"):
             self.load(module)
 
     def eval(self, code):
