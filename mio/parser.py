@@ -110,7 +110,7 @@ def reshuffle(messages):
     output = []
 
     for message in messages:
-        if getprec(message.name) > 0:
+        if len(message.args) == 0 and getprec(message.name) > 0:
             pr = getprec(message.name)
             if message.name in right:
                 while ops and pr < getprec(ops[-1]):
