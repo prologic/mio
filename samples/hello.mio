@@ -1,3 +1,6 @@
-set_slot("World", Object clone)
-World set_slot("hello", method("Hello World!\n" print))
+#!/usr/bin/env python
+
+World = Object clone
+World hello = method("Hello World!" print)
+
 World hello
