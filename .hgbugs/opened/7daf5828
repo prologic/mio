@@ -1,0 +1,17 @@
+[info]
+title = Parser parses multi-line assignment expressions incorrectly.
+owned-by = 
+created-by = prologic
+assigned-to = 
+description = For example:
+	
+	x = 1; y = 2
+	
+	is parsed into a message tree:
+	
+	set_slot (x, 1 ; y = 2)
+	
+	where it should be:
+	
+	set_slot (x, 1) ; set_slot (y, 2)
+
