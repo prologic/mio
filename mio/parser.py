@@ -45,7 +45,11 @@ def make_message(n):
     if isinstance(n, Token):
         return Message(n.value)
 
-    name, args = n
+    if len(n) == 2:
+        name, args = n
+    else:
+        name, args = "", n
+
     args = tuple(args) if args is not None else ()
     return Message(name, *args)
 
@@ -194,8 +198,8 @@ exp.define((
     many(message | terminator)) >> make_chain)
 
 message.define((
-    symbol +
-    maybe(arguments)) >> make_message)
+    (symbol +
+    maybe(arguments)) | arguments) >> make_message)
 
 arguments.define((
     skip(op_("(")) +
