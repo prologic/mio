@@ -42,33 +42,6 @@ class Object(object):
     def __setitem__(self, key, value):
         self.slots[key] = value
 
-    def __repr__(self):
-        if self.value is not Null:
-            return repr(self.value)
-        else:
-            slots = {}
-            for k, v in self.slots.items():
-                if isinstance(v, Object):
-                    name = v.__class__.__name__
-                    slots[k] = "%s_%s" % (name, id(v))
-                elif isinstance(v, PyMethod):
-                    slots[k] = repr(v)
-                elif ismethod(v) or isfunction(v):
-                    slots[k] = format_method(v)
-                else:
-                    print("Unknown Type:")
-                    print(k, type(v))
-            slots = "\n".join(["  %s = %s" % (str(k).ljust(15), v)
-                for k, v in slots.items()])
-            name = self.__class__.__name__
-            return "%s_%s:\n%s" % (name, id(self), slots)
-
-    def __str__(self):
-        if self.value is not Null:
-            return str(self.value)
-        else:
-            return ""
-
     def __call__(self, *args, **kwargs):
         return self
 
@@ -79,6 +52,15 @@ class Object(object):
         key = key(context).value if key.type else key.name
         receiver[key] = value(context)
         return receiver[key]
+
+    @method()
+    def get_slot(self, receiver, context, key, default=None):
+        key = key(context).value
+        value = receiver.get(key, default)
+        if not isinstance(value, Object):
+            return self.clone(object)
+        else:
+            return value
 
     # Argument Operations
 
@@ -124,7 +106,7 @@ class Object(object):
 
     @pymethod("print")
     def _print(self):
-        print(self)
+        print(self.value)
         return self
 
     # Introspection
@@ -174,3 +156,44 @@ class Object(object):
     @pymethod("not")
     def _not(self, other):
         return self.clone(not self.value)
+
+    # Type Conversion
+
+    @pymethod("bool")
+    def bool(self):
+        from bootstrap import Lobby
+        return Lobby["Boolean"].clone(bool(self.value))
+
+    @pymethod("repr")
+    def __repr__(self):
+        from bootstrap import Lobby
+
+        if self.value is not Null:
+            return Lobby["String"].clone(repr(self.value))
+        else:
+            slots = {}
+            for k, v in self.slots.items():
+                if isinstance(v, Object):
+                    name = v.__class__.__name__
+                    slots[k] = "%s_%s" % (name, id(v))
+                elif isinstance(v, PyMethod):
+                    slots[k] = repr(v)
+                elif ismethod(v) or isfunction(v):
+                    slots[k] = format_method(v)
+                else:
+                    print("Unknown Type:")
+                    print(k, type(v))
+            slots = "\n".join(["  %s = %s" % (str(k).ljust(15), v)
+                for k, v in slots.items()])
+            name = self.__class__.__name__
+            return Lobby["String"].clone("%s_%s:\n%s" % (name,
+                id(self), slots))
+
+    @pymethod("str")
+    def __str__(self):
+        from bootstrap import Lobby
+
+        if self.value is not Null:
+            return Lobby["String"].clone(str(self.value))
+        else:
+            return Lobby["String"].clone("")
