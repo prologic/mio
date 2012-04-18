@@ -1,0 +1,7 @@
+#!/usr/bin/env mio
+
+Foo = Object clone
+Foo bar = 1
+
+Foo repr print
+Foo bar print
