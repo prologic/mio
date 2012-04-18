@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
 
-from operator import add
-
 from funcparserlib.lexer import make_tokenizer, Token
 
 from funcparserlib.parser import forward_decl as fwd
@@ -9,6 +7,7 @@ from funcparserlib.parser import a, many, maybe, skip, some
 
 from message import Message
 
+EQ = Message("=")
 
 tokval = lambda tok: tok.value
 sometok = lambda type: (some(lambda t: t.type == type) >> tokval)
@@ -54,52 +53,52 @@ def make_message(n):
     return Message(name, *args)
 
 prec = {
-		"**":  1,
+        "**":  1,
 
-		"*":   2,
-		"/":   2,
-		"%":   2,
+        "*":   2,
+        "/":   2,
+        "%":   2,
 
-		"+":   3,
-		"-":   3,
+        "+":   3,
+        "-":   3,
 
-		"<<":  4,
-		">>":  4,
+        "<<":  4,
+        ">>":  4,
 
-		">":   5,
-		"<":   5,
-		"<=":  5,
-		">=":  5,
+        ">":   5,
+        "<":   5,
+        "<=":  5,
+        ">=":  5,
 
-		"==":  6,
-		"!=":  6,
+        "==":  6,
+        "!=":  6,
 
-		"&":   7,
+        "&":   7,
 
-		"^":   8,
+        "^":   8,
 
-		"|":   9,
+        "|":   9,
 
-		"and": 10,
-		"&&":  10,
+        "and": 10,
+        "&&":  10,
 
-		"or":  11,
-		"||":  11,
+        "or":  11,
+        "||":  11,
 
-		"..":  12,
+        "..":  12,
 
-		"+=":  13,
-		"-=":  13,
-		"*=":  13,
-		"/=":  13,
-		"%=":  13,
-		"&=":  13,
-		"^=":  13,
-		"|=":  13,
-		"<<=": 13,
-		">>=": 13,
+        "+=":  13,
+        "-=":  13,
+        "*=":  13,
+        "/=":  13,
+        "%=":  13,
+        "&=":  13,
+        "^=":  13,
+        "|=":  13,
+        "<<=": 13,
+        ">>=": 13,
 
-		"return": 14,
+        "return": 14,
 }
 
 right = {}
@@ -156,32 +155,42 @@ def reshuffle(messages):
 
 
 def make_chain(messages):
-    if messages:
-        messages = reshuffle(messages)
+    if not messages:
+        return Message("")
 
-        eq = Message("=")
-        if eq in messages:
-            index = messages.index(eq)
-            key, value = messages[:index], messages[(index + 1):]
+    messages = list(reversed(reshuffle(messages)))
 
-            if len(key) > 1:
-                obj = key[:-1]
-                key = key[-1:]
-                reduce(add, obj)
-                reduce(add, key)
-                args = key[0], value[0]
-                obj[0].next = Message("set_slot", *args)
-                return obj[0]
+    key, value = None, None
+    root, next = None, None
 
-            reduce(add, key)
-            reduce(add, value)
-            args = key[0], value[0]
-            return Message("set_slot", *args)
+    while True:
+        if len(messages) > 1 and messages[-2] == EQ:
+            key = messages.pop()
+            messages.pop()
+            value = messages.pop()
+        elif value is not None:
+            if (not messages) or (messages and messages[-1].terminator):
+                args = key, value
+                key, value = None, None
+                message = Message("set_slot", *args)
+                if root is None:
+                    root = next = message
+                else:
+                    next.next = next = message
+            else:
+                value.next = messages.pop()
+        else:
+            if messages:
+                message = messages.pop()
+            else:
+                break
 
-        reduce(add, messages)
-        return messages[0]
+            if root is None:
+                root = next = message
+            else:
+                next.next = next = message
 
-    return Message("None")
+    return root
 
 
 identifier = sometok("name")
