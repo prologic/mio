@@ -1,0 +1,11 @@
+[info]
+title = Parser has no support for grouped expressions.
+owned-by = 
+created-by = prologic
+assigned-to = 
+description = (1 + 2)
+	
+	is parsed into:
+	
+	None
+
