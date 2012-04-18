@@ -45,6 +45,33 @@ class Object(object):
     def __call__(self, *args, **kwargs):
         return self
 
+    def __repr__(self):
+        if self.value is not Null:
+            return repr(self.value)
+        else:
+            slots = {}
+            for k, v in self.slots.items():
+                if isinstance(v, Object):
+                    name = v.__class__.__name__
+                    slots[k] = "%s_%s" % (name, id(v))
+                elif isinstance(v, PyMethod):
+                    slots[k] = repr(v)
+                elif ismethod(v) or isfunction(v):
+                    slots[k] = format_method(v)
+                else:
+                    print("Unknown Type:")
+                    print(k, type(v))
+            slots = "\n".join(["  %s = %s" % (str(k).ljust(15), v)
+                for k, v in slots.items()])
+            name = self.__class__.__name__
+            return "%s_%s:\n%s" % (name, id(self), slots)
+
+    def __str__(self):
+        if self.value is not Null:
+            return str(self.value)
+        else:
+            return ""
+
     # Slot Operations
 
     @method()
@@ -164,36 +191,12 @@ class Object(object):
         from bootstrap import Lobby
         return Lobby["Boolean"].clone(bool(self.value))
 
-    @pymethod("repr")
-    def __repr__(self):
+    @pymethod()
+    def repr(self):
         from bootstrap import Lobby
-
-        if self.value is not Null:
-            return Lobby["String"].clone(repr(self.value))
-        else:
-            slots = {}
-            for k, v in self.slots.items():
-                if isinstance(v, Object):
-                    name = v.__class__.__name__
-                    slots[k] = "%s_%s" % (name, id(v))
-                elif isinstance(v, PyMethod):
-                    slots[k] = repr(v)
-                elif ismethod(v) or isfunction(v):
-                    slots[k] = format_method(v)
-                else:
-                    print("Unknown Type:")
-                    print(k, type(v))
-            slots = "\n".join(["  %s = %s" % (str(k).ljust(15), v)
-                for k, v in slots.items()])
-            name = self.__class__.__name__
-            return Lobby["String"].clone("%s_%s:\n%s" % (name,
-                id(self), slots))
+        return Lobby["String"].clone(repr(self))
 
     @pymethod("str")
-    def __str__(self):
+    def str(self):
         from bootstrap import Lobby
-
-        if self.value is not Null:
-            return Lobby["String"].clone(str(self.value))
-        else:
-            return Lobby["String"].clone("")
+        return Lobby["String"].clone(str(self))
