@@ -83,7 +83,7 @@ class Object(object):
     @method()
     def get_slot(self, receiver, context, key, default=None):
         key = key(context).value
-        value = receiver.get(key, default)
+        value = receiver.slots.get(key, default)
         if not isinstance(value, Object):
             return self.clone(object)
         else:
