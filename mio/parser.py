@@ -166,8 +166,11 @@ def make_chain(messages):
     while True:
         if len(messages) > 1 and messages[-2] == EQ:
             key = messages.pop()
-            messages.pop()
-            value = messages.pop()
+            if messages[-1].args:
+                value = Message("", *messages.pop().args)
+            else:
+                messages.pop()
+                value = messages.pop()
         elif value is not None:
             if (not messages) or (messages and messages[-1].terminator):
                 args = key, value
