@@ -18,7 +18,7 @@ Spec = lambda name, value: (name, (value,))
 
 def tokenize(str):
 
-    sops = r"[+]|[-]|[*]|[/]|[=]|[<]|[>]"
+    sops = r"[+]|[-]|[*]|[/]|[=]|[<]|[>]|[!]"
     dops = r"(\*\*)|(==)|(<=)|(>=)|(\+=)|(-=)|(\*=)|(/=)"
 
     specs = [
