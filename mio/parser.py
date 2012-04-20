@@ -26,7 +26,7 @@ def tokenize(str):
         Spec("comment",    r'#.*'),
         Spec('whitespace', r'[ \t]+'),
         Spec('string',     r'"[^"]*"'),
-        Spec('number',     r'-?(\.[0-9]+)|([0-9]+(\.[0-9]*)?)'),
+        Spec('number',     r'-?([0-9]+(\.[0-9]*)?)'),
         Spec('name',       dops),
         Spec('name',       sops),
         Spec('name',       r'[A-Za-z_][A-Za-z0-9_]*'),
