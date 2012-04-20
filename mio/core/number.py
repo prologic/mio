@@ -3,6 +3,11 @@ from mio.pymethod import pymethod
 
 class Number(Object):
 
+    def __str__(self):
+        return str(self.value)
+
+    __repr__ = __str__
+
     # General Arithmetic
 
     @pymethod()
@@ -50,9 +55,7 @@ class Number(Object):
         return self.clone(float(self.value))
 
     @pymethod()
-    def repr(self):
-        return self["Lobby"]["String"].clone(repr(self.value)) 
-
-    @pymethod()
     def str(self):
         return self["Lobby"]["String"].clone(str(self.value)) 
+
+    repr = str

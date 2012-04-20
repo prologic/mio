@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+from decimal import Decimal
 from itertools import izip_longest
 from funcparserlib.lexer import make_tokenizer, Token
 
@@ -190,7 +191,7 @@ def make_chain(messages):
 
 
 def make_number(n):
-    return eval(n)
+    return Decimal(n)
 
 
 string = sometok("string")

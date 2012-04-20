@@ -1,4 +1,5 @@
 import re
+from decimal import Decimal
 
 from utils import method
 from object import Object
@@ -17,7 +18,7 @@ class Message(Object):
         self.type = None
         self.value = None
 
-        if type(self.name) in [int, long, float]:
+        if isinstance(self.name, Decimal):
             self.type = "number"
             self.value = Lobby["Number"].clone(self.name)
         elif re.match("\"(.*)\"", self.name):
