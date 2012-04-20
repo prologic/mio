@@ -34,10 +34,11 @@ class Message(Object):
 
         next = self
         while next is not None:
-            messages.append(next.name)
             if next.args:
-                args = ", ".join([repr(arg) for arg in next.args])
-                messages.append("(%s)" % args)
+                args = "(%s)" % ", ".join([repr(arg) for arg in next.args])
+            else:
+                args = ""
+            messages.append("%s%s" % (next.name, args))
             next = next.next
 
         return " ".join(messages)
