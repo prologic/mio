@@ -8,14 +8,13 @@ from utils import format_method, method, Null
 
 class Object(object):
 
-    __slots__ = ("slots", "protos", "value",)
+    __slots__ = ("slots", "parent", "value",)
 
-    def __init__(self, value=Null, proto=None):
+    def __init__(self, value=Null, parent=None):
         super(Object, self).__init__()
 
         self.value = value
-
-        self.protos = (proto,) if proto is not None else ()
+        self.parent = parent
 
         self.slots = {}
 
@@ -33,11 +32,10 @@ class Object(object):
     def __getitem__(self, key):
         if key in self.slots:
             return self.slots[key]
-
-        for proto in self.protos:
-            return proto[key]
-
-        raise SlotError(key)
+        elif parent is not None and key in parent:
+            return self.parent[key]
+        else:
+            raise SlotError(key)
 
     def __setitem__(self, key, value):
         self.slots[key] = value
@@ -115,7 +113,7 @@ class Object(object):
         from method import Method
         from bootstrap import Lobby
         arguments, message = args[:-1], args[-1:][0]
-        return Method(context, arguments, message, proto=Lobby["Object"])
+        return Method(context, arguments, message, parent=Lobby["Object"])
 
     # Flow Control
 
@@ -148,17 +146,20 @@ class Object(object):
         from bootstrap import Lobby
         return Lobby["List"].clone(self.slots.keys())
 
-    @pymethod("protos")
-    def _protos(self):
+    @pymethod("parent")
+    def _parent(self):
         from bootstrap import Lobby
-        return Lobby["List"].clone(self.protos)
+        if self.parent is not None:
+            return self.parent
+        else:
+            return Lobby["None"]
 
     # Object Operations
 
     @pymethod()
     def clone(self, value=Null):
         obj = copy(self)
-        obj.protos = (self,)
+        obj.parent = self
 
         if value is not Null:
             obj.value = value

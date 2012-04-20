@@ -8,7 +8,7 @@ from bootstrap import Lobby
 class Message(Object):
 
     def __init__(self, name, *args):
-        super(Message, self).__init__(name, proto=Lobby["Object"])
+        super(Message, self).__init__(name, parent=Lobby["Object"])
 
         self.name = name
         self.args = args

@@ -4,6 +4,10 @@ from mio.pymethod import pymethod
 
 class Boolean(Object):
 
+    @pymethod()
+    def clone(self, *args):
+        return self
+
     # Boolean Operations
 
     @pymethod()

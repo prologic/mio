@@ -7,7 +7,7 @@ from core.string import String
 from core.boolean import Boolean
 
 Object = Object()
-Lobby = Lobby(proto=Object)
+Lobby = Lobby(parent=Object)
 
 Lobby["Lobby"] = Lobby
 Object["Lobby"] = Lobby

@@ -5,8 +5,8 @@ from bootstrap import Lobby
 
 class Method(Object):
 
-    def __init__(self, context, args, message, proto=None):
-        super(Method, self).__init__(proto=proto)
+    def __init__(self, context, args, message, parent=None):
+        super(Method, self).__init__(parent=parent)
 
         self.definition_context = context
         self.args = args
