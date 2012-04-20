@@ -4,9 +4,9 @@ Object do (
 
 True do(
 	set("or", True)
-	str = "True"
-	not = False
-	clone = True
+    str = "True"
+    not = False
+    clone = True
 )
 
 False do(

@@ -32,9 +32,14 @@ class Object(object):
     def __getitem__(self, key):
         if key in self.slots:
             return self.slots[key]
-        if self.parent is None:
-            raise SlotError(key)
-        return self.parent[key]
+
+        parent = self.parent
+        while parent is not None:
+            if key in parent:
+                return parent[key]
+            parent = parent.parent
+
+        raise SlotError(key)
 
     def __setitem__(self, key, value):
         self.slots[key] = value
@@ -169,7 +174,7 @@ class Object(object):
 
     @method()
     def do(self, receiver, context, message):
-        return message(context)
+        return message(receiver)
 
     @pymethod()
     def clone(self, value=Null):

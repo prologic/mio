@@ -68,8 +68,7 @@ class Message(Object):
             messages.append(repr(next))
             next = next.next
 
-        return "\n".join(["%s%s" % (" " * i, x)
-            for i, x in enumerate(messages)])
+        return "\n".join([repr(x) for x in messages])
 
     @method("call")
     def _call(self, receiver, context, *args):
