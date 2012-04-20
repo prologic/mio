@@ -32,10 +32,9 @@ class Object(object):
     def __getitem__(self, key):
         if key in self.slots:
             return self.slots[key]
-        elif parent is not None and key in parent:
-            return self.parent[key]
-        else:
+        if self.parent is None:
             raise SlotError(key)
+        return self.parent[key]
 
     def __setitem__(self, key, value):
         self.slots[key] = value
