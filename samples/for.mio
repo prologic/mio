@@ -1,9 +1,9 @@
 #!/usr/bin/env mio
 
 Object for = method(
-    i = eval_arg(0)
-    n = eval_arg(1)
-    s = eval_arg(2)
+    i = arg(0)
+    n = arg(1)
+    s = arg(2)
     m = args at(3)
 
     if (i < n, m call)
