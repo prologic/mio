@@ -29,7 +29,7 @@ class List(Object):
 
     @pymethod()
     def at(self, i):
-        return self.value[i.value]
+        return self.value[int(i)]
 
     @pymethod()
     def sort(self):

@@ -92,7 +92,7 @@ class Object(object):
     def eval_arg(self, receiver, context, at, default=None):
         from bootstrap import Lobby
         try:
-            index = at(context).value
+            index = int(at(context))
             caller = context["caller"]
             args = context["args"].value
             if index is not None and index < len(args):

@@ -4,6 +4,9 @@ from mio.pymethod import pymethod
 
 class Number(Object):
 
+    def __int__(self):
+        return int(self.value)
+
     def __str__(self):
         return str(self.value)
 
