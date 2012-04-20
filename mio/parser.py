@@ -189,9 +189,13 @@ def make_chain(messages):
     return root
 
 
-identifier = sometok("name")
-number = sometok("number")
+def make_number(n):
+    return eval(n)
+
+
 string = sometok("string")
+identifier = sometok("name")
+number = sometok("number") >> make_number
 
 exp = fwd()
 message = fwd()

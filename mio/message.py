@@ -17,9 +17,9 @@ class Message(Object):
         self.type = None
         self.value = None
 
-        if re.match("(\d+)", self.name):
+        if type(self.name) in [int, long, float]:
             self.type = "number"
-            self.value = Lobby["Number"].clone(eval(self.name))
+            self.value = Lobby["Number"].clone(self.name)
         elif re.match("\"(.*)\"", self.name):
             self.type = "string"
             self.value = Lobby["String"].clone(eval(self.name))
