@@ -71,10 +71,15 @@ class Object(object):
 
     # Slot Operations
 
+    @method("del")
+    def _del(self, receiver, context, key):
+        key = key(context).value if key.type else key.name
+        return receiver.slots.pop(key, self["Lobby"]["None"])
+
     @method()
     def has(self, receiver, context, key):
-        key = str(key(context))
-        test = key in self
+        key = key(context).value if key.type else key.name
+        test = key in receiver
         return self["Lobby"]["True"] if test else self["Lobby"]["False"]
 
     @method()
@@ -85,17 +90,13 @@ class Object(object):
 
     @method()
     def get(self, receiver, context, key, default=None):
-        key = key(context).value
-        value = receiver.slots.get(key, default)
-        if not isinstance(value, Object):
-            return self.clone(object)
-        else:
-            return value
+        key = key(context).value if key.type else key.name
+        return receiver.slots.get(key, default)
 
     # Argument Operations
 
     @method()
-    def eval_arg(self, receiver, context, at, default=None):
+    def arg(self, receiver, context, at, default=None):
         from bootstrap import Lobby
         try:
             index = int(at(context))
