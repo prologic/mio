@@ -12,8 +12,8 @@ True do(
 False do(
 	set("and", False)
 	or = method(v, v bool)
-	type = "false"
-	str = "false"
+	type = "False"
+	str = "False"
 	not = True
 	clone = False
 )
