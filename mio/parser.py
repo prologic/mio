@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+from itertools import izip_longest
 from funcparserlib.lexer import make_tokenizer, Token
 
 from funcparserlib.parser import forward_decl as fwd
@@ -110,46 +111,36 @@ def getprec(op):
 
 def reshuffle(messages):
     ops = []
-    output = []
+    msgs = []
 
     for message in messages:
-        if len(message.args) == 0 and getprec(message.name) > 0:
+        if getprec(message.name) > 0:
             pr = getprec(message.name)
             if message.name in right:
                 while ops and pr < getprec(ops[-1]):
-                    output.append(ops.pop())
+                    msgs.append(ops.pop())
             else:
                 while ops and pr <= getprec(ops[-1]):
-                    output.append(ops.pop())
+                    msgs.append(ops.pop())
+
+            if message.args:
+                msgs.append(Message("", *message.args))
+                message = Message(message.name)
 
             ops.append(message)
         else:
-            output.append(message)
+            msgs.append(message)
 
     if not ops:
-        return output
+        return msgs
 
-    ops.reverse()
-    output.reverse()
-
-    m = ops.pop()
-    root = o = output.pop()
+    root = msgs[0]
 
     prev = None
-    while output:
-        if prev is not None:
-            prev.args = (o,)
-
-        o.next = m
-        prev = m
-
-        if ops:
-            m = ops.pop()
-
-        o = output.pop()
-
-    if prev is not None:
-        prev.args = (o,)
+    for msg, op in izip_longest(msgs, ops):
+        if prev is not None and not prev.args:
+            prev.args = (msg,)
+        prev = msg.next = op
 
     return [root]
 
