@@ -1,4 +1,5 @@
 from mio.object import Object
+from mio.errors import TypeError
 from mio.pymethod import pymethod
 
 class Number(Object):
@@ -27,6 +28,13 @@ class Number(Object):
         return self.clone(self.value / other.value)
 
     # Boolean Operations
+
+    @pymethod()
+    def cmp(self, other):
+        if type(self.value) is not type(other.value):
+            raise TypeError(self.cmp, self._type(), other._type())
+        return self.clone(self.value.compare(other.value))
+        
 
     @pymethod()
     def lt(self, other):

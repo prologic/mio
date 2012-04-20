@@ -36,3 +36,17 @@ class SlotError(Error):
 
     def __str__(self):
         return "Slot Error: %s" % self.name
+
+
+class TypeError(Error):
+    """Type Error"""
+
+    def __init__(self, method, expected, actual):
+        self.method = method
+        self.expected = expected
+        self.actual = actual
+
+
+    def __str__(self):
+        return "Type Error: expected %s in %s got %s" % (self.expected,
+                self.method.name, self.actual)
