@@ -124,6 +124,8 @@ def reshuffle(messages):
                     msgs.append(ops.pop())
 
             if message.args:
+                # If this operator (message) has arguments then
+                # split the operator from it's arguments.
                 msgs.append(Message("", *message.args))
                 message = Message(message.name)
 
