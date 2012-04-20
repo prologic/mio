@@ -135,6 +135,11 @@ class Object(object):
 
     # Introspection
 
+    @pymethod("type")
+    def _type(self):
+        from bootstrap import Lobby
+        return Lobby["String"].clone(self.__class__.__name__)
+
     @pymethod("id")
     def _id(self):
         from bootstrap import Lobby
