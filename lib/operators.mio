@@ -1,14 +1,18 @@
 # Standard Operators
 
-Object set_slot("+", method(other, self add(other)))
+Object do(
+    set("+", method(other, self add(other)))
 
-Object set_slot("<", method(other, self lt(other)))
-Object set_slot(">", method(other, self gt(other)))
-Object set_slot("==", method(other, self eq(other)))
+    set("<", method(other, self lt(other)))
+    set(">", method(other, self gt(other)))
+    set("==", method(other, self eq(other)))
 
-Object set_slot("<=", method(other, or(self lt(other), self eq(other))))
-Object set_slot(">=", method(other, or(self gt(other), self eq(other))))
+    set("<=", method(other, or(self lt(other), self eq(other))))
+    set(">=", method(other, or(self gt(other), self eq(other))))
+)
 
-Number set_slot("*", method(other, self mul(other)))
-Number set_slot("/", method(other, self div(other)))
-Number set_slot("-", method(other, self sub(other)))
+Number do(
+    set("*", method(other, self mul(other)))
+    set("/", method(other, self div(other)))
+    set("-", method(other, self sub(other)))
+)

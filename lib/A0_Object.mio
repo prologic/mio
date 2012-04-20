@@ -1,1 +1,28 @@
-Object set_slot("", method(eval_arg(0)))
+Object do (
+    set("", method(arg(0)))
+)
+
+True do(
+	set("or", True)
+	str = "True"
+	not = False
+	clone = True
+)
+
+False do(
+	set("and", False)
+	or = method(v, v bool)
+	type = "false"
+	str = "false"
+	not = True
+	clone = False
+)
+
+None do(
+	not = True
+	type = "None"
+	str = type
+	set("and", False)
+	or = method(v, v bool)
+	clone = None
+)

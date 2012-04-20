@@ -169,7 +169,7 @@ def make_chain(messages):
             if (not messages) or (messages and messages[-1].terminator):
                 args = key, value
                 key, value = None, None
-                message = Message("set_slot", *args)
+                message = Message("set", *args)
                 if root is None:
                     root = next = message
                 else:

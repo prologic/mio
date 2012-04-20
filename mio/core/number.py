@@ -41,15 +41,13 @@ class Number(Object):
 
     @pymethod()
     def lt(self, other):
-        return self["Lobby"]["Boolean"].clone(bool(self.value < other.value))
+        test = self.value < other.value
+        return self["Lobby"]["True"] if test else self["Lobby"]["False"]
 
     @pymethod()
     def gt(self, other):
-        return self["Lobby"]["Boolean"].clone(bool(self.value > other.value))
-
-    @pymethod()
-    def eq(self, other):
-        return self["Lobby"]["Boolean"].clone(bool(self.value == other.value))
+        test = self.value > other.value
+        return self["Lobby"]["True"] if test else self["Lobby"]["False"]
 
     # Type Conversion
 

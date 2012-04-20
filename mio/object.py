@@ -72,13 +72,19 @@ class Object(object):
     # Slot Operations
 
     @method()
-    def set_slot(self, receiver, context, key, value):
+    def has(self, receiver, context, key):
+        key = str(key(context))
+        test = key in self
+        return self["Lobby"]["True"] if test else self["Lobby"]["False"]
+
+    @method()
+    def set(self, receiver, context, key, value):
         key = key(context).value if key.type else key.name
         receiver[key] = value(context)
         return receiver[key]
 
     @method()
-    def get_slot(self, receiver, context, key, default=None):
+    def get(self, receiver, context, key, default=None):
         key = key(context).value
         value = receiver.slots.get(key, default)
         if not isinstance(value, Object):
@@ -160,6 +166,10 @@ class Object(object):
 
     # Object Operations
 
+    @method()
+    def do(self, receiver, context, message):
+        return message(context)
+
     @pymethod()
     def clone(self, value=Null):
         obj = copy(self)
@@ -176,6 +186,11 @@ class Object(object):
         return obj
 
     # Boolean Operations
+
+    @pymethod("eq")
+    def _eq(self, other):
+        test = self.value == other.value
+        return self["Lobby"]["True"] if test else self["Lobby"]["False"]
 
     @pymethod("and")
     def _and(self, other):
