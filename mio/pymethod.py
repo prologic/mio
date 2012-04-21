@@ -12,6 +12,7 @@ def pymethod(name=None):
 
         argspec = getargspec(f)
         args = argspec.args
+        varargs = argspec.varargs
         defaults = argspec.defaults or ()
 
         for arg in ("self", "receiver", "context",):
@@ -20,10 +21,11 @@ def pymethod(name=None):
 
         max_args = len(args)
         min_args = max_args - len(defaults)
+        f.nargs = range(min_args, (max_args + 1))
 
         f.args = args
+        f.vargs = varargs
         f.dargs = defaults
-        f.nargs = range(min_args, (max_args + 1))
 
         return f
 
@@ -38,7 +40,7 @@ class PyMethod(object):
         self.method = method
 
     def __call__(self, receiver, context, *args):
-        if not len(args) in self.method.nargs:
+        if not self.method.vargs and not len(args) in self.method.nargs:
             raise ArgsError(len(args), self.method)
 
         method = self.method.__name__
