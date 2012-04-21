@@ -1,5 +1,5 @@
 [info]
-title = Problem parsing boolean and arithmetic expressions.
+title = Parser problem with boolean and aritmetic expressions
 owned-by = 
 created-by = prologic
 assigned-to = 
@@ -9,6 +9,6 @@ description = >>> x = parse(tokenize("1 + 2 < 3"))
 	[+, <]
 	[1, 2, 3]
 	[(1, +), (2, <), (3, None)]
-	 root: 1 +(2 <(3))
+	root: 1 +(2 <(3))
 	>>>
 
