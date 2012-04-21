@@ -1,0 +1,14 @@
+[info]
+title = Problem parsing boolean and arithmetic expressions.
+owned-by = 
+created-by = prologic
+assigned-to = 
+description = >>> x = parse(tokenize("1 + 2 < 3"))
+	make_chain: [1, +, 2, <, 3]
+	reshuffle: [1, +, 2, <, 3]
+	[+, <]
+	[1, 2, 3]
+	[(1, +), (2, <), (3, None)]
+	 root: 1 +(2 <(3))
+	>>>
+
