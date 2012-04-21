@@ -145,6 +145,21 @@ class Object(object):
         print(self.value)
         return self
 
+    @pymethod("println")
+    def _println(self):
+        print("%s\n" % self.value)
+        return self
+
+    @pymethod("write")
+    def _write(self, *args):
+        print(" ".join([str(arg) for arg in args]))
+        return self["Lobby"]["None"]
+
+    @pymethod("writeln")
+    def _writeln(self, *args):
+        print("%s\n" % " ".join([str(arg) for arg in args]))
+        return self["Lobby"]["None"]
+
     # Introspection
 
     @pymethod("type")
