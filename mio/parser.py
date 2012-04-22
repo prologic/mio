@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+from operator import add
 from decimal import Decimal
 from itertools import izip_longest
 from funcparserlib.lexer import make_tokenizer, Token
@@ -149,45 +150,36 @@ def reshuffle(messages):
 
 
 def make_chain(messages):
+    #print "make_chain:", messages
+
     if not messages:
         return Message("")
 
-    messages = list(reversed(reshuffle(messages)))
+    messages.reverse()
 
-    key, value = None, None
-    root, next = None, None
+    results = []
+    key, value = None, []
 
     while True:
-        if len(messages) > 1 and messages[-2] == EQ:
+        if len(messages) > 1 and messages[-2].name == "=":
             key = messages.pop()
-            if messages[-1].args:
-                value = Message("", *messages.pop().args)
-            else:
-                messages.pop()
-                value = messages.pop()
-        elif value is not None:
+            messages.pop()
+            value.append(messages.pop())
+        elif value:
             if (not messages) or (messages and messages[-1].terminator):
-                args = key, value
-                key, value = None, None
-                message = Message("set", *args)
-                if root is None:
-                    root = next = message
-                else:
-                    next.next = next = message
+                args = key, reduce(add, reshuffle(value))
+                key, value = None, []
+                results.append(Message("set", *args))
             else:
-                value.next = messages.pop()
+                value.append(messages.pop())
         else:
-            if messages:
-                message = messages.pop()
-            else:
+            if not messages:
                 break
+            results.append(messages.pop())
 
-            if root is None:
-                root = next = message
-            else:
-                next.next = next = message
+    reduce(add, reshuffle(results))
 
-    return root
+    return results[0]
 
 
 def make_number(n):

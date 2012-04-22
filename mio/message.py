@@ -30,6 +30,10 @@ class Message(Object):
     def __eq__(self, other):
         return isinstance(other, Message) and other.name == self.name
 
+    def __add__(self, message):
+        self.next = message
+        return message
+
     def __repr__(self):
         messages = []
 
