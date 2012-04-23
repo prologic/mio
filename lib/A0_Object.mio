@@ -2,27 +2,33 @@ Object do (
     set("", method(arg(0)))
 )
 
-True do(
-	set("or", True)
-    str = "True"
-    not = False
-    clone = True
-)
+# XXX: Fix this.
+# Slot Error: True
+#True do(
+#	set("or", True)
+#    str = "True"
+#    not = False
+#    clone = True
+#)
 
-False do(
-	set("and", False)
-	or = method(v, v bool)
-	type = "False"
-	str = "False"
-	not = True
-	clone = False
-)
+# XXX: Fix this.
+# Slot Error: False
+#False do(
+#	set("and", False)
+#	or = method(v, v bool)
+#	type = "False"
+#	str = "False"
+#	not = True
+#	clone = False
+#)
 
-None do(
-	not = True
-	type = "None"
-	str = type
-	set("and", False)
-	or = method(v, v bool)
-	clone = None
-)
+# XXX: Fix this.
+# Slot Error: False
+#None do(
+#	not = True
+#	type = "None"
+#	str = type
+#	set("and", False)
+#	or = method(v, v bool)
+#	clone = None
+#)
