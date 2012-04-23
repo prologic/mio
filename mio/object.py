@@ -48,31 +48,11 @@ class Object(object):
         return self
 
     def __repr__(self):
-        if self.value is not Null:
-            return repr(self.value)
-        else:
-            slots = {}
-            for k, v in self.slots.items():
-                if isinstance(v, Object):
-                    name = v.__class__.__name__
-                    slots[k] = "%s_%s" % (name, id(v))
-                elif isinstance(v, PyMethod):
-                    slots[k] = repr(v)
-                elif ismethod(v) or isfunction(v):
-                    slots[k] = format_method(v)
-                else:
-                    print("Unknown Type:")
-                    print(k, type(v))
-            slots = "\n".join(["  %s = %s" % (str(k).ljust(15), v)
-                for k, v in slots.items()])
-            name = self.__class__.__name__
-            return "%s_%s:\n%s" % (name, id(self), slots)
+        default = "%s_%s" % (self.__class__.__name__, hex(id(self)))
+        return repr(self.value) if self.value is not Null else default
 
     def __str__(self):
-        if self.value is not Null:
-            return str(self.value)
-        else:
-            return ""
+        return str(self.value) if self.value is not Null else ""
 
     # Slot Operations
 
