@@ -16,6 +16,8 @@ class Number(Object):
 
     @pymethod()
     def add(self, other):
+        if type(self.value) is not type(other.value):
+            raise TypeError(self.add, self._type(), other._type())
         return self.clone(self.value + other.value)
 
     @pymethod()
