@@ -19,7 +19,7 @@ class String(Object):
         return self.clone(self.value.lower())
 
     @pymethod()
-    def upper(self, other):
+    def upper(self):
         return self.clone(self.value.upper())
 
     # Boolean Operations
