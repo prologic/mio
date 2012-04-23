@@ -20,7 +20,7 @@ class Interpreter:
             tokens = tokenize(code)
             message = parse(tokens)
             print("Tokens:\n%s\n" % tokens)
-            print("Messages:\n%s\n" % message.pprint())
+            print("Messages:\n%r\n" % message)
         else:
             message = parse(tokenize(code))
 
