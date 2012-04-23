@@ -150,8 +150,6 @@ def reshuffle(messages):
 
 
 def make_chain(messages):
-    #print "make_chain:", messages
-
     if not messages:
         return Message("")
 
@@ -163,8 +161,11 @@ def make_chain(messages):
     while True:
         if len(messages) > 1 and messages[-2].name == "=":
             key = messages.pop()
-            messages.pop()
-            value.append(messages.pop())
+            if messages[-1].args:
+                value.append(Message("", *messages.pop().args))
+            else:
+                messages.pop()
+                value.append(messages.pop())
         elif value:
             if (not messages) or (messages and messages[-1].terminator):
                 args = key, reduce(add, reshuffle(value))
