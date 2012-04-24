@@ -6,6 +6,7 @@ Object do(
     set("<", method(other, self lt(other)))
     set(">", method(other, self gt(other)))
     set("==", method(other, self eq(other)))
+    set("!=", method(other, self eq(other) not))
 
     set("<=", method(other, (self lt(other)) or(self eq(other))))
     set(">=", method(other, (self gt(other)) or(self eq(other))))
