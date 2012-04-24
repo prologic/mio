@@ -141,10 +141,28 @@ def reshuffle(messages):
     root = msgs[0]
 
     prev = None
+    lpr, cpr = None, None
     for msg, op in izip_longest(msgs, ops):
-        if prev is not None and not prev.args:
-            prev.args = (msg,)
-        prev = msg.next = op
+        lpr = cpr
+        cpr = getprec(op.name) if op is not None else None
+
+        if lpr is not None:
+            if cpr < lpr: # binds tighter?
+                prev.args = (msg,)
+                msg.next = op
+                prev = op
+            else:
+                prev.args = (msg,)
+
+                x = root
+                while x.next is not None:
+                    x = x.next
+                x.next = op
+
+                prev = op
+        else:
+            msg.next = op
+            prev = op
 
     return [root]
 
