@@ -6,24 +6,24 @@ from signal import signal, SIGINT, SIG_IGN
 import mio
 from mio.interpreter import Interpreter
 
-USAGE = "%prog [options] ... [-c cmd | file | -] [arg] ..."
+USAGE = "%prog [options] ... [-e expr | file | -]"
 VERSION = "%prog v" + mio.__version__
 
 
 def parse_options():
     parser = OptionParser(usage=USAGE, version=VERSION)
 
-    parser.add_option("-c", "",
-            action="store", default=None, dest="cmd", metavar="cmd",
-            help="program passed in as string (terminates option list)")
+    parser.add_option("-e", "",
+            action="store", default=None, dest="cmd", metavar="expr",
+            help="evalulate the given expression and exit")
 
     parser.add_option("-i", "",
             action="store_true", default=False, dest="inspect",
-            help="inspect interactively after running script")
+            help="run the interpreter after processing the given files")
 
     parser.add_option("-d", "",
             action="store_true", default=False, dest="debug",
-            help="debug output from parser; also MIODEBUG=x")
+            help="enable debugging output")
 
     opts, args = parser.parse_args()
 
