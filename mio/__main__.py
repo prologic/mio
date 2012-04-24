@@ -14,11 +14,11 @@ def parse_options():
     parser = OptionParser(usage=USAGE, version=VERSION)
 
     parser.add_option("-e", "",
-            action="store", default=None, dest="cmd", metavar="expr",
+            action="store", default=None, dest="eval", metavar="expr",
             help="evalulate the given expression and exit")
 
     parser.add_option("-i", "",
-            action="store_true", default=False, dest="inspect",
+            action="store_true", default=False, dest="interpreter",
             help="run the interpreter after processing the given files")
 
     parser.add_option("-d", "",
@@ -37,11 +37,11 @@ def main():
 
     interpreter = Interpreter(opts)
 
-    if opts.cmd:
-        print(repr(interpreter.eval(opts.cmd)))
+    if opts.eval:
+        interpreter.eval(opts.eval)
     elif args:
         interpreter.load(args[0])
-        if opts.inspect:
+        if opts.interpreter:
             interpreter.repl()
     else:
         interpreter.repl()
