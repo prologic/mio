@@ -2,9 +2,12 @@
 from mio.parser import parse, tokenize
 
 tests = [
-        ("1 + 1", "1 +(1)"),
-        ("1 + 2 * 3", "1 +(2 *(3))"),
-        ("1 + 2 * 3 - 1"), ("1 +(2 *(3)) -(1)"),
+        ("1 + 1", 2),
+        ("1 + 2 * 3", 7),
+        ("1 + 2 * 3 - 1", 6),
+        ("1 * 578 + (1 - 1)*578", 578),
+        ("1 + 2 < 3", False),
+        ("1 + 2 * 3 > 5", True),
 ]
 
 
@@ -15,5 +18,4 @@ def pytest_generate_tests(metafunc):
 
 def test(test):
     code, expected = test
-    message = parse(tokenize(code))
-    assert repr(message) == expected
+    assert eval(repr(parse(tokenize(code)))) == expected
