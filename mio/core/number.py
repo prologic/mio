@@ -36,6 +36,10 @@ class Number(Object):
     def pow(self, other):
         return self.clone(self.value ** other.value)
 
+    @pymethod()
+    def mod(self, other):
+        return self.clone(self.value % other.value)
+
     # Boolean Operations
 
     @pymethod()
