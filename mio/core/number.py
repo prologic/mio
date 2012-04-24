@@ -32,6 +32,10 @@ class Number(Object):
     def div(self, other):
         return self.clone(self.value / other.value)
 
+    @pymethod()
+    def pow(self, other):
+        return self.clone(self.value ** other.value)
+
     # Boolean Operations
 
     @pymethod()
