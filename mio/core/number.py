@@ -40,6 +40,14 @@ class Number(Object):
     def mod(self, other):
         return self.clone(self.value % other.value)
 
+    @pymethod()
+    def lshift(self, other):
+        return self.clone(self.value * 2 ** other.value)
+
+    @pymethod()
+    def rshift(self, other):
+        return self.clone(self.value / 2 ** other.value)
+
     # Boolean Operations
 
     @pymethod()
