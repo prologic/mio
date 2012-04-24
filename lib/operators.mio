@@ -7,8 +7,8 @@ Object do(
     set(">", method(other, self gt(other)))
     set("==", method(other, self eq(other)))
 
-    set("<=", method(other, or(self lt(other), self eq(other))))
-    set(">=", method(other, or(self gt(other), self eq(other))))
+    set("<=", method(other, (self lt(other)) or(self eq(other))))
+    set(">=", method(other, (self gt(other)) or(self eq(other))))
 )
 
 Number do(
