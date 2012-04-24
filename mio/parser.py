@@ -112,6 +112,8 @@ def getprec(op):
 
 
 def reshuffle(messages):
+    print "reshuffle:", messages
+
     ops = []
     msgs = []
 
@@ -134,6 +136,9 @@ def reshuffle(messages):
             ops.append(message)
         else:
             msgs.append(message)
+
+    print "ops:", ops
+    print "msgs:", msgs
 
     if not ops:
         return msgs
