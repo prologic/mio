@@ -146,7 +146,12 @@ def reshuffle(messages):
         lpr = cpr
         cpr = getprec(op.name) if op is not None else None
 
-        if lpr is not None:
+        if lpr is None and cpr is None:
+            x = root
+            while x.next is not None:
+                x = x.next
+            x.next = msg
+        elif lpr is not None:
             if cpr < lpr: # binds tighter?
                 prev.args = (msg,)
                 msg.next = op
