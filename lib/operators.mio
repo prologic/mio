@@ -17,4 +17,6 @@ Number do(
     set("-", method(other, self sub(other)))
     set("%", method(other, self mod(other)))
     set("**", method(other, self pow(other)))
+    set("<<", method(other, self lshift(other)))
+    set(">>", method(other, self rshift(other)))
 )
