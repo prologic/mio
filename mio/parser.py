@@ -129,7 +129,13 @@ def reshuffle(messages):
 
             ops.append(message)
         else:
-            msgs.append(message)
+            if not ops and msgs:
+                x = msgs[0]
+                while x.next is not None:
+                    x = x.next
+                x.next = message
+            else:
+                msgs.append(message)
 
     if not ops:
         return msgs
@@ -162,7 +168,11 @@ def reshuffle(messages):
 
                 prev = op
         else:
-            msg.next = op
+            x = msg
+            while x.next is not None:
+                x = x.next
+            x.next = op
+
             prev = op
 
     return [root]
