@@ -169,6 +169,8 @@ def reshuffle(messages):
 
 
 def make_chain(messages):
+    print "messages", messages
+
     if not messages:
         return Message("")
 
@@ -187,7 +189,9 @@ def make_chain(messages):
                 value.append(messages.pop())
         elif value:
             if (not messages) or (messages and messages[-1].terminator):
-                args = key, reduce(add, reshuffle(value))
+                value = reshuffle(value)
+                reduce(add, value)
+                args = key, value[0]
                 key, value = None, []
                 results.append(Message("set", *args))
             else:
