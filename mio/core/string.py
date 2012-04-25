@@ -27,12 +27,12 @@ class String(Object):
     @pymethod()
     def lt(self, other):
         test = self.value < other.value
-        return self["Lobby"]["True"] if test else self["Lobby"]["False"
+        return self["Lobby"]["True"] if test else self["Lobby"]["False"]
 
     @pymethod()
     def gt(self, other):
         test = self.value > other.value
-        return self["Lobby"]["True"] if test else self["Lobby"]["False"
+        return self["Lobby"]["True"] if test else self["Lobby"]["False"]
 
     # Type Conversion
 
