@@ -44,21 +44,15 @@ class List(Object):
 
     @pymethod()
     def lt(self, other):
-        return self["Lobby"]["Boolean"].clone(bool(self.value < other.value))
+        test = self.value < other.value
+        return self["Lobby"]["True"] if test else self["Lobby"]["False"]
 
     @pymethod()
     def gt(self, other):
-        return self["Lobby"]["Boolean"].clone(bool(self.value > other.value))
-
-    @pymethod()
-    def eq(self, other):
-        return self["Lobby"]["Boolean"].clone(bool(self.value == other.value))
+        test = self.value > other.value
+        return self["Lobby"]["True"] if test else self["Lobby"]["False"]
 
     # Type Conversion
-
-    @pymethod()
-    def bool(self):
-        return self["Lobby"]["True"] if self.value else self["Lobby"]["False"]
 
     @pymethod()
     def repr(self):

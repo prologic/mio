@@ -110,13 +110,12 @@ class Object(object):
 
     @method("if")
     def _if(self, reciver, context, *args):
-        condition = args[0](context).value == True
-        index = 1 if condition else 2
+        test = args[0](context).value == True
+        index = 1 if test else 2
         if index < len(args):
             return args[index](context)
 
-        from bootstrap import Lobby
-        return Lobby["Boolean"].clone(condition)
+        return self["Lobby"]["True"] if test else self["Lobby"]["False"]
 
     # I/O
 
@@ -209,8 +208,8 @@ class Object(object):
 
     @pymethod("bool")
     def bool(self):
-        from bootstrap import Lobby
-        return Lobby["Boolean"].clone(bool(self.value))
+        test = bool(self.value)
+        return self["Lobby"]["True"] if test else self["Lobby"]["False"]
 
     @pymethod()
     def repr(self):

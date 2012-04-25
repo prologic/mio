@@ -70,10 +70,6 @@ class Number(Object):
     # Type Conversion
 
     @pymethod()
-    def bool(self):
-        return self["Lobby"]["True"] if self.value else self["Lobby"]["False"]
-
-    @pymethod()
     def int(self):
         return self.clone(nt(self.value))
 
