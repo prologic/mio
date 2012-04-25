@@ -169,8 +169,6 @@ def reshuffle(messages):
 
 
 def make_chain(messages):
-    print "messages", messages
-
     if not messages:
         return Message("")
 
