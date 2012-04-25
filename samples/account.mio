@@ -1,8 +1,8 @@
 Account = Object clone do(
     balance = 0
-    deposit = method(v, balance = balance + v)
-    withdraw = method(v, balance = balance - v)
-    show = method(writeln("Account balance: $", balance))
+    deposit = method(v, self balance = self balance + v)
+    withdraw = method(v, self balance = self balance - v)
+    show = method(writeln("Account balance: $", self balance))
 )
 
 myAccount = Account clone
