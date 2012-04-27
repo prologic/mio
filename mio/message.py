@@ -14,7 +14,6 @@ class Message(Object):
         self.name = name
         self.args = args
 
-        self.next = None
         self.type = None
         self.value = None
 
@@ -27,12 +26,8 @@ class Message(Object):
 
         self.terminator = name in ["\n", ";"]
 
-    def __eq__(self, other):
-        return isinstance(other, Message) and other.name == self.name
-
-    def __add__(self, message):
-        self.next = message
-        return message
+        self._prev = None
+        self._next = None
 
     def __repr__(self):
         messages = []
@@ -68,3 +63,16 @@ class Message(Object):
     @method("call")
     def _call(self, receiver, context, *args):
         return self(receiver, context, *args)
+
+    @property
+    def prev(self):
+        return getattr(self, "_prev", None)
+
+    @property
+    def next(self):
+        return getattr(self, "_next", None)
+
+    @next.setter
+    def next(self, message):
+        message._prev = self
+        self._next = message
