@@ -1,22 +1,22 @@
 from copy import copy
-from inspect import  getmembers, isfunction, ismethod
+from inspect import  getmembers, ismethod
 
 from errors import SlotError
+from utils import method, Null
 from pymethod import pymethod, PyMethod
-from utils import format_method, method, Null
 
 
 class Object(object):
 
-    __slots__ = ("slots", "parent", "value",)
+    __slots__ = ("slots", "value",)
 
     def __init__(self, value=Null, parent=None):
         super(Object, self).__init__()
 
         self.value = value
-        self.parent = parent
 
         self.slots = {}
+        self.slots["parent"] = parent if parent is not None else self
 
         # Setup Methods
         predicate = lambda x: ismethod(x) and getattr(x, "method", False)
@@ -33,11 +33,11 @@ class Object(object):
         if key in self.slots:
             return self.slots[key]
 
-        parent = self.parent
-        while parent is not None:
+        parent = self["parent"]
+        while parent is not self:
             if key in parent:
                 return parent[key]
-            parent = parent.parent
+            parent = parent["parent"]
 
         raise SlotError(key)
 
@@ -156,14 +156,6 @@ class Object(object):
         from bootstrap import Lobby
         return Lobby["List"].clone(self.slots.keys())
 
-    @pymethod("parent")
-    def _parent(self):
-        from bootstrap import Lobby
-        if self.parent is not None:
-            return self.parent
-        else:
-            return Lobby["None"]
-
     # Object Operations
 
     @method()
@@ -173,12 +165,12 @@ class Object(object):
     @pymethod()
     def clone(self, value=Null):
         obj = copy(self)
-        obj.parent = self
 
         if value is not Null:
             obj.value = value
 
         obj.slots = {}
+        obj["parent"] = self
 
         if hasattr(obj, "init"):
             obj.init(value)
