@@ -61,14 +61,13 @@ class Object(object):
         for k, v in self.attrs.items():
             if isinstance(v, Object):
                 name = v.__class__.__name__
-                attrs[k] = "%s_%s" % (name, id(v))
+                attrs[k] = "%s_%s" % (name, hex(id(v)))
             elif isinstance(v, PyMethod):
                 attrs[k] = repr(v)
             elif ismethod(v) or isfunction(v):
                 attrs[k] = format_method(v)
             else:
-                print("Unknown Type:")
-                print(k, type(v))
+                attrs[k] = repr(v)
         attrs = "\n".join(["  %s = %s" % (str(k).ljust(15), v)
             for k, v in sorted(attrs.items())])
         name = self.__class__.__name__
