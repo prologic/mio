@@ -8,30 +8,30 @@ from pymethod import pymethod, PyMethod
 
 class Object(object):
 
-    __slots__ = ("slots", "value",)
+    __slots__ = ("attrs", "value",)
 
     def __init__(self, value=Null, parent=None):
         super(Object, self).__init__()
 
+        self.attrs = {}
         self.value = value
 
-        self.slots = {}
-        self.slots["parent"] = parent if parent is not None else self
+        self["parent"] = parent if parent is not None else self
 
         # Setup Methods
         predicate = lambda x: ismethod(x) and getattr(x, "method", False)
         for _, method in getmembers(self, predicate):
             if method.type == "python":
-                self.slots[method.name] = PyMethod(method)
+                self[method.name] = PyMethod(method)
             else:
-                self.slots[method.name] = method
+                self[method.name] = method
 
     def __contains__(self, key):
-        return key in self.slots
+        return key in self.attrs
 
     def __getitem__(self, key):
-        if key in self.slots:
-            return self.slots[key]
+        if key in self.attrs:
+            return self.attrs[key]
 
         parent = self["parent"]
         while parent is not self:
@@ -42,7 +42,7 @@ class Object(object):
         raise SlotError(key)
 
     def __setitem__(self, key, value):
-        self.slots[key] = value
+        self.attrs[key] = value
 
     def __call__(self, *args, **kwargs):
         return self
@@ -54,16 +54,23 @@ class Object(object):
     def __str__(self):
         return str(self.value) if self.value is not Null else ""
 
+    def keys(self):
+        return self.attrs.keys()
+
     @property
     def parent(self):
         return self["parent"]
+
+    @parent.setter
+    def parent(self, parent):
+        self["parent"] = parent
 
     # Slot Operations
 
     @method("del")
     def _del(self, receiver, context, key):
         key = key(context).value if key.type else key.name
-        return receiver.slots.pop(key, self["Lobby"]["None"])
+        return receiver.get(key, self["Lobby"]["None"])
 
     @method()
     def has(self, receiver, context, key):
@@ -80,7 +87,7 @@ class Object(object):
     @method()
     def get(self, receiver, context, key, default=None):
         key = key(context).value if key.type else key.name
-        return receiver.slots.get(key, default)
+        return receiver.attrs.get(key, default)
 
     # Argument Operations
 
@@ -155,10 +162,10 @@ class Object(object):
         from bootstrap import Lobby
         return Lobby["Number"].clone(id(self))
 
-    @pymethod("slots")
-    def _slots(self):
+    @pymethod("keys")
+    def _keys(self):
         from bootstrap import Lobby
-        return Lobby["List"].clone(self.slots.keys())
+        return Lobby["List"].clone(self.keys())
 
     # Object Operations
 
@@ -173,7 +180,7 @@ class Object(object):
         if value is not Null:
             obj.value = value
 
-        obj.slots = {}
+        obj.attrs = {}
         obj["parent"] = self
 
         if hasattr(obj, "init"):
