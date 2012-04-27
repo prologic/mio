@@ -1,8 +1,8 @@
 from copy import copy
-from inspect import  getmembers, ismethod
+from inspect import  getmembers, isfunction, ismethod
 
 from errors import SlotError
-from utils import method, Null
+from utils import format_method, method, Null
 from pymethod import pymethod, PyMethod
 
 
@@ -48,14 +48,31 @@ class Object(object):
         return self
 
     def __repr__(self):
-        default = "%s_%s" % (self.__class__.__name__, hex(id(self)))
-        return repr(self.value) if self.value is not Null else default
+        return repr(self.value) if self.value is not Null else self.pprint()
 
     def __str__(self):
         return str(self.value) if self.value is not Null else ""
 
     def keys(self):
         return self.attrs.keys()
+
+    def pprint(self):
+        attrs = {}
+        for k, v in self.attrs.items():
+            if isinstance(v, Object):
+                name = v.__class__.__name__
+                attrs[k] = "%s_%s" % (name, id(v))
+            elif isinstance(v, PyMethod):
+                attrs[k] = repr(v)
+            elif ismethod(v) or isfunction(v):
+                attrs[k] = format_method(v)
+            else:
+                print("Unknown Type:")
+                print(k, type(v))
+        attrs = "\n".join(["  %s = %s" % (str(k).ljust(15), v)
+            for k, v in sorted(attrs.items())])
+        name = self.__class__.__name__
+        return "%s_%s:\n%s" % (name, id(self), attrs)
 
     @property
     def parent(self):
