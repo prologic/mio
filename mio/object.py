@@ -53,9 +53,6 @@ class Object(object):
     def __str__(self):
         return str(self.value) if self.value is not Null else ""
 
-    def keys(self):
-        return self.attrs.keys()
-
     def pprint(self):
         attrs = {}
         for k, v in self.attrs.items():
@@ -181,7 +178,7 @@ class Object(object):
     @pymethod("keys")
     def _keys(self):
         from bootstrap import Lobby
-        return Lobby["List"].clone(self.keys())
+        return Lobby["List"].clone(self.attrs.keys())
 
     # Object Operations
 
