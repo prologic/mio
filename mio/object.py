@@ -53,6 +53,9 @@ class Object(object):
     def __str__(self):
         return str(self.value) if self.value is not Null else ""
 
+    def lobby(self, key, default=None):
+        return self["Lobby"].attrs.get(key, default)
+
     def pprint(self):
         attrs = {}
         for k, v in self.attrs.items():
@@ -83,13 +86,14 @@ class Object(object):
     @method("del")
     def _del(self, receiver, context, key):
         key = key(context).value if key.type else key.name
-        return receiver.get(key, self["Lobby"]["None"])
+        return receiver.get(key, self.lobby("None"))
 
     @method()
     def has(self, receiver, context, key):
         key = key(context).value if key.type else key.name
         test = key in receiver
-        return self["Lobby"]["True"] if test else self["Lobby"]["False"]
+        lobby = self.lobby
+        return lobby("True") if test else lobby("False")
 
     @method()
     def set(self, receiver, context, key, value):
@@ -106,7 +110,6 @@ class Object(object):
 
     @method()
     def arg(self, receiver, context, at, default=None):
-        from bootstrap import Lobby
         try:
             index = int(at(context))
             caller = context["caller"]
@@ -114,10 +117,7 @@ class Object(object):
             if index is not None and index < len(args):
                 return args[index](caller)
             else:
-                if default is not None:
-                    return default(caller)
-                else:
-                    return Lobby["None"](caller)
+                return self.lobby("None", default)(caller)
         except SlotError:
             return at(context)
 
@@ -126,9 +126,8 @@ class Object(object):
     @method("method")
     def _method(self, receiver, context, *args):
         from method import Method
-        from bootstrap import Lobby
         arguments, message = args[:-1], args[-1:][0]
-        return Method(context, arguments, message, parent=Lobby["Object"])
+        return Method(context, arguments, message, parent=self.lobby("Object"))
 
     # Flow Control
 
@@ -139,7 +138,8 @@ class Object(object):
         if index < len(args):
             return args[index](context)
 
-        return self["Lobby"]["True"] if test else self["Lobby"]["False"]
+        lobby = self.lobby
+        return lobby("True") if test else lobby("False")
 
     # I/O
 
@@ -156,29 +156,26 @@ class Object(object):
     @pymethod("write")
     def _write(self, *args):
         print(" ".join([str(arg) for arg in args]))
-        return self["Lobby"]["None"]
+        return self.lobby("None")
 
     @pymethod("writeln")
     def _writeln(self, *args):
         print("%s\n" % " ".join([str(arg) for arg in args]))
-        return self["Lobby"]["None"]
+        return self.lobby("None")
 
     # Introspection
 
     @pymethod("type")
     def _type(self):
-        from bootstrap import Lobby
-        return Lobby["String"].clone(self.__class__.__name__)
+        return self.lobby("String").clone(self.__class__.__name__)
 
     @pymethod("id")
     def _id(self):
-        from bootstrap import Lobby
-        return Lobby["Number"].clone(id(self))
+        return self.lobby("Number").clone(id(self))
 
     @pymethod("keys")
     def _keys(self):
-        from bootstrap import Lobby
-        return Lobby["List"].clone(self.attrs.keys())
+        return self.lobby("List").clone(self.attrs.keys())
 
     # Object Operations
 
@@ -206,7 +203,8 @@ class Object(object):
     @pymethod("eq")
     def _eq(self, other):
         test = self.value == other.value
-        return self["Lobby"]["True"] if test else self["Lobby"]["False"]
+        lobby = self.lobby
+        return lobby("True") if test else lobby("False")
 
     @pymethod("and")
     def _and(self, other):
@@ -225,14 +223,13 @@ class Object(object):
     @pymethod("bool")
     def bool(self):
         test = bool(self.value)
-        return self["Lobby"]["True"] if test else self["Lobby"]["False"]
+        lobby = self.lobby
+        return lobby("True") if test else lobby("False")
 
     @pymethod()
     def repr(self):
-        from bootstrap import Lobby
-        return Lobby["String"].clone(repr(self))
+        return self.lobby("String").clone(repr(self))
 
     @pymethod("str")
     def str(self):
-        from bootstrap import Lobby
-        return Lobby["String"].clone(str(self))
+        return self.lobby("String").clone(str(self))
