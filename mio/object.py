@@ -54,6 +54,10 @@ class Object(object):
     def __str__(self):
         return str(self.value) if self.value is not Null else ""
 
+    @property
+    def parent(self):
+        return self["parent"]
+
     # Slot Operations
 
     @method("del")
