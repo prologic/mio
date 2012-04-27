@@ -18,6 +18,15 @@ def test_complex_assignment():
     assert chain.next.args[1].name == Decimal(1)
 
 
+def test_complex_assignment2():
+    chain = parse(tokenize("x = x + 1"))
+    assert chain.name == "set"
+    assert chain.args[0].name == "x"
+    assert chain.args[1].name == "x"
+    assert chain.args[1].next.name == "+"
+    assert chain.args[1].next.args[0].name == Decimal("1")
+
+
 def test_chaining():
     chain = parse(tokenize("Foo bar"))
     assert chain.name == "Foo"

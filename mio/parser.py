@@ -77,18 +77,28 @@ def make_chain(messages):
                 value = Message("", *op.args)
             else:
                 value = messages.pop(0)
+
+            message = Message("set", key, value)
+
+            if root is None:
+                root = prev = message
+            else:
+                prev.next = prev = message
         elif value is not None:
             if messages and not messages[0].terminator:
-                value.next = messages.pop(0)
-            else:
-                args = key, value
-                key, value = None, None
-                message = Message("set", *args)
-
-                if root is None:
-                    root = prev = message
+                if is_op(messages[0].name):
+                    op = messages.pop(0)
+                    if messages:
+                        message = messages.pop(0)
+                        op.args = (message,)
+                    value.next = op
+                    value = op
                 else:
-                    prev.next = prev = message
+                    message = messages.pop(0)
+                    value.next = message
+                    value = message
+            else:
+                key, value = None, None
         elif messages and is_op(messages[0].name):
             prev.next = prev = messages.pop(0)
             if messages:
