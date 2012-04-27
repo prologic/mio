@@ -1,5 +1,5 @@
 from warnings import warn
-from inspect import getargspec
+from inspect import getargspec, isfunction, ismethod
 
 
 def format_method(f):
@@ -12,6 +12,19 @@ def format_method(f):
             del args[0]
     args = ", ".join(args) if args else ("*%s" % varargs if varargs else "")
     return "%s(%s)" % (name, args)
+
+
+def format_object(o):
+    attrs = {}
+    for k, v in o.attrs.items():
+        if ismethod(v) or isfunction(v):
+            attrs[k] = format_method(v)
+        else:
+            attrs[k] = repr(v)
+    attrs = "\n".join(["  %s = %s" % (str(k).ljust(15), v)
+        for k, v in sorted(attrs.items())])
+    name = o.__class__.__name__
+    return "%s_%s:\n%s" % (name, hex(id(o)), attrs)
 
 
 def method(name=None):
@@ -35,7 +48,6 @@ def tryimport(modules, message=None):
 
     if message:
         warn(message)
-
 
 
 class MetaNull(type):
