@@ -57,14 +57,6 @@ class Object(object):
     def lobby(self, key, default=None):
         return self["Lobby"].attrs.get(key, default)
 
-    @property
-    def parent(self):
-        return self["parent"]
-
-    @parent.setter
-    def parent(self, parent):
-        self["parent"] = parent
-
     # Slot Operations
 
     @method("del")
