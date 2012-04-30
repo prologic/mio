@@ -100,7 +100,11 @@ def make_chain(messages):
             else:
                 key, value = None, None
         elif messages and is_op(messages[0].name):
-            prev.next = prev = messages.pop(0)
+            message = messages.pop(0)
+            if root is None:
+                root = prev = message
+            else:
+                prev.next = prev = message
             if messages:
                 message = messages.pop(0)
                 prev.args = (message,)
