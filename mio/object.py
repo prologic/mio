@@ -22,6 +22,9 @@ class Object(object):
         # Setup Methods
         predicate = lambda x: ismethod(x) and getattr(x, "method", False)
         for _, method in getmembers(self, predicate):
+            if method.name in self.attrs.get("parent", ()):
+                continue
+
             if method.type == "python":
                 self[method.name] = PyMethod(method)
             else:
