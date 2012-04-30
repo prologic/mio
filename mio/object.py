@@ -200,8 +200,11 @@ class Object(object):
         return self.clone(self.value or other.value)
 
     @pymethod("not")
-    def _not(self):
-        return self.clone(not self.value)
+    def _not(self, value=Null):
+        if not value is Null:
+            return value.clone(not value.value)
+        else:
+            return self.clone(not self.value)
 
     # Type Conversion
 
