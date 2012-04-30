@@ -16,7 +16,8 @@ class Object(object):
         self.attrs = {}
         self.value = value
 
-        self["parent"] = parent if parent is not None else self
+        if parent is not None:
+            self["parent"] = parent
 
         # Setup Methods
         predicate = lambda x: ismethod(x) and getattr(x, "method", False)
@@ -33,11 +34,11 @@ class Object(object):
         if key in self.attrs:
             return self.attrs[key]
 
-        parent = self["parent"]
-        while parent is not self:
+        parent = self.attrs.get("parent")
+        while parent is not None:
             if key in parent:
                 return parent[key]
-            parent = parent["parent"]
+            parent = parent.attrs.get("parent")
 
         raise SlotError(key)
 
