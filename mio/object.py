@@ -132,9 +132,16 @@ class Object(object):
         lobby = self.lobby
         return lobby("True") if test else lobby("False")
 
+    @method("break")
+    def _break(self, reciver, context, *args):
+        value = args[0](context) if args else self.lobby("None")
+        self["state"]["isBreak"] = self.lobby("True")
+        self["state"]["return"] = value
+        return value
+
     @method("return")
-    def _return(self, reciver, context, value):
-        value = value(context)
+    def _return(self, reciver, context, *args):
+        value = args[0](context) if args else self.lobby("None")
         self["state"]["isReturn"] = self.lobby("True")
         self["state"]["return"] = value
         return value
