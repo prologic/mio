@@ -55,7 +55,12 @@ class Message(Object):
             slot = receiver[self.name]
             value = slot(receiver, context, *self.args)
 
-        if self.next:
+        if self["state"].stop():
+            try:
+                return self["state"]["return"]
+            finally:
+                self["state"].reset()
+        elif self.next:
             return self.next(value, context)
         else:
             return value

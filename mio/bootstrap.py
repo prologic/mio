@@ -1,4 +1,5 @@
 from lobby import Lobby
+from state import State
 from object import Object
 
 from core.list import List
@@ -19,3 +20,5 @@ Lobby["String"] = String("", Object)
 Lobby["None"] = Object.clone(None)
 Lobby["True"] = Object.clone(True)
 Lobby["False"] = Object.clone(False)
+
+Object["state"] = State(parent=Object)

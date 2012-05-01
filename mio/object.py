@@ -121,6 +121,12 @@ class Object(object):
         lobby = self.lobby
         return lobby("True") if test else lobby("False")
 
+    @method("return")
+    def _return(self, reciver, context, value):
+        self["state"]["isReturn"] = self.lobby("True")
+        self["state"]["return"] = value
+        return value
+
     # I/O
 
     @pymethod("print")
