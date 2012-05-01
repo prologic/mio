@@ -111,6 +111,16 @@ class Object(object):
 
     # Flow Control
 
+    @method("while")
+    def _while(self, receiver, context, condition, expression):
+        result = self.lobby("None")
+        self["state"].reset()
+
+        while condition(context).value and (not self["state"].stop()):
+            result = expression(context)
+
+        return result
+
     @method()
     def loop(self, receiver, context, expression):
         self["state"].reset()
