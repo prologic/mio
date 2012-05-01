@@ -29,4 +29,6 @@ class Method(Object):
                 method_context[arg.name] = Lobby["None"](
                         calling_context)
 
+        self["state"].reset()
+
         return self.message(method_context)

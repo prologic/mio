@@ -111,6 +111,17 @@ class Object(object):
 
     # Flow Control
 
+    @method()
+    def loop(self, receiver, context, expression):
+        self["state"].reset()
+
+        while not self["state"].stop():
+            result = expression(context)
+
+        self["state"].reset()
+
+        return result
+
     @method("if")
     def _if(self, reciver, context, *args):
         test = args[0](context).value == True
@@ -123,6 +134,7 @@ class Object(object):
 
     @method("return")
     def _return(self, reciver, context, value):
+        value = value(context)
         self["state"]["isReturn"] = self.lobby("True")
         self["state"]["return"] = value
         return value
