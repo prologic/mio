@@ -114,18 +114,10 @@ class Object(object):
     @method("while")
     def _while(self, receiver, context, condition, expression):
         result = self.lobby("None")
+
         self["state"].reset()
 
         while condition(context).value and (not self["state"].stop()):
-            result = expression(context)
-
-        return result
-
-    @method()
-    def loop(self, receiver, context, expression):
-        self["state"].reset()
-
-        while not self["state"].stop():
             result = expression(context)
 
         self["state"].reset()
@@ -141,6 +133,11 @@ class Object(object):
 
         lobby = self.lobby
         return lobby("True") if test else lobby("False")
+
+    @method("continue")
+    def _continue(self, reciver, context):
+        self["state"]["isContinue"] = self.lobby("True")
+        return self.lobby("None")
 
     @method("break")
     def _break(self, reciver, context, *args):
