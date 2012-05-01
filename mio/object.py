@@ -191,6 +191,10 @@ class Object(object):
         lobby = self.lobby
         return lobby("True") if test else lobby("False")
 
+    @pymethod()
+    def cmp(self, other):
+        return self.lobby("Number").clone(cmp(self.value, other.value))
+
     @pymethod("and")
     def _and(self, other):
         return self.clone(self.value and other.value)
