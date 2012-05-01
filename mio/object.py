@@ -128,33 +128,33 @@ class Object(object):
         print(self.value)
         return self
 
-    @pymethod("println")
-    def _println(self):
+    @pymethod()
+    def println(self):
         print("%s\n" % self.value)
         return self
 
-    @pymethod("write")
-    def _write(self, *args):
+    @pymethod()
+    def write(self, *args):
         print(" ".join([str(arg) for arg in args]))
         return self.lobby("None")
 
-    @pymethod("writeln")
-    def _writeln(self, *args):
+    @pymethod()
+    def writeln(self, *args):
         print("%s\n" % " ".join([str(arg) for arg in args]))
         return self.lobby("None")
 
     # Introspection
 
-    @pymethod("type")
-    def _type(self):
+    @pymethod()
+    def type(self):
         return self.lobby("String").clone(self.__class__.__name__)
 
-    @pymethod("id")
-    def _id(self):
+    @pymethod()
+    def id(self):
         return self.lobby("Number").clone(id(self))
 
-    @pymethod("keys")
-    def _keys(self):
+    @pymethod()
+    def keys(self):
         return self.lobby("List").clone(self.attrs.keys())
 
     @pymethod()
@@ -185,8 +185,8 @@ class Object(object):
 
     # Boolean Operations
 
-    @pymethod("eq")
-    def _eq(self, other):
+    @pymethod()
+    def eq(self, other):
         test = self.value == other.value
         lobby = self.lobby
         return lobby("True") if test else lobby("False")
