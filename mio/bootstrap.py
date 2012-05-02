@@ -1,4 +1,3 @@
-from lobby import Lobby
 from state import State
 from object import Object
 
@@ -8,7 +7,7 @@ from core.string import String
 from core.system import System
 
 Object = Object()
-Lobby = Lobby(parent=Object)
+Lobby = Object.clone()
 
 Lobby["Lobby"] = Lobby
 Object["Lobby"] = Lobby
