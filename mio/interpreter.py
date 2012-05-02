@@ -45,5 +45,5 @@ class Interpreter:
         while True:
             try:
                 print("==> %r" % self.eval(raw_input(">>> ")))
-            except (EOFError, KeyboardInterrupt):
+            except EOFError:
                 raise SystemExit(0)
