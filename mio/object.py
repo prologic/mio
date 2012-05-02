@@ -1,3 +1,4 @@
+import sys
 from copy import copy
 from inspect import  getmembers, ismethod
 
@@ -157,22 +158,22 @@ class Object(object):
 
     @pymethod("print")
     def _print(self):
-        print(self.value)
+        sys.stdout.write("%s" % self.value)
         return self
 
     @pymethod()
     def println(self):
-        print("%s\n" % self.value)
+        sys.stdout.write("%s\n" % self.value)
         return self
 
     @pymethod()
     def write(self, *args):
-        print(" ".join([str(arg) for arg in args]))
+        sys.stdout.write("%s" % " ".join([str(arg) for arg in args]))
         return self.lobby("None")
 
     @pymethod()
     def writeln(self, *args):
-        print("%s\n" % " ".join([str(arg) for arg in args]))
+        sys.stdout.write("%s\n" % " ".join([str(arg) for arg in args]))
         return self.lobby("None")
 
     # Introspection
@@ -191,7 +192,7 @@ class Object(object):
 
     @pymethod()
     def summary(self):
-        print format_object(self)
+        sys.stdout.write("%s\n" % format_object(self))
         return self
 
     # Object Operations
