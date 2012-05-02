@@ -8,6 +8,7 @@ True do(
     not = Lobby False
     else = Lobby True
     elif = Lobby True
+    then = method(m, Lobby None)
     clone = Lobby True
 )
 
@@ -17,7 +18,8 @@ False do(
 	type = "False"
 	str = "False"
 	not = Lobby True
-    else = method(m, None)
+    then = Lobby False
+    else = method(m, Lobby None)
     elif = Lobby Object get("if")
 	clone = Lobby False
 )
@@ -28,7 +30,8 @@ None do(
 	str = "None"
 	and = Lobby False
 	or = method(v, v bool)
-    else = method(m, None)
-    elif = Lobby Object get("if")
+    then = Lobby None
+    else = Lobby None
+    elif = Lobby None
 	clone = Lobby None
 )
