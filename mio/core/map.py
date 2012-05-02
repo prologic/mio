@@ -25,11 +25,11 @@ class Map(Object):
 
     @pymethod()
     def get(self, key, default=None):
-        return self.value.get(key, default)
+        return self.value.get(key.value, default)
 
     @pymethod()
     def has(self, key):
-        test = key in self.value
+        test = key.value in self.value
         return self.lobby("True") if test else self.lobby("False")
 
     @pymethod()
@@ -42,7 +42,7 @@ class Map(Object):
 
     @pymethod()
     def set(self, key, value):
-        self.value[key] = value
+        self.value[key.value] = value
         return value
 
     @pymethod()
