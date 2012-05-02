@@ -190,6 +190,10 @@ class Object(object):
     # Introspection
 
     @pymethod()
+    def hash(self):
+        return self.lobby("Number").clone(hash(self))
+
+    @pymethod()
     def type(self):
         default = self.lobby("String").clone(self.__class__.__name__)
         return self.attrs.get("type", default)
