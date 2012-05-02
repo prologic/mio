@@ -25,7 +25,7 @@ class List(Object):
 
     @pymethod()
     def len(self):
-        return self["Lobby"]["Number"].clone(leN(self.value))
+        return self["Lobby"]["Number"].clone(len(self.value))
 
     @pymethod()
     def at(self, i):
