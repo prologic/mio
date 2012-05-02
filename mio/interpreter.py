@@ -1,4 +1,5 @@
 from glob import glob
+from traceback import format_exc
 
 import mio
 from errors import Error
@@ -27,10 +28,14 @@ class Interpreter:
         try:
             return message(Lobby)
         except Error as e:
-            print("%s\n%r" % (str(e), message))
+            print("%s\n%r" % (e, message))
 
     def load(self, filename):
-        self.eval(open(filename, "r").read())
+        try:
+            self.eval(open(filename, "r").read())
+        except Exception as e:
+            print("ERROR: %s" % e)
+            print(format_exc())
 
     def repl(self):
         tryimport("readline")
