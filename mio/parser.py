@@ -38,7 +38,7 @@ def tokenize(str):
         Spec('number',     r'-?([0-9]+(\.[0-9]*)?)'),
         Spec('name',       ops),
         Spec('name',       r'[A-Za-z_][A-Za-z0-9_]*'),
-        Spec('op',         r'[\(\),\n;]'),
+        Spec('op',         r'[(){}\[\],\n;]'),
     ]
     useless = ['comment', 'whitespace']
     t = make_tokenizer(specs)
