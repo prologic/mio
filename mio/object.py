@@ -180,7 +180,8 @@ class Object(object):
 
     @pymethod()
     def type(self):
-        return self.lobby("String").clone(self.__class__.__name__)
+        default = self.lobby("String").clone(self.__class__.__name__)
+        return self.attrs.get("type", default)
 
     @pymethod()
     def id(self):
