@@ -123,6 +123,20 @@ class Object(object):
 
     # Flow Control
 
+    @method()
+    def foreach(self, receiver, context, key, expression):
+        result = self.lobby("None")
+
+        self["state"].reset()
+
+        for x in receiver:
+            context[key.name] = x
+            result = expression(context)
+
+        self["state"].reset()
+
+        return result
+
     @method("while")
     def _while(self, receiver, context, condition, expression):
         result = self.lobby("None")

@@ -4,6 +4,10 @@ from mio.pymethod import pymethod
 
 class String(Object):
 
+    def __iter__(self):
+        for c in self.value:
+            yield self.clone(c)
+
     # General Operations
 
     @pymethod()

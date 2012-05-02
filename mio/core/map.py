@@ -5,6 +5,11 @@ from mio.pymethod import pymethod
 
 class Map(Object):
 
+    def __iter__(self):
+        List = self.lobby("List")
+        for item in self.value.items():
+            yield List.clone(item)
+
     @pymethod()
     def init(self, value=Null):
         if value is Null:

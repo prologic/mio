@@ -5,6 +5,10 @@ from mio.pymethod import pymethod
 
 class List(Object):
 
+    def __iter__(self):
+        for i in self.value:
+            yield i
+
     @pymethod()
     def init(self, value=Null):
         if value is Null:
