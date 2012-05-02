@@ -28,14 +28,15 @@ class ArgsError(Error):
                 method.name, plural, expected, actual)
 
 
-class SlotError(Error):
-    """Slot Error"""
+class KeyError(Error):
+    """Key Error"""
 
-    def __init__(self, name):
-        self.name = name
+    def __init__(self, object, key):
+        self.object = object
+        self.key = key
 
     def __str__(self):
-        return "Slot Error: %s" % self.name
+        return "Key Error: No key %r in object %r" % (self.key, self.object)
 
 
 class TypeError(Error):

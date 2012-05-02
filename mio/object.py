@@ -2,7 +2,7 @@ import sys
 from copy import copy
 from inspect import  getmembers, ismethod
 
-from errors import SlotError
+from errors import KeyError
 from pymethod import pymethod, PyMethod
 from utils import format_object, method, Null
 
@@ -44,7 +44,7 @@ class Object(object):
                 return parent[key]
             parent = parent.attrs.get("parent")
 
-        raise SlotError(key)
+        raise KeyError(self, key)
 
     def __setitem__(self, key, value):
         self.attrs[key] = value
