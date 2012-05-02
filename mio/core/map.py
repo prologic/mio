@@ -41,6 +41,11 @@ class Map(Object):
         return self.lobby("List").clone(self.value.keys())
 
     @pymethod()
+    def set(self, key, value):
+        self.value[key] = value
+        return value
+
+    @pymethod()
     def values(self):
         return self.lobby("List").clone(self.value.values())
 
