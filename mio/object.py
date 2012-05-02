@@ -21,9 +21,11 @@ class Object(object):
             self["parent"] = parent
 
         # Setup Methods
+        keys = dir(self)
         predicate = lambda x: ismethod(x) and getattr(x, "method", False)
         for _, method in getmembers(self, predicate):
-            if method.name in self.attrs.get("parent", ()):
+            if method.name not in keys \
+                    and method.name in self.attrs.get("parent", ()):
                 continue
 
             if method.type == "python":
