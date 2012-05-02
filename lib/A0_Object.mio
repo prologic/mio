@@ -2,33 +2,33 @@ Object do (
     set("", method(arg(0)))
 )
 
-# XXX: Fix this.
-# Slot Error: True
-#True do(
-#	set("or", True)
-#    str = "True"
-#    not = False
-#    clone = True
-#)
+True do(
+	or = Lobby True
+    str = "True"
+    not = Lobby False
+    else = Lobby True
+    elif = Lobby True
+    clone = Lobby True
+)
 
-# XXX: Fix this.
-# Slot Error: False
-#False do(
-#	set("and", False)
-#	or = method(v, v bool)
-#	type = "False"
-#	str = "False"
-#	not = True
-#	clone = False
-#)
+False do(
+	and = Lobby False
+	or = method(v, v bool)
+	type = "False"
+	str = "False"
+	not = Lobby True
+    else = method(m, None)
+    elif = Lobby Object get("if")
+	clone = Lobby False
+)
 
-# XXX: Fix this.
-# Slot Error: False
-#None do(
-#	not = True
-#	type = "None"
-#	str = type
-#	set("and", False)
-#	or = method(v, v bool)
-#	clone = None
-#)
+None do(
+	not = Lobby True
+	type = "None"
+	str = "None"
+	and = Lobby False
+	or = method(v, v bool)
+    else = method(m, None)
+    elif = Lobby Object get("if")
+	clone = Lobby None
+)
