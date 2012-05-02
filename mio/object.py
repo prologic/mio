@@ -73,7 +73,7 @@ class Object(object):
     def lobby(self, key, default=None):
         return self["Lobby"].attrs.get(key, default)
 
-    # Slot Operations
+    # Attribute Operations
 
     @method("del")
     def _del(self, receiver, context, key):
