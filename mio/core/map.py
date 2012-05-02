@@ -34,7 +34,9 @@ class Map(Object):
 
     @pymethod()
     def items(self):
-        return self.lobby("List").clone(self.value.items())
+        List = self.lobby("List")
+        items = [List.clone(item) for item in self.value.items()]
+        return List.clone(items)
 
     @pymethod()
     def keys(self):
