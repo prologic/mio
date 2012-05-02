@@ -33,6 +33,15 @@ class Object(object):
             else:
                 self[method.name] = method
 
+    def __hash__(self):
+        return hash(self.value)
+    
+    def __eq__(self, other):
+        return self.value == other.value
+
+    def __cmp__(self, other):
+        return cmp(self.value, other.value)
+
     def __contains__(self, key):
         return key in self.attrs
 
