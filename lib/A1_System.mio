@@ -1,0 +1,3 @@
+Lobby exit = method(
+    if (args, System exit(arg(0)), System exit)
+)
