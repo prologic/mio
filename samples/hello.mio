@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
 World = Object clone
-World hello = method("Hello World!" print)
+World hello = method("Hello World!" println)
 
 World hello

@@ -1,6 +1,5 @@
 from utils import method
 from object import Object
-from bootstrap import Lobby
 
 
 class Method(Object):
@@ -20,13 +19,13 @@ class Method(Object):
 
         method_context["self"] = receiver
         method_context["caller"] = calling_context
-        method_context["args"] = Lobby["List"].clone(args)
+        method_context["args"] = self.lobby("List").clone(args)
 
         for i, arg in enumerate(self.args):
             if i < len(args):
                 method_context[arg.name] = args[i](calling_context)
             else:
-                method_context[arg.name] = Lobby["None"](
+                method_context[arg.name] = self.lobby("None")(
                         calling_context)
 
         self["state"].reset()
