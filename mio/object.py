@@ -127,7 +127,7 @@ class Object(object):
 
     @method("if")
     def _if(self, reciver, context, *args):
-        test = args[0](context).value == True
+        test = bool(args[0](context).value)
         index = 1 if test else 2
         if index < len(args):
             return args[index](context)
