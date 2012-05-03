@@ -8,6 +8,12 @@ class String(Object):
         for c in self.value:
             yield self.clone(c)
 
+    def __repr__(self):
+        return repr(self.value)
+
+    def __str__(self):
+        return str(self.value)
+
     # General Operations
 
     @pymethod()

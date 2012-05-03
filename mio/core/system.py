@@ -5,6 +5,8 @@ from mio.utils import Null
 from mio.object import Object
 from mio.pymethod import pymethod
 
+from mio.core.file import File
+
 
 class System(Object):
 
@@ -13,6 +15,10 @@ class System(Object):
 
         self["args"] = self.build_args()
         self["version"] = self.lobby("String").clone(mio.__version__)
+
+        self["stdin"] = File(sys.stdin, parent=self["parent"])
+        self["stdout"] = File(sys.stdout, parent=self["parent"])
+        self["stderr"] = File(sys.stderr, parent=self["parent"])
 
     def build_args(self):
         String = self.lobby("String")
