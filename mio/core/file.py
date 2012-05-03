@@ -16,7 +16,7 @@ class File(Object):
     def next(self):
         data = self.value.read()
         if data:
-            return self.lobby("String").clone(data)
+            return self["String"].clone(data)
         else:
             raise StopIteration
 
@@ -29,14 +29,14 @@ class File(Object):
     __str__ = __repr__
 
     def _update_status(self):
-        True = self.lobby("True")
-        False = self.lobby("False")
-        String = self.lobby("String")
-
         if isinstance(self.value, file):
-            self["mode"] = String.clone(self.value.mode)
-            self["filename"] = String.clone(self.value.name)
-            self["closed"] = True if self.value.closed else False
+            mode = self.value.mode
+            closed = self.value.closed
+            filename = self.value.name
+
+            self["mode"] = self["String"].clone(filename)
+            self["filename"] = self["String"].clone(mode)
+            self["closed"] = self["True"] if closed else self["False"]
         else:
             del self["mode"]
             del self["closed"]
@@ -59,18 +59,17 @@ class File(Object):
 
     @pymethod()
     def read(self):
-        return self.lobby("String").clone(self.value.read())
+        return self["String"].clone(self.value.read())
 
     @pymethod()
     def readline(self):
-        return self.lobby("String").clone(self.value.readline())
+        return self["String"].clone(self.value.readline())
 
     @pymethod()
     def readlines(self):
-        List = self.lobby("List")
-        String = self.lobby("String")
+        String = self["String"]
         lines = [String.clone(line) for line in self.value.readlines()]
-        return List.clone(lines)
+        return self["List"].clone(lines)
 
     @pymethod()
     def seek(self, offset, whence=0):
@@ -79,7 +78,7 @@ class File(Object):
 
     @pymethod()
     def pos(self):
-        return self.lobby("Number").clone(self.value.tell())
+        return self["Number"].clone(self.value.tell())
 
     @pymethod()
     def truncate(self, size=None):

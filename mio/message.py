@@ -58,8 +58,8 @@ class Message(Object):
         if self["state"].stop():
             return self["state"]["return"]
         elif self["state"]["isContinue"].value:
-            self["state"]["isContinue"] = self.lobby("False")
-            return self.lobby("None")
+            self["state"]["isContinue"] = self["False"]
+            return self["None"]
         elif self.next:
             return self.next(value, context)
         else:

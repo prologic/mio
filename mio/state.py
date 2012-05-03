@@ -12,11 +12,11 @@ class State(Object):
         self.reset()
 
     def reset(self):
-        self["stopLooping"] = self.lobby("False")
-        self["isContinue"] = self.lobby("False")
-        self["isReturn"] = self.lobby("False")
-        self["isBreak"] = self.lobby("False")
-        self["return"] = self.lobby("None")
+        self["stopLooping"] = self["False"]
+        self["isContinue"] = self["False"]
+        self["isReturn"] = self["False"]
+        self["isBreak"] = self["False"]
+        self["return"] = self["None"]
 
     def stop(self):
         return any([self[k].value for k in self.STOP_STATES])

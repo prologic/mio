@@ -6,9 +6,7 @@ from mio.pymethod import pymethod
 class Map(Object):
 
     def __iter__(self):
-        List = self.lobby("List")
-        for item in self.value.items():
-            yield List.clone(item)
+        return iter(self.value)
 
     def __repr__(self):
         pairs = ", ".join(["%s: %r" % (k, v) for k, v in self.value.items()])
@@ -28,7 +26,7 @@ class Map(Object):
     @pymethod()
     def clear(self):
         self.value.clear()
-        return self.lobby("None")
+        return self["None"]
 
     @pymethod()
     def copy(self):
@@ -41,17 +39,17 @@ class Map(Object):
     @pymethod()
     def has(self, key):
         test = key in self.value
-        return self.lobby("True") if test else self.lobby("False")
+        return self["True"] if test else self["False"]
 
     @pymethod()
     def items(self):
-        List = self.lobby("List")
+        List = self["List"]
         items = [List.clone(item) for item in self.value.items()]
         return List.clone(items)
 
     @pymethod()
     def keys(self):
-        return self.lobby("List").clone(self.value.keys())
+        return self["List"].clone(self.value.keys())
 
     @pymethod()
     def set(self, key, value):
@@ -60,4 +58,4 @@ class Map(Object):
 
     @pymethod()
     def values(self):
-        return self.lobby("List").clone(self.value.values())
+        return self["List"].clone(self.value.values())

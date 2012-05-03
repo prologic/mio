@@ -85,22 +85,18 @@ class Object(object):
     def __str__(self):
         return str(self.value) if self.value is not Null else ""
 
-    def lobby(self, key, default=None):
-        return self["Lobby"].attrs.get(key, default)
-
     # Attribute Operations
 
     @method("del")
     def _del(self, receiver, context, key):
         key = key(context).value if key.type else key.name
-        return receiver.get(key, self.lobby("None"))
+        return receiver.get(key, self["None"])
 
     @method()
     def has(self, receiver, context, key):
         key = key(context).value if key.type else key.name
         test = key in receiver
-        lobby = self.lobby
-        return lobby("True") if test else lobby("False")
+        return self["True"] if test else self["False"]
 
     @method()
     def set(self, receiver, context, key, value):
@@ -115,8 +111,8 @@ class Object(object):
 
     @pymethod()
     def forward(self, key):
-        if key in self.lobby("Lobby"):
-            return self.lobby(key)
+        if key in self["Lobby"]:
+            return self["Lobby"][key]
         else:
             raise KeyError(self, key)
 
@@ -131,7 +127,7 @@ class Object(object):
             if index is not None and index < len(args):
                 return args[index](caller)
             else:
-                return self.lobby("None", default)(caller)
+                return self.get("None", default)(caller)
         except SlotError:
             return at(context)
 
@@ -141,13 +137,13 @@ class Object(object):
     def _method(self, receiver, context, *args):
         from method import Method
         arguments, message = args[:-1], args[-1:][0]
-        return Method(context, arguments, message, parent=self.lobby("Object"))
+        return Method(context, arguments, message, parent=self["Object"])
 
     # Flow Control
 
     @method()
     def foreach(self, receiver, context, key, expression):
-        result = self.lobby("None")
+        result = self["None"]
 
         self["state"].reset()
 
@@ -161,7 +157,7 @@ class Object(object):
 
     @method("while")
     def _while(self, receiver, context, condition, expression):
-        result = self.lobby("None")
+        result = self["None"]
 
         self["state"].reset()
 
@@ -179,25 +175,24 @@ class Object(object):
         if index < len(args):
             return args[index](context)
 
-        lobby = self.lobby
-        return lobby("True") if test else lobby("False")
+        return self["True"] if test else self["False"]
 
     @method("continue")
     def _continue(self, reciver, context):
-        self["state"]["isContinue"] = self.lobby("True")
-        return self.lobby("None")
+        self["state"]["isContinue"] = self["True"]
+        return self["None"]
 
     @method("break")
     def _break(self, reciver, context, *args):
-        value = args[0](context) if args else self.lobby("None")
-        self["state"]["isBreak"] = self.lobby("True")
+        value = args[0](context) if args else self["None"]
+        self["state"]["isBreak"] = self["True"]
         self["state"]["return"] = value
         return value
 
     @method("return")
     def _return(self, reciver, context, *args):
-        value = args[0](context) if args else self.lobby("None")
-        self["state"]["isReturn"] = self.lobby("True")
+        value = args[0](context) if args else self["None"]
+        self["state"]["isReturn"] = self["True"]
         self["state"]["return"] = value
         return value
 
@@ -216,31 +211,31 @@ class Object(object):
     @pymethod()
     def write(self, *args):
         sys.stdout.write("%s" % " ".join([str(arg) for arg in args]))
-        return self.lobby("None")
+        return self["None"]
 
     @pymethod()
     def writeln(self, *args):
         sys.stdout.write("%s\n" % " ".join([str(arg) for arg in args]))
-        return self.lobby("None")
+        return self["None"]
 
     # Introspection
 
     @pymethod()
     def hash(self):
-        return self.lobby("Number").clone(hash(self))
+        return self["Number"].clone(hash(self))
 
     @pymethod()
     def type(self):
-        default = self.lobby("String").clone(self.__class__.__name__)
+        default = self["String"].clone(self.__class__.__name__)
         return self.attrs.get("type", default)
 
     @pymethod()
     def id(self):
-        return self.lobby("Number").clone(id(self))
+        return self["Number"].clone(id(self))
 
     @pymethod()
     def keys(self):
-        return self.lobby("List").clone(self.attrs.keys())
+        return self["List"].clone(self.attrs.keys())
 
     @pymethod()
     def summary(self):
@@ -272,13 +267,12 @@ class Object(object):
 
     @pymethod()
     def eq(self, other):
-        lobby = self.lobby
         test = self == other
-        return lobby("True") if test else lobby("False")
+        return self["True"] if test else self["False"]
 
     @pymethod()
     def cmp(self, other):
-        return self.lobby("Number").clone(cmp(self, other))
+        return self["Number"].clone(cmp(self, other))
 
     @pymethod("and")
     def _and(self, other):
@@ -299,8 +293,8 @@ class Object(object):
 
     @pymethod()
     def repr(self):
-        return self.lobby("String").clone(repr(self))
+        return self["String"].clone(repr(self))
 
     @pymethod("str")
     def str(self):
-        return self.lobby("String").clone(str(self))
+        return self["String"].clone(str(self))
