@@ -21,17 +21,25 @@ class Object(object):
             self["parent"] = parent
 
         # Setup Methods
-        keys = dir(self)
+        keys = self.__class__.__dict__.keys()
+        parent = self.attrs.get("parent", {})
         predicate = lambda x: ismethod(x) and getattr(x, "method", False)
+        in_self = lambda k: k in keys
+        in_parent = lambda k: k in parent
         for _, method in getmembers(self, predicate):
-            if method.name not in keys \
-                    and method.name in self.attrs.get("parent", ()):
+            if not in_self(method.name) and in_parent(method.name):
                 continue
 
             if method.type == "python":
                 self[method.name] = PyMethod(method)
             else:
                 self[method.name] = method
+
+        keys = dir(self)
+        for k, v in self.attrs.items():
+            if k not in keys and k in self.attrs.get("parent", {}):
+                del self.attrs[k]
+
 
     def __hash__(self):
         return hash(self.value)
