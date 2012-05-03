@@ -50,6 +50,7 @@ class File(Object):
     @pymethod()
     def open(self, filename, mode="r"):
         self.value = open(filename, mode)
+        self._update_status()
         return self
 
     @pymethod()
