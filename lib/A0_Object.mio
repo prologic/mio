@@ -1,5 +1,9 @@
 Object do (
     set("", method(arg(0)))
+
+    break = method(value, state isBreak = True; state return = value;)
+    return = method(value, state isReturn = True; state return = value;)
+    continue = method(state isContinue;)
 )
 
 True do(
