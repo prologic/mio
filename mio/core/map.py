@@ -6,7 +6,8 @@ from mio.pymethod import pymethod
 class Map(Object):
 
     def __iter__(self):
-        return iter(self.value)
+        for item in self.value.items():
+            yield self["List"].clone(item)
 
     def __repr__(self):
         pairs = ", ".join(["%s: %r" % (k, v) for k, v in self.value.items()])
@@ -54,7 +55,7 @@ class Map(Object):
     @pymethod()
     def set(self, key, value):
         self.value[key] = value
-        return value
+        return self
 
     @pymethod()
     def values(self):
