@@ -6,8 +6,7 @@ from mio.pymethod import pymethod
 class List(Object):
 
     def __iter__(self):
-        for i in self.value:
-            yield i
+        return iter(self.value)
 
     def __repr__(self):
         return "[%s]" % ", ".join([repr(x) for x in self.value])
