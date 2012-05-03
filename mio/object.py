@@ -272,28 +272,28 @@ class Object(object):
 
     @pymethod()
     def eq(self, other):
-        test = self.value == other.value
         lobby = self.lobby
+        test = self == other
         return lobby("True") if test else lobby("False")
 
     @pymethod()
     def cmp(self, other):
-        return self.lobby("Number").clone(cmp(self.value, other.value))
+        return self.lobby("Number").clone(cmp(self, other))
 
     @pymethod("and")
     def _and(self, other):
-        return self.clone(self.value and other.value)
+        return self.clone(self and other)
 
     @pymethod("or")
     def _or(self, other):
-        return self.clone(self.value or other.value)
+        return self.clone(self or other)
 
     @pymethod("not")
     def _not(self, value=Null):
         if not value is Null:
-            return value.clone(not value.value)
+            return value.clone(not value)
         else:
-            return self.clone(not self.value)
+            return self.clone(not self)
 
     # Type Conversion
 

@@ -33,12 +33,26 @@ class List(Object):
         return self["Lobby"]["Number"].clone(self.value.count(value))
 
     @pymethod()
+    def extend(self, *args):
+        self.value.extend(args)
+        return self
+
+    @pymethod()
     def len(self):
         return self["Lobby"]["Number"].clone(len(self.value))
 
     @pymethod()
     def at(self, i):
         return self.value[int(i)]
+
+    @pymethod()
+    def reverse(self):
+        self.value.reverse()
+        return self
+
+    @pymethod()
+    def reversed(self):
+        return self.clone(reversed(self.value))
 
     @pymethod()
     def sort(self):
@@ -48,15 +62,3 @@ class List(Object):
     @pymethod()
     def sorted(self):
         return self.clone(sorted(self.value))
-
-    # Boolean Operations
-
-    @pymethod()
-    def lt(self, other):
-        test = self.value < other.value
-        return self["Lobby"]["True"] if test else self["Lobby"]["False"]
-
-    @pymethod()
-    def gt(self, other):
-        test = self.value > other.value
-        return self["Lobby"]["True"] if test else self["Lobby"]["False"]

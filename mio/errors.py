@@ -50,4 +50,4 @@ class TypeError(Error):
 
     def __str__(self):
         return "Type Error: expected %s in %s got %s" % (self.expected,
-                self.method.name, self.actual)
+                self.method, self.actual)

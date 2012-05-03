@@ -1,12 +1,12 @@
 # Standard Operators
 
 Object do(
-    set("<", method(other, self lt(other)))
-    set("<=", method(other, (self lt(other)) or(self eq(other))))
-    set(">", method(other, self gt(other)))
-    set(">=", method(other, (self gt(other)) or(self eq(other))))
-    set("==", method(other, self eq(other)))
-    set("!=", method(other, self eq(other) not))
+    set("==", method(other, self cmp(other) eq(0)))
+    set("!=", method(other, not self == other))
+    set("<", method(other, self cmp(other) == -1))
+    set("<=", method(other, self cmp(other) < 1))
+    set(">", method(other, self cmp(other) == 1))
+    set(">=", method(other, self cmp(other) > -1))
 )
 
 Number do(

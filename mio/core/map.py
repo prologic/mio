@@ -61,15 +61,3 @@ class Map(Object):
     @pymethod()
     def values(self):
         return self.lobby("List").clone(self.value.values())
-
-    # Boolean Operations
-
-    @pymethod()
-    def lt(self, other):
-        test = self.value < other.value
-        return self.lobby("True") if test else self.lobby("False")
-
-    @pymethod()
-    def gt(self, other):
-        test = self.value > other.value
-        return self.lobby("True") if test else self.lobby("False")

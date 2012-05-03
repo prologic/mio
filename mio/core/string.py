@@ -8,6 +8,12 @@ class String(Object):
         for c in self.value:
             yield self.clone(c)
 
+    def __int__(self):
+        return int(self.value)
+
+    def __float__(self):
+        return float(self.value)
+
     def __repr__(self):
         return repr(self.value)
 
@@ -31,33 +37,3 @@ class String(Object):
     @pymethod()
     def upper(self):
         return self.clone(self.value.upper())
-
-    # Boolean Operations
-
-    @pymethod()
-    def lt(self, other):
-        test = self.value < other.value
-        return self["Lobby"]["True"] if test else self["Lobby"]["False"]
-
-    @pymethod()
-    def gt(self, other):
-        test = self.value > other.value
-        return self["Lobby"]["True"] if test else self["Lobby"]["False"]
-
-    # Type Conversion
-
-    @pymethod()
-    def int(self):
-        return self["Lobby"]["Number"].clone(int(self.value))
-
-    @pymethod()
-    def float(self):
-        return self["Lobby"]["Number"].clone(float(self.value))
-
-    @pymethod()
-    def repr(self):
-        return self["Lobby"]["String"].clone(repr(self.value)) 
-
-    @pymethod()
-    def str(self):
-        return self["Lobby"]["String"].clone(str(self.value)) 
