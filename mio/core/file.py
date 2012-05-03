@@ -10,8 +10,10 @@ class File(Object):
             yield String.clone(line)
 
     def __repr__(self):
-        filename, mode = self.value.name, self.value.mode
-        return "File(%s, %s)" % (filename, mode)
+        if isinstance(self.value, file):
+            filename, mode = self.value.name, self.value.mode
+            return "File(%s, %s)" % (filename, mode)
+        return super(File, self).__repr__()
 
     __str__ = __repr__
 
