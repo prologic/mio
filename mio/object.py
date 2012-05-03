@@ -53,6 +53,10 @@ class Object(object):
     def __contains__(self, key):
         return key in self.attrs
 
+    def __delitem__(self, key):
+        if key in self.attrs:
+            del self.attrs[key]
+
     def __getitem__(self, key):
         if key in self.attrs:
             return self.attrs[key]
