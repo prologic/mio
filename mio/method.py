@@ -25,8 +25,9 @@ class Method(Object):
 
         call = Call(parent=self["Object"])
 
-        call["context"] = context
-        call["receiver"] = receiver
+        call["sender"] = context
+        call["target"] = receiver
+        call["context"] = self.context
         call["args"] = self["List"].clone(args)
 
         locals["call"] = call
