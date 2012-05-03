@@ -141,10 +141,13 @@ message.define((
     (symbol +
     maybe(arguments)) | arguments) >> make_message)
 
+opening = op_("(") | op_("{") | op_("[")
+closing = op_(")") | op_("}") | op_("]")
+
 arguments.define((
-    skip(op_("(")) +
+    skip(opening) +
     maybe(exp + maybe(many(skip(op_(",")) + exp))) +
-    skip(op_(")"))) >> make_arguments)
+    skip(closing)) >> make_arguments)
 
 symbol.define(identifier | number | string)
 
