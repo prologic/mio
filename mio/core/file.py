@@ -1,8 +1,14 @@
+from mio.utils import Null
 from mio.object import Object
 from mio.pymethod import pymethod
 
 
 class File(Object):
+
+    def __init__(self, value=Null, parent=None):
+        super(File, self).__init__(value=value, parent=parent)
+
+        self._update_status()
 
     def __iter__(self):
         String = self.lobby("String")
@@ -16,6 +22,20 @@ class File(Object):
         return super(File, self).__repr__()
 
     __str__ = __repr__
+
+    def _update_status(self):
+        True = self.lobby("True")
+        False = self.lobby("False")
+        String = self.lobby("String")
+
+        if isinstance(self.value, file):
+            self["mode"] = String.clone(self.value.mode)
+            self["filename"] = String.clone(self.value.name)
+            self["closed"] = True if self.value.closed else False
+        else:
+            del self["mode"]
+            del self["closed"]
+            del self["filename"]
 
     # General Operations
 
