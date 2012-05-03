@@ -41,6 +41,13 @@ class File(Object):
     # General Operations
 
     @pymethod()
+    def close(self):
+        self.value.close()
+        self.value = Null
+        self._update_status()
+        return self
+
+    @pymethod()
     def open(self, filename, mode="r"):
         self.value = open(filename, mode)
         return self
