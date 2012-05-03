@@ -1,0 +1,14 @@
+#!/usr/bin/env mio
+
+Cat = Object clone do (
+
+    filename = System args at(2)
+
+    run = method(
+        file = File clone open(filename)
+        System stdout write(file read)
+        file close
+    )
+)
+
+Cat run
