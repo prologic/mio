@@ -67,7 +67,10 @@ class Object(object):
                 return parent[key]
             parent = parent.attrs.get("parent")
 
-        raise KeyError(self, key)
+        if hasattr(self, "forward"):
+            return self.forward(key)
+        else:
+            raise KeyError(self, key)
 
     def __setitem__(self, key, value):
         self.attrs[key] = value
@@ -109,6 +112,13 @@ class Object(object):
     def get(self, receiver, context, key, default=None):
         key = key(context).value if key.type else key.name
         return receiver.attrs.get(key, default)
+
+    @pymethod()
+    def forward(self, key):
+        if key in self.lobby("Lobby"):
+            return self.lobby(key)
+        else:
+            raise KeyError(self, key)
 
     # Argument Operations
 
