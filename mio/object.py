@@ -142,17 +142,21 @@ class Object(object):
     # Flow Control
 
     @method()
-    def foreach(self, receiver, context, key, expression):
+    def foreach(self, receiver, context, *args):
         result = self["None"]
-
         self["state"].reset()
 
-        for x in receiver:
-            context[key.name] = x
+        vars, expression = args[:-1], args[-1]
+
+        for item in receiver:
+            if len(vars) == 2:
+                context[vars[0].name], context[vars[1].name] = item
+            elif len(vars) == 1:
+                context[vars[0].name] = item
+
             result = expression(context)
 
         self["state"].reset()
-
         return result
 
     @method("while")
