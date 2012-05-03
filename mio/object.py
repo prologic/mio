@@ -287,12 +287,6 @@ class Object(object):
 
     # Type Conversion
 
-    @pymethod("bool")
-    def bool(self):
-        test = bool(self.value)
-        lobby = self.lobby
-        return lobby("True") if test else lobby("False")
-
     @pymethod()
     def repr(self):
         return self.lobby("String").clone(repr(self))
