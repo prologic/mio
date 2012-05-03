@@ -4,6 +4,7 @@ from object import Object
 from core.map import Map
 from core.file import File
 from core.list import List
+from core.range import Range
 from core.number import Number
 from core.string import String
 from core.system import System
@@ -20,6 +21,7 @@ Lobby["List"] = List([], Object)
 Lobby["File"] = File(parent=Object)
 Lobby["Number"] = Number(0, Object)
 Lobby["String"] = String("", Object)
+Lobby["Range"] = Range(parent=Object)
 
 Lobby["None"] = Object.clone(None)
 Lobby["True"] = Object.clone(True)
