@@ -93,9 +93,3 @@ class File(Object):
         lines = [str(line) for line in lines]
         self.value.writelines(lines)
         return self
-
-    # Type Conversion
-
-    @pymethod()
-    def repr(self):
-        return self.lobby("String").clone(repr(self))
