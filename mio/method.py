@@ -1,5 +1,11 @@
-from utils import method
 from object import Object
+from utils import method, Null
+
+
+class Call(Object):
+
+    def __init__(self, value=Null, parent=None):
+        super(Call, self).__init__(value=value, parent=parent)
 
 
 class Method(Object):
@@ -7,27 +13,35 @@ class Method(Object):
     def __init__(self, context, args, message, parent=None):
         super(Method, self).__init__(parent=parent)
 
-        self.definition_context = context
+        self.context = context
         self.args = args
         self.message = message
 
     def __repr__(self):
         return "method(...)"
 
-    def __call__(self, receiver, calling_context, *args):
-        method_context = self.definition_context.clone()
+    def __call__(self, receiver, context, *args):
+        locals = self.context.clone()
 
-        method_context["self"] = receiver
-        method_context["caller"] = calling_context
-        method_context["args"] = self["List"].clone(args)
+        call = Call(parent=self["Object"])
+
+        call["context"] = context
+        call["receiver"] = receiver
+        call["args"] = self["List"].clone(args)
+
+        locals["call"] = call
+        locals["self"] = receiver
+        locals["args"] = self["List"].clone(args)
 
         for i, arg in enumerate(self.args):
             if i < len(args):
-                method_context[arg.name] = args[i](calling_context)
+                locals[arg.name] = args[i](context)
             else:
-                method_context[arg.name] = self["None"](
-                        calling_context)
+                locals[arg.name] = self["None"](context)
 
         self["state"].reset()
 
-        return self.message(method_context)
+        try:
+            return self.message(locals)
+        finally:
+            self["state"].reset()
