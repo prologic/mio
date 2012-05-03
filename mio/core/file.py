@@ -11,14 +11,10 @@ class File(Object):
         self._update_status()
 
     def __iter__(self):
-        return self
-
-    def next(self):
         data = self.value.read()
-        if data:
-            return self["String"].clone(data)
-        else:
-            raise StopIteration
+        while data:
+            yield self["String"].clone(data)
+            data = self.value.read()
 
     def __repr__(self):
         if isinstance(self.value, file):
