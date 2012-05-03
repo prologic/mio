@@ -7,10 +7,10 @@ class Number(Object):
     def __int__(self):
         return int(self.value)
 
-    def __str__(self):
+    def __repr__(self):
         return str(self.value)
 
-    __repr__ = __str__
+    __str__ = __repr__
 
     # General Arithmetic
 
@@ -76,9 +76,3 @@ class Number(Object):
     @pymethod()
     def float(self):
         return self.clone(float(self.value))
-
-    @pymethod()
-    def str(self):
-        return self["Lobby"]["String"].clone(str(self.value)) 
-
-    repr = str

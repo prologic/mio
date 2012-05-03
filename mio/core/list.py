@@ -9,6 +9,11 @@ class List(Object):
         for i in self.value:
             yield i
 
+    def __repr__(self):
+        return "[%s]" % ", ".join([repr(x) for x in self.value])
+
+    __str__ = __repr__
+
     @pymethod()
     def init(self, value=Null):
         if value is Null:
@@ -55,10 +60,3 @@ class List(Object):
     def gt(self, other):
         test = self.value > other.value
         return self["Lobby"]["True"] if test else self["Lobby"]["False"]
-
-    # Type Conversion
-
-    @pymethod()
-    def repr(self):
-        values = ", ".join([repr(x) for x in self.value])
-        return self["Lobby"]["String"].clone("List(%s)" % values)

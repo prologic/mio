@@ -10,6 +10,12 @@ class Map(Object):
         for item in self.value.items():
             yield List.clone(item)
 
+    def __repr__(self):
+        pairs = ", ".join(["%s: %r" % (k, v) for k, v in self.value.items()])
+        return "{%s}" % pairs
+
+    __str__ = __repr__
+
     @pymethod()
     def init(self, value=Null):
         if value is Null:
@@ -67,10 +73,3 @@ class Map(Object):
     def gt(self, other):
         test = self.value > other.value
         return self.lobby("True") if test else self.lobby("False")
-
-    # Type Conversion
-
-    @pymethod()
-    def repr(self):
-        pairs = ", ".join(["%s=%s" % (k, v) for k, v in self.value.items()])
-        return self.lobby("String").clone("Map(%s)" % pairs)
