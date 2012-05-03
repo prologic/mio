@@ -11,9 +11,10 @@ class File(Object):
         self._update_status()
 
     def __iter__(self):
-        String = self.lobby("String")
-        for line in self.value:
-            yield String.clone(line)
+        return self
+
+    def next(self):
+        return self.lobby("String").clone(self.value.read())
 
     def __repr__(self):
         if isinstance(self.value, file):
