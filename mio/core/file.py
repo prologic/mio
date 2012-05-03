@@ -14,7 +14,11 @@ class File(Object):
         return self
 
     def next(self):
-        return self.lobby("String").clone(self.value.read())
+        data = self.value.read()
+        if data:
+            return self.lobby("String").clone(data)
+        else:
+            raise StopIteration
 
     def __repr__(self):
         if isinstance(self.value, file):
