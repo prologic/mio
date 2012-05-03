@@ -22,7 +22,7 @@ class System(Object):
 
     def build_args(self):
         String = self["String"]
-        args = [String.clone(arg) for arg in sys.argv]
+        args = [String.clone(arg) for arg in sys.argv[1:]]
         return self["List"].clone(args)
 
     @pymethod()
