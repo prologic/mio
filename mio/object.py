@@ -89,6 +89,20 @@ class Object(object):
     def __str__(self):
         return str(self.value) if self.value is not Null else ""
 
+    def clone(self, value=Null, type=Null):
+        obj = copy(self)
+
+        obj.attrs = {}
+        obj["parent"] = self
+
+        if value is not Null:
+            obj.value = value
+
+        if type is not Null:
+            obj["type"] = type
+
+        return obj
+
     # Attribute Operations
 
     @method("del")
@@ -237,19 +251,12 @@ class Object(object):
     def do(self, receiver, context, m, expression):
         return expression(receiver)
 
-    def clone(self, value=Null, type=Null):
-        obj = copy(self)
-
-        obj.attrs = {}
-        obj["parent"] = self
-
-        if value is not Null:
-            obj.value = value
-
-        if type is not Null:
-            obj["type"] = type
-
-        return obj
+    @pymethod()
+    def mixin(self, other):
+        skip = ("parent", "type")
+        pairs = ((k, v) for k, v in other.attrs.items() if not k in skip)
+        self.attrs.update(pairs)
+        return self
 
     @method("clone")
     def _clone(self, receiver, context, m, *args):
