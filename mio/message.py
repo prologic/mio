@@ -4,6 +4,7 @@ from decimal import Decimal
 from utils import method
 from object import Object
 from bootstrap import Lobby
+from pymethod import pymethod
 
 
 class Message(Object):
@@ -13,6 +14,9 @@ class Message(Object):
 
         self.name = name
         self.args = args
+
+        for arg in args:
+            arg.parent = self
 
         self.type = None
         self.value = None
@@ -43,9 +47,11 @@ class Message(Object):
 
         return " ".join(messages)
 
-    def __call__(self, receiver, context=None, *args):
+    def __call__(self, receiver, context=None, m=None, *args):
         if context is None:
             context = receiver
+        if m is None:
+            m = self
 
         if self.terminator:
             value = context
@@ -53,7 +59,7 @@ class Message(Object):
             value = self.value
         else:
             slot = receiver[self.name]
-            value = slot(receiver, context, *self.args)
+            value = slot(receiver, context, m, *self.args)
 
         if self["state"].stop():
             return self["state"]["return"]
@@ -61,13 +67,17 @@ class Message(Object):
             self["state"]["isContinue"] = self["False"]
             return self["None"]
         elif self.next:
-            return self.next(value, context)
+            return self.next(value, context, m)
         else:
             return value
 
+    @pymethod()
+    def args(self):
+        return self["List"].clone(self.args)
+
     @method("call")
-    def _call(self, receiver, context, *args):
-        return self(receiver, context, *args)
+    def _call(self, receiver, context, m, *args):
+        return self(receiver, context, m, *args)
 
     @property
     def prev(self):
@@ -81,3 +91,11 @@ class Message(Object):
     def next(self, message):
         message._prev = self
         self._next = message
+
+    @property
+    def parent(self):
+        return getattr(self, "_parent", None)
+
+    @parent.setter
+    def parent(self, message):
+        self._parent = message

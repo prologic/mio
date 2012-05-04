@@ -79,7 +79,8 @@ class Object(object):
         return self
 
     def __repr__(self):
-        default = "%s_%s" % (self.__class__.__name__, hex(id(self)))
+        type = self.attrs.get("type", self.__class__.__name__)
+        default = "%s_%s" % (type, hex(id(self)))
         return repr(self.value) if self.value is not Null else default
 
     def __str__(self):
@@ -88,24 +89,24 @@ class Object(object):
     # Attribute Operations
 
     @method("del")
-    def _del(self, receiver, context, key):
+    def _del(self, receiver, context, m, key):
         key = key(context).value if key.type else key.name
         return receiver.get(key, self["None"])
 
     @method()
-    def has(self, receiver, context, key):
+    def has(self, receiver, context, m, key):
         key = key(context).value if key.type else key.name
         test = key in receiver
         return self["True"] if test else self["False"]
 
     @method()
-    def set(self, receiver, context, key, value):
+    def set(self, receiver, context, m, key, value):
         key = key(context).value if key.type else key.name
         receiver[key] = value(context)
         return receiver[key]
 
     @method()
-    def get(self, receiver, context, key, default=None):
+    def get(self, receiver, context, m, key, default=None):
         key = key(context).value if key.type else key.name
         return receiver.attrs.get(key, default)
 
@@ -119,7 +120,7 @@ class Object(object):
     # Argument Operations
 
     @method()
-    def arg(self, receiver, context, at, default=None):
+    def arg(self, receiver, context, m, at, default=None):
         try:
             index = int(at(context))
             caller = context["caller"]
@@ -134,7 +135,7 @@ class Object(object):
     # Method Operations
 
     @method("method")
-    def _method(self, receiver, context, *args):
+    def _method(self, receiver, context, m, *args):
         from method import Method
         arguments, message = args[:-1], args[-1:][0]
         return Method(context, arguments, message, parent=self["Object"])
@@ -142,7 +143,7 @@ class Object(object):
     # Flow Control
 
     @method()
-    def foreach(self, receiver, context, *args):
+    def foreach(self, receiver, context, m, *args):
         result = self["None"]
         self["state"].reset()
 
@@ -160,7 +161,7 @@ class Object(object):
         return result
 
     @method("while")
-    def _while(self, receiver, context, condition, expression):
+    def _while(self, receiver, context, m, condition, expression):
         result = self["None"]
 
         self["state"].reset()
@@ -210,11 +211,6 @@ class Object(object):
         return self["Number"].clone(hash(self))
 
     @pymethod()
-    def type(self):
-        default = self["String"].clone(self.__class__.__name__)
-        return self.attrs.get("type", default)
-
-    @pymethod()
     def id(self):
         return self["Number"].clone(id(self))
 
@@ -230,23 +226,30 @@ class Object(object):
     # Object Operations
 
     @method()
-    def do(self, receiver, context, message):
-        return message(receiver)
+    def do(self, receiver, context, m, expression):
+        return expression(receiver)
 
-    @pymethod()
-    def clone(self, value=Null):
+    def clone(self, value=Null, type=Null):
         obj = copy(self)
-
-        if value is not Null:
-            obj.value = value
 
         obj.attrs = {}
         obj["parent"] = self
 
-        if hasattr(obj, "init"):
-            obj.init(value)
+        if value is not Null:
+            obj.value = value
+
+        if type is not Null:
+            obj["type"] = type
 
         return obj
+
+    @method("clone")
+    def _clone(self, receiver, context, m, *args):
+        type = self["String"].clone(m.parent.args[0].name)
+        cloned = self.clone(type=type)
+        if "init" in cloned:
+            cloned["init"](context, *args)
+        return cloned
 
     # Boolean Operations
 

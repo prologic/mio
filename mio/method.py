@@ -20,15 +20,15 @@ class Method(Object):
     def __repr__(self):
         return "method(...)"
 
-    def __call__(self, receiver, context, *args):
+    def __call__(self, receiver, context, m, *args):
         locals = self.context.clone()
 
         call = Call(parent=self["Object"])
 
+        call["message"] = m
         call["sender"] = context
         call["target"] = receiver
         call["context"] = self.context
-        call["args"] = self["List"].clone(args)
 
         locals["call"] = call
         locals["self"] = receiver
@@ -40,9 +40,8 @@ class Method(Object):
             else:
                 locals[arg.name] = self["None"](context)
 
-        self["state"].reset()
-
         try:
+            self["state"].reset()
             return self.message(locals)
         finally:
             self["state"].reset()

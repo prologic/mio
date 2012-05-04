@@ -39,7 +39,7 @@ class PyMethod(object):
 
         self.method = method
 
-    def __call__(self, receiver, context, *args):
+    def __call__(self, receiver, context, m, *args):
         if not self.method.vargs and not len(args) in self.method.nargs:
             raise ArgsError(len(args), self.method)
 
