@@ -79,7 +79,10 @@ class Object(object):
         return self
 
     def __repr__(self):
-        type = self.attrs.get("type", self.__class__.__name__)
+        if getattr(self["type"], "method", False):
+            type = self.__class__.__name__
+        else:
+            type = self["type"]
         default = "%s_%s" % (type, hex(id(self)))
         return repr(self.value) if self.value is not Null else default
 
@@ -129,7 +132,7 @@ class Object(object):
                 return args[index](caller)
             else:
                 return self.get("None", default)(caller)
-        except SlotError:
+        except KeyError:
             return at(context)
 
     # Method Operations
@@ -208,8 +211,7 @@ class Object(object):
 
     @pymethod()
     def type(self):
-        default = self.__class__.__name__
-        return self["String"].clone(self.attrs.get("type", default))
+        return self["String"].clone(self.__class__.__name__)
 
     @pymethod()
     def hash(self):
