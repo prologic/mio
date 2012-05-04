@@ -24,7 +24,7 @@ class Method(Object):
         return "%s(%s)" % (self.name, args)
 
     def __call__(self, receiver, context, m, *args):
-        locals = self.context.clone()
+        locals = self.context.clone(type="Locals")
 
         call = Call(parent=self["Object"])
 
