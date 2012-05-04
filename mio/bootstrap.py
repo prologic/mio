@@ -10,7 +10,7 @@ from core.string import String
 from core.system import System
 
 Object = Object()
-Lobby = Object.clone()
+Lobby = Object.clone(type="Lobby")
 
 Lobby["Lobby"] = Lobby
 Object["Lobby"] = Lobby
