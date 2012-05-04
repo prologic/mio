@@ -20,10 +20,7 @@ class Method(Object):
         self.message = message
 
     def __repr__(self):
-        if self.args:
-            args = ",".join([arg.name for arg in self.args])
-        else:
-            args = ""
+        args = ",".join([arg.name for arg in self.args]) if self.args else ""
         return "%s(%s)" % (self.name, args)
 
     def __call__(self, receiver, context, m, *args):
