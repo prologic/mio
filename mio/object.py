@@ -140,8 +140,9 @@ class Object(object):
     @method("method")
     def _method(self, receiver, context, m, *args):
         from method import Method
-        arguments, message = args[:-1], args[-1:][0]
-        return Method(context, arguments, message, parent=self["Object"])
+        name = m.parent.args[0].name
+        args, expr = args[:-1], args[-1:][0]
+        return Method(context, name, args, expr, parent=self["Object"])
 
     # Flow Control
 

@@ -1,4 +1,5 @@
 from object import Object
+from pymethod import pymethod
 from utils import method, Null
 
 
@@ -10,15 +11,20 @@ class Call(Object):
 
 class Method(Object):
 
-    def __init__(self, context, args, message, parent=None):
+    def __init__(self, context, name, args, message, parent=None):
         super(Method, self).__init__(parent=parent)
 
         self.context = context
+        self.name = name
         self.args = args
         self.message = message
 
     def __repr__(self):
-        return "method(...)"
+        if self.args:
+            args = ",".join([arg.name for arg in self.args])
+        else:
+            args = ""
+        return "%s(%s)" % (self.name, args)
 
     def __call__(self, receiver, context, m, *args):
         locals = self.context.clone()
@@ -45,3 +51,7 @@ class Method(Object):
             return self.message(locals)
         finally:
             self["state"].reset()
+
+    @pymethod()
+    def code(self):
+        return self["String"].clone(repr(self.message))
