@@ -207,6 +207,11 @@ class Object(object):
     # Introspection
 
     @pymethod()
+    def type(self):
+        default = self.__class__.__name__
+        return self["String"].clone(self.attrs.get("type", default))
+
+    @pymethod()
     def hash(self):
         return self["Number"].clone(hash(self))
 
