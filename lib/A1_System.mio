@@ -1,3 +1,7 @@
-Lobby exit = method(
-    if (args, System exit(arg(0)), System exit)
+Lobby exit = method(status,
+    if (status type == "Number") then (
+        System exit(status)
+    ) else (
+        System exit
+    )
 )

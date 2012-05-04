@@ -27,4 +27,4 @@ class System(Object):
 
     @pymethod()
     def exit(self, status=0):
-        raise SystemExit(status)
+        raise SystemExit(int(status))
