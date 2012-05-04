@@ -8,6 +8,7 @@ Object do (
 
 True do(
 	or = True
+	type = "True"
     str = "True"
     not = False
     else = True
