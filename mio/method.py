@@ -49,6 +49,10 @@ class Method(Object):
         finally:
             self["state"].reset()
 
+    @method()
+    def call(self, receiver, context, m, *args):
+        return self(receiver, context, m, *args)
+
     @pymethod()
     def code(self):
         return self["String"].clone(repr(self.message))
