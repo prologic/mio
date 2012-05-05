@@ -9,6 +9,12 @@ class Call(Object):
         super(Call, self).__init__(value=value, parent=parent)
 
 
+class Locals(Object):
+
+    def __init__(self, value=Null, parent=None):
+        super(Locals, self).__init__(value=value, parent=parent)
+
+
 class Method(Object):
 
     def __init__(self, context, name, args, message, parent=None):
@@ -19,12 +25,15 @@ class Method(Object):
         self.args = args
         self.message = message
 
+        self.locals = Locals(parent=self["Object"])
+        self.locals.mixin(context)
+
     def __repr__(self):
         args = ",".join([arg.name for arg in self.args]) if self.args else ""
         return "%s(%s)" % (self.name, args)
 
     def __call__(self, receiver, context, m, *args):
-        locals = self.context.clone(type="Locals")
+        locals = self.locals
 
         call = Call(parent=self["Object"])
 
