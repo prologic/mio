@@ -1,0 +1,14 @@
+#!/usr/bin/env mio
+
+foo = method(
+    return method(
+        "foo" println
+    )
+)
+
+counter = method(n,
+    return method(
+        n = n + 1
+        return n
+    )
+)
