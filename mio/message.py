@@ -70,7 +70,7 @@ class Message(Object):
         elif self.next:
             return self.next(value, context, m)
         else:
-            return value
+            return receiver if self.terminator else value
 
     @pymethod()
     def args(self):
