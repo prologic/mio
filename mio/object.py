@@ -154,7 +154,10 @@ class Object(object):
     @method("method")
     def _method(self, receiver, context, m, *args):
         from method import Method
-        name = m.parent.args[0].name
+        if m.parent is not None:
+            name = m.parent.args[0].name
+        else:
+            name = ""
         args, expr = args[:-1], args[-1:][0]
         return Method(context, name, args, expr, parent=self["Object"])
 
