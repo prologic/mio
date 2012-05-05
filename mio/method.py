@@ -19,7 +19,7 @@ class Method(Object):
         self.args = args
         self.message = message
 
-        self.locals = self.context.clone(type="Locals")
+        self.locals = self.context.clone(type=self["String"].clone("Locals"))
 
     def __repr__(self):
         args = ",".join([arg.name for arg in self.args]) if self.args else ""
