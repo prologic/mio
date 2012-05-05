@@ -203,6 +203,25 @@ class Object(object):
 
         return self["True"] if test else self["False"]
 
+    @pymethod("continue")
+    def _continue(self):
+        self["state"]["isContinue"] = self["True"]
+        return self["None"]
+
+    @method("break")
+    def _break(self, reciver, context, m, *args):
+        value = args[0](context) if args else self["None"]
+        self["state"]["isBreak"] = self["True"]
+        self["state"]["return"] = value
+        return value
+
+    @method("return")
+    def _return(self, reciver, context, m, *args):
+        value = args[0](context) if args else self["None"]
+        self["state"]["isReturn"] = self["True"]
+        self["state"]["return"] = value
+        return value
+
     # I/O
 
     @pymethod("print")
