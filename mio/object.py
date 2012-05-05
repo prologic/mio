@@ -288,7 +288,7 @@ class Object(object):
             type = self["String"].clone(m.parent.args[0].name)
         else:
             type = Null
-        cloned = self.clone(type=type)
+        cloned = receiver.clone(type=type)
         if "init" in cloned:
             cloned["init"](context, *args)
         return cloned
