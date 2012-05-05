@@ -7,7 +7,7 @@ def format_method(f):
     argspec = getargspec(f)
     args = list(argspec.args)
     varargs = argspec.varargs
-    for arg in ("self", "receiver", "context"):
+    for arg in ("self", "receiver", "context", "m"):
         if arg in args:
             del args[0]
     args = ", ".join(args) if args else ("*%s" % varargs if varargs else "")
