@@ -89,11 +89,15 @@ class Object(object):
     def __str__(self):
         return str(self.value) if self.value is not Null else ""
 
-    def clone(self, value=Null, type=Null):
+    def clone(self, value=Null, parent=Null, type=Null):
         obj = copy(self)
 
         obj.attrs = {}
-        obj["parent"] = self
+
+        if parent is not Null:
+            obj["parent"] = parent
+        else:
+            obj["parent"] = self
 
         if value is not Null:
             obj.value = value
@@ -271,7 +275,8 @@ class Object(object):
 
     @method()
     def do(self, receiver, context, m, expression):
-        return expression(receiver)
+        expression(receiver)
+        return receiver
 
     @pymethod()
     def mixin(self, other):
@@ -283,7 +288,7 @@ class Object(object):
     @method("clone")
     def _clone(self, receiver, context, m, *args):
         type = self["String"].clone(m.parent.args[0].name)
-        cloned = self.clone(type=type)
+        cloned = self.clone(parent=receiver, type=type)
         if "init" in cloned:
             cloned["init"](context, *args)
         return cloned
