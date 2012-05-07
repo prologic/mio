@@ -20,7 +20,7 @@ def format_object(o):
         if ismethod(v) or isfunction(v):
             attrs[k] = format_method(v)
         else:
-            attrs[k] = repr(v)
+            attrs[k] = str(v)
     attrs = "\n".join(["  %s = %s" % (str(k).ljust(15), v)
         for k, v in sorted(attrs.items())])
     name = o.__class__.__name__
