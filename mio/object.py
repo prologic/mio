@@ -296,6 +296,18 @@ class Object(object):
     # Boolean Operations
 
     @pymethod()
+    def evalArg(self, arg):
+        return arg
+
+    @pymethod()
+    def evalArgAndReturnSelf(self, arg):
+        return self
+
+    @pymethod()
+    def evalArgAndReturnNone(self, arg):
+        return self["None"]
+
+    @pymethod()
     def eq(self, other):
         test = self == other
         return self["True"] if test else self["False"]

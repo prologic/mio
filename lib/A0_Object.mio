@@ -1,5 +1,5 @@
 Object do (
-    set("", method(arg(0)))
+    set("", Object get("evalArg"))
 )
 
 True do(
@@ -9,7 +9,7 @@ True do(
     not = False
     else = True
     elif = True
-    then = method(m, None)
+    then = Object get("evalArgAndReturnNone")
     clone = True
 )
 
@@ -20,7 +20,7 @@ False do(
 	str = "False"
 	not = True
     then = False
-    else = method(m, None)
+    else = Object get("evalArgAndReturnNone")
     elif = Object get("if")
 	clone = False
 )
