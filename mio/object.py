@@ -78,16 +78,13 @@ class Object(object):
     def __call__(self, *args, **kwargs):
         return self
 
-    def __repr__(self):
+    def __str__(self):
         if getattr(self["type"], "method", False):
             type = self.__class__.__name__
         else:
             type = self["type"]
         default = "%s_%s" % (type, hex(id(self)))
-        return repr(self.value) if self.value is not Null else default
-
-    def __str__(self):
-        return str(self.value) if self.value is not Null else ""
+        return str(self.value) if self.value is not Null else default
 
     def clone(self, value=Null, type=Null):
         obj = copy(self)
@@ -332,10 +329,6 @@ class Object(object):
             return self.clone(not self)
 
     # Type Conversion
-
-    @pymethod()
-    def repr(self):
-        return self["String"].clone(repr(self))
 
     @pymethod("str")
     def str(self):

@@ -21,7 +21,7 @@ class Method(Object):
 
         self.locals = self.context.clone(type=self["String"].clone("Locals"))
 
-    def __repr__(self):
+    def __str__(self):
         args = ",".join([arg.name for arg in self.args]) if self.args else ""
         return "%s(%s)" % (self.name, args)
 

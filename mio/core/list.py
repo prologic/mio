@@ -8,10 +8,8 @@ class List(Object):
     def __iter__(self):
         return iter(self.value)
 
-    def __repr__(self):
+    def __str__(self):
         return "[%s]" % ", ".join([repr(x) for x in self.value])
-
-    __str__ = __repr__
 
     @pymethod()
     def init(self, value=Null):

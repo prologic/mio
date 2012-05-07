@@ -34,7 +34,7 @@ class Message(Object):
         self._next = None
         self._parent = None
 
-    def __repr__(self):
+    def __str__(self):
         messages = []
 
         next = self

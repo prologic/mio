@@ -28,10 +28,8 @@ class Number(Object):
     def __float__(self):
         return self.value.__float__()
 
-    def __repr__(self):
+    def __str__(self):
         return str(self.value)
-
-    __str__ = __repr__
 
     # General Arithmetic
 

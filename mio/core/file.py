@@ -16,13 +16,11 @@ class File(Object):
             yield self["String"].clone(data)
             data = self.value.read()
 
-    def __repr__(self):
+    def __str__(self):
         if isinstance(self.value, file):
             filename, mode = self.value.name, self.value.mode
             return "File(%s, %s)" % (filename, mode)
-        return super(File, self).__repr__()
-
-    __str__ = __repr__
+        return super(File, self).__str__()
 
     def _update_status(self):
         if isinstance(self.value, file):

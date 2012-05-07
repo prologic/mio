@@ -44,6 +44,6 @@ class Interpreter:
 
         while True:
             try:
-                print("==> %r" % self.eval(raw_input(">>> ")))
+                print("==> %s" % str(self.eval(raw_input(">>> "))))
             except EOFError:
                 raise SystemExit(0)

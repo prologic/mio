@@ -9,11 +9,9 @@ class Map(Object):
         for item in self.value.items():
             yield self["List"].clone(item)
 
-    def __repr__(self):
+    def __str__(self):
         pairs = ", ".join(["%s: %r" % (k, v) for k, v in self.value.items()])
         return "{%s}" % pairs
-
-    __str__ = __repr__
 
     @pymethod()
     def init(self, value=Null):

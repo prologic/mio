@@ -17,12 +17,10 @@ class Range(Object):
             yield self["start"]
             self["start"] = self["Number"].clone(self["start"] + self["step"])
 
-    def __repr__(self):
+    def __str__(self):
         if self.value is not Null:
-            return repr(self.value)
-        return super(Range, self).__repr__()
-
-    __str__ = __repr__
+            return str(self.value)
+        return super(Range, self).__str__()
 
     @pymethod()
     def init(self, *args):
