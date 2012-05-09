@@ -15,6 +15,8 @@ class Closure(Object):
         self.method = method
         self.receiver = receiver
 
+        self.create_methods()
+
     def __str__(self):
         if ismethod(self.method):
             return format_method(self.method)
