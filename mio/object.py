@@ -22,9 +22,11 @@ class Object(object):
 
     def create_methods(self):
         from closure import Closure
+        keys = self.__class__.__dict__.keys()
         predicate = lambda x: ismethod(x) and getattr(x, "method", False)
-        for _, method in getmembers(self, predicate):
-            self[method.name] = Closure(method.name, method, self)
+        for name, method in getmembers(self, predicate):
+            if name in keys:
+                self[method.name] = Closure(method.name, method, self)
 
     def __hash__(self):
         return hash(self.value)
@@ -219,7 +221,7 @@ class Object(object):
 
     @method()
     def type(self, receiver, context, m):
-        return self["String"].clone(self.__class__.__name__)
+        return self["String"].clone(receiver.__class__.__name__)
 
     @method()
     def hash(self, receiver, context, m):
@@ -235,8 +237,8 @@ class Object(object):
 
     @method()
     def summary(self, receiver, context, m):
-        sys.stdout.write("%s\n" % format_object(self))
-        return self
+        sys.stdout.write("%s\n" % format_object(receiver))
+        return receiver
 
     # Object Operations
 
