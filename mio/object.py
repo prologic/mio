@@ -67,6 +67,8 @@ class Object(object):
 
     def __str__(self):
         type = self.attrs.get("type",  self.__class__.__name__)
+        if isinstance(type, Object):
+            type = self.__class__.__name__
         default = "%s_%s" % (str(type), hex(id(self)))
         return str(self.value) if self.value is not Null else default
 
@@ -240,7 +242,7 @@ class Object(object):
 
     @method()
     def summary(self, receiver, context, m):
-        type = str(receiver["type"](context))
+        type = str(receiver["type"](receiver, context, m))
         sys.stdout.write("%s\n" % format_object(receiver, type=type))
         return receiver
 
