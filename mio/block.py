@@ -25,14 +25,17 @@ class Block(Object):
         self["parent"] = runtime.state.find("Object")
 
     def create_locals(self, receiver, context, m, parent):
-        self.locals = Locals(parent=parent)
+        self.locals = Locals()
+        self.locals["parent"] = parent
 
         if self.scope is not None:
             self.locals["self"] = self.scope
         else:
             self.locals["self"] = receiver
 
-        call = Call(parent=self["Object"])
+        call = Call()
+        call["parent"] = runtime.state.find("Object")
+
         call["message"] = m
         call["target"] = receiver
         call["sender"] = context
