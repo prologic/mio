@@ -120,7 +120,13 @@ class Object(object):
         default = default(context) if default else runtime.state.find("None")
         return receiver.attrs.get(key, default)
 
-    # Method Operations
+    # Method/Block Operations
+
+    @method("block")
+    def block(self, receiver, context, m, *args):
+        from block import Block
+        args, expr = args[:-1], args[-1:][0]
+        return Block(context, expr, args)
 
     @method("method")
     def _method(self, receiver, context, m, *args):
