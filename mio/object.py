@@ -240,7 +240,8 @@ class Object(object):
 
     @method()
     def summary(self, receiver, context, m):
-        sys.stdout.write("%s\n" % format_object(receiver))
+        type = str(receiver["type"](context))
+        sys.stdout.write("%s\n" % format_object(receiver, type=type))
         return receiver
 
     # Object Operations

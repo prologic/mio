@@ -14,7 +14,7 @@ def format_method(f):
     return "%s(%s)" % (name, args)
 
 
-def format_object(o):
+def format_object(o, type=None):
     attrs = {}
     for k, v in o.attrs.items():
         if ismethod(v) or isfunction(v):
@@ -23,7 +23,7 @@ def format_object(o):
             attrs[k] = str(v)
     attrs = "\n".join(["  %s = %s" % (str(k).ljust(15), v)
         for k, v in sorted(attrs.items())])
-    name = o.__class__.__name__
+    name = type or o.__class__.__name__
     return "%s_%s:\n%s" % (name, hex(id(o)), attrs)
 
 
