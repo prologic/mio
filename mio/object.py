@@ -4,14 +4,14 @@ from inspect import  getmembers, ismethod
 
 import runtime
 from errors import KeyError
-from utils import format_object, method
+from utils import format_object, method, Null
 
 
 class Object(object):
 
     __slots__ = ("attrs", "value",)
 
-    def __init__(self, value=None, methods=False):
+    def __init__(self, value=Null, methods=False):
         super(Object, self).__init__()
 
         self.attrs = {}
@@ -68,21 +68,21 @@ class Object(object):
     def __str__(self):
         type = self.attrs.get("type",  self.__class__.__name__)
         default = "%s_%s" % (str(type), hex(id(self)))
-        return str(self.value) if self.value is not None else default
+        return str(self.value) if self.value is not Null else default
 
     __repr__ = __str__
 
-    def clone(self, value=None, type=None):
+    def clone(self, value=Null, type=None):
         obj = copy(self)
 
         obj.attrs = {}
 
         obj["parent"] = self
 
-        if value:
+        if value is not Null:
             obj.value = value
 
-        if type:
+        if type is not None:
             obj["type"] = type
 
         return obj
