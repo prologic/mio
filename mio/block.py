@@ -43,8 +43,7 @@ class Block(Object):
         self.locals["call"] = call
 
     def __call__(self, receiver, context=None, m=None, *args):
-        if self.locals is None:
-            self.create_locals(receiver, context, m, self.scope)
+        self.create_locals(receiver, context, m, self.scope)
 
         for i, arg in enumerate(self.args):
             if i < len(args):
