@@ -35,20 +35,23 @@ class String(Object):
 
     @method("+")
     def add(self, receiver, context, m, other):
-        return self.clone(self + str(other))
+        return self.clone(receiver + str(other(context)))
 
     @method("*")
     def mul(self, receiver, context, m, other):
-        return self.clone(self * int(other))
+        return self.clone(receiver * int(other(context)))
 
     @method()
     def index(self, receiver, context, m, sub, start=None, end=None):
-        return Number(self.index(sub, start, end))
+        sub = sub(context)
+        start = start(context) if start else None
+        end = end(context) if end else None
+        return Number(receiver.index(sub, start, end))
 
     @method()
     def lower(self, receiver, context, m):
-        return self.clone(self.value.lower())
+        return self.clone(receiver.value.lower())
 
     @method()
     def upper(self, receiver, context, m):
-        return self.clone(self.value.upper())
+        return self.clone(receiver.value.upper())

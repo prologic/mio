@@ -27,41 +27,42 @@ class List(Object):
     # General Operations
 
     @method()
-    def append(self, receiver, context, m, object):
-        self.value.append(object)
-        return self
+    def append(self, receiver, context, m, item):
+        receiver.value.append(item(context))
+        return receiver
 
     @method()
     def count(self, receiver, context, m, value):
-        return Number(self.value.count(value))
+        return Number(receiver.value.count(value(context)))
 
     @method()
     def extend(self, receiver, context, m, *args):
-        self.value.extend(list(args))
-        return self
+        args = [arg(context) for arg in args]
+        receiver.value.extend(args)
+        return receiver
 
     @method()
     def len(self):
-        return Number(len(self.value))
+        return Number(len(receiver.value))
 
     @method()
     def at(self, receiver, context, m, index):
-        return self.value[int(index)]
+        return receiver.value[int(index(context))]
 
     @method()
     def reverse(self, receiver, context, m):
-        self.value.reverse()
-        return self
+        receiver.value.reverse()
+        return receiver
 
     @method()
     def reversed(self, receiver, context, m):
-        return self.clone(reversed(self.value))
+        return self.clone(reversed(receiver.value))
 
     @method()
     def sort(self, receiver, context, m):
-        self.value.sort()
-        return self
+        receiver.value.sort()
+        return receiver
 
     @method()
     def sorted(self, receiver, context, m):
-        return self.clone(sorted(self.value))
+        return self.clone(sorted(receiver.value))

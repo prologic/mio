@@ -25,44 +25,47 @@ class Map(Object):
 
     @method()
     def init(self, receiver, context, m, *args):
+        args = [arg(context) for arg in args]
         it = iter(args)
-        self.value = dict(list(zip(it, it)))
+        receiver.value = dict(list(zip(it, it)))
 
     # General Operations
 
     @method()
     def clear(self, receiver, context, m):
-        self.value.clear()
+        receiver.value.clear()
         return runtime.state.find("None")
 
     @method()
     def copy(self, receiver, context, m):
-        return self.clone(self.value.copy())
+        return self.clone(receiver.value.copy())
 
     @method()
     def get(self, receiver, context, m, key, default=None):
-        return self.value.get(key, default)
+        default = default(context) if default else runtime.state.find("None")
+        return receiver.value.get(key(context), default)
 
     @method()
     def has(self, receiver, context, m, key):
-        if key in self.value:
+        key = key(context)
+        if key in receiver.value:
             return runtime.state.find("True")
         return runtime.state.find("False")
 
     @method()
     def items(self, receiver, context, m):
-        items = [List(item) for item in self.value.items()]
+        items = [List(item) for item in receiver.value.items()]
         return List(items)
 
     @method()
     def keys(self, receiver, context, m):
-        return List(self.value.keys())
+        return List(receiver.value.keys())
 
     @method()
     def set(self, receiver, context, m, key, value):
-        self.value[key] = value
-        return self
+        receiver.value[key(context)] = value(context)
+        return receiver
 
     @method()
     def values(self, receiver, context, m):
-        return List(self.value.values())
+        return List(receiver.value.values())

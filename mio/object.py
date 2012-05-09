@@ -108,6 +108,7 @@ class Object(object):
     @method()
     def set(self, receiver, context, m, key, value):
         key = key(context).value if key.type else key.name
+        value = value(context)
         receiver[key] = value
         return value
 
@@ -199,21 +200,23 @@ class Object(object):
 
     @method("print")
     def _print(self, receiver, context, m):
-        sys.stdout.write("%s" % self.value)
-        return self
+        sys.stdout.write("%s" % receiver.value)
+        return receiver
 
     @method()
     def println(self, receiver, context, m):
-        sys.stdout.write("%s\n" % self.value)
-        return self
+        sys.stdout.write("%s\n" % receiver.value)
+        return receiver
 
     @method()
     def write(self, receiver, context, m, *args):
+        args = [arg(context) for arg in args]
         sys.stdout.write("%s" % " ".join([str(arg) for arg in args]))
         return self["None"]
 
     @method()
     def writeln(self, receiver, context, m, *args):
+        args = [arg(context) for arg in args]
         sys.stdout.write("%s\n" % " ".join([str(arg) for arg in args]))
         return self["None"]
 
@@ -225,15 +228,15 @@ class Object(object):
 
     @method()
     def hash(self, receiver, context, m):
-        return self["Number"].clone(hash(self))
+        return self["Number"].clone(hash(receiver))
 
     @method()
     def id(self, receiver, context, m):
-        return self["Number"].clone(id(self))
+        return self["Number"].clone(id(receiver))
 
     @method()
     def keys(self, receiver, context, m):
-        return self["List"].clone(self.attrs.keys())
+        return self["List"].clone(receiver.attrs.keys())
 
     @method()
     def summary(self, receiver, context, m):
@@ -250,9 +253,10 @@ class Object(object):
     @method()
     def mixin(self, receiver, context, m, other):
         skip = ("parent", "type")
+        other = other(context)
         pairs = ((k, v) for k, v in other.attrs.items() if not k in skip)
         self.attrs.update(pairs)
-        return self
+        return receiver
 
     @method("clone")
     def _clone(self, receiver, context, m, *args):
@@ -260,48 +264,55 @@ class Object(object):
             type = self["String"].clone(m.parent.args[0].name)
         else:
             type = None
+
         cloned = receiver.clone(type=type)
+
         if "init" in cloned:
             cloned["init"](context, *args)
+
         return cloned
 
     # Boolean Operations
 
     @method()
     def evalArg(self, receiver, context, m, arg):
-        return arg
+        return arg(context)
 
     @method()
     def evalArgAndReturnSelf(self, receiver, context, m, arg):
+        arg(context)
         return self
 
     @method()
     def evalArgAndReturnNone(self, receiver, context, m, arg):
+        arg(context)
         return self["None"]
 
     @method()
     def eq(self, receiver, context, m, other):
-        test = self == other
+        test = receiver == other(context)
         return self["True"] if test else self["False"]
 
     @method()
     def cmp(self, receiver, context, m, other):
-        return self["Number"].clone(cmp(self, other))
+        return self["Number"].clone(cmp(receiver, other(context)))
 
     @method("and")
     def _and(self, receiver, context, m, other):
-        return self.clone(self and other)
+        return self.clone(receiver and other(context))
 
     @method("or")
     def _or(self, receiver, context, m, other):
-        return self.clone(self or other)
+        return self.clone(receiver or other(context))
 
     @method("not")
     def _not(self, receiver, context, m, value=None):
-        return value.clone(not value) if value else self.clone(not self)
+        if value:
+            return value.clone(not value(context))
+        return receiver.clone(not receiver)
 
     # Type Conversion
 
     @method("str")
     def str(self, receiver, context, m):
-        return self["String"].clone(str(self))
+        return self["String"].clone(str(receiver))
