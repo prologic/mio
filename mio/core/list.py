@@ -1,9 +1,18 @@
-from mio.utils import Null
+from mio import runtime
+from mio.utils import method
+
 from mio.object import Object
-from mio.pymethod import pymethod
+
+from number import Number
 
 
 class List(Object):
+
+    def __init__(self, value=[]):
+        super(List, self).__init__(value=value)
+
+        self.create_methods()
+        self["parent"] = runtime.state.find("Object")
 
     def __iter__(self):
         return iter(self.value)
@@ -11,51 +20,48 @@ class List(Object):
     def __str__(self):
         return "[%s]" % ", ".join([repr(x) for x in self.value])
 
-    @pymethod()
-    def init(self, value=Null):
-        if value is Null:
-            self.value = []
-        else:
-            self.value = list(value)
+    @method()
+    def init(self, receiver, context, m, *args):
+        self.value = list(args)
 
     # General Operations
 
-    @pymethod()
-    def append(self, object):
+    @method()
+    def append(self, receiver, context, m, object):
         self.value.append(object)
         return self
 
-    @pymethod()
-    def count(self, value):
-        return self["Lobby"]["Number"].clone(self.value.count(value))
+    @method()
+    def count(self, receiver, context, m, value):
+        return Number(self.value.count(value))
 
-    @pymethod()
-    def extend(self, *args):
-        self.value.extend(args)
+    @method()
+    def extend(self, receiver, context, m, *args):
+        self.value.extend(list(args))
         return self
 
-    @pymethod()
+    @method()
     def len(self):
-        return self["Lobby"]["Number"].clone(len(self.value))
+        return Number(len(self.value))
 
-    @pymethod()
-    def at(self, i):
-        return self.value[int(i)]
+    @method()
+    def at(self, receiver, context, m, index):
+        return self.value[int(index)]
 
-    @pymethod()
-    def reverse(self):
+    @method()
+    def reverse(self, receiver, context, m):
         self.value.reverse()
         return self
 
-    @pymethod()
-    def reversed(self):
+    @method()
+    def reversed(self, receiver, context, m):
         return self.clone(reversed(self.value))
 
-    @pymethod()
-    def sort(self):
+    @method()
+    def sort(self, receiver, context, m):
         self.value.sort()
         return self
 
-    @pymethod()
-    def sorted(self):
+    @method()
+    def sorted(self, receiver, context, m):
         return self.clone(sorted(self.value))

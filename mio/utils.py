@@ -32,6 +32,24 @@ def method(name=None):
         f.name = name or f.__name__
         f.method = True
         f.type = "mio"
+
+        argspec = getargspec(f)
+        args = argspec.args
+        varargs = argspec.varargs
+        defaults = argspec.defaults or ()
+
+        for arg in ("self", "receiver", "context", "m",):
+            if args and args[0] == arg:
+                del args[0]
+
+        max_args = len(args)
+        min_args = max_args - len(defaults)
+        f.nargs = range(min_args, (max_args + 1))
+
+        f.args = args
+        f.vargs = varargs
+        f.dargs = defaults
+
         return f
     return wrapper
 
@@ -48,17 +66,3 @@ def tryimport(modules, message=None):
 
     if message:
         warn(message)
-
-
-class MetaNull(type):
-    """Meta Class for Null"""
-
-
-class Null(type):
-
-    __metaclass__ = MetaNull
-
-    def __call__(self, *args, **kwargs):
-        return self
-
-Null.__class__ = Null

@@ -1,30 +1,34 @@
 import mio
 import sys
 
-from mio.utils import Null
-from mio.object import Object
-from mio.pymethod import pymethod
+from mio import runtime
+from mio.utils import method
 
+from mio.object import Object
 from mio.core.file import File
+
+from list import List
+from string import String
 
 
 class System(Object):
 
-    def __init__(self, value=Null, parent=None):
-        super(System, self).__init__(value=value, parent=parent)
+    def __init__(self):
+        super(System, self).__init__()
 
         self["args"] = self.build_args()
-        self["version"] = self["String"].clone(mio.__version__)
+        self["version"] = String(mio.__version__)
 
-        self["stdin"] = File(sys.stdin, parent=self["parent"])
-        self["stdout"] = File(sys.stdout, parent=self["parent"])
-        self["stderr"] = File(sys.stderr, parent=self["parent"])
+        self["stdin"] = File(sys.stdin)
+        self["stdout"] = File(sys.stdout)
+        self["stderr"] = File(sys.stderr)
+
+        self.create_methods()
+        self["parent"] = runtime.state.find("Object")
 
     def build_args(self):
-        String = self["String"]
-        args = [String.clone(arg) for arg in sys.argv[1:]]
-        return self["List"].clone(args)
+        return List([String(arg) for arg in sys.argv[1:]])
 
-    @pymethod()
+    @method()
     def exit(self, status=0):
-        raise SystemExit(int(status))
+        raise SystemExit(status)

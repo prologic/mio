@@ -1,19 +1,27 @@
-from mio.utils import Null
+from mio import runtime
+from mio.utils import method
+
 from mio.object import Object
-from mio.pymethod import pymethod
+
+from list import List
+from number import Number
+from string import String
 
 
 class File(Object):
 
-    def __init__(self, value=Null, parent=None):
-        super(File, self).__init__(value=value, parent=parent)
+    def __init__(self, value=None):
+        super(File, self).__init__(value=value)
 
-        self._update_status()
+        self.update_status()
+
+        self.create_methods()
+        self["parent"] = runtime.state.find("Object")
 
     def __iter__(self):
         data = self.value.read()
         while data:
-            yield self["String"].clone(data)
+            yield String(data)
             data = self.value.read()
 
     def __str__(self):
@@ -22,15 +30,19 @@ class File(Object):
             return "File(%s, %s)" % (filename, mode)
         return super(File, self).__str__()
 
-    def _update_status(self):
+    def update_status(self):
         if isinstance(self.value, file):
             mode = self.value.mode
             closed = self.value.closed
             filename = self.value.name
 
-            self["mode"] = self["String"].clone(filename)
-            self["filename"] = self["String"].clone(mode)
-            self["closed"] = self["True"] if closed else self["False"]
+            self["mode"] = String(filename)
+            self["filename"] = String(mode)
+
+            if closed:
+                self["closed"] = runtime.state.find("True")
+            else:
+                self["closed"] = runtime.state.find("False")
         else:
             del self["mode"]
             del self["closed"]
@@ -38,55 +50,54 @@ class File(Object):
 
     # General Operations
 
-    @pymethod()
-    def close(self):
+    @method()
+    def close(self, receiver, context, m):
         self.value.close()
-        self.value = Null
-        self._update_status()
+        self.value = None
+        self.update_status()
         return self
 
-    @pymethod()
-    def open(self, filename, mode="r"):
+    @method()
+    def open(self, receiver, context, m, filename, mode="r"):
         self.value = open(str(filename), str(mode))
         self._update_status()
         return self
 
-    @pymethod()
-    def read(self):
-        return self["String"].clone(self.value.read())
+    @method()
+    def read(self, receiver, context, m):
+        return String(self.value.read())
 
-    @pymethod()
-    def readline(self):
-        return self["String"].clone(self.value.readline())
+    @method()
+    def readline(self, receiver, context, m):
+        return String(self.value.readline())
 
-    @pymethod()
-    def readlines(self):
-        String = self["String"]
-        lines = [String.clone(line) for line in self.value.readlines()]
-        return self["List"].clone(lines)
+    @method()
+    def readlines(self, receiver, context, m):
+        lines = [String(line) for line in self.value.readlines()]
+        return List(lines)
 
-    @pymethod()
-    def seek(self, offset, whence=0):
-        self.value.seek(offset, whence)
+    @method()
+    def seek(self, receiver, context, m, offset, whence=0):
+        self.value.seek(int(offset), int(whence))
         return self
 
-    @pymethod()
-    def pos(self):
-        return self["Number"].clone(self.value.tell())
+    @method()
+    def pos(self, receiver, context, m):
+        return Number(self.value.tell())
 
-    @pymethod()
-    def truncate(self, size=None):
-        size = size or self.value.tell()
+    @method()
+    def truncate(self, receiver, context, m, size=0):
+        size = int(size) or self.value.tell()
         self.value.truncate(size)
         return self
 
-    @pymethod()
-    def write(self, data):
+    @method()
+    def write(self, receiver, context, m, data):
         self.value.write(str(data))
         return self
 
-    @pymethod()
-    def writelines(self, lines):
+    @method()
+    def writelines(self, receiver, context, m, lines):
         lines = [str(line) for line in lines]
         self.value.writelines(lines)
         return self

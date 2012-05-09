@@ -1,22 +1,58 @@
-from utils import Null
 from object import Object
 
+from core import Number
+from core import String
+from core import List
+from core import Map
 
-class State(Object):
+from core import File
+from core import Range
+from core import System
 
-    STOP_STATES = ["isBreak", "isReturn", "stopLooping"]
 
-    def __init__(self, value=Null, parent=None):
-        super(State, self).__init__(value=value, parent=parent)
+class State(object):
+
+    STATES = ("isBreak", "isReturn",)
+
+    def __init__(self, lobby):
+        super(State, self).__init__()
+
+        self.lobby = lobby
 
         self.reset()
 
     def reset(self):
-        self["stopLooping"] = self["False"]
-        self["isContinue"] = self["False"]
-        self["isReturn"] = self["False"]
-        self["isBreak"] = self["False"]
-        self["return"] = self["None"]
+        self.returnValue = None
+        self.isContinue = False
+        self.isReturn = False
+        self.isBreak = False
 
     def stop(self):
-        return any([self[k].value for k in self.STOP_STATES])
+        return any([getattr(self, k, False) for k in self.STATES])
+
+    def create_objects(self):
+        lobby = self.lobby
+
+        object = Object(methods=True)
+
+        lobby["Lobby"] = lobby
+        lobby["Object"] = object
+
+        lobby["type"] = String("Lobby")
+        lobby["parent"] = object
+
+        lobby["Number"] = Number()
+        lobby["String"] = String()
+        lobby["List"] = List()
+        lobby["Map"] = Map()
+
+        lobby["None"] = object.clone(None)
+        lobby["True"] = object.clone(True)
+        lobby["False"] = object.clone(False)
+
+        lobby["File"] = File()
+        lobby["Range"] = Range()
+        lobby["System"] = System()
+
+    def find(self, name):
+        return self.lobby.attrs[name]

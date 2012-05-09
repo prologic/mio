@@ -2,48 +2,33 @@ import sys
 from copy import copy
 from inspect import  getmembers, ismethod
 
+import runtime
 from errors import KeyError
-from pymethod import pymethod, PyMethod
-from utils import format_object, method, Null
+from utils import format_object, method
 
 
 class Object(object):
 
     __slots__ = ("attrs", "value",)
 
-    def __init__(self, value=Null, parent=None):
+    def __init__(self, value=None, methods=False):
         super(Object, self).__init__()
 
         self.attrs = {}
         self.value = value
 
-        if parent is not None:
-            self["parent"] = parent
+        if methods:
+            self.create_methods()
 
-        # Setup Methods
-        keys = self.__class__.__dict__.keys()
-        parent = self.attrs.get("parent", {})
+    def create_methods(self):
+        from closure import Closure
         predicate = lambda x: ismethod(x) and getattr(x, "method", False)
-        in_self = lambda k: k in keys
-        in_parent = lambda k: k in parent
         for _, method in getmembers(self, predicate):
-            if not in_self(method.name) and in_parent(method.name):
-                continue
-
-            if method.type == "python":
-                self[method.name] = PyMethod(method)
-            else:
-                self[method.name] = method
-
-        keys = dir(self)
-        for k, v in self.attrs.items():
-            if k not in keys and k in self.attrs.get("parent", {}):
-                del self.attrs[k]
-
+            self[method.name] = Closure(method.name, method, self)
 
     def __hash__(self):
         return hash(self.value)
-    
+
     def __eq__(self, other):
         return self.value == other.value
 
@@ -79,92 +64,80 @@ class Object(object):
         return self
 
     def __str__(self):
-        if getattr(self["type"], "method", False):
-            type = self.__class__.__name__
-        else:
-            type = self["type"]
-        default = "%s_%s" % (type, hex(id(self)))
-        return str(self.value) if self.value is not Null else default
+        type = self.attrs.get("type",  self.__class__.__name__)
+        default = "%s_%s" % (str(type), hex(id(self)))
+        return str(self.value) if self.value is not None else default
 
-    def clone(self, value=Null, type=Null):
+    __repr__ = __str__
+
+    def clone(self, value=None, type=None):
         obj = copy(self)
 
         obj.attrs = {}
 
         obj["parent"] = self
 
-        if value is not Null:
+        if value:
             obj.value = value
 
-        if type is not Null:
+        if type:
             obj["type"] = type
 
         return obj
+
+    def forward(self, key):
+        return runtime.state.find(key)
 
     # Attribute Operations
 
     @method("del")
     def _del(self, receiver, context, m, key):
         key = key(context).value if key.type else key.name
-        return receiver.get(key, self["None"])
+        del receiver[key]
+        return runtime.state.find("None")
 
     @method()
     def has(self, receiver, context, m, key):
         key = key(context).value if key.type else key.name
-        test = key in receiver
-        return self["True"] if test else self["False"]
+        if key in receiver:
+            return runtime.state.find("True")
+        return runtime.state.find("False")
 
     @method()
     def set(self, receiver, context, m, key, value):
         key = key(context).value if key.type else key.name
-        receiver[key] = value(context)
-        return receiver[key]
+        receiver[key] = value
+        return value
 
     @method()
     def get(self, receiver, context, m, key, default=None):
         key = key(context).value if key.type else key.name
+        default = default(context) if default else runtime.state.find("None")
         return receiver.attrs.get(key, default)
-
-    @pymethod()
-    def forward(self, key):
-        if key in self["Lobby"]:
-            return self["Lobby"][key]
-        else:
-            raise KeyError(self, key)
-
-    # Argument Operations
-
-    @method()
-    def arg(self, receiver, context, m, at, default=None):
-        try:
-            index = int(at(context))
-            caller = context["caller"]
-            args = context["args"].value
-            if index is not None and index < len(args):
-                return args[index](caller)
-            else:
-                return self.get("None", default)(caller)
-        except KeyError:
-            return at(context)
 
     # Method Operations
 
     @method("method")
     def _method(self, receiver, context, m, *args):
-        from method import Method
+        from block import Block
+        from closure import Closure
+
         if m.parent is not None:
             name = m.parent.args[0].name
         else:
             name = ""
+
         args, expr = args[:-1], args[-1:][0]
-        return Method(context, name, args, expr, parent=self["Object"])
+
+        block = Block(None, expr, args)
+        return Closure(name, block, receiver)
 
     # Flow Control
 
     @method()
     def foreach(self, receiver, context, m, *args):
         result = self["None"]
-        self["state"].reset()
+        runtime.state.reset()
 
         vars, expression = args[:-1], args[-1]
 
@@ -176,19 +149,19 @@ class Object(object):
 
             result = expression(context)
 
-        self["state"].reset()
+        runtime.state.reset()
         return result
 
     @method("while")
     def _while(self, receiver, context, m, condition, expression):
         result = self["None"]
 
-        self["state"].reset()
+        runtime.state.reset()
 
-        while condition(context).value and (not self["state"].stop()):
+        while condition(context).value and (not runtime.state.stop()):
             result = expression(context)
 
-        self["state"].reset()
+        runtime.state.reset()
 
         return result
 
@@ -201,67 +174,67 @@ class Object(object):
 
         return self["True"] if test else self["False"]
 
-    @pymethod("continue")
-    def _continue(self):
-        self["state"]["isContinue"] = self["True"]
+    @method("continue")
+    def _continue(self, receiver, context, m):
+        runtime.state.isContinue = True
         return self["None"]
 
     @method("break")
     def _break(self, reciver, context, m, *args):
         value = args[0](context) if args else self["None"]
-        self["state"]["isBreak"] = self["True"]
-        self["state"]["return"] = value
+        runtime.state.isBreak = True
+        runtime.state.returnValue = value
         return value
 
     @method("return")
     def _return(self, reciver, context, m, *args):
         value = args[0](context) if args else self["None"]
-        self["state"]["isReturn"] = self["True"]
-        self["state"]["return"] = value
+        runtime.state.isReturn = True
+        runtime.state.returnValue = value
         return value
 
     # I/O
 
-    @pymethod("print")
-    def _print(self):
+    @method("print")
+    def _print(self, receiver, context, m):
         sys.stdout.write("%s" % self.value)
         return self
 
-    @pymethod()
-    def println(self):
+    @method()
+    def println(self, receiver, context, m):
         sys.stdout.write("%s\n" % self.value)
         return self
 
-    @pymethod()
-    def write(self, *args):
+    @method()
+    def write(self, receiver, context, m, *args):
         sys.stdout.write("%s" % " ".join([str(arg) for arg in args]))
         return self["None"]
 
-    @pymethod()
-    def writeln(self, *args):
+    @method()
+    def writeln(self, receiver, context, m, *args):
         sys.stdout.write("%s\n" % " ".join([str(arg) for arg in args]))
         return self["None"]
 
     # Introspection
 
-    @pymethod()
-    def type(self):
+    @method()
+    def type(self, receiver, context, m):
         return self["String"].clone(self.__class__.__name__)
 
-    @pymethod()
-    def hash(self):
+    @method()
+    def hash(self, receiver, context, m):
         return self["Number"].clone(hash(self))
 
-    @pymethod()
-    def id(self):
+    @method()
+    def id(self, receiver, context, m):
         return self["Number"].clone(id(self))
 
-    @pymethod()
-    def keys(self):
+    @method()
+    def keys(self, receiver, context, m):
         return self["List"].clone(self.attrs.keys())
 
-    @pymethod()
-    def summary(self):
+    @method()
+    def summary(self, receiver, context, m):
         sys.stdout.write("%s\n" % format_object(self))
         return self
 
@@ -272,8 +245,8 @@ class Object(object):
         expression(receiver)
         return receiver
 
-    @pymethod()
-    def mixin(self, other):
+    @method()
+    def mixin(self, receiver, context, m, other):
         skip = ("parent", "type")
         pairs = ((k, v) for k, v in other.attrs.items() if not k in skip)
         self.attrs.update(pairs)
@@ -284,7 +257,7 @@ class Object(object):
         if m.parent is not None:
             type = self["String"].clone(m.parent.args[0].name)
         else:
-            type = Null
+            type = None
         cloned = receiver.clone(type=type)
         if "init" in cloned:
             cloned["init"](context, *args)
@@ -292,44 +265,41 @@ class Object(object):
 
     # Boolean Operations
 
-    @pymethod()
-    def evalArg(self, arg):
+    @method()
+    def evalArg(self, receiver, context, m, arg):
         return arg
 
-    @pymethod()
-    def evalArgAndReturnSelf(self, arg):
+    @method()
+    def evalArgAndReturnSelf(self, receiver, context, m, arg):
         return self
 
-    @pymethod()
-    def evalArgAndReturnNone(self, arg):
+    @method()
+    def evalArgAndReturnNone(self, receiver, context, m, arg):
         return self["None"]
 
-    @pymethod()
-    def eq(self, other):
+    @method()
+    def eq(self, receiver, context, m, other):
         test = self == other
         return self["True"] if test else self["False"]
 
-    @pymethod()
-    def cmp(self, other):
+    @method()
+    def cmp(self, receiver, context, m, other):
         return self["Number"].clone(cmp(self, other))
 
-    @pymethod("and")
-    def _and(self, other):
+    @method("and")
+    def _and(self, receiver, context, m, other):
         return self.clone(self and other)
 
-    @pymethod("or")
-    def _or(self, other):
+    @method("or")
+    def _or(self, receiver, context, m, other):
         return self.clone(self or other)
 
-    @pymethod("not")
-    def _not(self, value=Null):
-        if not value is Null:
-            return value.clone(not value)
-        else:
-            return self.clone(not self)
+    @method("not")
+    def _not(self, receiver, context, m, value=None):
+        return value.clone(not value) if value else self.clone(not self)
 
     # Type Conversion
 
-    @pymethod("str")
-    def str(self):
+    @method("str")
+    def str(self, receiver, context, m):
         return self["String"].clone(str(self))

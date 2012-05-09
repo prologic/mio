@@ -1,60 +1,68 @@
-from mio.utils import Null
+from mio import runtime
+from mio.utils import method
+
 from mio.object import Object
-from mio.pymethod import pymethod
+
+
+from list import List
 
 
 class Map(Object):
 
+    def __init__(self, value={}):
+        super(Map, self).__init__(value=value)
+
+        self.create_methods()
+        self["parent"] = runtime.state.find("Object")
+
     def __iter__(self):
         for item in self.value.items():
-            yield self["List"].clone(item)
+            yield List(item)
 
     def __str__(self):
         pairs = ", ".join(["%s: %r" % (k, v) for k, v in self.value.items()])
         return "{%s}" % pairs
 
-    @pymethod()
-    def init(self, value=Null):
-        if value is Null:
-            self.value = {}
-        else:
-            self.value = dict(value)
+    @method()
+    def init(self, receiver, context, m, *args):
+        it = iter(args)
+        self.value = dict(list(zip(it, it)))
 
     # General Operations
 
-    @pymethod()
-    def clear(self):
+    @method()
+    def clear(self, receiver, context, m):
         self.value.clear()
-        return self["None"]
+        return runtime.state.find("None")
 
-    @pymethod()
-    def copy(self):
+    @method()
+    def copy(self, receiver, context, m):
         return self.clone(self.value.copy())
 
-    @pymethod()
-    def get(self, key, default=None):
+    @method()
+    def get(self, receiver, context, m, key, default=None):
         return self.value.get(key, default)
 
-    @pymethod()
-    def has(self, key):
-        test = key in self.value
-        return self["True"] if test else self["False"]
+    @method()
+    def has(self, receiver, context, m, key):
+        if key in self.value:
+            return runtime.state.find("True")
+        return runtime.state.find("False")
 
-    @pymethod()
-    def items(self):
-        List = self["List"]
-        items = [List.clone(item) for item in self.value.items()]
-        return List.clone(items)
+    @method()
+    def items(self, receiver, context, m):
+        items = [List(item) for item in self.value.items()]
+        return List(items)
 
-    @pymethod()
-    def keys(self):
-        return self["List"].clone(self.value.keys())
+    @method()
+    def keys(self, receiver, context, m):
+        return List(self.value.keys())
 
-    @pymethod()
-    def set(self, key, value):
+    @method()
+    def set(self, receiver, context, m, key, value):
         self.value[key] = value
         return self
 
-    @pymethod()
-    def values(self):
-        return self["List"].clone(self.value.values())
+    @method()
+    def values(self, receiver, context, m):
+        return List(self.value.values())

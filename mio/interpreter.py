@@ -3,15 +3,16 @@ from traceback import format_exc
 
 import mio
 from errors import Error
-from bootstrap import Lobby
 from utils import tryimport
 from parser import parse, tokenize
 
 
 class Interpreter:
 
-    def __init__(self, opts):
+    def __init__(self, opts, lobby, state):
         self.opts = opts
+        self.lobby = lobby
+        self.state = state
 
         for module in glob("./lib/*.mio"):
             self.load(module)
@@ -26,7 +27,7 @@ class Interpreter:
             message = parse(tokenize(code))
 
         try:
-            return message(Lobby)
+            return message(self.lobby)
         except Error as e:
             print("%s\n%r" % (e, message))
 

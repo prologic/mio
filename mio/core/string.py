@@ -1,12 +1,26 @@
+from mio import runtime
+from mio.utils import method
+
 from mio.object import Object
-from mio.pymethod import pymethod
 
 
 class String(Object):
 
+    def __init__(self, value=""):
+        super(String, self).__init__(value=value)
+
+        self.create_methods()
+        self["parent"] = runtime.state.find("Object")
+
     def __iter__(self):
         for c in self.value:
             yield self.clone(c)
+
+    def __add__(self, other):
+        return self.value + other
+
+    def __mul__(self, other):
+        return self.value * other
 
     def __int__(self):
         return int(self.value)
@@ -19,18 +33,22 @@ class String(Object):
 
     # General Operations
 
-    @pymethod()
-    def add(self, other):
-        return self.clone(self.value + other.value)
+    @method("+")
+    def add(self, receiver, context, m, other):
+        return self.clone(self + str(other))
 
-    @pymethod()
-    def index(self, sub, start=None, end=None):
-        return self["Lobby"]["Number"].clone(self.index(sub, start, end))
+    @method("*")
+    def mul(self, receiver, context, m, other):
+        return self.clone(self * int(other))
 
-    @pymethod()
-    def lower(self):
+    @method()
+    def index(self, receiver, context, m, sub, start=None, end=None):
+        return Number(self.index(sub, start, end))
+
+    @method()
+    def lower(self, receiver, context, m):
         return self.clone(self.value.lower())
 
-    @pymethod()
-    def upper(self):
+    @method()
+    def upper(self, receiver, context, m):
         return self.clone(self.value.upper())

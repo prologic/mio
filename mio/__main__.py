@@ -4,6 +4,7 @@ from optparse import OptionParser
 from signal import signal, SIGINT, SIG_IGN
 
 import mio
+from mio import runtime
 from mio.interpreter import Interpreter
 
 USAGE = "%prog [options] ... [-e expr | file | -]"
@@ -35,7 +36,11 @@ def main():
 
     signal(SIGINT, SIG_IGN)
 
-    interpreter = Interpreter(opts)
+    runtime.init()
+    lobby = runtime.lobby
+    state = runtime.state
+
+    interpreter = Interpreter(opts, lobby, state)
 
     if opts.eval:
         interpreter.eval(opts.eval)

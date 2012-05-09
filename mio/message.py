@@ -1,16 +1,20 @@
 import re
 from decimal import Decimal
 
+import runtime
 from utils import method
 from object import Object
-from bootstrap import Lobby
-from pymethod import pymethod
+
+from mio.core import Number
+from mio.core import String
 
 
 class Message(Object):
 
     def __init__(self, name, *args):
-        super(Message, self).__init__(name, parent=Lobby["Object"])
+        super(Message, self).__init__()
+
+        self["parent"] = runtime.state.find("Object")
 
         self.name = name
         self.args = args
@@ -18,15 +22,15 @@ class Message(Object):
         for arg in args:
             arg.parent = self
 
-        self.type = None
-        self.value = None
-
         if isinstance(self.name, Decimal):
-            self.type = "number"
-            self.value = Lobby["Number"].clone(self.name)
+            self.type = "Number"
+            self.value = Number(self.name)
         elif re.match("\"(.*)\"", self.name):
-            self.type = "string"
-            self.value = Lobby["String"].clone(eval(self.name))
+            self.type = "String"
+            self.value = String(eval(self.name))
+        else:
+            self.type = None
+            self.value = None
 
         self.terminator = name in ["\n", ";"]
 
@@ -48,6 +52,8 @@ class Message(Object):
 
         return " ".join(messages)
 
+    __repr__ = __str__
+
     def __call__(self, receiver, context=None, m=None, *args):
         if context is None:
             context = receiver
@@ -62,17 +68,17 @@ class Message(Object):
             slot = receiver[self.name]
             value = slot(receiver, context, m, *self.args)
 
-        if self["state"].stop():
-            return self["state"]["return"]
-        elif self["state"]["isContinue"].value:
-            self["state"]["isContinue"] = self["False"]
-            return self["None"]
+        if runtime.state.stop():
+            return runtime.state.returnValue
+        elif runtime.state.isContinue:
+            runtime.state.isContinue = False
+            return runtime.state.find("None")
         elif self.next:
             return self.next(value, context, m)
         else:
             return receiver if self.terminator else value
 
-    @pymethod()
+    @method()
     def args(self):
         return self["List"].clone(self.args)
 

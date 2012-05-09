@@ -36,7 +36,7 @@ class KeyError(Error):
         self.key = key
 
     def __str__(self):
-        return "Key Error: No key %r in object %r" % (self.key, self.object)
+        return "Key Error: No key %s in object %s" % (self.key, self.object)
 
 
 class TypeError(Error):

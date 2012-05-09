@@ -1,8 +1,18 @@
+from decimal import Decimal
+
+from mio import runtime
+from mio.utils import method
+
 from mio.object import Object
-from mio.errors import TypeError
-from mio.pymethod import pymethod
+
 
 class Number(Object):
+
+    def __init__(self, value=Decimal(0)):
+        super(Number, self).__init__(value=value)
+
+        self.create_methods()
+        self["parent"] = runtime.state.find("Object")
 
     def __add__(self, other):
         return self.value.__add__(other.value)
@@ -33,34 +43,34 @@ class Number(Object):
 
     # General Arithmetic
 
-    @pymethod()
-    def add(self, other):
-        return self.clone(self + other)
+    @method("+")
+    def add(self, receiver, context, m, other):
+        return self.clone(self + other(context))
 
-    @pymethod()
-    def sub(self, other):
-        return self.clone(self - other)
+    @method("-")
+    def sub(self, receiver, context, m, other):
+        return self.clone(self - other(context))
 
-    @pymethod()
-    def mul(self, other):
-        return self.clone(self * other)
+    @method("*")
+    def mul(self, receiver, context, m, other):
+        return self.clone(self * other(context))
 
-    @pymethod()
-    def div(self, other):
-        return self.clone(self / other)
+    @method("/")
+    def div(self, receiver, context, m, other):
+        return self.clone(self / other(context))
 
-    @pymethod()
-    def pow(self, other):
-        return self.clone(self ** other)
+    @method("**")
+    def pow(self, receiver, context, m, other):
+        return self.clone(self ** other(context))
 
-    @pymethod()
-    def mod(self, other):
-        return self.clone(self % other)
+    @method("%")
+    def mod(self, receiver, context, m, other):
+        return self.clone(self % other(context))
 
-    @pymethod()
-    def lshift(self, other):
-        return self.clone(self * 2 ** other)
+    @method("<<")
+    def lshift(self, receiver, context, m, other):
+        return self.clone(self * 2 ** other(context))
 
-    @pymethod()
-    def rshift(self, other):
-        return self.clone(self/ 2 ** other)
+    @method(">>")
+    def rshift(self, receiver, context, m, other):
+        return self.clone(self / 2 ** other(context))
