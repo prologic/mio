@@ -14,8 +14,6 @@ class Message(Object):
     def __init__(self, name, *args):
         super(Message, self).__init__()
 
-        self["parent"] = runtime.state.find("Object")
-
         self.name = name
         self.args = args
 
@@ -37,6 +35,9 @@ class Message(Object):
         self._prev = None
         self._next = None
         self._parent = None
+
+        self.create_methods()
+        self["parent"] = runtime.state.find("Object")
 
     def __str__(self):
         messages = []
@@ -88,9 +89,18 @@ class Message(Object):
         else:
             return receiver if self.terminator else value
 
-    @method()
-    def args(self):
+    @method("arg")
+    def _arg(self, receiver, context, m, index):
+        index = int(index.eval(context))
+        return self.args[index]
+
+    @method("args")
+    def _args(self, receiver, context, m):
         return self["List"].clone(self.args)
+
+    @method("next")
+    def _next(self, receiver, context, m):
+        return self.next or self["None"]
 
     @property
     def prev(self):
