@@ -62,7 +62,7 @@ class File(Object):
         filename = str(filename(context))
         mode = str(mode(context)) if mode else "r"
         self.value = open(filename, mode)
-        self._update_status()
+        self.update_status()
         return self
 
     @method()
