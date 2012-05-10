@@ -56,6 +56,8 @@ class Message(Object):
 
     @method()
     def eval(self, receiver, context=None, m=None, *args):
+        #import pudb; pudb.set_trace()
+
         if context is None:
             context = receiver
         if m is None:
@@ -68,7 +70,11 @@ class Message(Object):
         else:
             value = receiver[self.name]
             if isinstance(value, Message):
-                value = value.eval(receiver, context, m, *self.args)
+                # Prevent a recursion loop
+                if value not in receiver.attrs.values():
+                    value = value.eval(receiver, context, m, *self.args)
+                else:
+                    value = value(receiver, context, m, *self.args)
             else:
                 value = value(receiver, context, m, *self.args)
 
