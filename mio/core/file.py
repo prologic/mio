@@ -90,13 +90,13 @@ class File(Object):
 
     @method()
     def truncate(self, receiver, context, m, size=None):
-        size = int(size(context)) if size or self.value.tell()
+        size = int(size(context)) if size else self.value.tell()
         self.value.truncate(size)
         return self
 
     @method()
     def write(self, receiver, context, m, data):
-        date = str(data(context))
+        data = str(data(context))
         self.value.write(data)
         return self
 
