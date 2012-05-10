@@ -1,4 +1,6 @@
 import runtime
+from utils import method
+
 from object import Object
 
 
@@ -55,4 +57,16 @@ class Block(Object):
             else:
                 self.locals[arg.name] = self["None"](context)
 
-        return self.body(self.locals)
+        return self.body(self.locals, self.locals)
+
+    @method("args")
+    def _args(self, receiver, context, m):
+        return self["List"].clone(self.args)
+
+    @method("body")
+    def _body(self, receiver, context, m):
+        return self.body
+
+    @method("scope")
+    def _scope(self, receiver, context, m):
+        return self.scope if self.scope is not None else self["None"]
