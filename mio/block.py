@@ -19,7 +19,7 @@ class Block(Object):
 
         self.scope = scope
         self.body = body
-        self.args = args
+        self.args = [arg.name for arg in args]
 
         self.locals = None
 
@@ -27,8 +27,7 @@ class Block(Object):
         self["parent"] = runtime.state.find("Object")
 
     def create_locals(self, receiver, context, m, parent):
-        if self.locals is None:
-            self.locals = Locals()
+        self.locals = Locals()
 
         if parent is not None:
             self.locals["parent"] = parent
@@ -52,11 +51,10 @@ class Block(Object):
     def __call__(self, receiver, context=None, m=None, *args):
         self.create_locals(receiver, context, m, self.scope)
 
+        args = [arg(context) for arg in args]
+
         for i, arg in enumerate(self.args):
-            if i < len(args):
-                self.locals[arg.name] = args[i](context)
-            else:
-                self.locals[arg.name] = self["None"](context)
+            self.locals[arg] = args[i] if i < len(args) else self["None"]
 
         return self.body(self.locals, self.locals)
 
