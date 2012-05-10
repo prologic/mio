@@ -25,7 +25,7 @@ class Map(Object):
 
     @method()
     def init(self, receiver, context, m, *args):
-        args = [arg(context) for arg in args]
+        args = [arg.eval(context) for arg in args]
         it = iter(args)
         receiver.value = dict(list(zip(it, it)))
 
@@ -42,12 +42,12 @@ class Map(Object):
 
     @method()
     def get(self, receiver, context, m, key, default=None):
-        default = default(context) if default else runtime.state.find("None")
-        return receiver.value.get(key(context), default)
+        default = default.eval(context) if default else runtime.state.find("None")
+        return receiver.value.get(key.eval(context), default)
 
     @method()
     def has(self, receiver, context, m, key):
-        key = key(context)
+        key = key.eval(context)
         if key in receiver.value:
             return runtime.state.find("True")
         return runtime.state.find("False")
@@ -63,7 +63,7 @@ class Map(Object):
 
     @method()
     def set(self, receiver, context, m, key, value):
-        receiver.value[key(context)] = value(context)
+        receiver.value[key.eval(context)] = value.eval(context)
         return receiver
 
     @method()

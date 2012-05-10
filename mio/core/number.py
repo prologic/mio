@@ -45,32 +45,32 @@ class Number(Object):
 
     @method("+")
     def add(self, receiver, context, m, other):
-        return self.clone(receiver + other(context))
+        return self.clone(receiver + other.eval(context))
 
     @method("-")
     def sub(self, receiver, context, m, other):
-        return self.clone(receiver - other(context))
+        return self.clone(receiver - other.eval(context))
 
     @method("*")
     def mul(self, receiver, context, m, other):
-        return self.clone(receiver * other(context))
+        return self.clone(receiver * other.eval(context))
 
     @method("/")
     def div(self, receiver, context, m, other):
-        return self.clone(receiver / other(context))
+        return self.clone(receiver / other.eval(context))
 
     @method("**")
     def pow(self, receiver, context, m, other):
-        return self.clone(receiver ** other(context))
+        return self.clone(receiver ** other.eval(context))
 
     @method("%")
     def mod(self, receiver, context, m, other):
-        return self.clone(receiver % other(context))
+        return self.clone(receiver % other.eval(context))
 
     @method("<<")
     def lshift(self, receiver, context, m, other):
-        return self.clone(receiver * 2 ** other(context))
+        return self.clone(receiver * 2 ** other.eval(context))
 
     @method(">>")
     def rshift(self, receiver, context, m, other):
-        return self.clone(receiver / 2 ** other(context))
+        return self.clone(receiver / 2 ** other.eval(context))

@@ -54,7 +54,8 @@ class Message(Object):
 
     __repr__ = __str__
 
-    def __call__(self, receiver, context=None, m=None, *args):
+    @method()
+    def eval(self, receiver, context=None, m=None, *args):
         if context is None:
             context = receiver
         if m is None:
@@ -65,8 +66,11 @@ class Message(Object):
         elif self.value:
             value = self.value
         else:
-            slot = receiver[self.name]
-            value = slot(receiver, context, m, *self.args)
+            value = receiver[self.name]
+            if isinstance(value, Message):
+                value = value.eval(receiver, context, m, *self.args)
+            else:
+                value = value(receiver, context, m, *self.args)
 
         if runtime.state.stop():
             return runtime.state.returnValue
@@ -74,17 +78,13 @@ class Message(Object):
             runtime.state.isContinue = False
             return runtime.state.find("None")
         elif self.next:
-            return self.next(value, context, m)
+            return self.next.eval(value, context, m)
         else:
             return receiver if self.terminator else value
 
     @method()
     def args(self):
         return self["List"].clone(self.args)
-
-    @method("call")
-    def _call(self, receiver, context, m, *args):
-        return self(receiver, context, m, *args)
 
     @property
     def prev(self):

@@ -51,12 +51,12 @@ class Block(Object):
     def __call__(self, receiver, context=None, m=None, *args):
         self.create_locals(receiver, context, m, self.scope)
 
-        args = [arg(context) for arg in args]
+        args = [arg.eval(context) for arg in args]
 
         for i, arg in enumerate(self.args):
             self.locals[arg] = args[i] if i < len(args) else self["None"]
 
-        return self.body(self.locals, self.locals)
+        return self.body.eval(self.locals, self.locals)
 
     @method("args")
     def _args(self, receiver, context, m):

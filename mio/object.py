@@ -55,7 +55,10 @@ class Object(object):
             parent = parent.attrs.get("parent")
 
         if hasattr(self, "forward"):
-            return self.forward(key)
+            try:
+                return self.forward(key)
+            except:
+                raise KeyError(self, key)
         else:
             raise KeyError(self, key)
 
@@ -96,28 +99,28 @@ class Object(object):
 
     @method("del")
     def _del(self, receiver, context, m, key):
-        key = key(context).value if key.type else key.name
+        key = key.eval(context).value if key.type else key.name
         del receiver[key]
         return runtime.state.find("None")
 
     @method()
     def has(self, receiver, context, m, key):
-        key = key(context).value if key.type else key.name
+        key = key.eval(context).value if key.type else key.name
         if key in receiver:
             return runtime.state.find("True")
         return runtime.state.find("False")
 
     @method()
     def set(self, receiver, context, m, key, value):
-        key = key(context).value if key.type else key.name
-        value = value(context)
+        key = key.eval(context).value if key.type else key.name
+        value = value.eval(context)
         receiver[key] = value
         return value
 
     @method()
     def get(self, receiver, context, m, key, default=None):
-        key = key(context).value if key.type else key.name
-        default = default(context) if default else runtime.state.find("None")
+        key = key.eval(context).value if key.type else key.name
+        default = default.eval(context) if default else self["None"]
         return receiver.attrs.get(key, default)
 
     # Method/Block Operations
@@ -158,7 +161,7 @@ class Object(object):
             elif len(vars) == 1:
                 context[vars[0].name] = item
 
-            result = expression(context)
+            result = expression.eval(context)
 
         runtime.state.reset()
         return result
@@ -169,8 +172,8 @@ class Object(object):
 
         runtime.state.reset()
 
-        while condition(context).value and (not runtime.state.stop()):
-            result = expression(context)
+        while bool(condition.eval(context)) and (not runtime.state.stop()):
+            result = expressione.eval(context)
 
         runtime.state.reset()
 
@@ -178,10 +181,10 @@ class Object(object):
 
     @method("if")
     def _if(self, receiver, context, m, *args):
-        test = bool(args[0](context).value)
+        test = bool(args[0].eval(context))
         index = 1 if test else 2
         if index < len(args):
-            return args[index](context)
+            return args[index].eval(context)
 
         return self["True"] if test else self["False"]
 
@@ -192,14 +195,14 @@ class Object(object):
 
     @method("break")
     def _break(self, reciver, context, m, *args):
-        value = args[0](context) if args else self["None"]
+        value = args[0].eval(context) if args else self["None"]
         runtime.state.isBreak = True
         runtime.state.returnValue = value
         return value
 
     @method("return")
     def _return(self, reciver, context, m, *args):
-        value = args[0](context) if args else self["None"]
+        value = args[0].eval(context) if args else self["None"]
         runtime.state.isReturn = True
         runtime.state.returnValue = value
         return value
@@ -218,13 +221,13 @@ class Object(object):
 
     @method()
     def write(self, receiver, context, m, *args):
-        args = [arg(context) for arg in args]
+        args = [arg.eval(context) for arg in args]
         sys.stdout.write("%s" % " ".join([str(arg) for arg in args]))
         return self["None"]
 
     @method()
     def writeln(self, receiver, context, m, *args):
-        args = [arg(context) for arg in args]
+        args = [arg.eval(context) for arg in args]
         sys.stdout.write("%s\n" % " ".join([str(arg) for arg in args]))
         return self["None"]
 
@@ -256,13 +259,13 @@ class Object(object):
 
     @method()
     def do(self, receiver, context, m, expression):
-        expression(receiver)
+        expression.eval(receiver)
         return receiver
 
     @method()
     def mixin(self, receiver, context, m, other):
         skip = ("parent", "type")
-        other = other(context)
+        other = other.eval(context)
         pairs = ((k, v) for k, v in other.attrs.items() if not k in skip)
         self.attrs.update(pairs)
         return receiver
@@ -285,44 +288,44 @@ class Object(object):
 
     @method()
     def evalArg(self, receiver, context, m, arg=None):
-        return arg(context) if arg else self["None"]
+        return arg.eval(context) if arg else self["None"]
 
     @method()
-    def evalArgAndReturnSelf(self, receiver, context, m, arg):
-        arg(context)
+    def evalArgAndReturnSelf(self, receiver, context, m, arg=None):
+        arg.eval(context)
         return self
 
     @method()
-    def evalArgAndReturnNone(self, receiver, context, m, arg):
-        arg(context)
+    def evalArgAndReturnNone(self, receiver, context, m, arg=None):
+        arg.eval(context)
         return self["None"]
 
     @method("==")
     def eq(self, receiver, context, m, other):
-        test = receiver == other(context)
+        test = receiver == other.eval(context)
         return self["True"] if test else self["False"]
 
     @method("!=")
     def neq(self, receiver, context, m, other):
-        test = not (receiver == other(context))
+        test = not (receiver == other.eval(context))
         return self["True"] if test else self["False"]
 
     @method()
     def cmp(self, receiver, context, m, other):
-        return self["Number"].clone(cmp(receiver, other(context)))
+        return self["Number"].clone(cmp(receiver, other.eval(context)))
 
     @method("and")
     def _and(self, receiver, context, m, other):
-        return self.clone(receiver and other(context))
+        return self.clone(receiver and other.eval(context))
 
     @method("or")
     def _or(self, receiver, context, m, other):
-        return self.clone(receiver or other(context))
+        return self.clone(receiver or other.eval(context))
 
     @method("not")
     def _not(self, receiver, context, m, value=None):
         if value:
-            return value.clone(not value(context))
+            return value.clone(not value.eval(context))
         return receiver.clone(not receiver)
 
     # Type Conversion

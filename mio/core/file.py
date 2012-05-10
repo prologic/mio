@@ -59,8 +59,8 @@ class File(Object):
 
     @method()
     def open(self, receiver, context, m, filename, mode=None):
-        filename = str(filename(context))
-        mode = str(mode(context)) if mode else "r"
+        filename = str(filename.eval(context))
+        mode = str(mode.eval(context)) if mode else "r"
         self.value = open(filename, mode)
         self.update_status()
         return self
@@ -80,8 +80,8 @@ class File(Object):
 
     @method()
     def seek(self, receiver, context, m, offset, whence=0):
-        whence = int(whence(context)) if whence else 0
-        self.value.seek(int(offset(context)), whence)
+        whence = int(whence.eval(context)) if whence else 0
+        self.value.seek(int(offset.eval(context)), whence)
         return self
 
     @method()
@@ -90,18 +90,18 @@ class File(Object):
 
     @method()
     def truncate(self, receiver, context, m, size=None):
-        size = int(size(context)) if size else self.value.tell()
+        size = int(size.eval(context)) if size else self.value.tell()
         self.value.truncate(size)
         return self
 
     @method()
     def write(self, receiver, context, m, data):
-        data = str(data(context))
+        data = str(data.eval(context))
         self.value.write(data)
         return self
 
     @method()
     def writelines(self, receiver, context, m, lines):
-        lines = [str(line(context)) for line in lines]
+        lines = [str(line.eval(context)) for line in lines]
         self.value.writelines(lines)
         return self

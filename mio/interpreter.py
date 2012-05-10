@@ -27,7 +27,7 @@ class Interpreter:
             message = parse(tokenize(code))
 
         try:
-            return message(self.lobby)
+            return message.eval(self.lobby, self.lobby, message)
         except Error as e:
             print("%s\n%r" % (e, message))
 

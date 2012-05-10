@@ -28,16 +28,16 @@ class List(Object):
 
     @method()
     def append(self, receiver, context, m, item):
-        receiver.value.append(item(context))
+        receiver.value.append(item.eval(context))
         return receiver
 
     @method()
     def count(self, receiver, context, m, value):
-        return Number(receiver.value.count(value(context)))
+        return Number(receiver.value.count(value.eval(context)))
 
     @method()
     def extend(self, receiver, context, m, *args):
-        args = [arg(context) for arg in args]
+        args = [arg.eval(context) for arg in args]
         receiver.value.extend(args)
         return receiver
 
@@ -47,7 +47,7 @@ class List(Object):
 
     @method()
     def at(self, receiver, context, m, index):
-        return receiver.value[int(index(context))]
+        return receiver.value[int(index.eval(context))]
 
     @method()
     def reverse(self, receiver, context, m):
