@@ -30,5 +30,5 @@ class System(Object):
         return List([String(arg) for arg in sys.argv[1:]])
 
     @method()
-    def exit(self, status=0):
-        raise SystemExit(status)
+    def exit(self, receiver, context, m, status=0):
+        raise SystemExit(int(status(context)))
