@@ -55,6 +55,4 @@ class Block(Object):
             else:
                 self.locals[arg.name] = self["None"](context)
 
-        import pdb; pdb.set_trace()
-
         return self.body(self.locals)

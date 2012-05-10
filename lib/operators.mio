@@ -1,0 +1,8 @@
+# Standard Operators
+
+Object do(
+    set("<", method(other, self cmp(other) == -1))
+    set("<=", method(other, self cmp(other) < 1))
+    set(">", method(other, self cmp(other) == 1))
+    set(">=", method(other, self cmp(other) > -1))
+)

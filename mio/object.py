@@ -297,9 +297,14 @@ class Object(object):
         arg(context)
         return self["None"]
 
-    @method()
+    @method("==")
     def eq(self, receiver, context, m, other):
         test = receiver == other(context)
+        return self["True"] if test else self["False"]
+
+    @method("!=")
+    def neq(self, receiver, context, m, other):
+        test = not (receiver == other(context))
         return self["True"] if test else self["False"]
 
     @method()
