@@ -284,8 +284,8 @@ class Object(object):
     # Boolean Operations
 
     @method()
-    def evalArg(self, receiver, context, m, arg):
-        return arg(context)
+    def evalArg(self, receiver, context, m, arg=None):
+        return arg(context) if arg else self["None"]
 
     @method()
     def evalArgAndReturnSelf(self, receiver, context, m, arg):
