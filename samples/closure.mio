@@ -7,7 +7,7 @@ foo = method(
 )
 
 counter = method(n,
-    return method(
+    return block(
         n = n + 1
         return n
     )
