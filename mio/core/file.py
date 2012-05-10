@@ -58,8 +58,10 @@ class File(Object):
         return self
 
     @method()
-    def open(self, receiver, context, m, filename, mode="r"):
-        self.value = open(str(filename), str(mode))
+    def open(self, receiver, context, m, filename, mode=None):
+        filename = str(filename(context))
+        mode = str(mode(context)) if mode else "r"
+        self.value = open(filename, mode)
         self._update_status()
         return self
 
