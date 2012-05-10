@@ -26,7 +26,11 @@ class Block(Object):
 
     def create_locals(self, receiver, context, m, parent):
         self.locals = Locals()
-        self.locals["parent"] = parent
+
+        if parent is not None:
+            self.locals["parent"] = parent
+        else:
+            self.locals["parent"] = receiver
 
         if self.scope is not None:
             self.locals["self"] = self.scope
@@ -50,5 +54,7 @@ class Block(Object):
                 self.locals[arg.name] = args[i](context)
             else:
                 self.locals[arg.name] = self["None"](context)
+
+        import pdb; pdb.set_trace()
 
         return self.body(self.locals)
