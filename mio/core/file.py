@@ -80,7 +80,8 @@ class File(Object):
 
     @method()
     def seek(self, receiver, context, m, offset, whence=0):
-        self.value.seek(int(offset), int(whence))
+        whence = int(whence(context)) if whence else 0
+        self.value.seek(int(offset(context)), whence)
         return self
 
     @method()
@@ -88,18 +89,19 @@ class File(Object):
         return Number(self.value.tell())
 
     @method()
-    def truncate(self, receiver, context, m, size=0):
-        size = int(size) or self.value.tell()
+    def truncate(self, receiver, context, m, size=None):
+        size = int(size(context)) if size or self.value.tell()
         self.value.truncate(size)
         return self
 
     @method()
     def write(self, receiver, context, m, data):
-        self.value.write(str(data))
+        date = str(data(context))
+        self.value.write(data)
         return self
 
     @method()
     def writelines(self, receiver, context, m, lines):
-        lines = [str(line) for line in lines]
+        lines = [str(line(context)) for line in lines]
         self.value.writelines(lines)
         return self
