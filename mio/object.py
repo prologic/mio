@@ -67,7 +67,7 @@ class Object(object):
 
     def __str__(self):
         type = self.attrs.get("type",  self.__class__.__name__)
-        if isinstance(type, Object):
+        if isinstance(type, Object) and not isinstance(type.value, str):
             type = self.__class__.__name__
         default = "%s_%s" % (str(type), hex(id(self)))
         return str(self.value) if self.value is not Null else default
