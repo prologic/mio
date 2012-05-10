@@ -25,7 +25,8 @@ class Block(Object):
         self["parent"] = runtime.state.find("Object")
 
     def create_locals(self, receiver, context, m, parent):
-        self.locals = Locals()
+        if self.locals is None:
+            self.locals = Locals()
 
         if parent is not None:
             self.locals["parent"] = parent
