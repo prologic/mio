@@ -128,23 +128,16 @@ class Object(object):
     @method("block")
     def block(self, receiver, context, m, *args):
         from block import Block
-        args, expr = args[:-1], args[-1:][0]
-        return Block(context, expr, args)
+        args, expression = args[:-1], args[-1:][0]
+        return Block(context, expression, args)
 
     @method("method")
     def _method(self, receiver, context, m, *args):
         from block import Block
         from closure import Closure
-
-        if m.parent is not None:
-            name = m.parent.args[0].name
-        else:
-            name = ""
-
-        args, expr = args[:-1], args[-1:][0]
-
-        block = Block(None, expr, args)
-        return Closure(name, block, receiver)
+        name = m.parent.args[0].name if m.parent is not None else ""
+        args, expression = args[:-1], args[-1:][0]
+        return Closure(name, Block(None, expression, args), receiver)
 
     # Flow Control
 
