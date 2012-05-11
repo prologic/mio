@@ -4,6 +4,7 @@ from traceback import format_exc
 import mio
 from errors import Error
 from utils import tryimport
+from attrdict import AttrDict
 from parser import parse, tokenize
 
 
@@ -13,6 +14,8 @@ class Interpreter:
         self.opts = opts
         self.lobby = lobby
         self.state = state
+
+        self.env = AttrDict()
 
         for module in glob("./lib/*.mio"):
             self.load(module)
@@ -27,7 +30,12 @@ class Interpreter:
             message = parse(tokenize(code))
 
         try:
-            return message.eval(self.lobby, self.lobby, message)
+            self.env.update({
+                "msg": message,
+                "sender": self.lobby, 
+                "target": self.lobby,
+            })
+            return message.perform_on(self.env, self.lobby, self.lobby)
         except Error as e:
             print("%s\n%r" % (e, message))
 

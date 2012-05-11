@@ -55,51 +55,47 @@ class Message(Object):
 
     __repr__ = __str__
 
-    @method()
-    def eval(self, receiver, context=None, m=None, *args):
-        #import pudb; pudb.set_trace()
+    def perform_on(self, env, locals, target=None):
+        target = target or env.target
 
-        if context is None:
-            context = receiver
-        if m is None:
-            m = self
+        m = self
+        result = target
 
-        if self.terminator:
-            value = context
-        elif self.value:
-            value = self.value
-        else:
-            value = receiver[self.name]
-            if isinstance(value, Message):
-                # Prevent a recursion loop
-                if value not in receiver.attrs.values():
-                    value = value.eval(receiver, context, m, *self.args)
-                else:
-                    value = value(receiver, context, m, *self.args)
+        while m is not None:
+            if m.value is not None:
+                result = m.value
             else:
-                value = value(receiver, context, m, *self.args)
+                result = target.perform(env.update({
+                    "msg": m,
+                    "sender": locals,
+                    "target": target
+                }))
+            target = result
+            m = m.next
+        return result
 
-        if runtime.state.stop():
-            return runtime.state.returnValue
-        elif runtime.state.isContinue:
-            runtime.state.isContinue = False
+    def eval_arg(self, env, i):
+        if not i < len(self.args):
             return runtime.state.find("None")
-        elif self.next:
-            return self.next.eval(value, context, m)
-        else:
-            return receiver if self.terminator else value
+        msg = self.args[i]
+        if msg.value is not None and msg.next is None:
+            return msg.value
+        return msg.perform_on(env.update({"msg": msg}), env.sender, env.sender)
+
+    def eval_args(self, env):
+        return [self.eval_arg(env, i) for i, arg in enumerate(self.args)]
 
     @method("arg")
-    def _arg(self, receiver, context, m, index):
+    def _arg(self, env, index):
         index = int(index.eval(context))
         return self.args[index]
 
     @method("args")
-    def _args(self, receiver, context, m):
+    def _args(self, env):
         return self["List"].clone(self.args)
 
     @method("next")
-    def _next(self, receiver, context, m):
+    def _next(self, env):
         return self.next or self["None"]
 
     @property

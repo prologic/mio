@@ -34,24 +34,21 @@ class String(Object):
     # General Operations
 
     @method("+")
-    def add(self, receiver, context, m, other):
-        return self.clone(receiver + str(other.eval(context)))
+    def add(self, env, other):
+        return self.clone(env.target + other)
 
     @method("*")
-    def mul(self, receiver, context, m, other):
-        return self.clone(receiver * int(other.eval(context)))
+    def mul(self, env, other):
+        return self.clone(env.target * other)
 
     @method()
-    def index(self, receiver, context, m, sub, start=None, end=None):
-        sub = sub.eval(context)
-        start = start.eval(context) if start else None
-        end = end.eval(context) if end else None
-        return Number(receiver.index(sub, start, end))
+    def index(self, env, sub, start=None, end=None):
+        return Number(env.target.index(sub, start, end))
 
     @method()
-    def lower(self, receiver, context, m):
-        return self.clone(receiver.value.lower())
+    def lower(self, env):
+        return self.clone(env.target.value.lower())
 
     @method()
-    def upper(self, receiver, context, m):
-        return self.clone(receiver.value.upper())
+    def upper(self, env):
+        return self.clone(env.target.value.upper())

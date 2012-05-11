@@ -21,48 +21,47 @@ class List(Object):
         return "[%s]" % ", ".join([repr(x) for x in self.value])
 
     @method()
-    def init(self, receiver, context, m, *args):
+    def init(self, env, *args):
         self.value = list(args)
 
     # General Operations
 
     @method()
-    def append(self, receiver, context, m, item):
-        receiver.value.append(item.eval(context))
-        return receiver
+    def append(self, env, item):
+        env.target.value.append(item)
+        return env.target
 
     @method()
-    def count(self, receiver, context, m, value):
-        return Number(receiver.value.count(value.eval(context)))
+    def count(self, env, value):
+        return Number(env.target.value.count(value))
 
     @method()
-    def extend(self, receiver, context, m, *args):
-        args = [arg.eval(context) for arg in args]
-        receiver.value.extend(args)
-        return receiver
+    def extend(self, env, *args):
+        env.target.value.extend(args)
+        return env.target
 
     @method()
     def len(self):
-        return Number(len(receiver.value))
+        return Number(len(env.target.value))
 
     @method()
-    def at(self, receiver, context, m, index):
-        return receiver.value[int(index.eval(context))]
+    def at(self, env, index):
+        return env.target.value[index]
 
     @method()
-    def reverse(self, receiver, context, m):
-        receiver.value.reverse()
-        return receiver
+    def reverse(self, env):
+        env.target.value.reverse()
+        return env.target
 
     @method()
-    def reversed(self, receiver, context, m):
-        return self.clone(reversed(receiver.value))
+    def reversed(self, env):
+        return self.clone(reversed(env.target.value))
 
     @method()
-    def sort(self, receiver, context, m):
-        receiver.value.sort()
-        return receiver
+    def sort(self, env):
+        env.target.value.sort()
+        return env.target
 
     @method()
-    def sorted(self, receiver, context, m):
-        return self.clone(sorted(receiver.value))
+    def sorted(self, env):
+        return self.clone(sorted(env.target.value))

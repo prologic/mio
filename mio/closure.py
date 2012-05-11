@@ -2,8 +2,7 @@ from inspect import ismethod
 
 import runtime
 from object import Object
-from errors import ArgsError
-from utils import format_method
+from utils import format_method, method
 
 
 class Closure(Object):
@@ -15,20 +14,18 @@ class Closure(Object):
         self.method = method
         self.receiver = receiver
 
-        self.create_methods()
+        self.callable = True
+
+        self["call"] = lambda env: self(env)
 
     def __str__(self):
         if ismethod(self.method):
             return format_method(self.method)
         return str(self.method)
 
-    def __call__(self, receiver, context, m, *args):
-        if ismethod(self.method):
-            if not self.method.vargs and not len(args) in self.method.nargs:
-                raise ArgsError(len(args), self.method)
-
+    def __call__(self, env):
         try:
             runtime.state.reset()
-            return self.method(receiver, context, m, *args)
+            return self.method(env, *env.msg.eval_args(env))
         finally:
             runtime.state.reset()

@@ -29,7 +29,7 @@ class Range(Object):
         return super(Range, self).__str__()
 
     @method()
-    def init(self, receiver, context, m, *args):
+    def init(self, env, *args):
         if len(args) == 3:
             self["start"] = args[0]
             self["stop"] = args[1]

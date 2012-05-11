@@ -24,48 +24,46 @@ class Map(Object):
         return "{%s}" % pairs
 
     @method()
-    def init(self, receiver, context, m, *args):
-        args = [arg.eval(context) for arg in args]
+    def init(self, env, *args):
         it = iter(args)
-        receiver.value = dict(list(zip(it, it)))
+        env.target.value = dict(zip(it, it))
 
     # General Operations
 
     @method()
-    def clear(self, receiver, context, m):
-        receiver.value.clear()
+    def clear(self, env):
+        env.target.value.clear()
         return runtime.state.find("None")
 
     @method()
-    def copy(self, receiver, context, m):
-        return self.clone(receiver.value.copy())
+    def copy(self, env):
+        return self.clone(env.target.value.copy())
 
     @method()
-    def get(self, receiver, context, m, key, default=None):
-        default = default.eval(context) if default else runtime.state.find("None")
-        return receiver.value.get(key.eval(context), default)
+    def get(self, env, key, default=None):
+        default = default if default else runtime.state.find("None")
+        return env.target.value.get(key, default)
 
     @method()
-    def has(self, receiver, context, m, key):
-        key = key.eval(context)
-        if key in receiver.value:
+    def has(self, env, key):
+        if key in env.target.value:
             return runtime.state.find("True")
         return runtime.state.find("False")
 
     @method()
-    def items(self, receiver, context, m):
-        items = [List(item) for item in receiver.value.items()]
+    def items(self, env):
+        items = [List(item) for item in env.target.value.items()]
         return List(items)
 
     @method()
-    def keys(self, receiver, context, m):
-        return List(receiver.value.keys())
+    def keys(self, env):
+        return List(env.target.value.keys())
 
     @method()
-    def set(self, receiver, context, m, key, value):
-        receiver.value[key.eval(context)] = value.eval(context)
-        return receiver
+    def set(self, env, key, value):
+        env.target.value[key] = value
+        return env.target
 
     @method()
-    def values(self, receiver, context, m):
-        return List(receiver.value.values())
+    def values(self, env):
+        return List(env.target.value.values())

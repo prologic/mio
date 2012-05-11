@@ -51,57 +51,52 @@ class File(Object):
     # General Operations
 
     @method()
-    def close(self, receiver, context, m):
+    def close(self, env):
         self.value.close()
         self.value = None
         self.update_status()
         return self
 
     @method()
-    def open(self, receiver, context, m, filename, mode=None):
-        filename = str(filename.eval(context))
-        mode = str(mode.eval(context)) if mode else "r"
+    def open(self, env, filename, mode="r"):
         self.value = open(filename, mode)
         self.update_status()
         return self
 
     @method()
-    def read(self, receiver, context, m):
+    def read(self, env):
         return String(self.value.read())
 
     @method()
-    def readline(self, receiver, context, m):
+    def readline(self, env):
         return String(self.value.readline())
 
     @method()
-    def readlines(self, receiver, context, m):
+    def readlines(self, env):
         lines = [String(line) for line in self.value.readlines()]
         return List(lines)
 
     @method()
-    def seek(self, receiver, context, m, offset, whence=0):
-        whence = int(whence.eval(context)) if whence else 0
-        self.value.seek(int(offset.eval(context)), whence)
+    def seek(self, env, offset, whence=0):
+        self.value.seek(offset, whence)
         return self
 
     @method()
-    def pos(self, receiver, context, m):
+    def pos(self, env):
         return Number(self.value.tell())
 
     @method()
-    def truncate(self, receiver, context, m, size=None):
-        size = int(size.eval(context)) if size else self.value.tell()
+    def truncate(self, env, size=None):
+        size = int(size) if size else self.value.tell()
         self.value.truncate(size)
         return self
 
     @method()
-    def write(self, receiver, context, m, data):
-        data = str(data.eval(context))
+    def write(self, env, data):
         self.value.write(data)
         return self
 
     @method()
-    def writelines(self, receiver, context, m, lines):
-        lines = [str(line.eval(context)) for line in lines]
+    def writelines(self, env, lines):
         self.value.writelines(lines)
         return self
