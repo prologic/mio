@@ -27,10 +27,10 @@ class Object(object):
         return hash(self.value)
 
     def __eq__(self, other):
-        return self.value == other.value
+        return self.value == getattr(other, "value", other)
 
     def __cmp__(self, other):
-        return cmp(self.value, other.value)
+        return cmp(self.value, getattr(other, "value", other))
 
     def __contains__(self, key):
         return key in self.attrs
@@ -72,7 +72,7 @@ class Object(object):
         predicate = lambda x: ismethod(x) and getattr(x, "method", False)
         for name, method in getmembers(self, predicate):
             if name in keys:
-                self[method.name] = Closure(method.name, method, self)
+                self[method.name] = Closure(method)
 
     def lookup(self, env, key):
         def default_lookup(env, key):
@@ -118,6 +118,14 @@ class Object(object):
     def forward(self, key):
         return runtime.state.find(key)
 
+#    @method("\n")
+#    def newline(self, env):
+#        return env.sender
+
+#    @method(";")
+#    def newline(self, env):
+#        return env.sender
+
     # Attribute Operations
 
     @method("del")
@@ -134,16 +142,21 @@ class Object(object):
         return runtime.state.find("False")
 
     @method()
-    def set(self, env, key, value):
+    def set(self, env):
+        key, value = env.msg.args
         key = key.value if key.type else key.name
-        env.target[key] = value
+        env.target[key] = value.eval(env)
         return value
 
     @method()
-    def get(self, env, key, default=None):
-        key = key.eval(context).value if key.type else key.name
-        default = default.eval(context) if default else self["None"]
-        return receiver.attrs.get(key, default)
+    def get(self, env):
+        if len(env.msg.args) == 2:
+            key, default = env.msg.args
+        else:
+            key, default = env.msg.args[0], runtime.state.find("None")
+
+        key = key.value if key.type else key.name
+        return env.target.lookup(env, key)
 
     # Method/Block Operations
 
@@ -157,9 +170,8 @@ class Object(object):
     def _method(self, env, *args):
         from block import Block
         from closure import Closure
-        name = m.parent.args[0].name if m.parent is not None else ""
-        args, expression = args[:-1], args[-1:][0]
-        return Closure(name, Block(None, expression, args), receiver)
+        args, expression = env.msg.args[:-1], env.msg.args[-1:][0]
+        return Closure(Block(None, expression, args), self)
 
     # Flow Control
 
@@ -274,7 +286,8 @@ class Object(object):
 
     @method()
     def do(self, env):
-        return env.msg.eval_arg(env, 0).perform_on(env, env.sender, env.target)
+        env.msg.eval_arg(env.update({"sender": env.target}), 0)
+        return env.target
 
     @method()
     def mixin(self, env, other):

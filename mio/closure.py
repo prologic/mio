@@ -7,12 +7,10 @@ from utils import format_method, method
 
 class Closure(Object):
 
-    def __init__(self, name, method, receiver):
+    def __init__(self, method):
         super(Closure, self).__init__()
 
-        self.name = name
         self.method = method
-        self.receiver = receiver
 
         self.callable = True
 
@@ -26,6 +24,6 @@ class Closure(Object):
     def __call__(self, env):
         try:
             runtime.state.reset()
-            return self.method(env, *env.msg.eval_args(env))
+            return self.method(env)
         finally:
             runtime.state.reset()

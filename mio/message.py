@@ -74,6 +74,12 @@ class Message(Object):
             m = m.next
         return result
 
+    def eval(self, env):
+        if self.value is not None and self.next is None:
+            return self.value
+        return self.perform_on(env.update({"msg": self}),
+                env.sender, env.sender)
+
     def eval_arg(self, env, i):
         if not i < len(self.args):
             return runtime.state.find("None")
