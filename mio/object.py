@@ -166,7 +166,7 @@ class Object(object):
         runtime.state.reset()
 
         while bool(condition.eval(context)) and (not runtime.state.stop()):
-            result = expressione.eval(context)
+            result = expression.eval(context)
 
         runtime.state.reset()
 
