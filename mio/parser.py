@@ -129,7 +129,7 @@ def make_chain(messages):
 
 
 def make_number(n):
-    return Number(n)
+    return Number(eval(n))
 
 
 def make_string(n):
