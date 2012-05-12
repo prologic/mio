@@ -18,8 +18,13 @@ class Closure(Object):
         self.create_methods()
 
     def __str__(self):
+        type = self.receiver.attrs.get("type", 
+                self.receiver.__class__.__name__)
+        if isinstance(type, Object) and not isinstance(type.value, str):
+            type = self.receiver.__class__.__name__
+
         if ismethod(self.method):
-            return format_method(self.method)
+            return "%s_%s" % (type, format_method(self.method))
         return str(self.method)
 
     def __call__(self, receiver, context, m, *args):
