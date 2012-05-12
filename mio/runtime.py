@@ -11,3 +11,8 @@ def init(reinit=False):
     lobby = Object()
     state = State(lobby)
     state.create_objects()
+
+
+def find(name):
+    global lobby
+    return lobby.attrs[name]

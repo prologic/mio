@@ -129,15 +129,17 @@ class Object(object):
     # Attribute Operations
 
     @method("del")
-    def _del(self, env, key):
-        key = key.eval(context).value if key.type else key.name
-        del receiver[key]
+    def _del(self, env):
+        key = env.msg.args[0]
+        key = key.value if key.type else key.name
+        del env.target[key]
         return runtime.state.find("None")
 
     @method()
     def has(self, env, key):
-        key = key.eval(context).value if key.type else key.name
-        if key in receiver:
+        key = env.msg.args[0]
+        key = key.value if key.type else key.name
+        if key in env.target:
             return runtime.state.find("True")
         return runtime.state.find("False")
 
@@ -161,10 +163,11 @@ class Object(object):
     # Method/Block Operations
 
     @method("block")
-    def block(self, env, *args):
+    def block(self, env):
         from block import Block
+        args = env.msg.args
         args, expression = args[:-1], args[-1:][0]
-        return Block(context, expression, args)
+        return Block(env.target, expression, args)
 
     @method("method")
     def _method(self, env, *args):
@@ -177,12 +180,12 @@ class Object(object):
 
     @method()
     def foreach(self, env, *args):
-        result = self["None"]
+        result = runtime.find("None")
         runtime.state.reset()
 
         vars, expression = args[:-1], args[-1]
 
-        for item in receiver:
+        for item in env.target:
             if len(vars) == 2:
                 context[vars[0].name], context[vars[1].name] = item
             elif len(vars) == 1:
@@ -195,7 +198,7 @@ class Object(object):
 
     @method("while")
     def _while(self, env, condition, expression):
-        result = self["None"]
+        result = runtime.find("None")
 
         runtime.state.reset()
 
@@ -213,23 +216,23 @@ class Object(object):
         if index < len(args):
             return args[index].eval(context)
 
-        return self["True"] if test else self["False"]
+        return runtime.find("True") if test else runtime.find("False")
 
     @method("continue")
     def _continue(self, env):
         runtime.state.isContinue = True
-        return self["None"]
+        return runtime.find("None")
 
     @method("break")
     def _break(self, reciver, context, m, *args):
-        value = args[0].eval(context) if args else self["None"]
+        value = args[0].eval(context) if args else runtime.find("None")
         runtime.state.isBreak = True
         runtime.state.returnValue = value
         return value
 
     @method("return")
     def _return(self, reciver, context, m, *args):
-        value = args[0].eval(context) if args else self["None"]
+        value = args[0].eval(context) if args else runtime.find("None")
         runtime.state.isReturn = True
         runtime.state.returnValue = value
         return value
@@ -238,49 +241,49 @@ class Object(object):
 
     @method("print")
     def _print(self, env):
-        sys.stdout.write("%s" % receiver.value)
-        return receiver
+        sys.stdout.write("%s" % env.target)
+        return env.target
 
     @method()
     def println(self, env):
-        sys.stdout.write("%s\n" % receiver.value)
-        return receiver
+        sys.stdout.write("%s\n" % env.target)
+        return env.target
 
     @method()
     def write(self, env, *args):
         args = [arg.eval(context) for arg in args]
         sys.stdout.write("%s" % " ".join([str(arg) for arg in args]))
-        return self["None"]
+        return runtime.find("None")
 
     @method()
     def writeln(self, env, *args):
         args = [arg.eval(context) for arg in args]
         sys.stdout.write("%s\n" % " ".join([str(arg) for arg in args]))
-        return self["None"]
+        return runtime.find("None")
 
     # Introspection
 
     @method()
     def type(self, env):
-        return self["String"].clone(receiver.__class__.__name__)
+        return runtime.find("String").clone(env.target.__class__.__name__)
 
     @method()
     def hash(self, env):
-        return self["Number"].clone(hash(receiver))
+        return runtime.find("Number").clone(hash(env.target))
 
     @method()
     def id(self, env):
-        return self["Number"].clone(id(receiver))
+        return runtime.find("Number").clone(id(env.target))
 
     @method()
     def keys(self, env):
-        return self["List"].clone(receiver.attrs.keys())
+        return runtime.find("List").clone(env.target.attrs.keys())
 
     @method()
     def summary(self, env):
-        type = str(receiver["type"](env))
-        sys.stdout.write("%s\n" % format_object(receiver, type=type))
-        return receiver
+        type = env.target.lookup(env, "type")
+        sys.stdout.write("%s\n" % format_object(env.target, type=type))
+        return env.target
 
     # Object Operations
 
@@ -290,24 +293,25 @@ class Object(object):
         return env.target
 
     @method()
-    def mixin(self, env, other):
+    def mixin(self, env):
         skip = ("parent", "type")
-        other = other.eval(context)
+        other = env.msg.eval_arg(env, 0)
         pairs = ((k, v) for k, v in other.attrs.items() if not k in skip)
         self.attrs.update(pairs)
-        return receiver
+        return env.target
 
     @method("clone")
-    def _clone(self, env, *args):
-        if m.parent is not None:
-            type = self["String"].clone(m.parent.args[0].name)
+    def _clone(self, env):
+        if env.msg.parent is not None:
+            type = runtime.find("String").clone(env.msg.parent.args[0].name)
         else:
             type = None
 
-        cloned = receiver.clone(type=type)
+        cloned = env.target.clone(type=type)
 
         if "init" in cloned:
-            cloned["init"](context, *args)
+            from message import Message
+            clonded.perform(env.update("msg": Message("init", *env.msg.args)))
 
         return cloned
 
@@ -325,38 +329,40 @@ class Object(object):
     @method()
     def evalArgAndReturnNone(self, env, arg=None):
         arg.eval(context)
-        return self["None"]
+        return runtime.find("None")
 
     @method("==")
-    def eq(self, env, other):
-        test = receiver == other.eval(context)
-        return self["True"] if test else self["False"]
+    def eq(self, env):
+        test = env.target == env.msg.eval_arg(env, 0)
+        return runtime.find("True") if test else runtime.find("False")
 
     @method("!=")
-    def neq(self, env, other):
-        test = not (receiver == other.eval(context))
-        return self["True"] if test else self["False"]
+    def neq(self, env):
+        test = not (env.target == env.msg.eval_arg(env, 0))
+        return runtime.find("True") if test else runtime.find("False")
 
     @method()
-    def cmp(self, env, other):
-        return self["Number"].clone(cmp(receiver, other.eval(context)))
+    def cmp(self, env):
+        result = cmp(env.target, env.msg.eval_arg(env, 0))
+        return runtime.find("Number").clone(result)
 
     @method("and")
-    def _and(self, env, other):
-        return self.clone(receiver and other.eval(context))
+    def _and(self, env):
+        return self.clone(env.target and env.msg.eval_arg(env, 0))
 
     @method("or")
-    def _or(self, env, other):
-        return self.clone(receiver or other.eval(context))
+    def _or(self, env):
+        return self.clone(env.target or env.msg.eval_arg(env, 0))
 
     @method("not")
-    def _not(self, env, value=None):
-        if value:
-            return value.clone(not value.eval(context))
-        return receiver.clone(not receiver)
+    def _not(self, env):
+        if env.msg.args:
+            value = env.msg.eval_arg(env, 0)
+            return value.clone(not value)
+        return env.target.clone(not env.target)
 
     # Type Conversion
 
     @method("str")
     def str(self, env):
-        return self["String"].clone(str(receiver))
+        return runtime.find("String").clone(str(env.target))
