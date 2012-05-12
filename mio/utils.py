@@ -1,5 +1,5 @@
 from warnings import warn
-from inspect import getargspec, isfunction, ismethod
+from inspect import getargspec
 
 
 def format_method(f):
@@ -16,15 +16,13 @@ def format_method(f):
 
 def format_object(o, type=None):
     attrs = {}
+    if type is None:
+        type = o.__class__.__name__
     for k, v in o.attrs.items():
-        if ismethod(v) or isfunction(v):
-            attrs[k] = format_method(v)
-        else:
-            attrs[k] = str(v)
+        attrs[k] = str(v)
     attrs = "\n".join(["  %s = %s" % (str(k).ljust(15), v)
         for k, v in sorted(attrs.items())])
-    name = type or o.__class__.__name__
-    return "%s_%s:\n%s" % (name, hex(id(o)), attrs)
+    return "%s_%s:\n%s" % (type, hex(id(o)), attrs)
 
 
 def method(name=None):
