@@ -15,7 +15,7 @@ True do(
 
 False do(
 	and = False
-	or = method(v, v bool)
+	or = method(v, if(v))
 	type = "False"
 	str = "False"
 	not = True
@@ -30,7 +30,7 @@ None do(
 	type = "None"
 	str = "None"
 	and = False
-	or = method(v, v bool)
+	or = method(v, if(v))
     then = None
     else = None
     elif = None
