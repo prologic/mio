@@ -78,7 +78,7 @@ def make_chain(messages):
             else:
                 value = messages.pop(0)
 
-            message = Message("set", key, value)
+            message = Message("set", Message("\"%s\"" % key.name), value)
 
             if root is None:
                 root = prev = message

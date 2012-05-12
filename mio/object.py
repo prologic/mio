@@ -130,35 +130,31 @@ class Object(object):
 
     @method("del")
     def _del(self, env):
-        key = env.msg.args[0]
-        key = key.value if key.type else key.name
+        key = env.msg.eval_arg(env, 0)
         del env.target[key]
-        return runtime.state.find("None")
+        return runtime.find("None")
 
     @method()
     def has(self, env, key):
-        key = env.msg.args[0]
-        key = key.value if key.type else key.name
+        key = env.msg.eval_arg(env, 0)
         if key in env.target:
-            return runtime.state.find("True")
-        return runtime.state.find("False")
+            return runtime.find("True")
+        return runtime.find("False")
 
     @method()
     def set(self, env):
-        key, value = env.msg.args
-        key = key.value if key.type else key.name
-        env.target[key] = value.eval(env)
+        key, value = env.msg.eval_args(env)
+        env.target[key] = value
         return value
 
     @method()
     def get(self, env):
         if len(env.msg.args) == 2:
-            key, default = env.msg.args
+            key, default = env.msg.eval_args(env)
         else:
-            key, default = env.msg.args[0], runtime.state.find("None")
-
-        key = key.value if key.type else key.name
-        return env.target.lookup(env, key)
+            key, default = env.msg.eval_arg(env, 0), runtime.find("None")
+        result = env.target.lookup(env, key)
+        return result if result is not None else default
 
     # Method/Block Operations
 
