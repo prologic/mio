@@ -311,7 +311,8 @@ class Object(object):
 
         if "init" in cloned:
             from message import Message
-            clonded.perform(env.update("msg": Message("init", *env.msg.args)))
+            msg = Message("init", *env.msg.eval_args(env))
+            clonded.perform(env.update({"msg": msg}))
 
         return cloned
 
