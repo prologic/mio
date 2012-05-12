@@ -171,7 +171,7 @@ class Object(object):
         from block import Block
         from closure import Closure
         args, expression = env.msg.args[:-1], env.msg.args[-1:][0]
-        return Closure(Block(None, expression, args), self)
+        return Closure(Block(None, expression, args))
 
     # Flow Control
 
