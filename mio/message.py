@@ -1,34 +1,20 @@
-import re
-from decimal import Decimal
 
 import runtime
-from utils import method
 from object import Object
-
-from mio.core import Number
-from mio.core import String
+from utils import method
 
 
 class Message(Object):
 
-    def __init__(self, name, *args):
-        super(Message, self).__init__()
+    def __init__(self, name, *args, **kwargs):
+        value = kwargs.get("value")
+        super(Message, self).__init__(value=value)
 
         self.name = name
         self.args = args
 
         for arg in args:
             arg.parent = self
-
-        if isinstance(self.name, Decimal):
-            self.type = "Number"
-            self.value = Number(self.name)
-        elif re.match("\"(.*)\"", self.name):
-            self.type = "String"
-            self.value = String(eval(self.name))
-        else:
-            self.type = None
-            self.value = None
 
         self.terminator = name in ["\n", ";"]
 
@@ -57,8 +43,6 @@ class Message(Object):
 
     @method()
     def eval(self, receiver, context=None, m=None, *args):
-        #import pudb; pudb.set_trace()
-
         if context is None:
             context = receiver
         if m is None:

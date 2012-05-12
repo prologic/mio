@@ -32,10 +32,10 @@ class Object(object):
         return hash(self.value)
 
     def __eq__(self, other):
-        return self.value == other.value
+        return self.value == getattr(other, "value", other)
 
     def __cmp__(self, other):
-        return cmp(self.value, other.value)
+        return cmp(self.value, getattr(other, "value", other))
 
     def __contains__(self, key):
         return key in self.attrs
@@ -99,27 +99,27 @@ class Object(object):
 
     @method("del")
     def _del(self, receiver, context, m, key):
-        key = key.eval(context).value if key.type else key.name
+        key = key.eval(context)
         del receiver[key]
         return runtime.state.find("None")
 
     @method()
     def has(self, receiver, context, m, key):
-        key = key.eval(context).value if key.type else key.name
+        key = key.eval(context)
         if key in receiver:
             return runtime.state.find("True")
         return runtime.state.find("False")
 
     @method()
     def set(self, receiver, context, m, key, value):
-        key = key.eval(context).value if key.type else key.name
+        key = key.eval(context)
         value = value.eval(context)
         receiver[key] = value
         return value
 
     @method()
     def get(self, receiver, context, m, key, default=None):
-        key = key.eval(context).value if key.type else key.name
+        key = key.eval(context)
         default = default.eval(context) if default else self["None"]
         return receiver.attrs.get(key, default)
 
