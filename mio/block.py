@@ -26,6 +26,10 @@ class Block(Object):
         self.create_methods()
         self["parent"] = runtime.state.find("Object")
 
+    def __str__(self):
+        args = ",".join(self.args)
+        return "method(%s)" % args
+
     def create_locals(self, receiver, context, m, parent):
         self.locals = Locals()
 
