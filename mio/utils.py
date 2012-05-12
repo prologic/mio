@@ -29,7 +29,6 @@ def method(name=None):
     def wrapper(f):
         f.name = name or f.__name__
         f.method = True
-        f.type = "mio"
 
         argspec = getargspec(f)
         args = argspec.args
