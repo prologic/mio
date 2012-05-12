@@ -21,7 +21,7 @@ class Interpreter:
             self.load(module)
 
     def eval(self, code):
-        if self.opts.debug:
+        if self.opts and self.opts.debug:
             tokens = tokenize(code)
             message = parse(tokens)
             print("Tokens:\n%s\n" % tokens)
