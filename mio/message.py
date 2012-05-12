@@ -50,7 +50,7 @@ class Message(Object):
 
         if self.terminator:
             value = context
-        elif self.value:
+        elif self.value is not None:
             value = self.value
         else:
             value = receiver[self.name]
@@ -68,7 +68,7 @@ class Message(Object):
         elif runtime.state.isContinue:
             runtime.state.isContinue = False
             return runtime.state.find("None")
-        elif self.next:
+        elif self.next is not None:
             return self.next.eval(value, context, m)
         else:
             return receiver if self.terminator else value

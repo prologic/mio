@@ -31,6 +31,9 @@ class Object(object):
     def __hash__(self):
         return hash(self.value)
 
+    def __nonzero__(self):
+        return bool(self.value)
+
     def __eq__(self, other):
         return self.value == getattr(other, "value", other)
 
@@ -165,7 +168,7 @@ class Object(object):
 
         runtime.state.reset()
 
-        while bool(condition.eval(context)) and (not runtime.state.stop()):
+        while condition.eval(context) and (not runtime.state.stop()):
             result = expression.eval(context)
 
         runtime.state.reset()
@@ -174,7 +177,7 @@ class Object(object):
 
     @method("if")
     def _if(self, receiver, context, m, *args):
-        test = bool(args[0].eval(context))
+        test = args[0].eval(context)
         index = 1 if test else 2
         if index < len(args):
             return args[index].eval(context)
