@@ -118,13 +118,13 @@ class Object(object):
     def forward(self, key):
         return runtime.state.find(key)
 
-#    @method("\n")
-#    def newline(self, env):
-#        return env.sender
+    @method("\n")
+    def newline(self, env):
+        return env.sender
 
-#    @method(";")
-#    def newline(self, env):
-#        return env.sender
+    @method(";")
+    def semicolon(self, env):
+        return env.sender
 
     # Attribute Operations
 
