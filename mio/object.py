@@ -120,7 +120,7 @@ class Object(object):
     @method()
     def get(self, receiver, context, m, key, default=None):
         key = key.eval(context)
-        default = default.eval(context) if default else self["None"]
+        default = default.eval(context) if default else runtime.find("None")
         return receiver.attrs.get(key, default)
 
     # Method/Block Operations
@@ -143,7 +143,7 @@ class Object(object):
 
     @method()
     def foreach(self, receiver, context, m, *args):
-        result = self["None"]
+        result = runtime.find("None")
         runtime.state.reset()
 
         vars, expression = args[:-1], args[-1]
@@ -161,7 +161,7 @@ class Object(object):
 
     @method("while")
     def _while(self, receiver, context, m, condition, expression):
-        result = self["None"]
+        result = runtime.find("None")
 
         runtime.state.reset()
 
@@ -179,23 +179,23 @@ class Object(object):
         if index < len(args):
             return args[index].eval(context)
 
-        return self["True"] if test else self["False"]
+        return runtime.find("True") if test else runtime.find("False")
 
     @method("continue")
     def _continue(self, receiver, context, m):
         runtime.state.isContinue = True
-        return self["None"]
+        return runtime.find("None")
 
     @method("break")
     def _break(self, reciver, context, m, *args):
-        value = args[0].eval(context) if args else self["None"]
+        value = args[0].eval(context) if args else runtime.find("None")
         runtime.state.isBreak = True
         runtime.state.returnValue = value
         return value
 
     @method("return")
     def _return(self, reciver, context, m, *args):
-        value = args[0].eval(context) if args else self["None"]
+        value = args[0].eval(context) if args else runtime.find("None")
         runtime.state.isReturn = True
         runtime.state.returnValue = value
         return value
@@ -216,31 +216,31 @@ class Object(object):
     def write(self, receiver, context, m, *args):
         args = [arg.eval(context) for arg in args]
         sys.stdout.write("%s" % " ".join([str(arg) for arg in args]))
-        return self["None"]
+        return runtime.find("None")
 
     @method()
     def writeln(self, receiver, context, m, *args):
         args = [arg.eval(context) for arg in args]
         sys.stdout.write("%s\n" % " ".join([str(arg) for arg in args]))
-        return self["None"]
+        return runtime.find("None")
 
     # Introspection
 
     @method()
     def type(self, receiver, context, m):
-        return self["String"].clone(receiver.__class__.__name__)
+        return runtime.find("String").clone(receiver.__class__.__name__)
 
     @method()
     def hash(self, receiver, context, m):
-        return self["Number"].clone(hash(receiver))
+        return runtime.find("Number").clone(hash(receiver))
 
     @method()
     def id(self, receiver, context, m):
-        return self["Number"].clone(id(receiver))
+        return runtime.find("Number").clone(id(receiver))
 
     @method()
     def keys(self, receiver, context, m):
-        return self["List"].clone(receiver.attrs.keys())
+        return runtime.find("List").clone(receiver.attrs.keys())
 
     @method()
     def summary(self, receiver, context, m):
@@ -266,7 +266,7 @@ class Object(object):
     @method("clone")
     def _clone(self, receiver, context, m, *args):
         if m.parent is not None:
-            type = self["String"].clone(m.parent.args[0].name)
+            type = runtime.find("String").clone(m.parent.args[0].name)
         else:
             type = None
 
@@ -281,7 +281,7 @@ class Object(object):
 
     @method()
     def evalArg(self, receiver, context, m, arg=None):
-        return arg.eval(context) if arg else self["None"]
+        return arg.eval(context) if arg else runtime.find("None")
 
     @method()
     def evalArgAndReturnSelf(self, receiver, context, m, arg=None):
@@ -291,21 +291,21 @@ class Object(object):
     @method()
     def evalArgAndReturnNone(self, receiver, context, m, arg=None):
         arg.eval(context)
-        return self["None"]
+        return runtime.find("None")
 
     @method("==")
     def eq(self, receiver, context, m, other):
         test = receiver == other.eval(context)
-        return self["True"] if test else self["False"]
+        return runtime.find("True") if test else runtime.find("False")
 
     @method("!=")
     def neq(self, receiver, context, m, other):
         test = not (receiver == other.eval(context))
-        return self["True"] if test else self["False"]
+        return runtime.find("True") if test else runtime.find("False")
 
     @method()
     def cmp(self, receiver, context, m, other):
-        return self["Number"].clone(cmp(receiver, other.eval(context)))
+        return runtime.find("Number").clone(cmp(receiver, other.eval(context)))
 
     @method("and")
     def _and(self, receiver, context, m, other):
@@ -325,4 +325,4 @@ class Object(object):
 
     @method("str")
     def str(self, receiver, context, m):
-        return self["String"].clone(str(receiver))
+        return runtime.find("String").clone(str(receiver))
