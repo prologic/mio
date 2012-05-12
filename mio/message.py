@@ -21,13 +21,10 @@ class Message(Object):
             arg.parent = self
 
         if isinstance(self.name, Decimal):
-            self.type = "Number"
             self.value = Number(self.name)
         elif re.match("\"(.*)\"", self.name):
-            self.type = "String"
             self.value = String(eval(self.name))
         else:
-            self.type = None
             self.value = None
 
         self.terminator = name in ["\n", ";"]
@@ -56,7 +53,8 @@ class Message(Object):
     __repr__ = __str__
 
     def perform_on(self, env, locals, target=None):
-        target = target or env.target
+        if target is None:
+            target = env.target
 
         m = self
         result = target
@@ -91,18 +89,11 @@ class Message(Object):
     def eval_args(self, env):
         return [self.eval_arg(env, i) for i, arg in enumerate(self.args)]
 
-    @method("arg")
-    def _arg(self, env, index):
-        index = int(index.eval(context))
-        return self.args[index]
-
-    @method("args")
-    def _args(self, env):
-        return self["List"].clone(self.args)
-
     @method("next")
     def _next(self, env):
-        return self.next or self["None"]
+        if self.next is not None:
+            return self.next
+        return runtime.find("None")
 
     @property
     def prev(self):
