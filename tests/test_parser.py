@@ -3,14 +3,14 @@ from decimal import Decimal
 from mio.parser import parse, tokenize
 
 
-def test_simple_assignment():
+def test_simple_assignment(mio):
     chain = parse(tokenize("x = 1"))
     assert chain.name == "set"
     assert chain.args[0].name == "x"
     assert chain.args[1].name == Decimal(1)
 
 
-def test_complex_assignment():
+def test_complex_assignment(mio):
     chain = parse(tokenize("Foo x = 1"))
     assert chain.name == "Foo"
     assert chain.next.name == "set"
@@ -18,7 +18,7 @@ def test_complex_assignment():
     assert chain.next.args[1].name == Decimal(1)
 
 
-def test_complex_assignment2():
+def test_complex_assignment2(mio):
     chain = parse(tokenize("x = x + 1"))
     assert chain.name == "set"
     assert chain.args[0].name == "x"
@@ -27,13 +27,13 @@ def test_complex_assignment2():
     assert chain.args[1].next.args[0].name == Decimal("1")
 
 
-def test_chaining():
+def test_chaining(mio):
     chain = parse(tokenize("Foo bar"))
     assert chain.name == "Foo"
     assert chain.next.name == "bar"
 
 
-def test_operators():
+def test_operators(mio):
     chain = parse(tokenize("1 + 2"))
     assert repr(chain) == "1 +(2)"
 
@@ -41,6 +41,6 @@ def test_operators():
     assert repr(chain) == "1 +(2) *(3)"
 
 
-def test_grouping():
+def test_grouping(mio):
     chain = parse(tokenize("1 + (2 * 3)"))
     assert repr(chain) == "1 +(2 *(3))"

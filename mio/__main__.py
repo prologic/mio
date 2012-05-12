@@ -1,11 +1,11 @@
 #!/usr/bin/env python
 
+from glob import glob
 from optparse import OptionParser
 from signal import signal, SIGINT, SIG_IGN
 
 import mio
 from mio import runtime
-from mio.interpreter import Interpreter
 
 USAGE = "%prog [options] ... [-e expr | file | -]"
 VERSION = "%prog v" + mio.__version__
@@ -19,8 +19,8 @@ def parse_options():
             help="evalulate the given expression and exit")
 
     parser.add_option("-i", "",
-            action="store_true", default=False, dest="interpreter",
-            help="run the interpreter after processing the given files")
+            action="store_true", default=False, dest="interactive",
+            help="run interactively after processing the given files")
 
     parser.add_option("-d", "",
             action="store_true", default=False, dest="debug",
@@ -36,20 +36,19 @@ def main():
 
     signal(SIGINT, SIG_IGN)
 
-    runtime.init()
-    lobby = runtime.lobby
-    state = runtime.state
+    runtime.init(opts)
 
-    interpreter = Interpreter(opts, lobby, state)
+    for filename in glob("./lib/*.mio"):
+        runtime.state.load(filename)
 
     if opts.eval:
-        interpreter.eval(opts.eval)
+        runtime.state.eval(opts.eval)
     elif args:
-        interpreter.load(args[0])
-        if opts.interpreter:
-            interpreter.repl()
+        runtime.state.load(args[0])
+        if opts.interactive:
+            runtime.state.repl()
     else:
-        interpreter.repl()
+        runtime.state.repl()
 
 if __name__ == "__main__":
     main()

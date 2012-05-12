@@ -2,12 +2,17 @@ lobby = None
 state = None
 
 
-def init(reinit=False):
+def init(opts=None, reinit=False):
     global lobby, state
 
     from state import State
     from object import Object
 
     lobby = Object()
-    state = State(lobby)
+    state = State(opts, lobby)
     state.create_objects()
+
+
+def find(name):
+    global lobby
+    return lobby[name]

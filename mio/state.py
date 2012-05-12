@@ -1,4 +1,10 @@
+from traceback import format_exc
+
+import mio
+from errors import Error
 from object import Object
+from utils import tryimport
+from parser import parse, tokenize
 
 from core import Number
 from core import String
@@ -14,9 +20,10 @@ class State(object):
 
     STATES = ("isBreak", "isReturn",)
 
-    def __init__(self, lobby):
+    def __init__(self, opts, lobby):
         super(State, self).__init__()
 
+        self.opts = opts
         self.lobby = lobby
 
         self.reset()
@@ -56,3 +63,35 @@ class State(object):
 
     def find(self, name):
         return self.lobby.attrs[name]
+
+    def eval(self, code):
+        if self.opts and self.opts.debug:
+            tokens = tokenize(code)
+            message = parse(tokens)
+            print("Tokens:\n%s\n" % tokens)
+            print("Messages:\n%r\n" % message)
+        else:
+            message = parse(tokenize(code))
+
+        try:
+            return message.eval(self.lobby, self.lobby, message)
+        except Error as e:
+            print("%s\n%r" % (e, message))
+
+    def load(self, filename):
+        try:
+            self.eval(open(filename, "r").read())
+        except Exception as e:
+            print("ERROR: %s" % e)
+            print(format_exc())
+
+    def repl(self):
+        tryimport("readline")
+
+        print("mio %s" % mio.__version__)
+
+        while True:
+            try:
+                print("==> %s" % str(self.eval(raw_input(">>> "))))
+            except EOFError:
+                raise SystemExit(0)
