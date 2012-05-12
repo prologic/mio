@@ -33,10 +33,12 @@ class State(object):
     def create_objects(self):
         lobby = self.lobby
 
-        object = Object(methods=True)
+        object = Object()
 
         lobby["Lobby"] = lobby
         lobby["Object"] = object
+
+        object.create_methods()
 
         lobby["type"] = String("Lobby")
         lobby["parent"] = object

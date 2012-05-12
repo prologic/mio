@@ -11,7 +11,7 @@ class Object(object):
 
     __slots__ = ("attrs", "callable", "done_lookup", "value",)
 
-    def __init__(self, value=Null, methods=False):
+    def __init__(self, value=Null):
         super(Object, self).__init__()
 
         self.attrs = {}
@@ -19,9 +19,6 @@ class Object(object):
 
         self.callable = False
         self.done_lookup = False
-
-        if methods:
-            self.create_methods()
 
     def __hash__(self):
         return hash(self.value)
@@ -72,7 +69,7 @@ class Object(object):
         predicate = lambda x: ismethod(x) and getattr(x, "method", False)
         for name, method in getmembers(self, predicate):
             if name in keys:
-                self[method.name] = Closure(method)
+                self[method.name] = Closure(method, self)
 
     def lookup(self, env, key):
         def default_lookup(env, key):
@@ -171,7 +168,7 @@ class Object(object):
         from block import Block
         from closure import Closure
         args, expression = env.msg.args[:-1], env.msg.args[-1:][0]
-        return Closure(Block(None, expression, args))
+        return Closure(Block(None, expression, args), env.target)
 
     # Flow Control
 
@@ -278,7 +275,9 @@ class Object(object):
 
     @method()
     def summary(self, env):
-        type = env.target.lookup(env, "type")
+        type = env.target.attrs.get("type",  env.target.__class__.__name__)
+        if isinstance(type, Object) and not isinstance(type.value, str):
+            type = env.target.__class__.__name__
         sys.stdout.write("%s\n" % format_object(env.target, type=type))
         return env.target
 

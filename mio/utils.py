@@ -15,16 +15,11 @@ def format_method(f):
 
 
 def format_object(o, type=None):
-    attrs = {}
-    for k, v in o.attrs.items():
-        if ismethod(v) or isfunction(v):
-            attrs[k] = format_method(v)
-        else:
-            attrs[k] = str(v)
+    if type is None:
+        type = o.__class__.__name__
     attrs = "\n".join(["  %s = %s" % (str(k).ljust(15), v)
-        for k, v in sorted(attrs.items())])
-    name = type or o.__class__.__name__
-    return "%s_%s:\n%s" % (name, hex(id(o)), attrs)
+        for k, v in sorted(o.attrs.items())])
+    return "%s_%s:\n%s" % (type, hex(id(o)), attrs)
 
 
 def method(name=None):

@@ -44,33 +44,33 @@ class Number(Object):
     # General Arithmetic
 
     @method("+")
-    def add(self, env, other):
-        return self.clone(env.target + other)
+    def add(self, env):
+        return self.clone(env.target + env.msg.eval_arg(env, 0))
 
     @method("-")
-    def sub(self, env, other):
-        return self.clone(env.target - other)
+    def sub(self, env):
+        return self.clone(env.target - env.msg.eval_arg(env, 0))
 
     @method("*")
-    def mul(self, env, other):
-        return self.clone(env.target * other)
+    def mul(self, env):
+        return self.clone(env.target * env.msg.eval_arg(env, 0))
 
     @method("/")
-    def div(self, env, other):
-        return self.clone(env.target / other)
+    def div(self, env):
+        return self.clone(env.target / env.msg.eval_arg(env, 0))
 
     @method("**")
-    def pow(self, env, other):
-        return self.clone(env.target ** other)
+    def pow(self, env):
+        return self.clone(env.target ** env.msg.eval_arg(env, 0))
 
     @method("%")
-    def mod(self, env, other):
-        return self.clone(env.target % other)
+    def mod(self, env):
+        return self.clone(env.target % env.msg.eval_arg(env, 0))
 
     @method("<<")
-    def lshift(self, env, other):
-        return self.clone(env.target * 2 ** other)
+    def lshift(self, env):
+        return self.clone(env.target * 2 ** env.msg.eval_arg(env, 0))
 
     @method(">>")
-    def rshift(self, env, other):
-        return self.clone(env.target / 2 ** other)
+    def rshift(self, env):
+        return self.clone(env.target / 2 ** env.msg.eval_arg(env, 0))
