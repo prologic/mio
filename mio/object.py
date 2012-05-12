@@ -111,12 +111,13 @@ class Object(object):
 
         forward = self.lookup(env, "forward")
         if forward is not None:
-            forward(env.update({"scope": self}))
+            return forward(env.update({"scope": self}))
 
         raise KeyError(env.target, env.msg.name)
 
-    def forward(self, key):
-        return runtime.state.find(key)
+    @method()
+    def forward(self, env):
+        return runtime.find(env.msg.name)
 
     @method("\n")
     def newline(self, env):
