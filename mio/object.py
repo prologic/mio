@@ -286,7 +286,7 @@ class Object(object):
 
     @method()
     def do(self, env):
-        env.msg.eval_arg(env.update({"sender": env.target}), 0)
+        env.msg.args[0].perform_on(env, env.sender, env.target)
         return env.target
 
     @method()
@@ -314,8 +314,8 @@ class Object(object):
     # Boolean Operations
 
     @method()
-    def evalArg(self, env, arg=None):
-        return arg.eval(context) if arg else self["None"]
+    def evalArg(self, env):
+        return env.msg.eval_arg(env, 0)
 
     @method()
     def evalArgAndReturnSelf(self, env, arg=None):
