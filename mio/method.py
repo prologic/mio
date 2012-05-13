@@ -30,18 +30,15 @@ class Method(Object):
         args = ",".join(self.args)
         return "method(%s)" % args
 
-    def create_locals(self, receiver, context, m, parent):
+    def create_locals(self, receiver, context, m):
         self.locals = Locals()
-
-        if parent is not None:
-            self.locals["parent"] = parent
-        else:
-            self.locals["parent"] = receiver
 
         if self.scope is not None:
             self.locals["self"] = self.scope
+            self.locals["parent"] = self.scope
         else:
             self.locals["self"] = receiver
+            self.locals["parent"] = receiver
 
         call = Call()
         call["method"] = self
@@ -54,7 +51,7 @@ class Method(Object):
         self.locals["call"] = call
 
     def __call__(self, receiver, context=None, m=None, *args):
-        self.create_locals(receiver, context, m, self.scope)
+        self.create_locals(receiver, context, m)
 
         args = [arg.eval(context) for arg in args]
 
