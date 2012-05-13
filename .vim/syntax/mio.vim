@@ -12,24 +12,21 @@ endif
 syntax case match
 
 " equivalent to io-mode-prototype-names in io-mode.el
-syntax keyword xType List Lobby
-syntax keyword xType Message Number Object
-syntax keyword xType String
+syntax keyword xType File Globals List
+syntax keyword xType Map Message Number Object
+syntax keyword xType String Range System
 syntax keyword xType True False None
 
 " equivalent to io-mode-message-names in io-mode.el
 syntax keyword xKeyword and arg at str bool break
 syntax keyword xKeyword call catch clone continue
-syntax keyword xKeyword do else elif exit for
-syntax keyword xKeyword get has if id int float
-syntax keyword xKeyword list message
-syntax keyword xKeyword method not or parent pass eval
-syntax keyword xKeyword print raise 
-syntax keyword xKeyword del return
-syntax keyword xKeyword set 
-syntax keyword xKeyword slots super system then 
-syntax keyword xKeyword call try type while
-syntax keyword xKeyword write
+syntax keyword xKeyword do else elif foreach
+syntax keyword xKeyword get has if id hash type
+syntax keyword xKeyword method not or parent eval
+syntax keyword xKeyword print println raise 
+syntax keyword xKeyword del return yield
+syntax keyword xKeyword set keys summary then
+syntax keyword xKeyword super try while write writeln
 
 syntax region xOperator start=':' end='='
 syntax region xOperator start='!' end='='
