@@ -27,7 +27,7 @@ class System(Object):
         self["parent"] = runtime.state.find("Object")
 
     def build_args(self):
-        return List([String(arg) for arg in sys.argv[1:]])
+        return List([String(arg) for arg in runtime.state.args])
 
     @pymethod()
     def exit(self, receiver, context, m, status=None):

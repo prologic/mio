@@ -24,11 +24,15 @@ class State(object):
 
     STATES = ("isBreak", "isReturn",)
 
-    def __init__(self, opts, lobby):
+    def __init__(self, args, opts, lobby):
         super(State, self).__init__()
 
+        self.args = args
         self.opts = opts
         self.lobby = lobby
+
+        if self.args is None:
+            self.args = []
 
         self.reset()
 

@@ -36,7 +36,7 @@ def main():
 
     signal(SIGINT, SIG_IGN)
 
-    runtime.init(opts)
+    runtime.init(args, opts)
 
     for filename in glob("./lib/*.mio"):
         runtime.state.load(filename)
