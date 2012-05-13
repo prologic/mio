@@ -8,7 +8,6 @@ from errors import Error
 
 from block import Block
 from object import Object
-from closure import Closure
 from message import Message
 
 from core import Number
@@ -63,7 +62,6 @@ class State(object):
         lobby["False"] = object.clone(False)
 
         lobby["Block"] = Block(lobby, Message(""), [])
-        lobby["Closure"] = Closure("", self.find("None"), lobby)
         lobby["Message"] = Message("")
 
         lobby["File"] = File()

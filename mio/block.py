@@ -60,7 +60,11 @@ class Block(Object):
         for i, arg in enumerate(self.args):
             self.locals[arg] = args[i] if i < len(args) else self["None"]
 
-        return self.body.eval(self.locals, self.locals)
+        try:
+            runtime.state.reset()
+            return self.body.eval(self.locals, self.locals)
+        finally:
+            runtime.state.reset()
 
     @method("args")
     def _args(self, receiver, context, m):

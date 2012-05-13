@@ -21,12 +21,11 @@ class Object(object):
             self.create_methods()
 
     def create_methods(self):
-        from closure import Closure
         keys = self.__class__.__dict__.keys()
         predicate = lambda x: ismethod(x) and getattr(x, "method", False)
         for name, method in getmembers(self, predicate):
             if name in keys:
-                self[method.name] = Closure(method.name, method, self)
+                self[method.name] = method
 
     def __hash__(self):
         return hash(self.value)
@@ -137,10 +136,8 @@ class Object(object):
     @method("method")
     def _method(self, receiver, context, m, *args):
         from block import Block
-        from closure import Closure
-        name = m.parent.args[0].name if m.parent is not None else ""
         args, expression = args[:-1], args[-1:][0]
-        return Closure(name, Block(None, expression, args), receiver)
+        return Block(None, expression, args)
 
     # Flow Control
 
