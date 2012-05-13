@@ -1,0 +1,22 @@
+#!/usr/bin/env mio
+
+Foo = Object clone do (
+    foo = method(
+        "foo" println
+    )
+)
+
+World = Object clone do (
+
+    greeting = "World!"
+
+    init = method(greeting,
+        self greeting = greeting
+    )
+
+    hello = method(
+        writeln("Hello ", self greeting)
+    )
+)
+
+NewWorld = World mixin(Foo)
