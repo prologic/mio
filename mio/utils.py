@@ -19,7 +19,7 @@ def format_object(o, type=None):
     if type is None:
         type = o.__class__.__name__
     for k, v in o.attrs.items():
-        attrs[k] = format_method(v) if ismethod(v) else str(v)
+        attrs[k] = format_pymethod(v) if ismethod(v) else str(v)
     attrs = "\n".join(["  %s = %s" % (str(k).ljust(15), v)
         for k, v in sorted(attrs.items())])
     return "%s_%s:\n%s" % (type, hex(id(o)), attrs)
