@@ -71,10 +71,10 @@ class Object(object):
         return self
 
     def __str__(self):
-        type = self.attrs.get("type",  self.__class__.__name__)
-        if isinstance(type, Object) and not isinstance(type.value, str):
+        type = self.attrs.get("type", self.__class__.__name__)
+        if ismethod(type):
             type = self.__class__.__name__
-        default = "%s_%s" % (str(type), hex(id(self)))
+        default = "%s_%s" % (type, hex(id(self)))
         return str(self.value) if self.value is not Null else default
 
     __repr__ = __str__
@@ -244,7 +244,9 @@ class Object(object):
 
     @method()
     def summary(self, receiver, context, m):
-        type = str(receiver["type"](receiver, context, m))
+        type = receiver.attrs.get("type", receiver.__class__.__name__)
+        if ismethod(type):
+            type = receiver.__class__.__name__
         sys.stdout.write("%s\n" % format_object(receiver, type=type))
         return receiver
 
