@@ -74,18 +74,20 @@ class State(object):
         return self.lobby.attrs[name]
 
     def eval(self, code):
-        if self.opts and self.opts.debug:
-            tokens = tokenize(code)
-            message = parse(tokens)
-            print("Tokens:\n%s\n" % tokens)
-            print("Messages:\n%r\n" % message)
-        else:
-            message = parse(tokenize(code))
-
         try:
+            if self.opts and self.opts.debug:
+                tokens = tokenize(code)
+                message = parse(tokens)
+                print("Tokens:\n%s\n" % tokens)
+                print("Messages:\n%r\n" % message)
+            else:
+                message = parse(tokenize(code))
+
             return message.eval(self.lobby, self.lobby, message)
         except Error as e:
             print("%s\n%r" % (e, message))
+        except Exception as e:
+            print("%s\n%s" % (e, format_exc()))
 
     def load(self, filename):
         try:
