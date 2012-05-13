@@ -275,8 +275,10 @@ class Object(object):
 
         cloned = receiver.clone(type=type)
 
-        if "init" in cloned:
-            cloned["init"](context, *args)
+        try:
+            init = cloned["init"](cloned, context, m, *args)
+        except KeyError:
+            pass
 
         return cloned
 
