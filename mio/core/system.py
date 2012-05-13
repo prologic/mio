@@ -2,7 +2,7 @@ import mio
 import sys
 
 from mio import runtime
-from mio.utils import method
+from mio.utils import pymethod
 
 from mio.object import Object
 from mio.core.file import File
@@ -29,7 +29,7 @@ class System(Object):
     def build_args(self):
         return List([String(arg) for arg in sys.argv[1:]])
 
-    @method()
+    @pymethod()
     def exit(self, receiver, context, m, status=None):
         status = status.eval(context) if status is not None else 0
         raise SystemExit(status)

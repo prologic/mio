@@ -1,7 +1,7 @@
 
 import runtime
 from object import Object
-from utils import method
+from utils import pymethod
 
 
 class Message(Object):
@@ -41,7 +41,7 @@ class Message(Object):
 
     __repr__ = __str__
 
-    @method()
+    @pymethod()
     def eval(self, receiver, context=None, m=None, *args):
         if context is None:
             context = receiver
@@ -73,16 +73,16 @@ class Message(Object):
         else:
             return receiver if self.terminator else value
 
-    @method("arg")
+    @pymethod("arg")
     def _arg(self, receiver, context, m, index):
         index = int(index.eval(context))
         return self.args[index]
 
-    @method("args")
+    @pymethod("args")
     def _args(self, receiver, context, m):
         return self["List"].clone(self.args)
 
-    @method("next")
+    @pymethod("next")
     def _next(self, receiver, context, m):
         return self.next or self["None"]
 

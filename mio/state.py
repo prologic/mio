@@ -6,7 +6,7 @@ from parser import parse, tokenize
 
 from errors import Error
 
-from block import Block
+from method import Method
 from object import Object
 from message import Message
 
@@ -61,8 +61,8 @@ class State(object):
         lobby["True"] = object.clone(True)
         lobby["False"] = object.clone(False)
 
-        lobby["Block"] = Block(lobby, Message(""), [])
         lobby["Message"] = Message("")
+        lobby["Method"] = Method(None, Message(""), [])
 
         lobby["File"] = File()
         lobby["Range"] = Range()

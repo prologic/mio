@@ -2,7 +2,7 @@ from warnings import warn
 from inspect import getargspec, ismethod
 
 
-def format_method(f):
+def format_pymethod(f):
     name = getattr(f, "name", getattr(f, "__name__"))
     argspec = getargspec(f)
     args = list(argspec.args)
@@ -25,10 +25,10 @@ def format_object(o, type=None):
     return "%s_%s:\n%s" % (type, hex(id(o)), attrs)
 
 
-def method(name=None):
+def pymethod(name=None):
     def wrapper(f):
         f.name = name or f.__name__
-        f.method = True
+        f.pymethod = True
 
         argspec = getargspec(f)
         args = argspec.args

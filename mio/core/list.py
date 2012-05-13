@@ -1,5 +1,5 @@
 from mio import runtime
-from mio.utils import method
+from mio.utils import pymethod
 
 from mio.object import Object
 
@@ -20,49 +20,49 @@ class List(Object):
     def __str__(self):
         return "[%s]" % ", ".join([repr(x) for x in self.value])
 
-    @method()
+    @pymethod()
     def init(self, receiver, context, m, *args):
         receiver.value = list(args)
 
     # General Operations
 
-    @method()
+    @pymethod()
     def append(self, receiver, context, m, item):
         receiver.value.append(item.eval(context))
         return receiver
 
-    @method()
+    @pymethod()
     def count(self, receiver, context, m, value):
         return Number(receiver.value.count(value.eval(context)))
 
-    @method()
+    @pymethod()
     def extend(self, receiver, context, m, *args):
         args = [arg.eval(context) for arg in args]
         receiver.value.extend(args)
         return receiver
 
-    @method()
+    @pymethod()
     def len(self):
         return Number(len(receiver.value))
 
-    @method()
+    @pymethod()
     def at(self, receiver, context, m, index):
         return receiver.value[int(index.eval(context))]
 
-    @method()
+    @pymethod()
     def reverse(self, receiver, context, m):
         receiver.value.reverse()
         return receiver
 
-    @method()
+    @pymethod()
     def reversed(self, receiver, context, m):
         return self.clone(reversed(receiver.value))
 
-    @method()
+    @pymethod()
     def sort(self, receiver, context, m):
         receiver.value.sort()
         return receiver
 
-    @method()
+    @pymethod()
     def sorted(self, receiver, context, m):
         return self.clone(sorted(receiver.value))

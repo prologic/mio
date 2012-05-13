@@ -1,5 +1,5 @@
 import runtime
-from utils import method
+from utils import pymethod
 
 from object import Object
 
@@ -12,10 +12,10 @@ class Locals(Object):
     """Locals Object"""
 
 
-class Block(Object):
+class Method(Object):
 
     def __init__(self, scope, body, args):
-        super(Block, self).__init__()
+        super(Method, self).__init__()
 
         self.scope = scope
         self.body = body
@@ -44,6 +44,7 @@ class Block(Object):
             self.locals["self"] = receiver
 
         call = Call()
+        call["method"] = self
         call["parent"] = runtime.state.find("Object")
 
         call["message"] = m
@@ -66,14 +67,14 @@ class Block(Object):
         finally:
             runtime.state.reset()
 
-    @method("args")
+    @pymethod("args")
     def _args(self, receiver, context, m):
         return self["List"].clone(self.args)
 
-    @method("body")
+    @pymethod("body")
     def _body(self, receiver, context, m):
         return self.body
 
-    @method("scope")
+    @pymethod("scope")
     def _scope(self, receiver, context, m):
         return self.scope if self.scope is not None else self["None"]

@@ -1,5 +1,5 @@
 from mio import runtime
-from mio.utils import method
+from mio.utils import pymethod
 
 from mio.object import Object
 
@@ -28,7 +28,7 @@ class Range(Object):
             return str(self.value)
         return super(Range, self).__str__()
 
-    @method()
+    @pymethod()
     def init(self, receiver, context, m, *args):
         if len(args) == 3:
             self["start"] = args[0]

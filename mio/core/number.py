@@ -1,7 +1,7 @@
 from decimal import Decimal
 
 from mio import runtime
-from mio.utils import method
+from mio.utils import pymethod
 
 from mio.object import Object
 
@@ -43,34 +43,34 @@ class Number(Object):
 
     # General Arithmetic
 
-    @method("+")
+    @pymethod("+")
     def add(self, receiver, context, m, other):
         return self.clone(receiver + other.eval(context))
 
-    @method("-")
+    @pymethod("-")
     def sub(self, receiver, context, m, other):
         return self.clone(receiver - other.eval(context))
 
-    @method("*")
+    @pymethod("*")
     def mul(self, receiver, context, m, other):
         return self.clone(receiver * other.eval(context))
 
-    @method("/")
+    @pymethod("/")
     def div(self, receiver, context, m, other):
         return self.clone(receiver / other.eval(context))
 
-    @method("**")
+    @pymethod("**")
     def pow(self, receiver, context, m, other):
         return self.clone(receiver ** other.eval(context))
 
-    @method("%")
+    @pymethod("%")
     def mod(self, receiver, context, m, other):
         return self.clone(receiver % other.eval(context))
 
-    @method("<<")
+    @pymethod("<<")
     def lshift(self, receiver, context, m, other):
         return self.clone(receiver * 2 ** other.eval(context))
 
-    @method(">>")
+    @pymethod(">>")
     def rshift(self, receiver, context, m, other):
         return self.clone(receiver / 2 ** other.eval(context))

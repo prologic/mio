@@ -1,5 +1,5 @@
 from mio import runtime
-from mio.utils import method
+from mio.utils import pymethod
 
 from mio.object import Object
 
@@ -33,25 +33,25 @@ class String(Object):
 
     # General Operations
 
-    @method("+")
+    @pymethod("+")
     def add(self, receiver, context, m, other):
         return self.clone(receiver + str(other.eval(context)))
 
-    @method("*")
+    @pymethod("*")
     def mul(self, receiver, context, m, other):
         return self.clone(receiver * int(other.eval(context)))
 
-    @method()
+    @pymethod()
     def index(self, receiver, context, m, sub, start=None, end=None):
         sub = sub.eval(context)
         start = start.eval(context) if start else None
         end = end.eval(context) if end else None
         return Number(receiver.index(sub, start, end))
 
-    @method()
+    @pymethod()
     def lower(self, receiver, context, m):
         return self.clone(receiver.value.lower())
 
-    @method()
+    @pymethod()
     def upper(self, receiver, context, m):
         return self.clone(receiver.value.upper())

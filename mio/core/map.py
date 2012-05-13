@@ -1,5 +1,5 @@
 from mio import runtime
-from mio.utils import method
+from mio.utils import pymethod
 
 from mio.object import Object
 
@@ -23,7 +23,7 @@ class Map(Object):
         pairs = ", ".join(["%s: %r" % (k, v) for k, v in self.value.items()])
         return "{%s}" % pairs
 
-    @method()
+    @pymethod()
     def init(self, receiver, context, m, *args):
         args = [arg.eval(context) for arg in args]
         it = iter(args)
@@ -31,41 +31,41 @@ class Map(Object):
 
     # General Operations
 
-    @method()
+    @pymethod()
     def clear(self, receiver, context, m):
         receiver.value.clear()
         return runtime.state.find("None")
 
-    @method()
+    @pymethod()
     def copy(self, receiver, context, m):
         return self.clone(receiver.value.copy())
 
-    @method()
+    @pymethod()
     def get(self, receiver, context, m, key, default=None):
         default = default.eval(context) if default else runtime.state.find("None")
         return receiver.value.get(key.eval(context), default)
 
-    @method()
+    @pymethod()
     def has(self, receiver, context, m, key):
         key = key.eval(context)
         if key in receiver.value:
             return runtime.state.find("True")
         return runtime.state.find("False")
 
-    @method()
+    @pymethod()
     def items(self, receiver, context, m):
         items = [List(item) for item in receiver.value.items()]
         return List(items)
 
-    @method()
+    @pymethod()
     def keys(self, receiver, context, m):
         return List(receiver.value.keys())
 
-    @method()
+    @pymethod()
     def set(self, receiver, context, m, key, value):
         receiver.value[key.eval(context)] = value.eval(context)
         return receiver
 
-    @method()
+    @pymethod()
     def values(self, receiver, context, m):
         return List(receiver.value.values())

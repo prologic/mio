@@ -4,7 +4,7 @@ from inspect import  getmembers, ismethod
 
 import runtime
 from errors import KeyError
-from utils import format_object, method, Null
+from utils import format_object, pymethod, Null
 
 
 class Object(object):
@@ -22,7 +22,7 @@ class Object(object):
 
     def create_methods(self):
         keys = self.__class__.__dict__.keys()
-        predicate = lambda x: ismethod(x) and getattr(x, "method", False)
+        predicate = lambda x: ismethod(x) and getattr(x, "pymethod", False)
         for name, method in getmembers(self, predicate):
             if name in keys:
                 self[method.name] = method
@@ -99,27 +99,27 @@ class Object(object):
 
     # Attribute Operations
 
-    @method("del")
+    @pymethod("del")
     def _del(self, receiver, context, m, key):
         key = key.eval(context)
         del receiver[key]
         return runtime.state.find("None")
 
-    @method()
+    @pymethod()
     def has(self, receiver, context, m, key):
         key = key.eval(context)
         if key in receiver:
             return runtime.state.find("True")
         return runtime.state.find("False")
 
-    @method()
+    @pymethod()
     def set(self, receiver, context, m, key, value):
         key = key.eval(context)
         value = value.eval(context)
         receiver[key] = value
         return value
 
-    @method()
+    @pymethod()
     def get(self, receiver, context, m, key, default=None):
         key = key.eval(context)
         default = default.eval(context) if default else runtime.find("None")
@@ -127,21 +127,23 @@ class Object(object):
 
     # Method/Block Operations
 
-    @method("block")
-    def block(self, receiver, context, m, *args):
-        from block import Block
-        args, expression = args[:-1], args[-1:][0]
-        return Block(context, expression, args)
+    @pymethod()
+    def method(self, receiver, context, m, *args):
+        scope = context if "call" in context else None
+        args, body = args[:-1], args[-1:][0]
 
-    @method("method")
-    def _method(self, receiver, context, m, *args):
-        from block import Block
-        args, expression = args[:-1], args[-1:][0]
-        return Block(None, expression, args)
+        method = runtime.find("Method").clone()
+
+        method["parent"] = runtime.find("Object")
+        method.args = [arg.name for arg in args]
+        method.scope = scope
+        method.body = body
+
+        return method
 
     # Flow Control
 
-    @method()
+    @pymethod()
     def foreach(self, receiver, context, m, *args):
         result = runtime.find("None")
         runtime.state.reset()
@@ -159,7 +161,7 @@ class Object(object):
         runtime.state.reset()
         return result
 
-    @method("while")
+    @pymethod("while")
     def _while(self, receiver, context, m, condition, expression):
         result = runtime.find("None")
 
@@ -172,7 +174,7 @@ class Object(object):
 
         return result
 
-    @method("if")
+    @pymethod("if")
     def _if(self, receiver, context, m, *args):
         test = args[0].eval(context)
         index = 1 if test else 2
@@ -181,19 +183,19 @@ class Object(object):
 
         return runtime.find("True") if test else runtime.find("False")
 
-    @method("continue")
+    @pymethod("continue")
     def _continue(self, receiver, context, m):
         runtime.state.isContinue = True
         return runtime.find("None")
 
-    @method("break")
+    @pymethod("break")
     def _break(self, reciver, context, m, *args):
         value = args[0].eval(context) if args else runtime.find("None")
         runtime.state.isBreak = True
         runtime.state.returnValue = value
         return value
 
-    @method("return")
+    @pymethod("return")
     def _return(self, reciver, context, m, *args):
         value = args[0].eval(context) if args else runtime.find("None")
         runtime.state.isReturn = True
@@ -202,23 +204,23 @@ class Object(object):
 
     # I/O
 
-    @method("print")
+    @pymethod("print")
     def _print(self, receiver, context, m):
         sys.stdout.write("%s" % receiver.value)
         return receiver
 
-    @method()
+    @pymethod()
     def println(self, receiver, context, m):
         sys.stdout.write("%s\n" % receiver.value)
         return receiver
 
-    @method()
+    @pymethod()
     def write(self, receiver, context, m, *args):
         args = [arg.eval(context) for arg in args]
         sys.stdout.write("%s" % " ".join([str(arg) for arg in args]))
         return runtime.find("None")
 
-    @method()
+    @pymethod()
     def writeln(self, receiver, context, m, *args):
         args = [arg.eval(context) for arg in args]
         sys.stdout.write("%s\n" % " ".join([str(arg) for arg in args]))
@@ -226,23 +228,23 @@ class Object(object):
 
     # Introspection
 
-    @method()
+    @pymethod()
     def type(self, receiver, context, m):
         return runtime.find("String").clone(receiver.__class__.__name__)
 
-    @method()
+    @pymethod()
     def hash(self, receiver, context, m):
         return runtime.find("Number").clone(hash(receiver))
 
-    @method()
+    @pymethod()
     def id(self, receiver, context, m):
         return runtime.find("Number").clone(id(receiver))
 
-    @method()
+    @pymethod()
     def keys(self, receiver, context, m):
         return runtime.find("List").clone(receiver.attrs.keys())
 
-    @method()
+    @pymethod()
     def summary(self, receiver, context, m):
         type = receiver.attrs.get("type", receiver.__class__.__name__)
         if ismethod(type):
@@ -252,12 +254,12 @@ class Object(object):
 
     # Object Operations
 
-    @method()
+    @pymethod()
     def do(self, receiver, context, m, expression):
         expression.eval(receiver)
         return receiver
 
-    @method()
+    @pymethod()
     def mixin(self, receiver, context, m, other):
         skip = ("parent", "type")
         other = other.eval(context)
@@ -265,7 +267,7 @@ class Object(object):
         self.attrs.update(pairs)
         return receiver
 
-    @method("clone")
+    @pymethod("clone")
     def _clone(self, receiver, context, m, *args):
         if m.parent is not None:
             type = runtime.find("String").clone(m.parent.args[0].name)
@@ -283,43 +285,43 @@ class Object(object):
 
     # Boolean Operations
 
-    @method()
+    @pymethod()
     def evalArg(self, receiver, context, m, arg=None):
         return arg.eval(context) if arg else runtime.find("None")
 
-    @method()
+    @pymethod()
     def evalArgAndReturnSelf(self, receiver, context, m, arg=None):
         arg.eval(context)
         return self
 
-    @method()
+    @pymethod()
     def evalArgAndReturnNone(self, receiver, context, m, arg=None):
         arg.eval(context)
         return runtime.find("None")
 
-    @method("==")
+    @pymethod("==")
     def eq(self, receiver, context, m, other):
         test = receiver == other.eval(context)
         return runtime.find("True") if test else runtime.find("False")
 
-    @method("!=")
+    @pymethod("!=")
     def neq(self, receiver, context, m, other):
         test = not (receiver == other.eval(context))
         return runtime.find("True") if test else runtime.find("False")
 
-    @method()
+    @pymethod()
     def cmp(self, receiver, context, m, other):
         return runtime.find("Number").clone(cmp(receiver, other.eval(context)))
 
-    @method("and")
+    @pymethod("and")
     def _and(self, receiver, context, m, other):
         return self.clone(receiver and other.eval(context))
 
-    @method("or")
+    @pymethod("or")
     def _or(self, receiver, context, m, other):
         return self.clone(receiver or other.eval(context))
 
-    @method("not")
+    @pymethod("not")
     def _not(self, receiver, context, m, value=None):
         if value:
             return value.clone(not value.eval(context))
@@ -327,6 +329,6 @@ class Object(object):
 
     # Type Conversion
 
-    @method("str")
+    @pymethod("str")
     def str(self, receiver, context, m):
         return runtime.find("String").clone(str(receiver))

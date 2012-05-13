@@ -1,5 +1,5 @@
 from mio import runtime
-from mio.utils import method
+from mio.utils import pymethod
 
 from mio.object import Object
 
@@ -50,14 +50,14 @@ class File(Object):
 
     # General Operations
 
-    @method()
+    @pymethod()
     def close(self, receiver, context, m):
         self.value.close()
         self.value = None
         self.update_status()
         return self
 
-    @method()
+    @pymethod()
     def open(self, receiver, context, m, filename, mode=None):
         filename = str(filename.eval(context))
         mode = str(mode.eval(context)) if mode else "r"
@@ -65,42 +65,42 @@ class File(Object):
         self.update_status()
         return self
 
-    @method()
+    @pymethod()
     def read(self, receiver, context, m):
         return String(self.value.read())
 
-    @method()
+    @pymethod()
     def readline(self, receiver, context, m):
         return String(self.value.readline())
 
-    @method()
+    @pymethod()
     def readlines(self, receiver, context, m):
         lines = [String(line) for line in self.value.readlines()]
         return List(lines)
 
-    @method()
+    @pymethod()
     def seek(self, receiver, context, m, offset, whence=0):
         whence = int(whence.eval(context)) if whence else 0
         self.value.seek(int(offset.eval(context)), whence)
         return self
 
-    @method()
+    @pymethod()
     def pos(self, receiver, context, m):
         return Number(self.value.tell())
 
-    @method()
+    @pymethod()
     def truncate(self, receiver, context, m, size=None):
         size = int(size.eval(context)) if size else self.value.tell()
         self.value.truncate(size)
         return self
 
-    @method()
+    @pymethod()
     def write(self, receiver, context, m, data):
         data = str(data.eval(context))
         self.value.write(data)
         return self
 
-    @method()
+    @pymethod()
     def writelines(self, receiver, context, m, lines):
         lines = [str(line.eval(context)) for line in lines]
         self.value.writelines(lines)
