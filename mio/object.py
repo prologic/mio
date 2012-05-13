@@ -287,7 +287,10 @@ class Object(object):
 
     @pymethod()
     def evalArg(self, receiver, context, m, arg=None):
-        return arg.eval(context) if arg else runtime.find("None")
+        if arg is not None:
+            return arg.eval(context)
+        else:
+            return runtime.find("None")
 
     @pymethod()
     def evalArgAndReturnSelf(self, receiver, context, m, arg=None):
