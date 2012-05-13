@@ -22,7 +22,7 @@ class List(Object):
 
     @method()
     def init(self, receiver, context, m, *args):
-        self.value = list(args)
+        receiver.value = list(args)
 
     # General Operations
 
