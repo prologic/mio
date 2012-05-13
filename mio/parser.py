@@ -6,8 +6,8 @@ from funcparserlib.lexer import make_tokenizer, Token
 from funcparserlib.parser import forward_decl as fwd
 from funcparserlib.parser import a, many, maybe, skip, some
 
+import runtime
 from message import Message
-from core import Number, String
 
 tokval = lambda tok: tok.value
 sometok = lambda type: (some(lambda t: t.type == type) >> tokval)
@@ -79,7 +79,8 @@ def make_chain(messages):
     while True:
         if len(messages) > 1 and messages[1].name == "=":
             key = messages.pop(0)
-            key = Message(key.name, value=String(key.name))
+            key = Message(key.name,
+                    value=runtime.find("String").clone(key.name))
             op = messages.pop(0)
             if op.args:
                 value = Message("", *op.args)
@@ -129,11 +130,11 @@ def make_chain(messages):
 
 
 def make_number(n):
-    return Number(eval(n))
+    return runtime.find("Number").clone(eval(n))
 
 
 def make_string(n):
-    return String(eval(n))
+    return runtime.find("String").clone(eval(n))
 
 identifier = sometok("name")
 string = sometok("string") >> make_string
