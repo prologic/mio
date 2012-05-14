@@ -134,7 +134,6 @@ class Object(object):
 
         method = runtime.find("Method").clone()
 
-        method["parent"] = runtime.find("Object")
         method.args = [arg.name for arg in args]
         method.scope = scope
         method.body = body
