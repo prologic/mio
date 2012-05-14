@@ -1,9 +1,0 @@
-#!/usr/bin/env mio
-
-Number set("!", method(
-    if (self < 2) then (
-        return self
-    ) else (
-        return (self * ((self - 1) !))
-    )
-))
