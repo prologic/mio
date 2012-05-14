@@ -46,6 +46,16 @@ def test_operators2(mio):
     assert repr(chain) == "set(foo, method(\n 1 +(1) \n))"
 
 
+def test_return(mio):
+    chain = parse(tokenize("foo = method(return 1)"))
+    assert repr(chain) == "set(foo, method(return(1))"
+
+
+def test_return2(mio):
+    chain = parse(tokenize("foo = method(return 1 + 2)"))
+    assert repr(chain) == "set(foo, method(return(1 +(2)))"
+
+
 def test_grouping(mio):
     chain = parse(tokenize("1 + (2 * 3)"))
     assert repr(chain) == "1 +(2 *(3))"
