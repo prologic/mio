@@ -6,3 +6,8 @@ Object do(
     set(">", method(other, self cmp(other) == 1))
     set(">=", method(other, self cmp(other) > -1))
 )
+
+Number do(
+    set("<<", method(other, self * (2 ** other)))
+    set(">>", method(other, self / (2 ** other)))
+)

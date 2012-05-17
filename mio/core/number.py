@@ -71,11 +71,3 @@ class Number(Object):
     @pymethod("%")
     def mod(self, receiver, context, m, other):
         return self.clone(receiver % other.eval(context))
-
-    @pymethod("<<")
-    def lshift(self, receiver, context, m, other):
-        return self.clone(receiver * 2 ** other.eval(context))
-
-    @pymethod(">>")
-    def rshift(self, receiver, context, m, other):
-        return self.clone(receiver / 2 ** other.eval(context))
