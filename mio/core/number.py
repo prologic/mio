@@ -8,8 +8,8 @@ from mio.object import Object
 
 class Number(Object):
 
-    def __init__(self, value=Decimal(0)):
-        super(Number, self).__init__(value=value)
+    def __init__(self, value=0):
+        super(Number, self).__init__(value=Decimal(value))
 
         self.create_methods()
         self["parent"] = runtime.state.find("Object")

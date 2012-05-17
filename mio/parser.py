@@ -130,7 +130,7 @@ def make_chain(messages):
 
 
 def make_number(n):
-    return runtime.find("Number").clone(eval(n))
+    return runtime.find("Number").clone(n)
 
 
 def make_string(n):
