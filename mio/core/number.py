@@ -1,7 +1,7 @@
 from decimal import Decimal
 
 from mio import runtime
-from mio.utils import pymethod
+from mio.utils import pymethod, Null
 
 from mio.object import Object
 
@@ -40,6 +40,11 @@ class Number(Object):
 
     def __str__(self):
         return str(self.value)
+
+    def clone(self, value=Null, type=None):
+        if value is not Null:
+            value = Decimal(value)
+        return super(Number, self).clone(value, type)
 
     # General Arithmetic
 
