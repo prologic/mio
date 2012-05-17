@@ -12,3 +12,15 @@ def test_mul(mio):
 
 def test_div(mio):
     assert mio.eval("1 / 2") == mio.eval("0.5")
+
+
+def test_mod(mio):
+    assert mio.eval("2 % 2") == 0
+
+
+def test_mod2(mio):
+    assert mio.eval("3 % 2") == 1
+
+
+def test_pow(mio):
+    assert mio.eval("2 ** 4") == 16
