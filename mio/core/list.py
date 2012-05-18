@@ -22,6 +22,7 @@ class List(Object):
 
     @pymethod()
     def init(self, receiver, context, m, *args):
+        args = [arg.eval(context) for arg in args]
         receiver.value = list(args)
 
     # General Operations

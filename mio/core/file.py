@@ -13,8 +13,6 @@ class File(Object):
     def __init__(self, value=None):
         super(File, self).__init__(value=value)
 
-        self.update_status()
-
         self.create_methods()
         self["parent"] = runtime.state.find("Object")
 
@@ -31,77 +29,72 @@ class File(Object):
         return super(File, self).__str__()
 
     def update_status(self):
-        if isinstance(self.value, file):
-            mode = self.value.mode
-            closed = self.value.closed
-            filename = self.value.name
+        mode = self.value.mode
+        closed = self.value.closed
+        filename = self.value.name
 
-            self["mode"] = String(filename)
-            self["filename"] = String(mode)
+        self["mode"] = String(mode)
+        self["filename"] = String(filename)
 
-            if closed:
-                self["closed"] = runtime.state.find("True")
-            else:
-                self["closed"] = runtime.state.find("False")
+        if closed:
+            self["closed"] = runtime.find("True")
         else:
-            del self["mode"]
-            del self["closed"]
-            del self["filename"]
+            self["closed"] = runtime.find("False")
 
     # General Operations
 
     @pymethod()
     def close(self, receiver, context, m):
-        self.value.close()
-        self.value = None
-        self.update_status()
-        return self
+        receiver.value.close()
+        receiver.update_status()
+        return receiver
 
     @pymethod()
     def open(self, receiver, context, m, filename, mode=None):
         filename = str(filename.eval(context))
-        mode = str(mode.eval(context)) if mode else "r"
-        self.value = open(filename, mode)
-        self.update_status()
-        return self
+        mode = str(mode.eval(context)) if mode is not None else "r"
+        receiver.value = open(filename, mode)
+        receiver.update_status()
+        return receiver
 
     @pymethod()
-    def read(self, receiver, context, m):
-        return String(self.value.read())
+    def read(self, receiver, context, m, size=None):
+        size = int(size.eval(context)) if size is not None else -1
+        return String(receiver.value.read(size))
 
     @pymethod()
     def readline(self, receiver, context, m):
-        return String(self.value.readline())
+        return String(receiver.value.readline())
 
     @pymethod()
     def readlines(self, receiver, context, m):
-        lines = [String(line) for line in self.value.readlines()]
+        lines = [String(line) for line in receiver.value.readlines()]
         return List(lines)
 
     @pymethod()
-    def seek(self, receiver, context, m, offset, whence=0):
-        whence = int(whence.eval(context)) if whence else 0
-        self.value.seek(int(offset.eval(context)), whence)
-        return self
+    def seek(self, receiver, context, m, offset, whence=None):
+        whence = int(whence.eval(context)) if whence is not None else 0
+        receiver.value.seek(int(offset.eval(context)), whence)
+        return receiver
 
     @pymethod()
     def pos(self, receiver, context, m):
-        return Number(self.value.tell())
+        return Number(receiver.value.tell())
 
     @pymethod()
     def truncate(self, receiver, context, m, size=None):
-        size = int(size.eval(context)) if size else self.value.tell()
-        self.value.truncate(size)
-        return self
+        size = int(size.eval(context)) if size else receiver.value.tell()
+        receiver.value.truncate(size)
+        return receiver
 
     @pymethod()
     def write(self, receiver, context, m, data):
         data = str(data.eval(context))
-        self.value.write(data)
-        return self
+        receiver.value.write(data)
+        return receiver
 
     @pymethod()
-    def writelines(self, receiver, context, m, lines):
-        lines = [str(line.eval(context)) for line in lines]
-        self.value.writelines(lines)
-        return self
+    def writelines(self, receiver, context, m, data):
+        lines = [str(line) for line in data.eval(context)]
+        receiver.value.writelines(lines)
+        return receiver
