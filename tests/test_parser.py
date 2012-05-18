@@ -8,6 +8,12 @@ def test_empty_message(mio):
     assert chain.args == ()
 
 
+def test_grouped_message(mio):
+    chain = parse(tokenize("(1)"))
+    assert chain.name == ""
+    assert chain.args[0] == Number(1)
+
+
 def test_number_message(mio):
     chain = parse(tokenize("1"))
     assert chain.name == Number(1)

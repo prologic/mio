@@ -51,7 +51,11 @@ def make_arguments(n):
 
 
 def make_message(n):
-    name, args = n
+    if len(n) == 2:
+        name, args = n
+    else:
+        name, args = "", n
+
     args = tuple(args) if args is not None else ()
 
     if hasattr(name, "value"):
