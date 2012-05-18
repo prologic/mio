@@ -34,11 +34,12 @@ def tokenize(str):
     specs = [
         Spec("comment",    r'#.*'),
         Spec('whitespace', r'[ \t]+'),
+        Spec("terminator", r'[\n\r;]'),
         Spec('string',     r'"[^"]*"'),
         Spec('number',     r'-?([0-9]+(\.[0-9]*)?)'),
         Spec('name',       ops),
         Spec('name',       r'[A-Za-z_][A-Za-z0-9_]*'),
-        Spec('op',         r'[(){}\[\],\n;]'),
+        Spec('op',         r'[(){}\[\],]'),
     ]
     useless = ['comment', 'whitespace']
     t = make_tokenizer(specs)
@@ -50,14 +51,7 @@ def make_arguments(n):
 
 
 def make_message(n):
-    if isinstance(n, Token):
-        return Message(n.value)
-
-    if len(n) == 2:
-        name, args = n
-    else:
-        name, args = "", n
-
+    name, args = n
     args = tuple(args) if args is not None else ()
 
     if hasattr(name, "value"):
@@ -136,15 +130,20 @@ def make_number(n):
 def make_string(n):
     return runtime.find("String").clone(eval(n))
 
+
+def make_terminator(n):
+    return Message(n)
+
+
 identifier = sometok("name")
 string = sometok("string") >> make_string
 number = sometok("number") >> make_number
+terminator = sometok("terminator") >> make_terminator
 
 exp = fwd()
 message = fwd()
 arguments = fwd()
 symbol = fwd()
-terminator = fwd()
 
 exp.define((
     many(message | terminator)) >> make_chain)
@@ -162,8 +161,5 @@ arguments.define((
     skip(closing)) >> make_arguments)
 
 symbol.define(identifier | number | string)
-
-terminator.define((
-    op("\n") | op(";")) >> make_message)
 
 parse = exp.parse
