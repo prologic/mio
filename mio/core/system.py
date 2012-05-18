@@ -5,9 +5,9 @@ from mio import runtime
 from mio.utils import pymethod
 
 from mio.object import Object
-from mio.core.file import File
 
 from list import List
+from file import File
 from string import String
 
 
