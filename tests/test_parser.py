@@ -1,5 +1,4 @@
-from decimal import Decimal
-
+from mio.core import Number, String
 from mio.parser import parse, tokenize
 
 
@@ -9,11 +8,29 @@ def test_empty_message(mio):
     assert chain.args == ()
 
 
+def test_number_message(mio):
+    chain = parse(tokenize("1"))
+    assert chain.name == Number(1)
+
+
+def test_string_message(mio):
+    chain = parse(tokenize("\"foo\""))
+    assert chain.name == String("foo")
+
+
 def test_simple_assignment(mio):
     chain = parse(tokenize("x = 1"))
     assert chain.name == "set"
     assert chain.args[0].name == "x"
-    assert chain.args[1].name == Decimal(1)
+    assert chain.args[1].name == Number(1)
+
+
+def test_grouped_assignment(mio):
+    chain = parse(tokenize("x = (1)"))
+    assert chain.name == "set"
+    assert chain.args[0].name == "x"
+    assert chain.args[1].name == ""
+    assert chain.args[1].args[0] == Number(1)
 
 
 def test_complex_assignment(mio):
@@ -21,7 +38,7 @@ def test_complex_assignment(mio):
     assert chain.name == "Foo"
     assert chain.next.name == "set"
     assert chain.next.args[0].name == "x"
-    assert chain.next.args[1].name == Decimal(1)
+    assert chain.next.args[1].name == Number(1)
 
 
 def test_complex_assignment2(mio):
@@ -30,7 +47,7 @@ def test_complex_assignment2(mio):
     assert chain.args[0].name == "x"
     assert chain.args[1].name == "x"
     assert chain.args[1].next.name == "+"
-    assert chain.args[1].next.args[0].name == Decimal("1")
+    assert chain.args[1].next.args[0].name == Number(1)
 
 
 def test_chaining(mio):
