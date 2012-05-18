@@ -3,6 +3,8 @@ from mio.utils import pymethod
 
 from mio.object import Object
 
+from number import Number
+
 
 class String(Object):
 
@@ -42,11 +44,11 @@ class String(Object):
         return self.clone(receiver * int(other.eval(context)))
 
     @pymethod()
-    def index(self, receiver, context, m, sub, start=None, end=None):
-        sub = sub.eval(context)
-        start = start.eval(context) if start else None
-        end = end.eval(context) if end else None
-        return Number(receiver.index(sub, start, end))
+    def find(self, receiver, context, m, sub, start=None, end=None):
+        sub = str(sub.eval(context))
+        start = int(start.eval(context)) if start is not None else None
+        end = int(end.eval(context)) if end is not None else None
+        return Number(receiver.value.find(sub, start, end))
 
     @pymethod()
     def lower(self, receiver, context, m):
