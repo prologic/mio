@@ -49,6 +49,3 @@ def main():
             runtime.state.repl()
     else:
         runtime.state.repl()
-
-if __name__ == "__main__":
-    main()

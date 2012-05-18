@@ -1,0 +1,3 @@
+#!/usr/bin/env mio
+
+(1 + 2) println
