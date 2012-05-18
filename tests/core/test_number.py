@@ -1,3 +1,15 @@
+def test_int(mio):
+    assert int(mio.eval("1")) == 1
+
+
+def test_float(mio):
+    assert float(mio.eval("1.0")) == 1.0
+
+
+def test_str(mio):
+    assert str(mio.eval("1")) == "1"
+
+
 def test_add(mio):
     assert mio.eval("1 + 2") == 3
 

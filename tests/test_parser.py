@@ -3,6 +3,12 @@ from decimal import Decimal
 from mio.parser import parse, tokenize
 
 
+def test_empty_message(mio):
+    chain = parse(tokenize(""))
+    assert chain.name == ""
+    assert chain.args == ()
+
+
 def test_simple_assignment(mio):
     chain = parse(tokenize("x = 1"))
     assert chain.name == "set"
