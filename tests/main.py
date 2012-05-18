@@ -15,7 +15,7 @@ def importable(module):
 
 
 def runtests():
-    cmd = ["py.test", "-r", "fsxX", "--ignore=tmp"]
+    cmd = ["py.test", "-s", "-r", "fsxX", "--ignore=tmp"]
 
     if importable("pytest_cov"):
         cmd.append("--cov=mio")
