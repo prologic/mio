@@ -21,31 +21,24 @@ class Range(Object):
     def __iter__(self):
         while self["start"] < self["stop"]:
             yield self["start"]
-            self["start"] += self["step"]
-
-    def __str__(self):
-        if self.value is not None:
-            return str(self.value)
-        return super(Range, self).__str__()
+            self["start"] = self["start"].clone(self["start"] + self["step"])
 
     @pymethod()
     def init(self, receiver, context, m, *args):
-        if len(args) == 3:
-            self["start"] = args[0]
-            self["stop"] = args[1]
-            self["step"] = args[2]
-        elif len(args) == 2:
-            self["start"] = args[0]
-            self["stop"] = args[1]
-            self["step"] = Number(1)
-        elif len(args) == 1:
-            self["start"] = Number(0)
-            self["stop"] = args[0]
-            self["step"] = Number(1)
-        else:
-            self["start"] = Number(0)
-            self["stop"] = Number(0)
-            self["step"] = Number(1)
-
+        args = [arg.eval(context) for arg in args]
+        ints = [int(arg) for arg in args]
         keys = ("start", "stop", "step")
-        self.value = range(*[int(self[key]) for key in keys])
+
+        for i, key in enumerate(keys):
+            if i < len(args):
+                receiver[key] = args[i]
+            else:
+                receiver[key] = runtime.find("None")
+
+        if receiver["stop"] == None:
+            receiver["start"], receiver["stop"] = Number(0), receiver["start"]
+
+        if receiver["step"] == None:
+            receiver["step"] = Number(1)
+
+        receiver.value = range(*ints)
