@@ -18,6 +18,11 @@ def test_string_message(mio):
     assert chain.name == String("foo")
 
 
+def test_string_newline(mio):
+    chain = parse(tokenize(r'"\n"'))
+    assert chain.name == "\n"
+
+
 def test_simple_assignment(mio):
     chain = parse(tokenize("x = 1"))
     assert chain.name == "set"

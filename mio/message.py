@@ -16,7 +16,7 @@ class Message(Object):
         for arg in args:
             arg.parent = self
 
-        self.terminator = name in ["\n", ";"]
+        self.terminator = self.value is None and name in ["\n", ";"]
 
         self._prev = None
         self._next = None
