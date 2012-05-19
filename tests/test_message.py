@@ -15,18 +15,30 @@ def test_args(mio):
     assert m.args[2].name == "2"
 
 
-def test_next_prev(mio):
+def test_next_previous(mio):
     m = Message("foo")
     m.next = Message("bar")
 
-    assert m.prev == None
+    assert m.previous == None
     assert m.name == "foo"
     assert m.next.name == "bar"
     assert m.next.next == None
-    assert m.next.prev.name == "foo"
+    assert m.next.previous.name == "foo"
 
 
-def test_set_name(mio):
+def test_setName(mio):
     m = mio.eval("m = Message clone")
-    mio.eval("m name = \"foo\"")
+    mio.eval("m setName(\"foo\")")
     assert m.name == "foo"
+
+
+def test_setValue(mio):
+    m = mio.eval("m = Message clone")
+    mio.eval("m setValue(\"foo\")")
+    assert m.value == "foo"
+
+
+def test_setArgs(mio):
+    m = mio.eval("m = Message clone")
+    mio.eval("m setArgs(1, 2, 3)")
+    assert m.args == (1, 2, 3)

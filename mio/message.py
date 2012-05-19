@@ -18,6 +18,12 @@ class Message(Object):
 
         self.terminator = self.value is None and name in ["\n", ";"]
 
+        self._next = None
+        self._previous = None
+
+        self._first = None
+        self._last = None
+
         self.create_methods()
         self["parent"] = runtime.state.find("Object")
 
@@ -37,13 +43,7 @@ class Message(Object):
 
     __repr__ = __str__
 
-    @pymethod()
-    def arg(self, receiver, context, m, index):
-        index = int(index.eval(context))
-        return self.args[index]
-
-    @pymethod()
-    def eval(self, receiver, context=None, m=None, *args):
+    def eval(self, receiver, context=None, m=None, target=None):
         if context is None:
             context = receiver
         if m is None:
@@ -74,35 +74,89 @@ class Message(Object):
         else:
             return receiver if self.terminator else value
 
+    @pymethod("eval")
+    def _eval(self, receiver, context, m, target=None):
+        target = target.eval(context) if target is not None else context
+        return receiver.eval(target)
+
+    @pymethod("arg")
+    def evalArg(self, receiver, context, m, index):
+        index = int(index.eval(context))
+        return self.args[index]
+
+    @pymethod("args")
+    def getArgs(self, receiver, context, m):
+        return runtime.find("List").clone(self.args)
+
+    @pymethod("first")
+    def getFirst(self, receiver, context, m):
+        return receiver.first
+
+    @pymethod("name")
+    def getName(self, receiver, context, m):
+        return runtime.find("String").clone(receiver.name)
+
+    @pymethod("next")
+    def getNext(self, receiver, context, m):
+        return receiver.next
+
+    @pymethod("last")
+    def getLast(self, receiver, context, m):
+        return receiver.last
+
+    @pymethod("previous")
+    def getPrevious(self, receiver, context, m):
+        return receiver.previous
+
+    @pymethod("value")
+    def getValue(self, receiver, context, m):
+        return receiver.value
+
+    @pymethod()
+    def setArgs(self, receiver, context, m, *args):
+        receiver.args = tuple(args)
+        return receiver
+
+    @pymethod()
+    def setName(self, receiver, context, m, name):
+        receiver.name = name.eval(context)
+        return receiver
+
+    @pymethod()
+    def setNext(self, receiver, context, m, message):
+        result = message.eval(context)
+        if isinstance(result, Message):
+            receiver.next = result
+        else:
+            receiver.next = message
+        return receiver
+
+    @pymethod()
+    def setValue(self, receiver, context, m, value):
+        receiver.value = value.eval(context)
+        return receiver
+
     @property
-    def args(self):
-        return tuple(self.attrs.get("args", runtime.find("List")))
-
-    @args.setter
-    def args(self, args):
-        self.attrs["args"] = runtime.find("List").clone(args)
-
-    @property
-    def name(self):
-        return self.attrs.get("name", runtime.find("String"))
-
-    @name.setter
-    def name(self, name):
-        self.attrs["name"] = runtime.find("String").clone(name)
+    def first(self):
+        return getattr(self, "_first", None)
 
     @property
     def next(self):
-        return self.attrs.get("next", None)
+        return getattr(self, "_next", None)
 
     @next.setter
     def next(self, message):
-        message.prev = self
-        self.attrs["next"] = message
+        if self._first is None:
+            self._first = self
+        message._first = self._first
+        message._previous = self
+        self._next = message
+        self._last = message
 
     @property
-    def prev(self):
-        return self.attrs.get("prev", None)
+    def last(self):
+        return getattr(self, "_last", None)
 
-    @prev.setter
-    def prev(self, message):
-        self.attrs["prev"] = message
+    @property
+    def previous(self):
+        return getattr(self, "_previous", None)
