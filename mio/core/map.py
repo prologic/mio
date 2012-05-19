@@ -5,6 +5,7 @@ from mio.object import Object
 
 
 from list import List
+from number import Number
 
 
 class Map(Object):
@@ -19,9 +20,9 @@ class Map(Object):
         for item in self.value.items():
             yield List(item)
 
-    def __str__(self):
-        pairs = ", ".join(["%s: %r" % (k, v) for k, v in self.value.items()])
-        return "{%s}" % pairs
+    def __repr__(self):
+        values = ", ".join(["%r, %r" % (k, v) for k, v in self.value.items()])
+        return "map(%s)" % values
 
     @pymethod()
     def init(self, receiver, context, m, *args):
@@ -38,11 +39,19 @@ class Map(Object):
 
     @pymethod()
     def copy(self, receiver, context, m):
-        return self.clone(receiver.value.copy())
+        return receiver.clone(receiver.value.copy())
+
+    @pymethod()
+    def len(self, receiver, context, m):
+        return Number(len(receiver.value))
 
     @pymethod()
     def get(self, receiver, context, m, key, default=None):
-        default = default.eval(context) if default else runtime.state.find("None")
+        if default is not None:
+            default = default.eval(context)
+        else:
+            default = runtime.state.find("None")
+
         return receiver.value.get(key.eval(context), default)
 
     @pymethod()
