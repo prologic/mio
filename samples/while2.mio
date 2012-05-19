@@ -1,0 +1,28 @@
+#!/usr/bin/env mio
+
+Object while = method(
+    c = Continuation current
+    status = "normal"
+    break = method(
+        self status = "break"
+    )
+    continue = method(
+        self status = "continue"
+    )
+    if (call message arg(0)) then (
+        if (status == "break") then (
+            return None
+        ) elif (status == "continue") then (
+            c call
+        ) else (
+            call message arg(1)
+            c call
+        )
+    )
+)
+
+x = 1
+while(x < 10,
+    x = x + 1
+    if (x % 2 == 0, continue, "foo" println)
+)
