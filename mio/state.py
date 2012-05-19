@@ -8,6 +8,7 @@ from errors import Error
 
 from method import Method
 from object import Object
+from parser import Parser
 from message import Message
 
 from core import Number
@@ -65,6 +66,7 @@ class State(object):
         lobby["True"] = object.clone(True)
         lobby["False"] = object.clone(False)
 
+        lobby["Parser"] = Parser()
         lobby["Message"] = Message("")
         lobby["Method"] = Method(None, Message(""), [])
 

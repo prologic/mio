@@ -7,7 +7,9 @@ from funcparserlib.parser import forward_decl as fwd
 from funcparserlib.parser import a, many, maybe, skip, some
 
 import runtime
+from object import Object
 from message import Message
+from utils import pymethod, Null
 
 tokval = lambda tok: tok.value
 sometok = lambda type: (some(lambda t: t.type == type) >> tokval)
@@ -167,3 +169,17 @@ arguments.define((
 symbol.define(identifier | number | string)
 
 parse = exp.parse
+
+
+class Parser(Object):
+
+    def __init__(self, value=Null):
+        super(Parser, self).__init__(value=value)
+
+        self.create_methods()
+        self["parent"] = runtime.state.find("Object")
+
+    @pymethod()
+    def parse(self, receiver, context, m, code):
+        code = str(code.eval(context))
+        return parse(tokenize(code))
