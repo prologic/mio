@@ -1,0 +1,7 @@
+Object while = method(condition,
+    test = Continuation current
+    if (not condition) then (
+        call message arg(1)
+        test call
+    )
+)
