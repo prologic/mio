@@ -93,3 +93,8 @@ def test_return2(mio):
 def test_grouping(mio):
     chain = parse(tokenize("1 + (2 * 3)"))
     assert repr(chain) == "1 +(2 *(3))"
+
+
+def test_parse(mio):
+    chain = mio.eval("Parser parse(\"1 + 2\")")
+    assert repr(chain) == "1 +(2)"
