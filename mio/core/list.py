@@ -1,5 +1,5 @@
 from mio import runtime
-from mio.utils import pymethod
+from mio.utils import pymethod, Null
 
 from mio.object import Object
 
@@ -17,8 +17,14 @@ class List(Object):
     def __iter__(self):
         return iter(self.value)
 
-    def __str__(self):
-        return "[%s]" % ", ".join([repr(x) for x in self.value])
+    def __repr__(self):
+        values = ", ".join([repr(item) for item in self.value])
+        return "list(%s)" % values
+
+    __str__ = __repr__
+
+    def clone(self, value=Null, type=None):
+        return super(List, self).clone(value, None)
 
     @pymethod()
     def init(self, receiver, context, m, *args):
@@ -43,7 +49,7 @@ class List(Object):
         return receiver
 
     @pymethod()
-    def len(self):
+    def len(self, receiver, context, m):
         return Number(len(receiver.value))
 
     @pymethod()
@@ -57,7 +63,7 @@ class List(Object):
 
     @pymethod()
     def reversed(self, receiver, context, m):
-        return self.clone(reversed(receiver.value))
+        return receiver.clone(reversed(receiver.value))
 
     @pymethod()
     def sort(self, receiver, context, m):
@@ -66,4 +72,4 @@ class List(Object):
 
     @pymethod()
     def sorted(self, receiver, context, m):
-        return self.clone(sorted(receiver.value))
+        return receiver.clone(sorted(receiver.value))
