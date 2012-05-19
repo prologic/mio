@@ -19,11 +19,14 @@ class Continuation(Object):
 
     @pymethod("call")
     def call(self, receiver, context, m):
+        print "Calling continuation..."
+        print receiver.message
+        print receiver.context.attrs
         return receiver.message.eval(receiver.context)
 
     @pymethod("current")
     def current(self, receiver, context, m):
         continuation = receiver.clone()
-        continuation.context = context.clone()
+        continuation.context = context
         continuation.message = m.previous.previous
         return continuation
