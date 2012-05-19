@@ -42,3 +42,8 @@ def test_setArgs(mio):
     m = mio.eval("m = Message clone")
     mio.eval("m setArgs(1, 2, 3)")
     assert m.args == (1, 2, 3)
+
+def test_eval(mio):
+    mio.eval("m = Message clone setName(\"foo\") setValue(\"foo\")")
+    mio.eval("m setNext(Message clone setName(\"println\"))")
+    assert mio.eval("m eval") == "foo"
