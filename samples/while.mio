@@ -1,7 +1,13 @@
-Object while = method(condition,
+Object while = method(
     test = Continuation current
-    if (condition) then (
+    if (call message arg(0)) then (
         call message arg(1)
         test call
     )
+)
+
+x = 0
+while (x < 10,
+    x = x + 1
+    "foo" println
 )

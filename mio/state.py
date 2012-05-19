@@ -10,6 +10,7 @@ from method import Method
 from object import Object
 from parser import Parser
 from message import Message
+from continuation import Continuation
 
 from core import Number
 from core import String
@@ -68,6 +69,7 @@ class State(object):
 
         lobby["Parser"] = Parser()
         lobby["Message"] = Message("")
+        lobby["Continuation"] = Continuation()
         lobby["Method"] = Method(None, Message(""), [])
 
         lobby["File"] = File()

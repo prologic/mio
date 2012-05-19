@@ -58,7 +58,7 @@ class Message(Object):
             if isinstance(value, Message):
                 # Prevent a recursion loop
                 if value not in receiver.attrs.values():
-                    value = value.eval(receiver, context, m, *self.args)
+                    value = value.eval(receiver, context, *self.args)
                 else:
                     value = value(receiver, context, m, *self.args)
             else:
@@ -70,7 +70,7 @@ class Message(Object):
             runtime.state.isContinue = False
             return runtime.state.find("None")
         elif self.next is not None:
-            return self.next.eval(value, context, m)
+            return self.next.eval(value, context)
         else:
             return receiver if self.terminator else value
 
@@ -82,7 +82,7 @@ class Message(Object):
     @pymethod("arg")
     def evalArg(self, receiver, context, m, index):
         index = int(index.eval(context))
-        return self.args[index]
+        return receiver.args[index].eval(context)
 
     @pymethod("args")
     def getArgs(self, receiver, context, m):
