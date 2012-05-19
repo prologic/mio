@@ -14,7 +14,7 @@ class Message(Object):
         self.args = args
 
         for arg in args:
-            arg.prev = self
+            arg.previous = self
 
         self.terminator = self.value is None and name in ["\n", ";"]
 
@@ -160,3 +160,7 @@ class Message(Object):
     @property
     def previous(self):
         return getattr(self, "_previous", None)
+
+    @previous.setter
+    def previous(self, message):
+        self._previous = message
