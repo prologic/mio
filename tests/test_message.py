@@ -24,3 +24,9 @@ def test_next_prev(mio):
     assert m.next.name == "bar"
     assert m.next.next == None
     assert m.next.prev.name == "foo"
+
+
+def test_set_name(mio):
+    m = mio.eval("m = Message clone")
+    mio.eval("m name = \"foo\"")
+    assert m.name == "foo"

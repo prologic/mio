@@ -14,13 +14,9 @@ class Message(Object):
         self.args = args
 
         for arg in args:
-            arg.parent = self
+            arg.prev = self
 
         self.terminator = self.value is None and name in ["\n", ";"]
-
-        self._prev = None
-        self._next = None
-        self._parent = None
 
         self.create_methods()
         self["parent"] = runtime.state.find("Object")
@@ -40,6 +36,11 @@ class Message(Object):
         return " ".join(messages)
 
     __repr__ = __str__
+
+    @pymethod()
+    def arg(self, receiver, context, m, index):
+        index = int(index.eval(context))
+        return self.args[index]
 
     @pymethod()
     def eval(self, receiver, context=None, m=None, *args):
@@ -73,36 +74,35 @@ class Message(Object):
         else:
             return receiver if self.terminator else value
 
-    @pymethod("arg")
-    def _arg(self, receiver, context, m, index):
-        index = int(index.eval(context))
-        return self.args[index]
+    @property
+    def args(self):
+        return tuple(self.attrs.get("args", runtime.find("List")))
 
-    @pymethod("args")
-    def _args(self, receiver, context, m):
-        return self["List"].clone(self.args)
-
-    @pymethod("next")
-    def _next(self, receiver, context, m):
-        return self.next or self["None"]
+    @args.setter
+    def args(self, args):
+        self.attrs["args"] = runtime.find("List").clone(args)
 
     @property
-    def prev(self):
-        return getattr(self, "_prev", None)
+    def name(self):
+        return self.attrs.get("name", runtime.find("String"))
+
+    @name.setter
+    def name(self, name):
+        self.attrs["name"] = runtime.find("String").clone(name)
 
     @property
     def next(self):
-        return getattr(self, "_next", None)
+        return self.attrs.get("next", None)
 
     @next.setter
     def next(self, message):
-        message._prev = self
-        self._next = message
+        message.prev = self
+        self.attrs["next"] = message
 
     @property
-    def parent(self):
-        return getattr(self, "_parent", None)
+    def prev(self):
+        return self.attrs.get("prev", None)
 
-    @parent.setter
-    def parent(self, message):
-        self._parent = message
+    @prev.setter
+    def prev(self, message):
+        self.attrs["prev"] = message

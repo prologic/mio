@@ -268,8 +268,8 @@ class Object(object):
 
     @pymethod("clone")
     def _clone(self, receiver, context, m, *args):
-        if m.parent is not None:
-            type = runtime.find("String").clone(m.parent.args[0].name)
+        if m.prev is not None:
+            type = runtime.find("String").clone(m.prev.args[0].name)
         else:
             type = None
 
