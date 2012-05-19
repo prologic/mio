@@ -1,0 +1,7 @@
+Object loop = method(
+    c = Continuation current
+    if (not(state stop)) then (
+        call message arg(0)
+        c call
+    )
+)
