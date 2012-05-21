@@ -5,4 +5,11 @@ Object do (
     )
 
     list = method(List clone(call message argsEvaluatedIn(call sender)))
+    sum = method(iterable,
+        sum = 0
+        iterable foreach(item,
+            sum = sum + item
+        )
+        sum
+    )
 )
