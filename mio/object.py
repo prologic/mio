@@ -3,7 +3,7 @@ from copy import copy
 from inspect import  getmembers, ismethod
 
 import runtime
-from errors import KeyError
+from errors import AttributeError
 from utils import format_object, pymethod, Null
 
 
@@ -60,9 +60,8 @@ class Object(object):
             try:
                 return self.forward(key)
             except:
-                raise KeyError(self, key)
-        else:
-            raise KeyError(self, key)
+                raise AttributeError("%s has no attribute %r" % (self, key))
+        raise AttributeError("%s has no attribute %r" % (self, key))
 
     def __setitem__(self, key, value):
         self.attrs[key] = value
@@ -71,11 +70,7 @@ class Object(object):
         return self
 
     def __str__(self):
-        type = self.attrs.get("type", self.__class__.__name__)
-        if ismethod(type):
-            type = self.__class__.__name__
-        default = "%s_%s" % (type, hex(id(self)))
-        return str(self.value) if self.value is not Null else default
+        return str(self.value) if self.value is not Null else self.type
 
     __repr__ = __str__
 
@@ -96,6 +91,13 @@ class Object(object):
 
     def forward(self, key):
         return runtime.state.find(key)
+
+    @property
+    def type(self):
+        type = self.attrs.get("type", self.__class__.__name__)
+        if ismethod(type):
+            type = self.__class__.__name__
+        return str(type)
 
     # Attribute Operations
 
@@ -227,9 +229,9 @@ class Object(object):
 
     # Introspection
 
-    @pymethod()
-    def type(self, receiver, context, m):
-        return runtime.find("String").clone(receiver.__class__.__name__)
+    @pymethod("type")
+    def _type(self, receiver, context, m):
+        return runtime.find("String").clone(receiver.type)
 
     @pymethod()
     def hash(self, receiver, context, m):
@@ -245,10 +247,7 @@ class Object(object):
 
     @pymethod()
     def summary(self, receiver, context, m):
-        type = receiver.attrs.get("type", receiver.__class__.__name__)
-        if ismethod(type):
-            type = receiver.__class__.__name__
-        sys.stdout.write("%s\n" % format_object(receiver, type=type))
+        sys.stdout.write("%s\n" % format_object(receiver, receiver.type))
         return receiver
 
     # Object Operations
@@ -273,14 +272,17 @@ class Object(object):
         else:
             type = None
 
-        cloned = receiver.clone(type=type)
+        object = receiver.clone(type=type)
 
         try:
-            init = cloned["init"](cloned, context, m, *args)
-        except KeyError:
+            m = runtime.find("Message").clone()
+            m.name = "init"
+            m.args = args
+            m.eval(object, context)
+        except AttributeError:
             pass
 
-        return cloned
+        return object
 
     # Boolean Operations
 

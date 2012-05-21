@@ -1,4 +1,5 @@
 from mio import runtime
+from mio.errors import TypeError
 from mio.utils import pymethod, Null
 
 from mio.object import Object
@@ -27,9 +28,11 @@ class List(Object):
         return super(List, self).clone(value, None)
 
     @pymethod()
-    def init(self, receiver, context, m, *args):
-        args = [arg.eval(context) for arg in args]
-        receiver.value = list(args)
+    def init(self, receiver, context, m, iterable=None):
+        iterable = iterable.eval(context) if iterable is not None else List()
+        if not isinstance(iterable, List):
+            raise TypeError("%s object is not iterable" % iterable.type)
+        receiver.value = list(iterable)
 
     # General Operations
 
@@ -63,7 +66,7 @@ class List(Object):
 
     @pymethod()
     def reversed(self, receiver, context, m):
-        return receiver.clone(reversed(receiver.value))
+        return receiver.clone(list(reversed(receiver.value)))
 
     @pymethod()
     def sort(self, receiver, context, m):
@@ -72,4 +75,4 @@ class List(Object):
 
     @pymethod()
     def sorted(self, receiver, context, m):
-        return receiver.clone(sorted(receiver.value))
+        return receiver.clone(list(sorted(receiver.value)))

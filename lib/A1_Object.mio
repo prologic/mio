@@ -3,4 +3,6 @@ Object do (
         context = if(context is None, self, context)
         Parser parse(code) eval(context)
     )
+
+    list = method(List clone(call message args))
 )

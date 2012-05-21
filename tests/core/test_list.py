@@ -1,74 +1,117 @@
+from pytest import raises
+
+from mio.errors import TypeError
+
+
 def test_clone(mio):
-    l = mio.eval("l = List clone(1, 2, 3)")
-    assert l == [1, 2, 3]
+    assert mio.eval("List clone") == []
+
+
+def test_clone_list(mio):
+    assert mio.eval("List clone(List clone append(1))") == [1]
+
+
+def test_clone_error(mio):
+    with raises(TypeError):
+        mio.eval("List clone(1)", reraise=True)
 
 
 def test_repr(mio):
-    l = mio.eval("l = List clone(1, 2, 3)")
-    assert repr(l) == "list(1, 2, 3)"
+    mio.eval("xs = List clone")
+    mio.eval("xs append(1)")
+    mio.eval("xs append(2)")
+    mio.eval("xs append(3)")
+
+    assert repr(mio.eval("xs")) == "list(1, 2, 3)"
 
 
 def test_append(mio):
-    l = mio.eval("l = List clone(1, 2, 3)")
-    assert l == [1, 2, 3]
+    mio.eval("xs = List clone")
+    mio.eval("xs append(1)")
+    mio.eval("xs append(2)")
+    mio.eval("xs append(3)")
+    assert mio.eval("xs") == [1, 2, 3]
 
-    mio.eval("l append(4)")
-    assert l == [1, 2, 3, 4]
+    assert mio.eval("xs append(4)") == [1, 2, 3, 4]
 
 
 def test_at(mio):
-    l = mio.eval("l = List clone(1, 2, 3)")
-    assert l == [1, 2, 3]
+    mio.eval("xs = List clone")
+    mio.eval("xs append(1)")
+    mio.eval("xs append(2)")
+    mio.eval("xs append(3)")
+    assert mio.eval("xs") == [1, 2, 3]
 
-    assert mio.eval("l at(0)") == 1
+    assert mio.eval("xs at(0)") == 1
 
 
 def test_len(mio):
-    l = mio.eval("l = List clone(1, 2, 3)")
-    assert l == [1, 2, 3]
+    mio.eval("xs = List clone")
+    mio.eval("xs append(1)")
+    mio.eval("xs append(2)")
+    mio.eval("xs append(3)")
+    assert mio.eval("xs") == [1, 2, 3]
 
-    assert mio.eval("l len") == 3
+    assert mio.eval("xs len") == 3
 
 
 def test_count(mio):
-    l = mio.eval("l = List clone(1, 2, 3)")
-    assert l == [1, 2, 3]
+    mio.eval("xs = List clone")
+    mio.eval("xs append(1)")
+    mio.eval("xs append(2)")
+    mio.eval("xs append(3)")
+    assert mio.eval("xs") == [1, 2, 3]
 
-    assert mio.eval("l count(1)") == 1
+    assert mio.eval("xs count(1)") == 1
 
 
 def test_extend(mio):
-    l = mio.eval("l = List clone(1, 2, 3)")
-    assert l == [1, 2, 3]
+    mio.eval("xs = List clone")
+    mio.eval("xs append(1)")
+    mio.eval("xs append(2)")
+    mio.eval("xs append(3)")
+    assert mio.eval("xs") == [1, 2, 3]
 
-    assert mio.eval("l extend(4, 5, 6)") == [1, 2, 3, 4, 5, 6]
+    assert mio.eval("xs extend(4, 5, 6)") == [1, 2, 3, 4, 5, 6]
 
 
 def test_reverse(mio):
-    l = mio.eval("l = List clone(1, 2, 3)")
-    assert l == [1, 2, 3]
+    mio.eval("xs = List clone")
+    mio.eval("xs append(1)")
+    mio.eval("xs append(2)")
+    mio.eval("xs append(3)")
+    assert mio.eval("xs") == [1, 2, 3]
 
-    mio.eval("l reverse")
-    assert l == [3, 2, 1]
+    mio.eval("xs reverse")
+    assert mio.eval("xs") == [3, 2, 1]
 
 
 def test_reversed(mio):
-    l = mio.eval("l = List clone(1, 2, 3)")
-    assert l == [1, 2, 3]
+    mio.eval("xs = List clone")
+    mio.eval("xs append(1)")
+    mio.eval("xs append(2)")
+    mio.eval("xs append(3)")
+    assert mio.eval("xs") == [1, 2, 3]
 
-    assert list(mio.eval("l reversed")) == [3, 2, 1]
+    assert mio.eval("xs reversed") == [3, 2, 1]
 
 
 def test_sort(mio):
-    l = mio.eval("l = List clone(3, 1, 2)")
-    assert l == [3, 1, 2]
+    mio.eval("xs = List clone")
+    mio.eval("xs append(3)")
+    mio.eval("xs append(1)")
+    mio.eval("xs append(2)")
+    assert mio.eval("xs") == [3, 1, 2]
 
-    mio.eval("l sort")
-    assert l == [1, 2, 3]
+    mio.eval("xs sort")
+    assert mio.eval("xs") == [1, 2, 3]
 
 
 def test_sorted(mio):
-    l = mio.eval("l = List clone(3, 1, 2)")
-    assert l == [3, 1, 2]
+    mio.eval("xs = List clone")
+    mio.eval("xs append(3)")
+    mio.eval("xs append(1)")
+    mio.eval("xs append(2)")
+    assert mio.eval("xs") == [3, 1, 2]
 
-    assert mio.eval("l sorted") == [1, 2, 3]
+    assert mio.eval("xs sorted") == [1, 2, 3]

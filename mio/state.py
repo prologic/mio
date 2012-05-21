@@ -79,7 +79,7 @@ class State(object):
     def find(self, name):
         return self.lobby.attrs[name]
 
-    def eval(self, code):
+    def eval(self, code, reraise=False):
         try:
             if self.opts and self.opts.debug:
                 tokens = tokenize(code)
@@ -91,9 +91,15 @@ class State(object):
 
             return message.eval(self.lobby, self.lobby, message)
         except Error as e:
-            print("%s\n%r" % (e, message))
+            type = e.__class__.__name__
+            underline = "-" * (len(type) + 1)
+            print("\n  %s: %s\n  %s\n  %r\n" % (type, e, underline, message))
+            if reraise:
+                raise
         except Exception as e:
             print("%s\n%s" % (e, format_exc()))
+            if reraise:
+                raise
 
     def load(self, filename):
         try:
@@ -109,6 +115,8 @@ class State(object):
 
         while True:
             try:
-                print("==> %s" % str(self.eval(raw_input(">>> "))))
+                result = self.eval(raw_input(">>> "))
+                if result is not None:
+                    print("==> %s" % str(result))
             except EOFError:
                 raise SystemExit(0)

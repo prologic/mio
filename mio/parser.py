@@ -70,7 +70,7 @@ def make_message(n):
 
 
 def make_chain(messages):
-    if not messages:
+    if messages == []:
         return Message("")
 
     key, value = None, None

@@ -18,7 +18,7 @@ class Foo(Object):
         pass
 
 
-FOO_TEMPLATE = """Foo_%s:
+FOO_TEMPLATE = """Foo:
   args            = args(a, b, c)
   noargs          = noargs()
   varargs         = varargs(*args)"""
@@ -27,7 +27,7 @@ FOO_TEMPLATE = """Foo_%s:
 def test_format_object():
     foo = Foo()
     foo.create_methods()
-    assert format_object(foo) == FOO_TEMPLATE % hex(id(foo))
+    assert format_object(foo) == FOO_TEMPLATE
 
 
 def test_format_pymethod():

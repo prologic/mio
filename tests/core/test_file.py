@@ -116,7 +116,10 @@ def test_writelines(mio, tmpdir):
     filename = tmpdir.join("test.txt")
 
     data = ["Hello World!", "Goodbye World!"]
-    mio.eval("lines = List clone(%s)" % ",".join(['"%s"' % x for x in data]))
+    mio.eval("lines = List clone")
+    for x in data:
+        mio.eval("lines append(\"%s\")" % x)
+
     mio.eval("f = File open(\"%s\", \"w\")" % filename)
     mio.eval("f writelines(lines)")
     mio.eval("f close")
