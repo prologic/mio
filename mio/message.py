@@ -88,6 +88,12 @@ class Message(Object):
     def getArgs(self, receiver, context, m):
         return runtime.find("List").clone(self.args)
 
+    @pymethod()
+    def argsEvaluatedIn(self, receiver, context, m, target=None):
+        target = target.eval(context) if target is not None else context
+        args = [arg.eval(target) for arg in self.args]
+        return runtime.find("List").clone(list(args))
+
     @pymethod("first")
     def getFirst(self, receiver, context, m):
         return receiver.first

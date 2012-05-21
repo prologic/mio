@@ -4,5 +4,5 @@ Object do (
         Parser parse(code) eval(context)
     )
 
-    list = method(List clone(call message args))
+    list = method(List clone(call message argsEvaluatedIn(call sender)))
 )
