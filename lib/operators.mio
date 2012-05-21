@@ -6,6 +6,11 @@ Object do(
     set(">", method(other, self cmp(other) == 1))
     set(">=", method(other, self cmp(other) > -1))
     set("is", method(other, self id == (other id)))
+
+    set("+=", method(other,
+        attr = call message previous first name
+        call sender set(attr, self + other)
+    ))
 )
 
 Number do(
