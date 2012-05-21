@@ -19,10 +19,10 @@ class Message(Object):
         self.terminator = self.value is None and name in ["\n", ";"]
 
         self._next = None
-        self._previous = None
+        self._previous = self
 
-        self._first = None
-        self._last = None
+        self._first = self
+        self._last = self
 
         self.create_methods()
         self["parent"] = runtime.state.find("Object")
