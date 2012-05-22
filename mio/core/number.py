@@ -41,10 +41,10 @@ class Number(Object):
     def __str__(self):
         return str(self.value)
 
-    def clone(self, value=Null, type=None):
+    def clone(self, value=Null):
         if value is not Null:
             value = Decimal(value)
-        return super(Number, self).clone(value, type)
+        return super(Number, self).clone(value)
 
     # General Arithmetic
 

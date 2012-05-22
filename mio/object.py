@@ -74,7 +74,7 @@ class Object(object):
 
     __repr__ = __str__
 
-    def clone(self, value=Null, type=None):
+    def clone(self, value=Null):
         obj = copy(self)
 
         obj.attrs = {}
@@ -84,9 +84,6 @@ class Object(object):
         if value is not Null:
             obj.value = value
 
-        if type is not None:
-            obj["type"] = type
-
         return obj
 
     def forward(self, key):
@@ -94,10 +91,7 @@ class Object(object):
 
     @property
     def type(self):
-        type = self.attrs.get("type", self.__class__.__name__)
-        if ismethod(type):
-            type = self.__class__.__name__
-        return str(type)
+        return self.__class__.__name__
 
     # Attribute Operations
 
@@ -261,12 +255,7 @@ class Object(object):
 
     @pymethod("clone")
     def _clone(self, receiver, context, m, *args):
-        if m.first.previous is not None and m.first.previous.args:
-            type = runtime.find("String").clone(m.first.previous.args[0].name)
-        else:
-            type = None
-
-        object = receiver.clone(type=type)
+        object = receiver.clone()
 
         try:
             m = runtime.find("Message").clone()

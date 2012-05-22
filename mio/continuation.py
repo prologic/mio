@@ -16,9 +16,6 @@ class Continuation(Object):
         self.create_methods()
         self["parent"] = runtime.state.find("Object")
 
-    def clone(self, value=Null, type=None):
-        return super(Continuation, self).clone(value, None)
-
     @pymethod("call")
     def call(self, receiver, context, m):
         return receiver.message.eval(receiver.context)

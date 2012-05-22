@@ -24,9 +24,6 @@ class List(Object):
 
     __str__ = __repr__
 
-    def clone(self, value=Null, type=None):
-        return super(List, self).clone(value, None)
-
     @pymethod()
     def init(self, receiver, context, m, iterable=None):
         iterable = iterable.eval(context) if iterable is not None else List()

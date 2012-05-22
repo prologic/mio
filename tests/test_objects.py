@@ -4,7 +4,7 @@ from mio import runtime
 def test_clone(mio):
     mio.eval("World = Object clone")
     assert mio.eval("World")
-    assert mio.eval("World type") == "World"
+    assert mio.eval("Object parent") == runtime.find("Object")
 
 
 def test_do(mio):
@@ -82,7 +82,6 @@ def test_keys(mio):
     keys = list(mio.eval("Foo keys"))
     assert "x" in keys
     assert "y" in keys
-    assert "type" in keys
     assert "parent" in keys
 
 
