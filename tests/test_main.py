@@ -20,11 +20,10 @@ def test_interactive():
             stdin=PIPE, stdout=PIPE)
     stdout = p.communicate("exit\n")[0]
     assert p.returncode == 0
-    assert stdout.split("\n")[0] == "3"
+    assert stdout.split()[0] == "3"
 
 
 def test_repl():
     p = Popen([sys.executable, main_wrapper.__file__], stdin=PIPE, stdout=PIPE)
-    stdout = p.communicate("(1 + 2) println\nexit\n")[0]
+    p.communicate("(1 + 2) println\nexit\n")
     assert p.returncode == 0
-    assert stdout.split("\n")[1] == ">>> 3"
