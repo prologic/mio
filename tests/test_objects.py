@@ -1,15 +1,129 @@
+from mio import runtime
+
+
 def test_clone(mio):
     mio.eval("World = Object clone")
     assert mio.eval("World")
     assert mio.eval("World type") == "World"
 
 
-def test_mixin(mio):
-    mio.eval("Base = Object clone")
-    mio.eval("Base a = 1")
-    mio.eval("World = Object clone")
-    assert mio.eval("World")
-    assert mio.eval("World type") == "World"
+def test_do(mio):
+    mio.eval("do(x = 1)")
+    assert mio.eval("x") == 1
 
-    mio.eval("World mixin(Base)")
-    assert mio.eval("World a") == 1
+
+def test_eq(mio):
+    assert mio.eval("1 ==(1)")
+
+
+def test_evalArg(mio):
+    assert mio.eval("evalArg(1)") == 1
+
+
+def test_evalArgAndReturnNone(mio):
+    assert mio.eval("evalArgAndReturnNone(x = 1)") == None
+    assert mio.eval("x") == 1
+
+
+def test_evalArgAndReturnSelf(mio):
+    assert mio.eval("evalArgAndReturnSelf(2)") == runtime.find("Object")
+
+
+def test_foreach(mio):
+    assert mio.eval("xs = List clone") == []
+    assert mio.eval("xs append(1)") == [1]
+    assert mio.eval("xs append(2)") == [1, 2]
+    assert mio.eval("xs append(3)") == [1, 2, 3]
+
+    mio.eval("""
+        sum = method(iterable,
+            sum = 0
+            iterable foreach(item,
+                sum = sum + item
+            )
+            sum
+        )
+    """)
+
+    assert mio.eval("sum(xs)") == 6
+
+
+def test_forward(mio):
+    mio.eval("Foo = Object clone")
+    assert mio.eval("Foo x = 1")
+    assert mio.eval("Foo x") == 1
+    assert mio.eval("Foo Object") == runtime.find("Object")
+
+
+def test_get(mio):
+    mio.eval("Foo = Object clone")
+    assert mio.eval("Foo x = 1")
+    assert mio.eval("Foo get(\"x\")") == 1
+
+
+def test_has(mio):
+    mio.eval("Foo = Object clone")
+    assert mio.eval("Foo x = 1")
+    assert mio.eval("Foo has(\"x\")") == True
+
+
+def test_hash(mio):
+    assert mio.eval("Object hash") == hash(runtime.find("Object"))
+
+
+def test_id(mio):
+    assert mio.eval("Object id") == id(runtime.find("Object"))
+
+
+def test_keys(mio):
+    mio.eval("Foo = Object clone")
+    assert mio.eval("Foo x = 1")
+    assert mio.eval("Foo y = 2")
+    keys = list(mio.eval("Foo keys"))
+    assert "x" in keys
+    assert "y" in keys
+    assert "type" in keys
+    assert "parent" in keys
+
+
+def test_method(mio):
+    mio.eval("foo = method(1)")
+    assert mio.eval("foo") == 1
+
+    mio.eval("Foo = Object clone")
+    assert mio.eval("Foo x = 1") == 1
+
+    mio.eval("Foo foo = method(self x)")
+    assert mio.eval("Foo foo") == 1
+
+
+def test_neq(mio):
+    assert mio.eval("1 !=(0)") == True
+
+
+def test_println(mio):
+    pass
+
+
+def test_set(mio):
+    mio.eval("Foo = Object clone")
+    assert mio.eval("Foo x = 1")
+    assert mio.eval("Foo get(\"x\")") == 1
+    assert mio.eval("Foo set(\"x\", 2)") == 2
+    assert mio.eval("Foo x") == 2
+
+
+def test_str(mio):
+    pass
+
+
+def test_summary(mio):
+    pass
+
+
+def test_write(mio):
+    pass
+
+
+def test_writeln(mio):
+    pass

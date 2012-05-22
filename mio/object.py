@@ -243,7 +243,9 @@ class Object(object):
 
     @pymethod()
     def keys(self, receiver, context, m):
-        return runtime.find("List").clone(receiver.attrs.keys())
+        String = runtime.find("String")
+        keys = [String.clone(key) for key in receiver.attrs.keys()]
+        return runtime.find("List").clone(keys)
 
     @pymethod()
     def summary(self, receiver, context, m):
@@ -255,14 +257,6 @@ class Object(object):
     @pymethod()
     def do(self, receiver, context, m, expression):
         expression.eval(receiver)
-        return receiver
-
-    @pymethod()
-    def mixin(self, receiver, context, m, other):
-        skip = ("parent", "type")
-        other = other.eval(context)
-        pairs = ((k, v) for k, v in other.attrs.items() if not k in skip)
-        self.attrs.update(pairs)
         return receiver
 
     @pymethod("clone")

@@ -18,5 +18,3 @@ World = Object clone do (
         writeln("Hello ", self greeting)
     )
 )
-
-NewWorld = World mixin(Foo)
