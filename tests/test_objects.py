@@ -1,4 +1,7 @@
+from pytest import raises
+
 from mio import runtime
+from mio.errors import AttributeError
 
 
 def test_clone(mio):
@@ -110,6 +113,15 @@ def test_set(mio):
     assert mio.eval("Foo get(\"x\")") == 1
     assert mio.eval("Foo set(\"x\", 2)") == 2
     assert mio.eval("Foo x") == 2
+
+
+def test_del(mio):
+    mio.eval("Foo = Object clone")
+    assert mio.eval("Foo a = 1")
+    assert mio.eval("Foo del(\"a\")") == None
+
+    with raises(AttributeError):
+        mio.eval("Foo a", reraise=True)
 
 
 def test_str(mio):
