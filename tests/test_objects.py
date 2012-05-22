@@ -63,6 +63,9 @@ def test_get(mio):
     assert mio.eval("Foo x = 1")
     assert mio.eval("Foo get(\"x\")") == 1
 
+    with raises(AttributeError):
+        mio.eval("Foo z", reraise=True)
+
 
 def test_has(mio):
     mio.eval("Foo = Object clone")
