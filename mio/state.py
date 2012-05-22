@@ -24,8 +24,6 @@ from core import System
 
 class State(object):
 
-    STATES = ("isBreak", "isReturn",)
-
     def __init__(self, args, opts, lobby):
         super(State, self).__init__()
 
@@ -45,7 +43,7 @@ class State(object):
         self.isBreak = False
 
     def stop(self):
-        return any([getattr(self, k, False) for k in self.STATES])
+        return self.isBreak or self.isReturn
 
     def create_objects(self):
         lobby = self.lobby
