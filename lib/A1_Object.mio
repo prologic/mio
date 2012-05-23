@@ -5,6 +5,7 @@ Object do (
     )
 
     list = method(List clone(call message argsEvaluatedIn(call sender)))
+
     sum = method(iterable,
         sum = 0
         iterable foreach(item,
@@ -12,4 +13,13 @@ Object do (
         )
         sum
     )
+
+    map = method(f, iterable,
+        map = list
+        iterable foreach(item,
+            map append(f(item))
+        )
+        map
+    )
+
 )
