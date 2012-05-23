@@ -22,4 +22,12 @@ Object do (
         map
     )
 
+    filter = method(f, iterable,
+        filter = list
+        iterable foreach(item,
+            if (f(item), filter append(item))
+        )
+        filter
+    )
+
 )
