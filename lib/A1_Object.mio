@@ -9,29 +9,4 @@ Object do (
     map = method(Map clone(call message argsEvaluatedIn(call sender)))
 
     range = method(Range clone(call message argsEvaluatedIn(call sender)))
-
-    sum = method(iterable,
-        sum = 0
-        iterable foreach(item,
-            sum = sum + item
-        )
-        sum
-    )
-
-    map = method(f, iterable,
-        map = list
-        iterable foreach(item,
-            map append(f(item))
-        )
-        map
-    )
-
-    filter = method(f, iterable,
-        filter = list
-        iterable foreach(item,
-            if (f(item), filter append(item))
-        )
-        filter
-    )
-
 )
