@@ -6,6 +6,10 @@ Object do (
 
     list = method(List clone(call message argsEvaluatedIn(call sender)))
 
+    map = method(Map clone(call message argsEvaluatedIn(call sender)))
+
+    range = method(Range clone(call message argsEvaluatedIn(call sender)))
+
     sum = method(iterable,
         sum = 0
         iterable foreach(item,

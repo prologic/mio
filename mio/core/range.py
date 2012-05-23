@@ -3,6 +3,7 @@ from mio.utils import pymethod
 
 from mio.object import Object
 
+from list import List
 from number import Number
 
 
@@ -25,7 +26,11 @@ class Range(Object):
 
     @pymethod()
     def init(self, receiver, context, m, *args):
-        args = [arg.eval(context) for arg in args]
+        if len(args) == 1 and isinstance(args[0].eval(context), List):
+            args = list(args[0].eval(context))
+        else:
+            args = [arg.eval(context) for arg in args]
+
         ints = [int(arg) for arg in args]
         keys = ("start", "stop", "step")
 
