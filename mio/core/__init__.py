@@ -1,7 +1,7 @@
 from number import Number
 from string import String
 from list import List
-from map import Map
+from dict import Dict
 
 from file import File
 from range import Range

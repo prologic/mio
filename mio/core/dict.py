@@ -8,10 +8,10 @@ from list import List
 from number import Number
 
 
-class Map(Object):
+class Dict(Object):
 
     def __init__(self, value={}):
-        super(Map, self).__init__(value=value)
+        super(Dict, self).__init__(value=value)
 
         self.create_methods()
         self["parent"] = runtime.state.find("Object")
@@ -22,13 +22,17 @@ class Map(Object):
 
     def __repr__(self):
         values = ", ".join(["%r, %r" % (k, v) for k, v in self.value.items()])
-        return "map(%s)" % values
+        return "dict(%s)" % values
+
+    __str__ = __repr__
 
     @pymethod()
-    def init(self, receiver, context, m, *args):
-        args = [arg.eval(context) for arg in args]
-        it = iter(args)
-        receiver.value = dict(list(zip(it, it)))
+    def init(self, receiver, context, m, iterable=None):
+        iterable = iterable.eval(context) if iterable is not None else List()
+        if not isinstance(iterable, List):
+            raise TypeError("%s object is not iterable" % iterable.type)
+        iterable = iter(iterable)
+        receiver.value = dict(list(zip(iterable, iterable)))
 
     # General Operations
 

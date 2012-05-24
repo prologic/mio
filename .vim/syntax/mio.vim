@@ -13,19 +13,19 @@ syntax case match
 
 " equivalent to io-mode-prototype-names in io-mode.el
 syntax keyword xType File Globals List
-syntax keyword xType Map Message Number Object
+syntax keyword xType Dict Message Number Object
 syntax keyword xType String Range System
 syntax keyword xType True False None
 
 " equivalent to io-mode-message-names in io-mode.el
 syntax keyword xKeyword and arg at str bool break
 syntax keyword xKeyword call catch clone continue
-syntax keyword xKeyword do else elif foreach
+syntax keyword xKeyword dict do else elif foreach filter
 syntax keyword xKeyword get has if id hash type
-syntax keyword xKeyword method not or parent eval
+syntax keyword xKeyword list map method not or parent eval
 syntax keyword xKeyword print println raise 
-syntax keyword xKeyword del return yield
-syntax keyword xKeyword set keys summary then
+syntax keyword xKeyword del return reduce yield
+syntax keyword xKeyword sum set keys summary then
 syntax keyword xKeyword super try while write writeln
 
 syntax region xOperator start=':' end='='
