@@ -8,6 +8,11 @@ Object do (
 
     list = method(List clone(call message argsEvaluatedIn(call sender)))
 
+    str = method(
+        args = call message args
+        String clone(if(args, args at(0), ""))
+    )
+
     dict = method(Dict clone(call message argsEvaluatedIn(call sender)))
 
     range = method(Range clone(call message argsEvaluatedIn(call sender)))

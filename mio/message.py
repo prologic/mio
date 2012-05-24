@@ -82,7 +82,9 @@ class Message(Object):
     @pymethod("arg")
     def evalArg(self, receiver, context, m, index):
         index = int(index.eval(context))
-        return receiver.args[index].eval(context)
+        if index < len(receiver.args):
+            return receiver.args[index].eval(context)
+        return runtime.find("None")
 
     @pymethod("args")
     def getArgs(self, receiver, context, m):

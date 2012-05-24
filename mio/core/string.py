@@ -33,6 +33,10 @@ class String(Object):
     def __str__(self):
         return str(self.value)
 
+    @pymethod()
+    def init(self, receiver, context, m, value=None):
+        receiver.value = value.eval(context) if value is not None else ""
+
     # General Operations
 
     @pymethod("+")
