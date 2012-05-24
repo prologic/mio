@@ -146,6 +146,10 @@ class Object(object):
         vars, expression = args[:-1], args[-1]
 
         for item in receiver:
+            if runtime.state.isContinue:
+                runtime.state.reset()
+                continue
+
             if len(vars) == 2:
                 context[vars[0].name], context[vars[1].name] = item
             elif len(vars) == 1:
@@ -153,8 +157,13 @@ class Object(object):
 
             result = expression.eval(context)
 
-        runtime.state.reset()
-        return result
+            if runtime.state.stop():
+                return runtime.state.returnValue
+
+        try:
+            return result
+        finally:
+            runtime.state.reset()
 
     @pymethod("while")
     def _while(self, receiver, context, m, condition, expression):
@@ -310,9 +319,9 @@ class Object(object):
 
     @pymethod("not")
     def _not(self, receiver, context, m, value=None):
-        if value:
-            return value.clone(not value.eval(context))
-        return receiver.clone(not receiver)
+        value = value.eval(context) if value is not None else receiver
+        test = not bool(value)
+        return runtime.find("True") if test else runtime.find("False")
 
     # Type Conversion
 
