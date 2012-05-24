@@ -1,22 +1,36 @@
 #!/usr/bin/env mio
 
 Object while = method(
-    c = Continuation current
+    value = None
+
     status = "normal"
+
     break = method(
         self status = "break"
     )
+
     continue = method(
         self status = "continue"
     )
+
+    return = method(
+        self status = "return"
+        self value = call message arg(0)
+    )
+
+    test = Continuation current
+
     if (call message arg(0)) then (
         if (status == "break") then (
             return None
         ) elif (status == "continue") then (
-            c call
+            status = "normal"
+            test call
+        ) elif (status == "return") then (
+            return value
         ) else (
             call message arg(1)
-            c call
+            test call
         )
     )
 )
@@ -24,5 +38,11 @@ Object while = method(
 x = 1
 while(x < 10,
     x = x + 1
-    if (x % 2 == 0, continue, "foo" println)
+    if (x % 2 == 0) then (
+        continue
+    ) elif (x == 5) then (
+        return "foo"
+    ) else (
+        x println
+    )
 )
