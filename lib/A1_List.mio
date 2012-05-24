@@ -1,0 +1,40 @@
+List do (
+    any = method(
+        self foreach(item,
+            if (item, return True)
+        )
+    )
+
+    all = method(
+        self foreach(item,
+            if (not(item), return False)
+        )
+        return True
+    )
+
+    sum = method(
+        result = 0
+        self foreach(item,
+            result = result + item
+        )
+        result
+    )
+
+    map = method(
+        message = call message args at(0)
+        result = list
+        self foreach(item,
+            result append(message eval(item))
+        )
+        result
+    )
+
+    filter = method(
+        message = call message args at(0)
+        result = list
+        self foreach(item,
+            if (message eval(item), result append(item))
+        )
+        result
+    )
+)

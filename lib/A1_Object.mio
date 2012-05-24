@@ -16,46 +16,4 @@ Object do (
     dict = method(Dict clone(call message argsEvaluatedIn(call sender)))
 
     range = method(Range clone(call message argsEvaluatedIn(call sender)))
-
-    any = method(iterable,
-        iterable foreach(item,
-            if (item, return True)
-        )
-    )
-
-    all = method(iterable,
-        iterable foreach(item,
-            if (not(item), return False)
-        )
-        return True
-    )
-
-    sum = method(iterable,
-        result = 0
-        iterable foreach(item,
-            result = result + item
-        )
-        result
-    )
-
-    map = method(
-        message = call message args at(0)
-        iterable = call message arg(1)
-        result = list
-        iterable foreach(item,
-            result append(message eval(item))
-        )
-        result
-    )
-
-    filter = method(
-        message = call message args at(0)
-        iterable = call message arg(1)
-        result = list
-        iterable foreach(item,
-            if (message eval(item), result append(item))
-        )
-        result
-    )
-
 )

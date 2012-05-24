@@ -4,7 +4,6 @@ from mio.utils import pymethod
 from mio.object import Object
 
 from list import List
-from number import Number
 
 
 class Range(Object):
@@ -12,9 +11,9 @@ class Range(Object):
     def __init__(self, value=range(0)):
         super(Range, self).__init__(value=value)
 
-        self["start"] = Number(0)
-        self["stop"] = Number(0)
-        self["step"] = Number(1)
+        self["start"] = runtime.find("Number").clone(0)
+        self["stop"] = runtime.find("Number").clone(0)
+        self["step"] = runtime.find("Number").clone(1)
 
         self.create_methods()
         self["parent"] = runtime.state.find("Object")
@@ -41,9 +40,13 @@ class Range(Object):
                 receiver[key] = runtime.find("None")
 
         if receiver["stop"] == None:
-            receiver["start"], receiver["stop"] = Number(0), receiver["start"]
+            receiver["start"], receiver["stop"] = runtime.find("Number").clone(0), receiver["start"]
 
         if receiver["step"] == None:
-            receiver["step"] = Number(1)
+            receiver["step"] = runtime.find("Number").clone(1)
 
         receiver.value = range(*ints)
+
+    @pymethod()
+    def asList(self, receiver, context, m):
+        return runtime.find("List").clone(list(receiver))
