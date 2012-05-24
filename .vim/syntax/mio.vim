@@ -24,7 +24,7 @@ syntax keyword xKeyword dict do else elif foreach filter
 syntax keyword xKeyword get has if id hash type
 syntax keyword xKeyword list map method not or parent eval
 syntax keyword xKeyword print println raise 
-syntax keyword xKeyword del return reduce yield
+syntax keyword xKeyword del range return reduce yield
 syntax keyword xKeyword sum set keys summary then
 syntax keyword xKeyword super try while write writeln
 
