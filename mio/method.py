@@ -53,10 +53,11 @@ class Method(Object):
     def __call__(self, receiver, context=None, m=None, *args):
         self.create_locals(receiver, context, m)
 
-        args = [arg.eval(context) for arg in args]
-
         for i, arg in enumerate(self.args):
-            self.locals[arg] = args[i] if i < len(args) else self["None"]
+            if i < len(args):
+                self.locals[arg] = args[i].eval(context) 
+            else:
+                self.locals[arg] = runtime.find("None")
 
         try:
             runtime.state.reset()

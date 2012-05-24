@@ -18,27 +18,31 @@ Object do (
     range = method(Range clone(call message argsEvaluatedIn(call sender)))
 
     sum = method(iterable,
-        sum = 0
+        result = 0
         iterable foreach(item,
-            sum = sum + item
+            result = result + item
         )
-        sum
+        result
     )
 
-    map = method(f, iterable,
-        map = list
+    map = method(
+        message = call message args at(0)
+        iterable = call message arg(1)
+        result = list
         iterable foreach(item,
-            map append(f(item))
+            result append(message eval(item))
         )
-        map
+        result
     )
 
-    filter = method(f, iterable,
-        filter = list
+    filter = method(
+        message = call message args at(0)
+        iterable = call message arg(1)
+        result = list
         iterable foreach(item,
-            if (f(item), filter append(item))
+            if (message eval(item), result append(item))
         )
-        filter
+        result
     )
 
 )
