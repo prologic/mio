@@ -4,6 +4,8 @@ Object do (
         Parser parse(code) eval(context)
     )
 
+    bool = method(if (call message arg(0)))
+
     list = method(List clone(call message argsEvaluatedIn(call sender)))
 
     dict = method(Dict clone(call message argsEvaluatedIn(call sender)))
