@@ -68,7 +68,7 @@ class State(object):
         lobby["Parser"] = Parser()
         lobby["Message"] = Message("")
         lobby["Continuation"] = Continuation()
-        lobby["Method"] = Method(None, Message(""), [])
+        lobby["Method"] = Method(None, Message(""), [], {})
 
         lobby["File"] = File()
         lobby["Range"] = Range()

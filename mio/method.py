@@ -14,12 +14,14 @@ class Locals(Object):
 
 class Method(Object):
 
-    def __init__(self, scope, body, args):
+    def __init__(self, scope, body, args, kwargs):
         super(Method, self).__init__()
 
         self.scope = scope
         self.body = body
-        self.args = [arg.name for arg in args]
+
+        self.args = args
+        self.kwargs = kwargs
 
         self.locals = None
 
@@ -52,6 +54,12 @@ class Method(Object):
 
     def __call__(self, receiver, context=None, m=None, *args):
         self.create_locals(receiver, context, m)
+
+        self.locals.attrs.update(self.kwargs)
+
+        for arg in args:
+            if arg.name == "set":
+                arg.eval(self.locals, context)
 
         for i, arg in enumerate(self.args):
             if i < len(args):

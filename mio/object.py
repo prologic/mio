@@ -183,7 +183,15 @@ class Object(object):
 
         method = runtime.find("Method").clone()
 
-        method.args = [arg.name for arg in args]
+        kwargs = [arg for arg in args if arg.name == "set"]
+
+        ctx = runtime.find("Object").clone()
+        for kwarg in kwargs:
+            kwarg.eval(ctx, context)
+
+        method.args = [arg.name for arg in args if not arg.name == "set"]
+        method.kwargs = ctx.attrs
+
         method.scope = scope
         method.body = body
 
