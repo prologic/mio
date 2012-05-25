@@ -262,6 +262,10 @@ class Object(object):
         expression.eval(receiver)
         return receiver
 
+    @pymethod()
+    def super(self, receiver, context, m, expression):
+        return expression.eval(receiver["self"]["parent"], receiver)
+
     @pymethod("clone")
     def _clone(self, receiver, context, m, *args):
         object = receiver.clone()

@@ -1,0 +1,24 @@
+#!/usr/bin/env mio
+
+Foo = Object clone do (
+    foo = method(
+        "foo" println
+    )
+    type = "Bar"
+)
+
+Bar = Foo clone do (
+    foo = method(
+        super(foo)
+        "bar" println
+    )
+    type = "Bar"
+)
+
+World = Bar clone do (
+    foo = method(
+        super(foo)
+        "Hello World!" println
+    )
+    type = "World"
+)
