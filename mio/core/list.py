@@ -31,9 +31,6 @@ class List(Object):
         else:
             iterable = runtime.find("List").clone()
 
-        if not isinstance(iterable, List):
-            raise TypeError("%s object is not iterable" % iterable.type)
-
         receiver.value = list(iterable)
 
     # General Operations

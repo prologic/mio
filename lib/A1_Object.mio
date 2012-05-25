@@ -6,7 +6,13 @@ Object do (
 
     bool = method(if (call message arg(0)))
 
-    list = method(List clone(call message argsEvaluatedIn(call sender)))
+    list = method(
+        if (call message args len == 1) then (
+            return (List clone(call message arg(0)))
+        ) else (
+            return (List clone(call message argsEvaluatedIn(call sender)))
+        )
+    )
 
     str = method(
         args = call message args
