@@ -263,8 +263,8 @@ class Object(object):
         return receiver
 
     @pymethod()
-    def super(self, receiver, context, m, expression):
-        return expression.eval(receiver["self"]["parent"], receiver)
+    def super(self, receiver, context, m):
+        return receiver["self"]["parent"]
 
     @pymethod("clone")
     def _clone(self, receiver, context, m, *args):

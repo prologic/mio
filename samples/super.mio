@@ -9,7 +9,7 @@ Foo = Object clone do (
 
 Bar = Foo clone do (
     foo = method(
-        super(foo)
+        super foo
         "bar" println
     )
     type = "Bar"
@@ -17,7 +17,7 @@ Bar = Foo clone do (
 
 World = Bar clone do (
     foo = method(
-        super(foo)
+        super foo
         "Hello World!" println
     )
     type = "World"
