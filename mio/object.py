@@ -9,13 +9,16 @@ from utils import format_object, pymethod, Null
 
 class Object(object):
 
-    __slots__ = ("attrs", "value",)
+    __slots__ = ("attrs", "value", "traits", "behaviors",)
 
     def __init__(self, value=Null, methods=False):
         super(Object, self).__init__()
 
         self.attrs = {}
         self.value = value
+
+        self.traits = []
+        self.behaviors = {}
 
         if methods:
             self.create_methods()
@@ -40,21 +43,25 @@ class Object(object):
         return cmp(self.value, getattr(other, "value", other))
 
     def __contains__(self, key):
-        return key in self.attrs
+        return key in self.attrs or key in self.behaviors
 
     def __delitem__(self, key):
         if key in self.attrs:
             del self.attrs[key]
+        elif key in self.behaviors:
+            del self.behaviors[key]
 
     def __getitem__(self, key):
         if key in self.attrs:
             return self.attrs[key]
-
-        parent = self.attrs.get("parent")
-        while parent is not None:
-            if key in parent:
-                return parent[key]
-            parent = parent.attrs.get("parent")
+        elif key in self.behaviors:
+            return self.behaviors[key]
+        else:
+            parent = self.attrs.get("parent")
+            while parent is not None:
+                if key in parent:
+                    return parent[key]
+                parent = parent.attrs.get("parent")
 
         if hasattr(self, "forward"):
             try:
@@ -65,6 +72,16 @@ class Object(object):
 
     def __setitem__(self, key, value):
         self.attrs[key] = value
+
+    def __addtrait__(self, trait):
+        for k, v in trait.attrs.items():
+            self.behaviors[k] = v
+        self.traits.append(trait)
+
+    def __deltrait__(self, trait):
+        for k, v in trait.attrs.items():
+            del self.behaviors[k]
+        self.traits.remvoe(trait)
 
     def __call__(self, *args, **kwargs):
         return self
@@ -120,6 +137,42 @@ class Object(object):
         key = key.eval(context)
         default = default.eval(context) if default else runtime.find("None")
         return receiver.attrs.get(key, default)
+
+    # Traits Operations
+
+    @pymethod()
+    def uses(self, receiver, context, m, *traits):
+        traits = [trait.eval(context) for trait in traits]
+        for trait in traits:
+            receiver.__addtrait__(trait)
+        return receiver
+
+    @pymethod()
+    def addTrait(self, receiver, context, m, trait):
+        trait = trait.eval(context)
+        receiver.__addtrait__(trait)
+        return receiver
+
+    @pymethod()
+    def delTrait(self, receiver, context, m, trait):
+        trait = trait.eval(context)
+        receiver.__deltrait__(trait)
+        return receiver
+
+    @pymethod()
+    def hasTrait(self, receiver, context, m, trait):
+        trait = trait.eval(context)
+        test = trait in receiver.traits
+        return runtime.find("True") if test else runtime.find("False")
+
+    @pymethod("traits")
+    def getTraits(self, receiver, context, m):
+        return runtime.find("List").clone(receiver.traits)
+
+    @pymethod("behaviors")
+    def getBehaviors(self, receiver, context, m):
+        keys = receiver.behaviors.keys()
+        return runtime.find("List").clone(receiver.behaviors.keys())
 
     # Method Operations
 
