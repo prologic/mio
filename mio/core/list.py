@@ -26,9 +26,14 @@ class List(Object):
 
     @pymethod()
     def init(self, receiver, context, m, iterable=None):
-        iterable = iterable.eval(context) if iterable is not None else List()
+        if iterable is not None:
+            iterable = iterable.eval(context)
+        else:
+            iterable = runtime.find("List").clone()
+
         if not isinstance(iterable, List):
             raise TypeError("%s object is not iterable" % iterable.type)
+
         receiver.value = list(iterable)
 
     # General Operations
