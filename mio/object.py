@@ -121,7 +121,7 @@ class Object(object):
         default = default.eval(context) if default else runtime.find("None")
         return receiver.attrs.get(key, default)
 
-    # Method/Block Operations
+    # Method Operations
 
     @pymethod()
     def method(self, receiver, context, m, *args):
