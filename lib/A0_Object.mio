@@ -4,7 +4,6 @@ Object do (
 
 True do(
 	or = True
-	type = "True"
     str = "True"
     not = False
     else = True
@@ -16,7 +15,6 @@ True do(
 False do(
 	and = False
 	or = method(v, if(v))
-	type = "False"
 	str = "False"
 	not = True
     then = False
@@ -27,7 +25,6 @@ False do(
 
 None do(
 	not = True
-	type = "None"
 	str = "None"
 	and = False
 	or = method(v, if(v))

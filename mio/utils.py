@@ -14,15 +14,13 @@ def format_pymethod(f):
     return "%s(%s)" % (name, args)
 
 
-def format_object(o, type=None):
+def format_object(o):
     attrs = {}
-    if type is None:
-        type = o.__class__.__name__
     for k, v in o.attrs.items():
         attrs[k] = format_pymethod(v) if ismethod(v) else str(v)
     attrs = "\n".join(["  %s = %s" % (str(k).ljust(15), v)
         for k, v in sorted(attrs.items())])
-    return "%s:\n%s" % (type, attrs)
+    return "%s:\n%s" % (o.type, attrs)
 
 
 def pymethod(name=None):

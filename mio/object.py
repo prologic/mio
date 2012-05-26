@@ -313,7 +313,7 @@ class Object(object):
 
     @pymethod()
     def summary(self, receiver, context, m):
-        sys.stdout.write("%s\n" % format_object(receiver, receiver.type))
+        sys.stdout.write("%s\n" % format_object(receiver)
         return receiver
 
     # Object Operations

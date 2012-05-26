@@ -4,7 +4,6 @@ Foo = Object clone do (
     foo = method(
         "foo" println
     )
-    type = "Bar"
 )
 
 Bar = Foo clone do (
@@ -12,7 +11,6 @@ Bar = Foo clone do (
         super foo
         "bar" println
     )
-    type = "Bar"
 )
 
 World = Bar clone do (
@@ -20,5 +18,4 @@ World = Bar clone do (
         super foo
         "Hello World!" println
     )
-    type = "World"
 )

@@ -53,7 +53,6 @@ class State(object):
         lobby["Lobby"] = lobby
         lobby["Object"] = object
 
-        lobby["type"] = String("Lobby")
         lobby["parent"] = object
 
         lobby["Number"] = Number()
@@ -78,6 +77,7 @@ class State(object):
         return self.lobby.attrs[name]
 
     def eval(self, code, reraise=False):
+        message = None
         try:
             if self.opts and self.opts.debug:
                 tokens = tokenize(code)
