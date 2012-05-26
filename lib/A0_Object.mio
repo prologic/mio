@@ -4,32 +4,26 @@ Object do (
 
 True do(
 	or = True
-    str = "True"
     not = False
     else = True
     elif = True
     then = Object get("evalArgAndReturnNone")
-    clone = True
 )
 
 False do(
 	and = False
 	or = method(v, if(v))
-	str = "False"
 	not = True
     then = False
     else = Object get("evalArgAndReturnNone")
     elif = Object get("if")
-	clone = False
 )
 
 None do(
 	not = True
-	str = "None"
 	and = False
 	or = method(v, if(v))
     then = None
     else = None
     elif = None
-	clone = None
 )

@@ -4,7 +4,13 @@ Object do (
         Parser parse(code) eval(context)
     )
 
-    bool = method(if (call message arg(0)))
+    bool = method(
+        args = call message args
+        if (args) then (
+            return (if (args at(0)))
+        )
+        return None
+    )
 
     list = method(
         if (call message args len == 1) then (

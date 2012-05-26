@@ -56,14 +56,15 @@ class State(object):
 
         lobby["parent"] = object
 
-        lobby["None"] = Boolean(None)
-        lobby["True"] = Boolean(True)
-        lobby["False"] = Boolean(False)
-
+        lobby["Boolean"] = Boolean()
         lobby["Number"] = Number()
         lobby["String"] = String()
         lobby["List"] = List()
         lobby["Dict"] = Dict()
+
+        lobby["None"] = Boolean(None)
+        lobby["True"] = Boolean(True)
+        lobby["False"] = Boolean(False)
 
         lobby["Parser"] = Parser()
         lobby["Message"] = Message("")
