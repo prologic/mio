@@ -1,3 +1,4 @@
+from boolean import Boolean
 from number import Number
 from string import String
 from list import List

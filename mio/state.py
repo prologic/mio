@@ -12,6 +12,7 @@ from parser import Parser
 from message import Message
 from continuation import Continuation
 
+from core import Boolean
 from core import Number
 from core import String
 from core import List
@@ -55,14 +56,14 @@ class State(object):
 
         lobby["parent"] = object
 
+        lobby["None"] = Boolean(None)
+        lobby["True"] = Boolean(True)
+        lobby["False"] = Boolean(False)
+
         lobby["Number"] = Number()
         lobby["String"] = String()
         lobby["List"] = List()
         lobby["Dict"] = Dict()
-
-        lobby["None"] = object.clone(None)
-        lobby["True"] = object.clone(True)
-        lobby["False"] = object.clone(False)
 
         lobby["Parser"] = Parser()
         lobby["Message"] = Message("")
