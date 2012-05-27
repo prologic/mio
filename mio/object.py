@@ -74,8 +74,11 @@ class Object(object):
         self.attrs[key] = value
 
     def __addtrait__(self, trait):
-        for k, v in trait.attrs.items():
-            self.behaviors[k] = v
+        attrs = ((k, v) for k, v in trait.attrs.items())
+        methods = ((k, v) for k, v in attrs if v.type == "Method")
+        behaviors = ((k, v) for k, v in methods if not k in self.attrs)
+
+        self.behaviors.update(behaviors)
         self.traits.append(trait)
 
     def __deltrait__(self, trait):
