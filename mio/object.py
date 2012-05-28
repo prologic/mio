@@ -91,7 +91,8 @@ class Object(object):
         return self
 
     def __str__(self):
-        return str(self.value) if self.value is not Null else self.type
+        default = "%s_%s" % (self.type, hex(id(self)))
+        return str(self.value) if self.value is not Null else default
 
     __repr__ = __str__
 
