@@ -7,7 +7,7 @@ True do(
     not = False
     else = True
     elif = True
-    then = method(call message arg(0); None)
+    then = Object get("evalArgAndReturnNone")
 )
 
 False do(
@@ -15,7 +15,7 @@ False do(
 	or = method(v, if(v))
 	not = True
     then = False
-    else = method(call message arg(0); None)
+    else = Object get("evalArgAndReturnNone")
     elif = Object get("if")
 )
 
