@@ -24,7 +24,7 @@ class System(Object):
         self["stderr"] = File(sys.stderr)
 
         self.create_methods()
-        self["parent"] = runtime.state.find("Object")
+        self.parent = runtime.state.find("Object")
 
     def build_args(self):
         return List([String(arg) for arg in runtime.state.args])

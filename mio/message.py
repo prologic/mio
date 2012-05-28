@@ -25,7 +25,7 @@ class Message(Object):
         self._last = self
 
         self.create_methods()
-        self["parent"] = runtime.state.find("Object")
+        self.parent = runtime.state.find("Object")
 
     def __str__(self):
         messages = []

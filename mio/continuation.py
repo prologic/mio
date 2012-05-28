@@ -14,7 +14,7 @@ class Continuation(Object):
         self.message = None
 
         self.create_methods()
-        self["parent"] = runtime.state.find("Object")
+        self.parent = runtime.state.find("Object")
 
     @pymethod("call")
     def call(self, receiver, context, m):

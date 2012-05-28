@@ -12,7 +12,7 @@ class String(Object):
         super(String, self).__init__(value=value)
 
         self.create_methods()
-        self["parent"] = runtime.state.find("Object")
+        self.parent = runtime.state.find("Object")
 
     def __iter__(self):
         for c in self.value:

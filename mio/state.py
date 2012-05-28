@@ -54,7 +54,7 @@ class State(object):
         lobby["Lobby"] = lobby
         lobby["Object"] = object
 
-        lobby["parent"] = object
+        lobby.parent = object
 
         lobby["Boolean"] = Boolean()
         lobby["Number"] = Number()

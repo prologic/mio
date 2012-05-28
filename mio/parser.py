@@ -177,7 +177,7 @@ class Parser(Object):
         super(Parser, self).__init__(value=value)
 
         self.create_methods()
-        self["parent"] = runtime.state.find("Object")
+        self.parent = runtime.state.find("Object")
 
     @pymethod()
     def parse(self, receiver, context, m, code):

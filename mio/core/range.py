@@ -16,7 +16,7 @@ class Range(Object):
         self["step"] = runtime.find("Number").clone(1)
 
         self.create_methods()
-        self["parent"] = runtime.state.find("Object")
+        self.parent = runtime.state.find("Object")
 
     def __iter__(self):
         while self["start"] < self["stop"]:

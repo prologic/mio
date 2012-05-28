@@ -10,7 +10,7 @@ class Boolean(Object):
         super(Boolean, self).__init__(value=value)
 
         self.create_methods()
-        self["parent"] = runtime.state.find("Object")
+        self.parent = runtime.state.find("Object")
 
     def clone(self, value=Null):
         return self

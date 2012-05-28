@@ -26,7 +26,7 @@ class Method(Object):
         self.locals = None
 
         self.create_methods()
-        self["parent"] = runtime.state.find("Object")
+        self.parent = runtime.state.find("Object")
 
     def __str__(self):
         args = ",".join(self.args)
@@ -37,14 +37,14 @@ class Method(Object):
 
         if self.scope is not None:
             self.locals["self"] = self.scope
-            self.locals["parent"] = self.scope
+            self.locals.parent = self.scope
         else:
             self.locals["self"] = receiver
-            self.locals["parent"] = receiver
+            self.locals.parent = receiver
 
         call = Call()
         call["method"] = self
-        call["parent"] = runtime.state.find("Object")
+        call.parent = runtime.state.find("Object")
 
         call["message"] = m
         call["target"] = receiver

@@ -12,7 +12,7 @@ class Number(Object):
         super(Number, self).__init__(value=Decimal(value))
 
         self.create_methods()
-        self["parent"] = runtime.state.find("Object")
+        self.parent = runtime.state.find("Object")
 
     def __add__(self, other):
         return self.value + other.value

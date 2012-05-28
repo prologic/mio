@@ -9,12 +9,13 @@ from utils import format_object, pymethod, Null
 
 class Object(object):
 
-    __slots__ = ("attrs", "value", "traits", "behaviors",)
+    __slots__ = ("attrs", "parent", "value", "traits", "behaviors",)
 
     def __init__(self, value=Null, methods=False):
         super(Object, self).__init__()
 
         self.attrs = {}
+        self.parent = None
         self.value = value
 
         self.traits = []
@@ -57,11 +58,11 @@ class Object(object):
         elif key in self.behaviors:
             return self.behaviors[key]
         else:
-            parent = self.attrs.get("parent")
+            parent = self.parent
             while parent is not None:
                 if key in parent:
                     return parent[key]
-                parent = parent.attrs.get("parent")
+                parent = parent.parent
 
         if hasattr(self, "forward"):
             try:
@@ -98,8 +99,7 @@ class Object(object):
         obj = copy(self)
 
         obj.attrs = {}
-
-        obj["parent"] = self
+        obj.parent = self
 
         if value is not Null:
             obj.value = value
@@ -296,6 +296,12 @@ class Object(object):
 
     # Introspection
 
+    @pymethod("parent")
+    def _parent(self, receiver, context, m):
+        if receiver.parent is not None:
+            return receiver.parent
+        return receiver
+
     @pymethod("type")
     def _type(self, receiver, context, m):
         return runtime.find("String").clone(receiver.type)
@@ -328,7 +334,7 @@ class Object(object):
 
     @pymethod()
     def super(self, receiver, context, m):
-        return receiver["self"]["parent"]
+        return receiver["self"].parent
 
     @pymethod("clone")
     def _clone(self, receiver, context, m, *args):
@@ -343,6 +349,11 @@ class Object(object):
             pass
 
         return object
+
+    @pymethod()
+    def setParent(self, receiver, context, m, parent):
+        receiver.parent = parent.eval(context)
+        return receiver
 
     # Boolean Operations
 
