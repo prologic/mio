@@ -307,6 +307,12 @@ class Object(object):
     def _type(self, receiver, context, m):
         return runtime.find("String").clone(receiver.type)
 
+    @pymethod("value")
+    def _value(self, receiver, context, m):
+        if receiver.value is not Null:
+            return receiver.value
+        return runtime.find("None")
+
     @pymethod()
     def hash(self, receiver, context, m):
         return runtime.find("Number").clone(hash(receiver))
@@ -354,6 +360,11 @@ class Object(object):
     @pymethod()
     def setParent(self, receiver, context, m, parent):
         receiver.parent = parent.eval(context)
+        return receiver
+
+    @pymethod()
+    def setValue(self, receiver, context, m, value):
+        receiver.value = value.eval(context)
         return receiver
 
     # Boolean Operations

@@ -116,10 +116,6 @@ class Message(Object):
     def getPrevious(self, receiver, context, m):
         return receiver.previous
 
-    @pymethod("value")
-    def getValue(self, receiver, context, m):
-        return receiver.value
-
     @pymethod()
     def setArgs(self, receiver, context, m, *args):
         receiver.args = tuple(args)
@@ -137,11 +133,6 @@ class Message(Object):
             receiver.next = result
         else:
             receiver.next = message
-        return receiver
-
-    @pymethod()
-    def setValue(self, receiver, context, m, value):
-        receiver.value = value.eval(context)
         return receiver
 
     @property
