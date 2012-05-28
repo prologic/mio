@@ -11,11 +11,6 @@ def test_clone_list(mio):
     assert mio.eval("List clone(List clone append(1))") == [1]
 
 
-def test_clone_error(mio):
-    with raises(TypeError):
-        mio.eval("List clone(1)", reraise=True)
-
-
 def test_repr(mio):
     mio.eval("xs = List clone")
     mio.eval("xs append(1)")
