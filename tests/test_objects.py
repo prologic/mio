@@ -88,7 +88,6 @@ def test_keys(mio):
     keys = list(mio.eval("Foo keys"))
     assert "x" in keys
     assert "y" in keys
-    assert "parent" in keys
 
 
 def test_method(mio):
