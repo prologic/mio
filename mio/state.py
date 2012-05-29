@@ -16,7 +16,6 @@ from core import Boolean
 from core import Number
 from core import String
 from core import List
-from core import Dict
 
 from core import File
 from core import Range
@@ -60,7 +59,6 @@ class State(object):
         lobby["Number"] = Number()
         lobby["String"] = String()
         lobby["List"] = List()
-        lobby["Dict"] = Dict()
 
         lobby["None"] = Boolean(None)
         lobby["True"] = Boolean(True)
