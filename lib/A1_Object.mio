@@ -1,7 +1,6 @@
 Object do (
     eval = method(code, context,
-        context = if(context is None, self, context)
-        Parser parse(code) eval(context)
+        Parser parse(code) eval(if(context is None, self, context))
     )
 
     bool = method(
