@@ -79,13 +79,12 @@ def test_operators(mio):
 
 def test_operators2(mio):
     chain = parse(tokenize("foo = method(\n1 +(1)\n)"))
-    assert repr(chain) == "set(foo, method(\n 1 +(1) \n))"
+    assert repr(chain) == "set(foo, method(1 +(1)))"
 
 
 def test_return(mio):
-    pytest.skip("XXX: Failing - Fix Parser")
     chain = parse(tokenize("foo = method(return 1)"))
-    assert repr(chain) == "set(foo, method(return(1))"
+    assert repr(chain) == "set(foo, method(return(1)))"
 
 
 def test_return2(mio):

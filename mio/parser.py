@@ -73,6 +73,16 @@ def make_chain(messages):
     if messages == []:
         return Message("")
 
+    # XXX: Ugly hack :/
+    # Strip out leading terminators
+    while messages and messages[0].terminator:
+        messages = messages[1:]
+
+    # XXX: Ugly hack :/
+    # Strip out trailing terminators
+    while messages and messages[-1].terminator:
+        messages = messages[:-1]
+
     key, value = None, None
     root, prev = None, None
 
