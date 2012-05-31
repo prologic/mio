@@ -24,10 +24,6 @@ def test_evalArgAndReturnNone(mio):
     assert mio.eval("x") == 1
 
 
-def test_evalArgAndReturnSelf(mio):
-    assert mio.eval("evalArgAndReturnSelf(2)") == runtime.find("Object")
-
-
 def test_foreach(mio):
     assert mio.eval("xs = List clone") == []
     assert mio.eval("xs append(1)") == [1]
