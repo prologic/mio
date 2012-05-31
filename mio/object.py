@@ -370,13 +370,6 @@ class Object(object):
     # Boolean Operations
 
     @pymethod()
-    def evalArg(self, receiver, context, m, arg=None):
-        if arg is not None:
-            return arg.eval(context)
-        else:
-            return runtime.find("None")
-
-    @pymethod()
     def evalArgAndReturnSelf(self, receiver, context, m, arg=None):
         arg.eval(context)
         return self

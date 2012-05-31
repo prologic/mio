@@ -19,10 +19,6 @@ def test_eq(mio):
     assert mio.eval("1 ==(1)")
 
 
-def test_evalArg(mio):
-    assert mio.eval("evalArg(1)") == 1
-
-
 def test_evalArgAndReturnNone(mio):
     assert mio.eval("evalArgAndReturnNone(x = 1)") == None
     assert mio.eval("x") == 1
