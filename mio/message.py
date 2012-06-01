@@ -54,15 +54,7 @@ class Message(Object):
         elif self.value is not None:
             value = self.value
         else:
-            value = receiver[self.name]
-            if isinstance(value, Message):
-                # Prevent a recursion loop
-                if value not in receiver.attrs.values():
-                    value = value.eval(receiver, context, *self.args)
-                else:
-                    value = value(receiver, context, m, *self.args)
-            else:
-                value = value(receiver, context, m, *self.args)
+            value = receiver[self.name](receiver, context, m, *self.args)
 
         if runtime.state.stop():
             return runtime.state.returnValue
