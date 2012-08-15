@@ -2,6 +2,11 @@ def test_string(mio):
     assert mio.eval("\"foo\"") == "foo"
 
 
+def test_init(mio):
+    assert mio.eval("x = String clone(\"foo\")") == "foo"
+    assert mio.eval("x") == "foo"
+
+
 def test_iter(mio):
     assert list(iter(mio.eval("\"foo\""))) == ["f", "o", "o"]
 
