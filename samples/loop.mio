@@ -1,3 +1,5 @@
+#!/usr/bin/env mio
+
 Object loop = method(
     c = Continuation current
     if (not(state stop)) then (

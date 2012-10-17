@@ -1,3 +1,5 @@
+#!/usr/bin/env mio
+
 Account = Object clone do(
     balance = 0
     deposit = method(v, self balance = self balance + v)

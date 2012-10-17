@@ -1,3 +1,5 @@
+#!/usr/bin/env mio
+
 Object while = method(
     test = Continuation current
     if (call message arg(0)) then (
