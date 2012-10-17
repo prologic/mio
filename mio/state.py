@@ -2,7 +2,7 @@ from traceback import format_exc
 
 import mio
 from utils import tryimport
-from parser import parse, tokenize
+from parser import parse#, tokenize
 
 from errors import Error
 
@@ -80,12 +80,14 @@ class State(object):
         message = None
         try:
             if self.opts and self.opts.debug:
-                tokens = tokenize(code)
-                message = parse(tokens)
-                print("Tokens:\n%s\n" % tokens)
+                #tokens = tokenize(code)
+                #message = parse(tokens)
+                message = parse(code)
+                #print("Tokens:\n%s\n" % tokens)
                 print("Messages:\n%r\n" % message)
             else:
-                message = parse(tokenize(code))
+                #message = parse(tokenize(code))
+                message = parse(code)
 
             return message.eval(self.lobby, self.lobby, message)
         except Error as e:

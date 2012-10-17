@@ -1,21 +1,12 @@
 # -*- coding: utf-8 -*-
 
-import re
-from funcparserlib.lexer import make_tokenizer, Token
-
-from funcparserlib.parser import forward_decl as fwd
-from funcparserlib.parser import a, many, maybe, skip, some
+import string
 
 import runtime
 from object import Object
 from message import Message
 from utils import pymethod, Null
 
-tokval = lambda tok: tok.value
-sometok = lambda type: (some(lambda t: t.type == type) >> tokval)
-op = lambda name: a(Token('op', name))
-op_ = lambda name: skip(op(name))
-Spec = lambda name, value: (name, (value,))
 
 operators = [
     "**", "++", "--", "+=", "-=", "*=", "/=", "<<", ">>",
@@ -29,59 +20,139 @@ def is_op(s):
     return s in operators
 
 
-def tokenize(str):
-
-    ops = "|".join([re.escape(op) for op in operators])
-
-    specs = [
-        Spec("comment",    r'#.*'),
-        Spec('whitespace', r'[ \t]+'),
-        Spec("terminator", r'[\n\r;]'),
-        Spec('string',     r'"[^"]*"'),
-        Spec('number',     r'-?([0-9]+(\.[0-9]*)?)'),
-        Spec('name',       ops),
-        Spec('name',       r'[A-Za-z_][A-Za-z0-9_]*'),
-        Spec('op',         r'[(){}\[\],]'),
-    ]
-    useless = ['comment', 'whitespace']
-    t = make_tokenizer(specs)
-    return [x for x in t(str) if x.type not in useless]
+def isspace(aCharacter):
+    return aCharacter in string.whitespace
 
 
-def make_arguments(n):
-    return (n[0],) + tuple(n[1])
+def isalpha(aCharacter):
+    return (aCharacter in string.letters) or (aCharacter == '_')
 
 
-def make_message(n):
-    if len(n) == 2:
-        name, args = n
-    else:
-        name, args = "", n
+def isIdentifier(aCharacter):
+    return isalpha(aCharacter) or isdigit(aCharacter) or (aCharacter == '?')
 
-    args = tuple(args) if args is not None else ()
 
-    if hasattr(name, "value"):
-        value = name
-        name = name.value
-    else:
-        value = None
+def isdigit(aCharacter):
+    return aCharacter in string.digits
 
-    return Message(name, *args, value=value)
+
+endOfInput = -1
+
+
+class Lexer(object):
+    """Lexes an input string for parsable symbols.
+
+    Implements a single token look-ahead.
+
+    Fields:
+        current = the current, or pending, symbol in the source text to be
+                  consumed by a parser.  Will be set to endOfInput when there
+                  is no more input data to lex.  Strings will include their
+                  leading quotes.
+
+        next = the next after current symbol in the input stream.
+    """
+
+    def __init__(self, string):
+        self.input = string
+        self.current = None
+        self.next = None
+        self.pump()
+        self.pump()
+
+    def pump(self):
+        """Consumes a single lexical token.  What was in next
+        now appears in current, and a new value is loaded into
+        next.
+        """
+
+        self.current = self.next
+        self.lex()
+
+    def pendingCharacter(self):
+        return self.input[0]
+
+    def advanceCharacter(self):
+        self.input = self.input[1:]
+
+    def parseIdentifier(self):
+        largestIndex = len(self.input)
+        i = 0
+        while (i < largestIndex) and isIdentifier(self.input[i]):
+            i = i + 1
+
+        self.next = self.input[0:i]
+        self.input = self.input[i:]
+
+    def parseNumber(self):
+        largestIndex = len(self.input)
+        i = 0
+        while (i < largestIndex) and isdigit(self.input[i]):
+            i = i + 1
+
+        self.next = self.input[0:i]
+        self.input = self.input[i:]
+
+    def parseQuotedString(self):
+        largestIndex = len(self.input)
+        i = 1   # index 0 is known to be a quote.
+        while (i < largestIndex) and (self.input[i] != '"'):
+            i = i + 1
+
+        self.next = self.input[0:(i + 1)]
+        self.input = self.input[(i + 1):]
+
+    def lex(self):
+        if self.input == "":
+            self.next = endOfInput
+
+        elif self.pendingCharacter() == '\n':
+            self.next = ";"
+            self.advanceCharacter()
+
+        elif isspace(self.pendingCharacter()):
+            self.advanceCharacter()
+            self.lex()
+
+        elif isalpha(self.pendingCharacter()):
+            self.parseIdentifier()
+
+        elif isdigit(self.pendingCharacter()):
+            self.parseNumber()
+
+        elif self.pendingCharacter() == '"':
+            self.parseQuotedString()
+
+        else:
+            self.next = self.pendingCharacter()
+            self.advanceCharacter()
+
+
+def parseArguments(theLexer):
+    args = []
+    arg = []
+
+    while theLexer.current != endOfInput:
+        if theLexer.current == ')':
+            if arg:
+                args.append(arg)
+            break
+
+        elif theLexer.current == ',':
+            args.append(arg)
+            arg = []
+            theLexer.pump()
+
+        else:
+            arg = parseExpression(theLexer)
+
+    return args
 
 
 def make_chain(messages):
+    print "make_chain:", repr(messages)
     if messages == []:
         return Message("")
-
-    # XXX: Ugly hack :/
-    # Strip out leading terminators
-    while messages and messages[0].terminator:
-        messages = messages[1:]
-
-    # XXX: Ugly hack :/
-    # Strip out trailing terminators
-    while messages and messages[-1].terminator:
-        messages = messages[:-1]
 
     key, value = None, None
     root, prev = None, None
@@ -126,7 +197,7 @@ def make_chain(messages):
                 prev.next = prev = message
             if messages:
                 message = messages.pop(0)
-                prev.args = (message,)
+                prev.args = message,
         elif messages:
             message = messages.pop(0)
             if root is None:
@@ -136,49 +207,46 @@ def make_chain(messages):
         else:
             break
 
+    print " root:", root
     return root
 
 
-def make_number(n):
-    return runtime.find("Number").clone(n)
+def parseExpression(theLexer):
+    tree = []
+
+    while theLexer.current != endOfInput:
+        if theLexer.current == ",":
+            break
+
+        elif theLexer.current == ")":
+            break
+
+        elif theLexer.current == "(":
+            theLexer.pump()
+            args = parseArguments(theLexer)
+            if theLexer.current == ")":
+                if not tree:
+                    tree = [Message("")]
+
+                if tree[-1].args:
+                    tree.append(Message(""))
+
+                tree[-1].args = args
+                theLexer.pump()
+            else:
+                print "Syntax Error: ')' expected"
+
+        else:
+            tree.append(Message(theLexer.current))
+            theLexer.pump()
+
+    return make_chain(tree)
+    #return tree
 
 
-def make_string(n):
-    return runtime.find("String").clone(eval(n))
-
-
-def make_terminator(n):
-    return Message(n)
-
-
-identifier = sometok("name")
-string = sometok("string") >> make_string
-number = sometok("number") >> make_number
-terminator = sometok("terminator") >> make_terminator
-
-exp = fwd()
-message = fwd()
-arguments = fwd()
-symbol = fwd()
-
-exp.define((
-    many(message | terminator)) >> make_chain)
-
-message.define((
-    (symbol +
-    maybe(arguments)) | arguments) >> make_message)
-
-opening = op_("(") | op_("{") | op_("[")
-closing = op_(")") | op_("}") | op_("]")
-
-arguments.define((
-    skip(opening) +
-    maybe(exp + maybe(many(skip(op_(",")) + exp))) +
-    skip(closing)) >> make_arguments)
-
-symbol.define(identifier | number | string)
-
-parse = exp.parse
+def parse(aString):
+    l = Lexer(aString)
+    return parseExpression(l)
 
 
 class Parser(Object):

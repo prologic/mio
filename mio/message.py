@@ -11,8 +11,8 @@ class Message(Object):
         super(Message, self).__init__(value=value)
 
         self.name = name
-        self.args = args
 
+        self._args = args
         for arg in args:
             arg.previous = self
 
@@ -126,6 +126,16 @@ class Message(Object):
         else:
             receiver.next = message
         return receiver
+
+    @property
+    def args(self):
+        return self._args
+
+    @args.setter
+    def args(self, args):
+        self._args = args
+        for arg in args:
+            arg.previous = self
 
     @property
     def first(self):
