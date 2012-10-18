@@ -1,5 +1,56 @@
 # -*- coding: utf-8 -*-
 
+"""
+	
+messages
+
+expression ::= { message | sctpad }
+message ::= [wcpad] symbol [scpad] [arguments]
+arguments ::= Open [argument [ { Comma argument } ]] Close
+argument ::= [wcpad] expression [wcpad]
+symbols
+
+symbol ::= Identifier | number | Operator | quote
+Identifier ::= { letter | digit | "_" }
+Operator ::= { ":" | "." | "'" | "~" | "!" | "@" | "$" | 
+"%" | "^" | "&" | "*" | "-" | "+" | "/" | "=" | "{" | "}" | 
+"[" | "]" | "|" | "\" | "<" | ">" | "?" }
+quotes
+
+quote ::= MonoQuote | TriQuote
+MonoQuote ::= """ [ "\"" | not(""")] """
+TriQuote ::= """"" [ not(""""")] """""
+spans
+
+Terminator ::= { [separator] ";" | "\n" | "\r" [separator] }
+separator ::= { " " | "\f" | "\t" | "\v" }
+whitespace ::= { " " | "\f" | "\r" | "\t" | "\v" | "\n" }
+sctpad ::= { separator | Comment | Terminator }
+scpad ::= { separator | Comment }
+wcpad ::= { whitespace | Comment }
+comments
+
+Comment ::= slashStarComment | slashSlashComment | poundComment
+slashStarComment ::= "/*" [not("*/")] "*/"
+slashSlashComment ::= "//" [not("\n")] "\n"
+poundComment ::= "#" [not("\n")] "\n"
+numbers
+
+number ::= HexNumber | Decimal
+HexNumber ::= "0" anyCase("x") { [ digit | hexLetter ] }
+hexLetter ::= "a" | "b" | "c" | "d" | "e" | "f"
+Decimal ::= digits | "." digits | 
+	digits "." digits ["e" [-] digits]
+characters
+
+Comma ::= ","
+Open ::= "(" | "[" | "{"
+Close ::= ")" | "]" | "}"
+letter ::= "a" ... "z" | "A" ... "Z"
+digit ::= "0" ... "9"
+digits ::= { digit }
+"""
+
 import re
 from funcparserlib.lexer import make_tokenizer, Token
 
