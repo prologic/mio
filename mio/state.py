@@ -82,8 +82,8 @@ class State(object):
             if self.opts and self.opts.debug:
                 tokens = tokenize(code)
                 message = parse(tokens)
-                print("Tokens:\n%s\n" % tokens)
-                print("Messages:\n%r\n" % message)
+                print("Tokens:\n%s\n" % repr(tokens))
+                print("Messages:\n%r\n" % repr(message))
             else:
                 message = parse(tokenize(code))
 

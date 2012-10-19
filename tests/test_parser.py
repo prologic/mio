@@ -7,7 +7,7 @@ from mio.parser import parse, tokenize
 def test_empty_message(mio):
     chain = parse(tokenize(""))
     assert chain.name == ""
-    assert chain.args == ()
+    assert len(chain.args) == 0
 
 
 def test_grouped_message(mio):
@@ -74,23 +74,18 @@ def test_operators(mio):
     assert repr(chain) == "1 +(2)"
 
     chain = parse(tokenize("1 + 2 * 3"))
-    assert repr(chain) == "1 +(2) *(3)"
+    assert repr(chain) == "1 +(2 *(3))"
 
-
-def test_operators2(mio):
     chain = parse(tokenize("foo = method(\n1 +(1)\n)"))
-    assert repr(chain) == "set(foo, method(1 +(1)))"
+    assert repr(chain) == "set(foo, method(\n 1 +(1)))"
 
 
 def test_return(mio):
     chain = parse(tokenize("foo = method(return 1)"))
     assert repr(chain) == "set(foo, method(return(1)))"
 
-
-def test_return2(mio):
-    pytest.skip("XXX: Failing - Fix Parser")
     chain = parse(tokenize("foo = method(return 1 + 2)"))
-    assert repr(chain) == "set(foo, method(return(1 +(2)))"
+    assert repr(chain) == "set(foo, method(return(1 +(2))))"
 
 
 def test_grouping(mio):
