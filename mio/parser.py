@@ -82,7 +82,7 @@ def make_chain(messages, all=True):
         if len(messages) > 1 and is_assignment(messages[1]):
             name = messages.pop(0).name
             object = runtime.find("String").clone(name)
-            key = Message(key, value=object)
+            key = Message(name, value=object)
 
             op = messages.pop(0)
 
