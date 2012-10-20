@@ -83,8 +83,8 @@ def make_chain(messages):
     while messages and messages[-1].terminator:
         messages = messages[:-1]
 
+    root = prev = Message("")
     key, value = None, None
-    root, prev = None, None
 
     while True:
         if len(messages) > 1 and messages[1].name == "=":
@@ -99,10 +99,7 @@ def make_chain(messages):
 
             message = Message("set", key, value)
 
-            if root is None:
-                root = prev = message
-            else:
-                prev.next = prev = message
+            prev.next = prev = message
         elif value is not None:
             if messages and not messages[0].terminator:
                 if is_op(messages[0].name):
@@ -120,23 +117,17 @@ def make_chain(messages):
                 key, value = None, None
         elif messages and is_op(messages[0].name) and not messages[0].args:
             message = messages.pop(0)
-            if root is None:
-                root = prev = message
-            else:
-                prev.next = prev = message
+            prev.next = prev = message
             if messages:
                 message = messages.pop(0)
                 prev.args = (message,)
         elif messages:
             message = messages.pop(0)
-            if root is None:
-                root = prev = message
-            else:
-                prev.next = prev = message
+            prev.next = prev = message
         else:
             break
 
-    return root
+    return root.next
 
 
 def make_number(n):
