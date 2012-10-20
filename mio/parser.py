@@ -35,15 +35,14 @@ def tokenize(str):
 
     specs = [
         Spec("comment",    r'#.*'),
-        Spec('whitespace', r'[ \t]+'),
-        Spec("terminator", r'[\n\r;]'),
+        Spec("whitespace", r"[ \t]+"),
         Spec('string',     r'"[^"]*"'),
         Spec('number',     r'-?([0-9]+(\.[0-9]*)?)'),
-        Spec('name',       ops),
-        Spec('name',       r'[A-Za-z_][A-Za-z0-9_]*'),
-        Spec('op',         r'[(){}\[\],]'),
+        Spec('operator',   ops),
+        Spec('identifier', r'[A-Za-z_][A-Za-z0-9_]*'),
+        Spec('op',         r'[(){}\[\],;\n\r]'),
     ]
-    useless = ['comment', 'whitespace']
+    useless = ["comment", "whitespace"]
     t = make_tokenizer(specs)
     return [x for x in t(str) if x.type not in useless]
 
@@ -72,16 +71,6 @@ def make_message(n):
 def make_chain(messages):
     if messages == []:
         return Message("")
-
-    # XXX: Ugly hack :/
-    # Strip out leading terminators
-    while messages and messages[0].terminator:
-        messages = messages[1:]
-
-    # XXX: Ugly hack :/
-    # Strip out trailing terminators
-    while messages and messages[-1].terminator:
-        messages = messages[:-1]
 
     root = prev = Message("")
     key, value = None, None
@@ -139,20 +128,22 @@ def make_string(n):
 
 
 def make_terminator(n):
-    return Message(n)
+    return Message(n.value)
 
 
-identifier = sometok("name")
+operator = sometok("operator")
+identifier = sometok("identifier")
 string = sometok("string") >> make_string
 number = sometok("number") >> make_number
-terminator = sometok("terminator") >> make_terminator
 
-exp = fwd()
-message = fwd()
+expression = fwd()
 arguments = fwd()
+message = fwd()
 symbol = fwd()
 
-exp.define((
+terminator = (op(";") | op("\r") | op("\n")) >> make_terminator
+
+expression.define((
     many(message | terminator)) >> make_chain)
 
 message.define((
@@ -164,12 +155,12 @@ closing = op_(")") | op_("}") | op_("]")
 
 arguments.define((
     skip(opening) +
-    maybe(exp + maybe(many(skip(op_(",")) + exp))) +
+    maybe(expression + maybe(many(skip(op_(",")) + expression))) +
     skip(closing)) >> make_arguments)
 
-symbol.define(identifier | number | string)
+symbol.define(identifier | number | operator | string)
 
-parse = exp.parse
+parse = expression.parse
 
 
 class Parser(Object):
