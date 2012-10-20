@@ -11,12 +11,12 @@ class Message(Object):
         super(Message, self).__init__(value=value)
 
         self.name = name
-        self.args = args
 
+        self._args = list(args)
         for arg in args:
             arg.previous = self
 
-        self.terminator = self.value is None and name in ["\n", ";"]
+        self.terminator = self.value is None and name in ["\r", "\n", ";"]
 
         self._next = None
         self._previous = self
@@ -126,6 +126,16 @@ class Message(Object):
         else:
             receiver.next = message
         return receiver
+
+    @property
+    def args(self):
+        return self._args
+
+    @args.setter
+    def args(self, args):
+        self._args = list(args)
+        for arg in args:
+            arg.previous = self
 
     @property
     def first(self):

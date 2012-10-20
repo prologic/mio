@@ -25,10 +25,6 @@ operators = [
 ]
 
 
-def is_op(s):
-    return s in operators
-
-
 def tokenize(str):
 
     ops = "|".join([re.escape(op) for op in operators])
@@ -68,53 +64,46 @@ def make_message(n):
     return Message(name, *args, value=value)
 
 
-def make_chain(messages):
+def is_assignment(message):
+    return message.name == "="
+
+
+def is_operator(message):
+    return message.name in operators
+
+
+def make_chain(messages, all=True):
     if messages == []:
         return Message("")
 
-    root = prev = Message("")
-    key, value = None, None
+    root = node = Message("")
 
-    while True:
-        if len(messages) > 1 and messages[1].name == "=":
-            key = messages.pop(0)
-            key = Message(key.name,
-                    value=runtime.find("String").clone(key.name))
+    while messages:
+        if len(messages) > 1 and is_assignment(messages[1]):
+            key = messages.pop(0).name
+            object = runtime.find("String").clone(key)
+            key = Message(key, value=object)
+
             op = messages.pop(0)
+
             if op.args:
                 value = Message("", *op.args)
             else:
-                value = messages.pop(0)
+                value = make_chain(messages, all=False)
 
             message = Message("set", key, value)
-
-            prev.next = prev = message
-        elif value is not None:
-            if messages and not messages[0].terminator:
-                if is_op(messages[0].name):
-                    op = messages.pop(0)
-                    if messages:
-                        message = messages.pop(0)
-                        op.args = (message,)
-                    value.next = op
-                    value = op
-                else:
-                    message = messages.pop(0)
-                    value.next = message
-                    value = message
-            else:
-                key, value = None, None
-        elif messages and is_op(messages[0].name) and not messages[0].args:
+        elif is_operator(messages[0]):
             message = messages.pop(0)
-            prev.next = prev = message
             if messages:
-                message = messages.pop(0)
-                prev.args = (message,)
-        elif messages:
-            message = messages.pop(0)
-            prev.next = prev = message
-        else:
+                chain = make_chain(messages, all=False)
+                if chain is not None:
+                    message.args.append(chain)
+        elif messages[0].terminator and not all:
             break
+        else:
+            message = messages.pop(0)
+
+        node.next = node = message
 
     return root.next
 
