@@ -8,7 +8,7 @@ Object do(
     set("is", method(other, self id == (other id)))
 
     set("+=", method(other,
-        attr = call message previous first name
+        attr = call message previous name
         call sender set(attr, self + other)
     ))
 )
