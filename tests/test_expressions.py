@@ -3,7 +3,7 @@ def test_simple(mio):
 
 
 def test_complex(mio):
-    assert mio.eval("1 + 2 * 3") == 9
+    assert mio.eval("1 + 2 * 3") == 7
 
 
 def test_grouping(mio):
