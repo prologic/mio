@@ -243,15 +243,6 @@ class Object(object):
 
         return result
 
-    @pymethod("if")
-    def _if(self, receiver, context, m, *args):
-        test = args[0].eval(context)
-        index = 1 if test else 2
-        if index < len(args):
-            return args[index].eval(context)
-
-        return runtime.find("True") if test else runtime.find("False")
-
     @pymethod("continue")
     def _continue(self, receiver, context, m):
         runtime.state.isContinue = True

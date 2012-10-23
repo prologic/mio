@@ -5,25 +5,19 @@ Object do (
 True do(
 	or = True
     not = False
-    else = True
-    elif = True
-    then = method(call message arg(0); None)
+    ifTrue = method(call message arg(0); None)
 )
 
 False do(
 	and = False
-	or = method(v, if(v))
+	or = method(call message arg(0) and True)
 	not = True
-    then = False
-    else = method(call message arg(0); None)
-    elif = Object get("if")
+    ifTrue = False
 )
 
 None do(
 	not = True
 	and = False
-	or = method(v, if(v))
-    then = None
-    else = None
-    elif = None
+	or = method(call message arg(0) and True)
+    ifTrue = None
 )
