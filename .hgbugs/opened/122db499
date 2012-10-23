@@ -2,7 +2,7 @@
 title = Parser problem with boolean and aritmetic expressions
 owned-by = 
 created-by = prologic
-assigned-to = 
+assigned-to = prologic
 description = >>> x = parse(tokenize("1 + 2 < 3"))
 	make_chain: [1, +, 2, <, 3]
 	reshuffle: [1, +, 2, <, 3]
