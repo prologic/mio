@@ -3,7 +3,7 @@ from copy import copy
 from inspect import  getmembers, ismethod
 
 import runtime
-from errors import AttributeError
+from errors import AttributeError, TypeError
 from utils import format_object, pymethod, Null
 
 
@@ -359,7 +359,12 @@ class Object(object):
 
     @pymethod()
     def setParent(self, receiver, context, m, parent):
-        receiver.parent = parent.eval(context)
+        parent = parent.eval(context)
+        if parent is receiver:
+            raise TypeError("Canoot set parent to self!")
+
+        receiver.parent = parent
+
         return receiver
 
     @pymethod()

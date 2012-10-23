@@ -1,13 +1,25 @@
 from pytest import raises
 
 from mio import runtime
-from mio.errors import AttributeError
+from mio.errors import AttributeError, TypeError
 
 
 def test_clone(mio):
     mio.eval("World = Object clone")
     assert mio.eval("World")
-    assert mio.eval("Object parent") == runtime.find("Object")
+    assert mio.eval("World parent") == runtime.find("Object")
+
+
+def test_setParent(mio):
+    assert mio.eval("World = Object clone")
+    assert mio.eval("World parent") == runtime.find("Object")
+
+    with raises(TypeError):
+        mio.eval("World setParent(World)", reraise=True)
+
+    assert mio.eval("Foo = Object clone")
+    assert mio.eval("World setParent(Foo)")
+    assert mio.eval("World parent") == mio.eval("Foo")
 
 
 def test_do(mio):
@@ -17,11 +29,6 @@ def test_do(mio):
 
 def test_eq(mio):
     assert mio.eval("1 ==(1)")
-
-
-def test_evalArgAndReturnNone(mio):
-    assert mio.eval("evalArgAndReturnNone(x = 1)") == None
-    assert mio.eval("x") == 1
 
 
 def test_foreach(mio):
