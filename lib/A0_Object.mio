@@ -1,5 +1,17 @@
 Object do (
     "" = method(call message arg(0))
+
+	# not returns None
+	not = None
+
+	#ifNone returns self
+	ifNone = method(self)
+
+	#or returns True
+    or = True
+
+	#and evaluates the argument and return the result
+    and = method(call message arg(0))
 )
 
 True do (
