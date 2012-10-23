@@ -1,6 +1,6 @@
 [info]
 title = Parser problem with boolean and aritmetic expressions
-owned-by = 
+owned-by = prologic
 created-by = prologic
 assigned-to = prologic
 description = >>> x = parse(tokenize("1 + 2 < 3"))
