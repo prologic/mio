@@ -2,65 +2,22 @@ Object do (
     "" = method(call message arg(0))
 )
 
-True do (
-	#ifTrue evaluates the argument and returns self
-	ifTrue = method(call message arg(0); self)
-
-	#ifFalse does not evaluate the argument and returns True
-	ifFalse = True
-
-	#and evaluates the argument and returns the result
-    and = method(call message arg(0))
-
-	#or does not evaluate the argument and returns True
-    or = True
-
-	#not returns False
-	not = False
-
-	#clone returns True
-	clone = True
+True do(
+	or = True
+    not = False
+    ifTrue = method(call message arg(0); None)
 )
 
-False do (
-	#ifTrue does not evaluate the argument and returns False
-	ifTrue = False
-
-	#ifFalse evaluates the argument and returns self
-	ifFalse = method(call message arg(0); self) 
-
-	#and does not evaluate the argument and returns False
+False do(
 	and = False
-
-	#or evaluates the argument and returns the result
-    or = method(call message arg(0))
-
-	#not returns True
+	or = method(call message arg(0) and True)
 	not = True
-
-	#clone returns False
-	clone = False
+    ifTrue = False
 )
 
-None do (
-	#ifTrue does not evaluate the argument and returns False
-	ifTrue = False
-
-	#ifFalse evaluates the argument and returns self
-	ifFalse = method(call message arg(0); self) 
-
-	#ifNone evaluates the argument and returns self
-	ifNone = method(call message arg(0); self) 
-
-	#and does not evaluate the argument and returns False
-	and = False
-
-	#or evaluates the argument and returns the result
-    or = method(call message arg(0))
-
-	#not returns True
+None do(
 	not = True
-
-	#clone returns False
-	clone = None
+	and = False
+	or = method(call message arg(0) and True)
+    ifTrue = None
 )
