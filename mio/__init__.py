@@ -8,5 +8,5 @@
 """
 
 __author__ = "James Mills"
-__date__ = "15th April 2012"
-__version__ = "0.1dev"
+__date__ = "23rd October 2012"
+__version__ = "0.1.0"
