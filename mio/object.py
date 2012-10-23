@@ -369,11 +369,6 @@ class Object(object):
 
     # Boolean Operations
 
-    @pymethod()
-    def evalArgAndReturnNone(self, receiver, context, m, arg=None):
-        arg.eval(context)
-        return runtime.find("None")
-
     @pymethod("==")
     def eq(self, receiver, context, m, other):
         test = receiver == other.eval(context)
