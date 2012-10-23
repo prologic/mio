@@ -369,16 +369,6 @@ class Object(object):
 
     # Boolean Operations
 
-    @pymethod("==")
-    def eq(self, receiver, context, m, other):
-        test = receiver == other.eval(context)
-        return runtime.find("True") if test else runtime.find("False")
-
-    @pymethod("!=")
-    def neq(self, receiver, context, m, other):
-        test = not (receiver == other.eval(context))
-        return runtime.find("True") if test else runtime.find("False")
-
     @pymethod()
     def cmp(self, receiver, context, m, other):
         return runtime.find("Number").clone(cmp(receiver, other.eval(context)))

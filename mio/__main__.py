@@ -1,6 +1,5 @@
 #!/usr/bin/env python
 
-from glob import glob
 from optparse import OptionParser
 from signal import signal, SIGINT, SIG_IGN
 
@@ -37,9 +36,6 @@ def main():
     signal(SIGINT, SIG_IGN)
 
     runtime.init(args, opts)
-
-    for filename in glob("./lib/*.mio"):
-        runtime.state.load(filename)
 
     if opts.eval:
         runtime.state.eval(opts.eval)
