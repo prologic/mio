@@ -8,7 +8,7 @@ TEST_FILE = os.path.join(os.path.dirname(__file__), "test.mio")
 
 
 def test_eval():
-    p = Popen(["python", main_wrapper.__file__, "-e", "(1 + 2) print"],
+    p = Popen([sys.executable, main_wrapper.__file__, "-e", "(1 + 2) print"],
             stdout=PIPE)
     stdout = p.communicate()[0]
     assert p.returncode == 0
