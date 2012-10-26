@@ -25,5 +25,6 @@ def test_interactive():
 
 def test_repl():
     p = Popen([sys.executable, main_wrapper.__file__], stdin=PIPE, stdout=PIPE)
-    p.communicate("(1 + 2) println\nexit\n")
+    stdout = p.communicate("(1 + 2) println\nexit\n")[0]
     assert p.returncode == 0
+    assert stdout.split()[3] == "3"
