@@ -113,8 +113,10 @@ class State(object):
 
         while True:
             try:
-                result = self.eval(raw_input(">>> "))
-                if result is not None:
-                    print("==> %s" % str(result))
+                code = raw_input(">>> ")
+                if code:
+                    result = self.eval(code)
+                    if result is not None:
+                        print("==> %s" % str(result))
             except EOFError:
                 raise SystemExit(0)

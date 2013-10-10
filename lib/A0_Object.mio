@@ -1,6 +1,4 @@
 Object do (
-    "" = method(call message arg(0))
-
 	#ifNone returns self
 	ifNone = method(self)
 
