@@ -1,14 +1,6 @@
 Object do (
     eval = method(code, context,
-        Parser parse(code) eval(if(context is None, self, context))
-    )
-
-    bool = method(
-        args = call message args
-        if (args) then (
-            return (if (args at(0)))
-        )
-        return None
+        Parser parse(code) eval(context ifNone(return Lobby))
     )
 
     list = method(
