@@ -1,6 +1,6 @@
 import sys
 from copy import copy
-from inspect import  getmembers, ismethod
+from inspect import getmembers, ismethod
 
 import runtime
 from errors import AttributeError, TypeError
@@ -175,7 +175,6 @@ class Object(object):
 
     @pymethod("behaviors")
     def getBehaviors(self, receiver, context, m):
-        keys = receiver.behaviors.keys()
         return runtime.find("List").clone(receiver.behaviors.keys())
 
     # Method Operations

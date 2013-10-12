@@ -1,9 +1,8 @@
 from decimal import Decimal
 
 from mio import runtime
-from mio.utils import pymethod, Null
-
 from mio.object import Object
+from mio.utils import pymethod, Null
 
 
 class Number(Object):
@@ -36,7 +35,10 @@ class Number(Object):
         return int(self.value)
 
     def __float__(self):
-        return float(self.value)
+        return float(self.value * Decimal(1.0))
+
+    def __repr__(self):
+        return str(self.value)
 
     def __str__(self):
         return str(self.value)
@@ -71,3 +73,21 @@ class Number(Object):
     @pymethod("%")
     def mod(self, receiver, context, m, other):
         return self.clone(receiver % other.eval(context))
+
+    # Type Conversions
+
+    @pymethod("float")
+    def float(self, receiver, context, m):
+        return self.clone(float(receiver))
+
+    @pymethod("int")
+    def int(self, receiver, context, m):
+        return self.clone(int(receiver))
+
+    @pymethod("repr")
+    def repr(self, receiver, context, m):
+        return runtime.find("String").clone(repr(receiver))
+
+    @pymethod("str")
+    def str(self, receiver, context, m):
+        return runtime.find("String").clone(str(receiver))

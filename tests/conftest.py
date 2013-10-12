@@ -1,16 +1,17 @@
-def pytest_funcarg__mio(request):
-    return request.cached_setup(
-            setup=lambda: setup_mio(request),
-            teardown=lambda mio: teardown_mio(mio),
-            scope="module")
+# Module:   conftest
+# Date:     12th October 2013
+# Author:   James Mills, j dot mills at griffith dot edu dot au
+
+"""pytest config"""
 
 
-def setup_mio(request):
-    from mio import runtime
+from pytest import fixture
+
+
+from mio import runtime
+
+
+@fixture(scope="session")
+def mio(request):
     runtime.init()
-
     return runtime.state
-
-
-def teardown_mio(webapp):
-    pass
