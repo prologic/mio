@@ -1,25 +1,23 @@
 from traceback import format_exc
 
-import mio
-from utils import tryimport
-from parser import parse, tokenize
+from .errors import Error
+from .version import version
+from .utils import tryimport
+from .parser import parse, tokenize
 
-from errors import Error
+from .method import Method
+from .object import Object
+from .parser import Parser
+from .message import Message
+from .continuation import Continuation
 
-from method import Method
-from object import Object
-from parser import Parser
-from message import Message
-from continuation import Continuation
-
-from core import Boolean
-from core import Number
-from core import String
-from core import List
-
-from core import File
-from core import Range
-from core import System
+from .types import Boolean
+from .types import Number
+from .types import String
+from .types import List
+from .types import File
+from .types import Range
+from .types import System
 
 
 class State(object):
@@ -109,7 +107,7 @@ class State(object):
     def repl(self):
         tryimport("readline")
 
-        print("mio %s" % mio.__version__)
+        print("mio {0:s}".format(version))
 
         while True:
             try:
