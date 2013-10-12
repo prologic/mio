@@ -1,6 +1,4 @@
-import sys
-
-from mio import __version__
+from mio.version import version
 
 
 def test_args(mio):
@@ -8,19 +6,7 @@ def test_args(mio):
 
 
 def test_version(mio):
-    assert mio.eval("System version") == __version__
-
-
-def test_stdin(mio):
-    assert mio.eval("System stdin") == sys.stdin
-
-
-def test_stdout(mio):
-    assert mio.eval("System stdout") == sys.stdout
-
-
-def test_stderr(mio):
-    assert mio.eval("System stderr") == sys.stderr
+    assert mio.eval("System version") == version
 
 
 def test_exit(mio):
