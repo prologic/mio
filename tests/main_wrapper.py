@@ -6,7 +6,7 @@ try:
 except ImportError:
     HAS_COVERAGE = False
 
-from mio.__main__ import main
+from mio.main import main
 
 
 if __name__ == "__main__":

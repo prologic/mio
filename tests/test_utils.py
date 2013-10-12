@@ -1,19 +1,19 @@
 import sys
 from mio.object import Object
-from mio.utils import format_pymethod, format_object, pymethod, tryimport, Null
+from mio.utils import format_method, format_object, method, tryimport, Null
 
 
 class Foo(Object):
         
-    @pymethod()
+    @method()
     def noargs(self, receiver, context, m):
         pass
 
-    @pymethod()
+    @method()
     def args(self, receiver, context, m, a, b, c):
         pass
 
-    @pymethod()
+    @method()
     def varargs(self, receiver, context, m, *args):
         pass
 
@@ -30,11 +30,11 @@ def test_format_object():
     assert format_object(foo) == FOO_TEMPLATE
 
 
-def test_format_pymethod():
+def test_format_method():
     foo = Foo()
-    assert format_pymethod(foo.noargs) == "noargs()"
-    assert format_pymethod(foo.args) == "args(a, b, c)"
-    assert format_pymethod(foo.varargs) == "varargs(*args)"
+    assert format_method(foo.noargs) == "noargs()"
+    assert format_method(foo.args) == "args(a, b, c)"
+    assert format_method(foo.varargs) == "varargs(*args)"
 
 
 def test_tryimport():
