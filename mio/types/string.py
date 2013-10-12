@@ -30,6 +30,9 @@ class String(Object):
     def __float__(self):
         return float(self.value)
 
+    def __repr__(self):
+        return repr(self.value)
+
     def __str__(self):
         return str(self.value)
 
