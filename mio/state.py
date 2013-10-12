@@ -1,3 +1,5 @@
+from __future__ import print_function
+
 from traceback import format_exc
 
 from .errors import Error
@@ -74,7 +76,7 @@ class State(object):
     def find(self, name):
         return self.lobby.attrs[name]
 
-    def eval(self, code, reraise=False):
+    def eval(self, code, receiver=None, context=None, reraise=False):
         message = None
         try:
             if self.opts and self.opts.debug:
@@ -85,7 +87,7 @@ class State(object):
             else:
                 message = parse(tokenize(code))
 
-            return message.eval(self.lobby, self.lobby, message)
+            return message.eval(self.lobby if receiver is None else receiver, self.lobby if context is None else context, message)
         except Error as e:
             type = e.__class__.__name__
             underline = "-" * (len(type) + 1)
@@ -115,6 +117,6 @@ class State(object):
                 if code:
                     result = self.eval(code)
                     if result is not None:
-                        print("==> %s" % str(result))
+                        print("==> {0:s}".format(self.eval("repr", receiver=result)))
             except EOFError:
                 raise SystemExit(0)
