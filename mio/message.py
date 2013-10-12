@@ -57,7 +57,6 @@ class Message(Object):
             value = receiver[self.name](receiver, context, m, *self.args)
 
         if runtime.state.stop():
-            print "returning..."
             return runtime.state.returnValue
         elif runtime.state.isContinue:
             runtime.state.isContinue = False
