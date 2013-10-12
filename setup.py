@@ -37,6 +37,12 @@ setup(
     keywords="toy programming language io mio message",
     platforms="POSIX",
     packages=find_packages("."),
+    package_data={
+        "lib": [
+            "lib/*.mio",
+        ]
+    },
+    include_package_data=True,
     scripts=glob("bin/*"),
     install_requires=[
         "funcparserlib",
