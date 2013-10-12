@@ -1,5 +1,6 @@
 [run]
-omit = tests/*
+omit = */site-packages/*
+       tests/*
 
 [html]
 directory = coverage
