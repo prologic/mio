@@ -83,11 +83,3 @@ class Number(Object):
     @method("int")
     def int(self, receiver, context, m):
         return self.clone(int(receiver))
-
-    @method("repr")
-    def repr(self, receiver, context, m):
-        return runtime.find("String").clone(repr(receiver))
-
-    @method("str")
-    def str(self, receiver, context, m):
-        return runtime.find("String").clone(str(receiver))
