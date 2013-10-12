@@ -52,6 +52,6 @@ setup(
             "mio=mio.main:main",
         ]
     },
-    test_suite="mio.tests.main.main",
+    test_suite="tests.main.main",
     zip_safe=True
 )

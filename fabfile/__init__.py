@@ -77,8 +77,4 @@ def docs(**options):
 def test(*args):
     """Run all unit tests and doctests."""
 
-    default_args = ["-x", "-s", "-r", "fsxX"]
-
-    args = default_args + list(args) + ["tests"]
-
-    local("py.test {0:s}".format(" ".join(args)))
+    local("python setup.py test")
