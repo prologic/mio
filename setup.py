@@ -38,7 +38,7 @@ setup(
     platforms="POSIX",
     packages=find_packages("."),
     package_data={
-        "lib": [
+        "mio": [
             "lib/*.mio",
         ]
     },
