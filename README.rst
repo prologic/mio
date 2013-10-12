@@ -29,8 +29,14 @@ Links:
 Features
 --------
 
-- Tiny implementation (*~300 lines of code*).
-- Written in an easy to understand language (*Pyton*).
+- Homoiconic
+- Message Passing
+- Higher Order Messages
+- Higher Order Functions
+- Full support for Traits
+- Object Orienated Language
+- Written in an easy to understand language
+- Supports Imperative, Functional, Object Oriented and Behavior Driven Development styles.
 
 
 Requirements
@@ -58,6 +64,15 @@ Alternatively, you may download the source package from the
 extract it and install using::
 
     > python setup.py install
+
+You can also install the
+`latest-development version <https://bitbucket.org/prologic/mio/get/tip.tar.gz#egg=mio-dev>`_ by using ``pip`` or ``easy_install``::
+    
+    > pip install mio==dev
+
+or::
+    
+    > easy_install mio==dev
 
 
 License
