@@ -5,10 +5,27 @@
 """Fabric fabfile"""
 
 
-from fabric.api import execute, hide, local, settings, task
+from fabric.api import execute, hide, lcd, local, settings, task
 
-from . import docs  # noqa
 from .utils import pip, requires, tobool
+
+
+@task()
+@requires("pip")
+def build(**options):
+    """Build and install required dependencies
+
+    Options can be provided to customize the build. The following options are supported:
+
+    - dev -> Whether to install in development mode (Default: Fase)
+    """
+
+    dev = tobool(options.get("dev", False))
+
+    pip(requirements="requirements.txt")
+
+    with settings(hide("stdout", "stderr"), warn_only=True):
+        local("python setup.py {0:s}".format("develop" if dev else "install"))
 
 
 @task()
@@ -27,28 +44,32 @@ def clean():
 
 
 @task()
-@requires("pip")
-def build(**options):
-    """Build and install required dependencies
-
-    Options can be provided to customize the build. The following options are supported:
-
-    - dev     -> Whether to install in development mode (Default: Fase)
-    """
-
-    dev = tobool(options.get("dev", False))
-
-    pip(requirements="requirements.txt")
-
-    with settings(hide("stdout", "stderr"), warn_only=True):
-        local("python setup.py {0:s}".format("develop" if dev else "install"))
-
-
-@task()
 def develop():
     """Build and Install in Development Mode"""
 
     return execute(build, dev=True)
+
+
+@task()
+@requires("make", "sphinx-build")
+def docs(**options):
+    """Generate the Sphinx documentation
+
+    The following options are recognized:
+
+    - ``clean`` - Perform a clean of the docs build
+    - ``view``  - Open a web browser to display the built documentation
+    """
+
+    clean = tobool(options.get("clean", False))
+    view = tobool(options.get("view", False))
+
+    with lcd("docs"):
+        pip(requirements="requirements.txt")
+        local("make clean html") if clean else local("make html")
+
+        if view:
+            local("open build/html/index.html")
 
 
 @task()
