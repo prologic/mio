@@ -5,6 +5,7 @@ syntax: glob
 tmp
 dist
 build
+.cache
 .coverage*
 coverage
 docs/build
