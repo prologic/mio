@@ -15,12 +15,8 @@ def format_pymethod(f):
 
 
 def format_object(o):
-    attrs = {}
-    for k, v in o.attrs.items():
-        attrs[k] = format_pymethod(v) if ismethod(v) else str(v)
-    attrs = "\n".join(["  %s = %s" % (str(k).ljust(15), v)
-        for k, v in sorted(attrs.items())])
-    return "%s:\n%s" % (o.type, attrs)
+    attrs = "\n".join(["  {0:s} = {1:s}".format(str(k).ljust(15), format_pymethod(v) if ismethod(v) else str(v)) for k, v in sorted(o.attrs.items())])
+    return "{0:s}:\n{1:s}".format(o.type, attrs)
 
 
 def pymethod(name=None):
