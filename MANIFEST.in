@@ -1,6 +1,5 @@
 recursive-include mio *
-recursive-include lib *
 recursive-include docs *
 recursive-include tests *
 recursive-include examples *
-include LICENSE .ini *.rst *.sh
+include LICENSE *.ini *.rst *.sh
