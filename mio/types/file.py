@@ -1,5 +1,5 @@
 from mio import runtime
-from mio.utils import pymethod
+from mio.utils import method
 
 from mio.object import Object
 
@@ -43,13 +43,13 @@ class File(Object):
 
     # General Operations
 
-    @pymethod()
+    @method()
     def close(self, receiver, context, m):
         receiver.value.close()
         receiver.update_status()
         return receiver
 
-    @pymethod()
+    @method()
     def open(self, receiver, context, m, filename, mode=None):
         filename = str(filename.eval(context))
         mode = str(mode.eval(context)) if mode is not None else "r"
@@ -57,43 +57,43 @@ class File(Object):
         receiver.update_status()
         return receiver
 
-    @pymethod()
+    @method()
     def read(self, receiver, context, m, size=None):
         size = int(size.eval(context)) if size is not None else -1
         return String(receiver.value.read(size))
 
-    @pymethod()
+    @method()
     def readline(self, receiver, context, m):
         return String(receiver.value.readline())
 
-    @pymethod()
+    @method()
     def readlines(self, receiver, context, m):
         lines = [String(line) for line in receiver.value.readlines()]
         return List(lines)
 
-    @pymethod()
+    @method()
     def seek(self, receiver, context, m, offset, whence=None):
         whence = int(whence.eval(context)) if whence is not None else 0
         receiver.value.seek(int(offset.eval(context)), whence)
         return receiver
 
-    @pymethod()
+    @method()
     def pos(self, receiver, context, m):
         return Number(receiver.value.tell())
 
-    @pymethod()
+    @method()
     def truncate(self, receiver, context, m, size=None):
         size = int(size.eval(context)) if size else receiver.value.tell()
         receiver.value.truncate(size)
         return receiver
 
-    @pymethod()
+    @method()
     def write(self, receiver, context, m, data):
         data = str(data.eval(context))
         receiver.value.write(data)
         return receiver
 
-    @pymethod()
+    @method()
     def writelines(self, receiver, context, m, data):
         lines = [str(line) for line in data.eval(context)]
         receiver.value.writelines(lines)

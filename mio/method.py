@@ -1,5 +1,5 @@
 import runtime
-from utils import pymethod
+from utils import method
 
 from object import Object
 
@@ -73,14 +73,14 @@ class Method(Object):
         finally:
             runtime.state.reset()
 
-    @pymethod("args")
+    @method("args")
     def _args(self, receiver, context, m):
         return self["List"].clone(self.args)
 
-    @pymethod("body")
+    @method("body")
     def _body(self, receiver, context, m):
         return self.body
 
-    @pymethod("scope")
+    @method("scope")
     def _scope(self, receiver, context, m):
         return self.scope if self.scope is not None else self["None"]

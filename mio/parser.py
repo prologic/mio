@@ -9,7 +9,7 @@ from funcparserlib.parser import a, many, maybe, skip, some
 import runtime
 from object import Object
 from message import Message
-from utils import pymethod, Null
+from utils import method, Null
 
 tokval = lambda tok: tok.value
 sometok = lambda type: (some(lambda t: t.type == type) >> tokval)
@@ -160,7 +160,7 @@ class Parser(Object):
         self.create_methods()
         self.parent = runtime.state.find("Object")
 
-    @pymethod()
+    @method()
     def parse(self, receiver, context, m, code):
         code = str(code.eval(context))
         return parse(tokenize(code))

@@ -1,5 +1,5 @@
 from mio import runtime
-from mio.utils import pymethod
+from mio.utils import method
 
 from mio.object import Object
 
@@ -33,31 +33,31 @@ class String(Object):
     def __str__(self):
         return str(self.value)
 
-    @pymethod()
+    @method()
     def init(self, receiver, context, m, value=None):
         receiver.value = value.eval(context) if value is not None else ""
 
     # General Operations
 
-    @pymethod("+")
+    @method("+")
     def add(self, receiver, context, m, other):
         return self.clone(receiver + str(other.eval(context)))
 
-    @pymethod("*")
+    @method("*")
     def mul(self, receiver, context, m, other):
         return self.clone(receiver * int(other.eval(context)))
 
-    @pymethod()
+    @method()
     def find(self, receiver, context, m, sub, start=None, end=None):
         sub = str(sub.eval(context))
         start = int(start.eval(context)) if start is not None else None
         end = int(end.eval(context)) if end is not None else None
         return Number(receiver.value.find(sub, start, end))
 
-    @pymethod()
+    @method()
     def lower(self, receiver, context, m):
         return self.clone(receiver.value.lower())
 
-    @pymethod()
+    @method()
     def upper(self, receiver, context, m):
         return self.clone(receiver.value.upper())

@@ -2,7 +2,7 @@ from warnings import warn
 from inspect import getargspec, ismethod
 
 
-def format_pymethod(f):
+def format_method(f):
     name = getattr(f, "name", getattr(f, "__name__"))
     argspec = getargspec(f)
     args = list(argspec.args)
@@ -15,14 +15,14 @@ def format_pymethod(f):
 
 
 def format_object(o):
-    attrs = "\n".join(["  {0:s} = {1:s}".format(str(k).ljust(15), format_pymethod(v) if ismethod(v) else str(v)) for k, v in sorted(o.attrs.items())])
+    attrs = "\n".join(["  {0:s} = {1:s}".format(str(k).ljust(15), format_method(v) if ismethod(v) else str(v)) for k, v in sorted(o.attrs.items())])
     return "{0:s}:\n{1:s}".format(o.type, attrs)
 
 
-def pymethod(name=None):
+def method(name=None):
     def wrapper(f):
         f.name = name or f.__name__
-        f.pymethod = True
+        f.method = True
 
         argspec = getargspec(f)
         args = argspec.args

@@ -1,5 +1,5 @@
 from mio import runtime
-from mio.utils import pymethod
+from mio.utils import method
 
 from mio.object import Object
 
@@ -23,7 +23,7 @@ class Range(Object):
             yield self["start"]
             self["start"] = self["start"].clone(self["start"] + self["step"])
 
-    @pymethod()
+    @method()
     def init(self, receiver, context, m, *args):
         if len(args) == 1 and isinstance(args[0].eval(context), List):
             args = list(args[0].eval(context))
@@ -47,6 +47,6 @@ class Range(Object):
 
         receiver.value = range(*ints)
 
-    @pymethod()
+    @method()
     def asList(self, receiver, context, m):
         return runtime.find("List").clone(list(receiver))

@@ -1,5 +1,5 @@
 from mio import runtime
-from mio.utils import pymethod, Null
+from mio.utils import method, Null
 
 from mio.object import Object
 

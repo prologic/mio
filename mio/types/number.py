@@ -2,7 +2,7 @@ from decimal import Decimal
 
 from mio import runtime
 from mio.object import Object
-from mio.utils import pymethod, Null
+from mio.utils import method, Null
 
 
 class Number(Object):
@@ -50,44 +50,44 @@ class Number(Object):
 
     # General Arithmetic
 
-    @pymethod("+")
+    @method("+")
     def add(self, receiver, context, m, other):
         return self.clone(receiver + other.eval(context))
 
-    @pymethod("-")
+    @method("-")
     def sub(self, receiver, context, m, other):
         return self.clone(receiver - other.eval(context))
 
-    @pymethod("*")
+    @method("*")
     def mul(self, receiver, context, m, other):
         return self.clone(receiver * other.eval(context))
 
-    @pymethod("/")
+    @method("/")
     def div(self, receiver, context, m, other):
         return self.clone(receiver / other.eval(context))
 
-    @pymethod("**")
+    @method("**")
     def pow(self, receiver, context, m, other):
         return self.clone(receiver ** other.eval(context))
 
-    @pymethod("%")
+    @method("%")
     def mod(self, receiver, context, m, other):
         return self.clone(receiver % other.eval(context))
 
     # Type Conversions
 
-    @pymethod("float")
+    @method("float")
     def float(self, receiver, context, m):
         return self.clone(float(receiver))
 
-    @pymethod("int")
+    @method("int")
     def int(self, receiver, context, m):
         return self.clone(int(receiver))
 
-    @pymethod("repr")
+    @method("repr")
     def repr(self, receiver, context, m):
         return runtime.find("String").clone(repr(receiver))
 
-    @pymethod("str")
+    @method("str")
     def str(self, receiver, context, m):
         return runtime.find("String").clone(str(receiver))

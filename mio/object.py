@@ -4,7 +4,7 @@ from inspect import getmembers, ismethod
 
 import runtime
 from errors import AttributeError, TypeError
-from utils import format_object, pymethod, Null
+from utils import format_object, method, Null
 
 
 class Object(object):
@@ -26,7 +26,7 @@ class Object(object):
 
     def create_methods(self):
         keys = self.__class__.__dict__.keys()
-        predicate = lambda x: ismethod(x) and getattr(x, "pymethod", False)
+        predicate = lambda x: ismethod(x) and getattr(x, "method", False)
         for name, method in getmembers(self, predicate):
             if name in keys:
                 self[method.name] = method
@@ -116,27 +116,27 @@ class Object(object):
 
     # Attribute Operations
 
-    @pymethod("del")
+    @method("del")
     def _del(self, receiver, context, m, key):
         key = key.eval(context)
         del receiver[key]
         return runtime.state.find("None")
 
-    @pymethod()
+    @method()
     def has(self, receiver, context, m, key):
         key = key.eval(context)
         if key in receiver:
             return runtime.state.find("True")
         return runtime.state.find("False")
 
-    @pymethod()
+    @method()
     def set(self, receiver, context, m, key, value):
         key = key.eval(context)
         value = value.eval(context)
         receiver[key] = value
         return value
 
-    @pymethod()
+    @method()
     def get(self, receiver, context, m, key, default=None):
         key = key.eval(context)
         default = default.eval(context) if default else runtime.find("None")
@@ -144,43 +144,43 @@ class Object(object):
 
     # Traits Operations
 
-    @pymethod()
+    @method()
     def uses(self, receiver, context, m, *traits):
         traits = [trait.eval(context) for trait in traits]
         for trait in traits:
             receiver.__addtrait__(trait)
         return receiver
 
-    @pymethod()
+    @method()
     def addTrait(self, receiver, context, m, trait):
         trait = trait.eval(context)
         receiver.__addtrait__(trait)
         return receiver
 
-    @pymethod()
+    @method()
     def delTrait(self, receiver, context, m, trait):
         trait = trait.eval(context)
         receiver.__deltrait__(trait)
         return receiver
 
-    @pymethod()
+    @method()
     def hasTrait(self, receiver, context, m, trait):
         trait = trait.eval(context)
         test = trait in receiver.traits
         return runtime.find("True") if test else runtime.find("False")
 
-    @pymethod("traits")
+    @method("traits")
     def getTraits(self, receiver, context, m):
         return runtime.find("List").clone(receiver.traits)
 
-    @pymethod("behaviors")
+    @method("behaviors")
     def getBehaviors(self, receiver, context, m):
         return runtime.find("List").clone(receiver.behaviors.keys())
 
     # Method Operations
 
-    @pymethod()
-    def method(self, receiver, context, m, *args):
+    @method("method")
+    def _method(self, receiver, context, m, *args):
         scope = context if "call" in context else None
         args, body = args[:-1], args[-1:][0]
 
@@ -202,7 +202,7 @@ class Object(object):
 
     # Flow Control
 
-    @pymethod()
+    @method()
     def foreach(self, receiver, context, m, *args):
         result = runtime.find("None")
         runtime.state.reset()
@@ -229,7 +229,7 @@ class Object(object):
         finally:
             runtime.state.reset()
 
-    @pymethod("while")
+    @method("while")
     def _while(self, receiver, context, m, condition, expression):
         result = runtime.find("None")
 
@@ -242,19 +242,19 @@ class Object(object):
 
         return result
 
-    @pymethod("continue")
+    @method("continue")
     def _continue(self, receiver, context, m):
         runtime.state.isContinue = True
         return runtime.find("None")
 
-    @pymethod("break")
+    @method("break")
     def _break(self, reciver, context, m, *args):
         value = args[0].eval(context) if args else runtime.find("None")
         runtime.state.isBreak = True
         runtime.state.returnValue = value
         return value
 
-    @pymethod("return")
+    @method("return")
     def _return(self, reciver, context, m, *args):
         value = args[0].eval(context) if args else runtime.find("None")
         runtime.state.isReturn = True
@@ -263,23 +263,23 @@ class Object(object):
 
     # I/O
 
-    @pymethod("print")
+    @method("print")
     def _print(self, receiver, context, m):
         sys.stdout.write("%s" % receiver.value)
         return receiver
 
-    @pymethod()
+    @method()
     def println(self, receiver, context, m):
         sys.stdout.write("%s\n" % receiver.value)
         return receiver
 
-    @pymethod()
+    @method()
     def write(self, receiver, context, m, *args):
         args = [arg.eval(context) for arg in args]
         sys.stdout.write("%s" % " ".join([str(arg) for arg in args]))
         return runtime.find("None")
 
-    @pymethod()
+    @method()
     def writeln(self, receiver, context, m, *args):
         args = [arg.eval(context) for arg in args]
         sys.stdout.write("%s\n" % " ".join([str(arg) for arg in args]))
@@ -287,53 +287,53 @@ class Object(object):
 
     # Introspection
 
-    @pymethod("parent")
+    @method("parent")
     def _parent(self, receiver, context, m):
         if receiver.parent is not None:
             return receiver.parent
         return receiver
 
-    @pymethod("type")
+    @method("type")
     def _type(self, receiver, context, m):
         return runtime.find("String").clone(receiver.type)
 
-    @pymethod("value")
+    @method("value")
     def _value(self, receiver, context, m):
         if receiver.value is not Null:
             return receiver.value
         return runtime.find("None")
 
-    @pymethod()
+    @method()
     def hash(self, receiver, context, m):
         return runtime.find("Number").clone(hash(receiver))
 
-    @pymethod()
+    @method()
     def id(self, receiver, context, m):
         return runtime.find("Number").clone(id(receiver))
 
-    @pymethod()
+    @method()
     def keys(self, receiver, context, m):
         String = runtime.find("String")
         keys = [String.clone(key) for key in receiver.attrs.keys()]
         return runtime.find("List").clone(keys)
 
-    @pymethod()
+    @method()
     def summary(self, receiver, context, m):
         sys.stdout.write("%s\n" % format_object(receiver))
         return receiver
 
     # Object Operations
 
-    @pymethod()
+    @method()
     def do(self, receiver, context, m, expression):
         expression.eval(receiver)
         return receiver
 
-    @pymethod()
+    @method()
     def super(self, receiver, context, m):
         return receiver["self"].parent
 
-    @pymethod("clone")
+    @method("clone")
     def _clone(self, receiver, context, m, *args):
         object = receiver.clone()
 
@@ -347,7 +347,7 @@ class Object(object):
 
         return object
 
-    @pymethod()
+    @method()
     def setParent(self, receiver, context, m, parent):
         parent = parent.eval(context)
         if parent is receiver:
@@ -357,26 +357,26 @@ class Object(object):
 
         return receiver
 
-    @pymethod()
+    @method()
     def setValue(self, receiver, context, m, value):
         receiver.value = value.eval(context)
         return receiver
 
     # Boolean Operations
 
-    @pymethod()
+    @method()
     def cmp(self, receiver, context, m, other):
         return runtime.find("Number").clone(cmp(receiver, other.eval(context)))
 
-    @pymethod("and")
+    @method("and")
     def _and(self, receiver, context, m, other):
         return self.clone(receiver and other.eval(context))
 
-    @pymethod("or")
+    @method("or")
     def _or(self, receiver, context, m, other):
         return self.clone(receiver or other.eval(context))
 
-    @pymethod("not")
+    @method("not")
     def _not(self, receiver, context, m, value=None):
         value = value.eval(context) if value is not None else receiver
         test = not bool(value)
@@ -384,6 +384,6 @@ class Object(object):
 
     # Type Conversion
 
-    @pymethod("str")
+    @method("str")
     def str(self, receiver, context, m):
         return runtime.find("String").clone(str(receiver))

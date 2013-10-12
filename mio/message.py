@@ -1,7 +1,7 @@
 
 import runtime
 from object import Object
-from utils import pymethod
+from utils import method
 
 
 class Message(Object):
@@ -67,59 +67,59 @@ class Message(Object):
         else:
             return receiver if self.terminator else value
 
-    @pymethod("eval")
+    @method("eval")
     def _eval(self, receiver, context, m, target=None):
         target = target.eval(context) if target is not None else context
         return receiver.eval(target)
 
-    @pymethod("arg")
+    @method("arg")
     def evalArg(self, receiver, context, m, index):
         index = int(index.eval(context))
         if index < len(receiver.args):
             return receiver.args[index].eval(context)
         return runtime.find("None")
 
-    @pymethod("args")
+    @method("args")
     def getArgs(self, receiver, context, m):
         return runtime.find("List").clone(self.args)
 
-    @pymethod()
+    @method()
     def argsEvaluatedIn(self, receiver, context, m, target=None):
         target = target.eval(context) if target is not None else context
         args = [arg.eval(target) for arg in self.args]
         return runtime.find("List").clone(list(args))
 
-    @pymethod("first")
+    @method("first")
     def getFirst(self, receiver, context, m):
         return receiver.first
 
-    @pymethod("name")
+    @method("name")
     def getName(self, receiver, context, m):
         return runtime.find("String").clone(receiver.name)
 
-    @pymethod("next")
+    @method("next")
     def getNext(self, receiver, context, m):
         return receiver.next
 
-    @pymethod("last")
+    @method("last")
     def getLast(self, receiver, context, m):
         return receiver.last
 
-    @pymethod("previous")
+    @method("previous")
     def getPrevious(self, receiver, context, m):
         return receiver.previous
 
-    @pymethod()
+    @method()
     def setArgs(self, receiver, context, m, *args):
         receiver.args = tuple(args)
         return receiver
 
-    @pymethod()
+    @method()
     def setName(self, receiver, context, m, name):
         receiver.name = name.eval(context)
         return receiver
 
-    @pymethod()
+    @method()
     def setNext(self, receiver, context, m, message):
         result = message.eval(context)
         if isinstance(result, Message):

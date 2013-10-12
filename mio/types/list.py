@@ -1,6 +1,6 @@
 from mio import runtime
 from mio.errors import TypeError
-from mio.utils import pymethod, Null
+from mio.utils import method, Null
 
 from mio.object import Object
 
@@ -24,7 +24,7 @@ class List(Object):
 
     __str__ = __repr__
 
-    @pymethod()
+    @method()
     def init(self, receiver, context, m, iterable=None):
         if iterable is not None:
             iterable = iterable.eval(context)
@@ -35,43 +35,43 @@ class List(Object):
 
     # General Operations
 
-    @pymethod()
+    @method()
     def append(self, receiver, context, m, item):
         receiver.value.append(item.eval(context))
         return receiver
 
-    @pymethod()
+    @method()
     def count(self, receiver, context, m, value):
         return Number(receiver.value.count(value.eval(context)))
 
-    @pymethod()
+    @method()
     def extend(self, receiver, context, m, *args):
         args = [arg.eval(context) for arg in args]
         receiver.value.extend(args)
         return receiver
 
-    @pymethod()
+    @method()
     def len(self, receiver, context, m):
         return Number(len(receiver.value))
 
-    @pymethod()
+    @method()
     def at(self, receiver, context, m, index):
         return receiver.value[int(index.eval(context))]
 
-    @pymethod()
+    @method()
     def reverse(self, receiver, context, m):
         receiver.value.reverse()
         return receiver
 
-    @pymethod()
+    @method()
     def reversed(self, receiver, context, m):
         return receiver.clone(list(reversed(receiver.value)))
 
-    @pymethod()
+    @method()
     def sort(self, receiver, context, m):
         receiver.value.sort()
         return receiver
 
-    @pymethod()
+    @method()
     def sorted(self, receiver, context, m):
         return receiver.clone(list(sorted(receiver.value)))

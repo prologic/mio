@@ -2,7 +2,7 @@ from copy import copy
 
 import runtime
 from object import Object
-from utils import pymethod, Null
+from utils import method, Null
 
 
 class Continuation(Object):
@@ -16,11 +16,11 @@ class Continuation(Object):
         self.create_methods()
         self.parent = runtime.state.find("Object")
 
-    @pymethod("call")
+    @method("call")
     def call(self, receiver, context, m):
         return receiver.message.eval(receiver.context)
 
-    @pymethod("current")
+    @method("current")
     def current(self, receiver, context, m):
         continuation = receiver.clone()
         continuation.context = copy(context)

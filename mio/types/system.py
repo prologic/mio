@@ -2,7 +2,7 @@ import mio
 import sys
 
 from mio import runtime
-from mio.utils import pymethod
+from mio.utils import method
 
 from mio.object import Object
 
@@ -29,7 +29,7 @@ class System(Object):
     def build_args(self):
         return List([String(arg) for arg in runtime.state.args])
 
-    @pymethod()
+    @method()
     def exit(self, receiver, context, m, status=None):
         status = status.eval(context) if status is not None else 0
         raise SystemExit(status)
