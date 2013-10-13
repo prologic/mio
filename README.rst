@@ -3,11 +3,11 @@
 .. _Marc-André Cournoye: http://macournoyer.com/
 .. _MIT License: http://www.opensource.org/licenses/mit-license.php
 .. _funcparserlib: http://pypi.python.org/pypi/funcparserlib
-.. _Project Website: https://bitbucket.org/prologic/mio/
+.. _Project Website: https://bitbucket.org/prologic/mio-lang/
 .. _PyPi Page: http://pypi.python.org/pypi/mio
 .. _Documentation: http://packages.python.org/mio/
-.. _Create an Issue: https://bitbucket.org/prologic/mio/issue/new
-.. _Downloads Page: https://bitbucket.org/prologic/mio/downloads
+.. _Create an Issue: https://bitbucket.org/prologic/mio-lang/issue/new
+.. _Downloads Page: https://bitbucket.org/prologic/mio-lang/downloads
 
 
 mio is a minimalistic IO programming language written in the
@@ -64,7 +64,7 @@ extract it and install using::
     > python setup.py install
 
 You can also install the
-`latest-development version <https://bitbucket.org/prologic/mio/get/tip.tar.gz#egg=mio-dev>`_ by using ``pip`` or ``easy_install``::
+`latest-development version <https://bitbucket.org/prologic/mio-lang/get/tip.tar.gz#egg=mio-dev>`_ by using ``pip`` or ``easy_install``::
     
     > pip install mio==dev
 
@@ -73,4 +73,4 @@ or::
     > easy_install mio==dev
 
 
-For further information see the `mio documentation <http://mio.readthedocs.org/>`_.
+For further information see the `mio documentation <http://mio-lag.readthedocs.org/>`_.

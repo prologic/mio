@@ -17,8 +17,8 @@ setup(
     ),
     author="James Mills",
     author_email="James Mills, prologic at shortcircuit dot net dot au",
-    url="http://bitbucket.org/prologic/mio/",
-    download_url="http://bitbucket.org/prologic/mio/downloads/",
+    url="http://bitbucket.org/prologic/mio-lang/",
+    download_url="http://bitbucket.org/prologic/mio-lang/downloads/",
     classifiers=[
         "Development Status :: 3 - Alpha",
         "Intended Audience :: Developers",
