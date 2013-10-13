@@ -21,15 +21,24 @@ Examples
 
 Factorial:
 
-.. include:: examples/fact.mio
-   :code:
-   :start-line: 2
+.. code::
+    
+    Number set("!", method(
+        if (self < 2) then (
+            return self
+        ) else (
+            return (self * ((self - 1) !))
+        )
+    ))
 
 Hello World:
 
-.. include:: examples/hello.mio
-   :code:
-   :start-line: 2
+.. code::
+    
+    World = Object clone
+    World hello = method("Hello World!" println)
+    
+    World hello
 
 
 Features
