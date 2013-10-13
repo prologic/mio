@@ -6,7 +6,7 @@ tmp
 dist
 build
 .cache
-.coverage*
 coverage
+*egg-info
+.coverage*
 docs/build
-mio.egg-info
