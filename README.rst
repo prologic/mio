@@ -1,12 +1,8 @@
 .. _Python Programming Language: http://www.python.org/
 .. _How To Create Your Own Freaking Awesome Programming Language: http://createyourproglang.com/
 .. _Marc-André Cournoye: http://macournoyer.com/
-.. _MIT License: http://www.opensource.org/licenses/mit-license.php
 .. _funcparserlib: http://pypi.python.org/pypi/funcparserlib
 .. _Project Website: https://bitbucket.org/prologic/mio-lang/
-.. _PyPi Page: http://pypi.python.org/pypi/mio
-.. _Documentation: http://packages.python.org/mio/
-.. _Create an Issue: https://bitbucket.org/prologic/mio-lang/issue/new
 .. _Downloads Page: https://bitbucket.org/prologic/mio-lang/downloads
 
 
