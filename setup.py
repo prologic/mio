@@ -9,7 +9,7 @@ import mio as pkg
 
 
 setup(
-    name=pkg.__name__,
+    name="mio-lang",
     version=pkg.__version__,
     description=pkg.__doc__.split("\n")[0],
     long_description="{0:s}\n\n{1:s}".format(
