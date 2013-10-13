@@ -2,6 +2,7 @@
 .. _How To Create Your Own Freaking Awesome Programming Language: http://createyourproglang.com/
 .. _Marc-André Cournoye: http://macournoyer.com/
 .. _funcparserlib: http://pypi.python.org/pypi/funcparserlib
+.. _PyPi Page: http://pypi.python.org/pypi/mio-lang
 .. _Project Website: https://bitbucket.org/prologic/mio-lang/
 .. _Downloads Page: https://bitbucket.org/prologic/mio-lang/downloads
 
