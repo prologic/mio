@@ -21,13 +21,13 @@ Examples
 
 Factorial:
 
-.. include:: ../../examples/fact.mio
+.. include:: examples/fact.mio
    :code:
    :start-line: 2
 
 Hello World:
 
-.. include:: ../../examples/hello.mio
+.. include:: examples/hello.mio
    :code:
    :start-line: 2
 
