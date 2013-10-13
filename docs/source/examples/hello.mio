@@ -1,0 +1,6 @@
+#!/usr/bin/env mio
+
+World = Object clone
+World hello = method("Hello World!" println)
+
+World hello
