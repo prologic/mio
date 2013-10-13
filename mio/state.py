@@ -24,12 +24,12 @@ from .types import System
 
 class State(object):
 
-    def __init__(self, args, opts, lobby):
+    def __init__(self, args, opts, root):
         super(State, self).__init__()
 
         self.args = args
         self.opts = opts
-        self.lobby = lobby
+        self.root = root
 
         if self.args is None:
             self.args = []
@@ -46,35 +46,35 @@ class State(object):
         return self.isBreak or self.isReturn
 
     def create_objects(self):
-        lobby = self.lobby
+        root = self.root
 
         object = Object(methods=True)
 
-        lobby["Lobby"] = lobby
-        lobby["Object"] = object
+        root["Root"] = root
+        root["Object"] = object
 
-        lobby.parent = object
+        root.parent = object
 
-        lobby["Boolean"] = Boolean()
-        lobby["Number"] = Number()
-        lobby["String"] = String()
-        lobby["List"] = List()
+        root["Boolean"] = Boolean()
+        root["Number"] = Number()
+        root["String"] = String()
+        root["List"] = List()
 
-        lobby["None"] = Boolean(None)
-        lobby["True"] = Boolean(True)
-        lobby["False"] = Boolean(False)
+        root["None"] = Boolean(None)
+        root["True"] = Boolean(True)
+        root["False"] = Boolean(False)
 
-        lobby["Parser"] = Parser()
-        lobby["Message"] = Message("")
-        lobby["Continuation"] = Continuation()
-        lobby["Method"] = Method(None, Message(""), [], {})
+        root["Parser"] = Parser()
+        root["Message"] = Message("")
+        root["Continuation"] = Continuation()
+        root["Method"] = Method(None, Message(""), [], {})
 
-        lobby["File"] = File()
-        lobby["Range"] = Range()
-        lobby["System"] = System()
+        root["File"] = File()
+        root["Range"] = Range()
+        root["System"] = System()
 
     def find(self, name):
-        return self.lobby.attrs[name]
+        return self.root.attrs[name]
 
     def eval(self, code, receiver=None, context=None, reraise=False):
         message = None
@@ -87,7 +87,7 @@ class State(object):
             else:
                 message = parse(tokenize(code))
 
-            return message.eval(self.lobby if receiver is None else receiver, self.lobby if context is None else context, message)
+            return message.eval(self.root if receiver is None else receiver, self.root if context is None else context, message)
         except Error as e:
             type = e.__class__.__name__
             underline = "-" * (len(type) + 1)

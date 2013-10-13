@@ -1,4 +1,4 @@
-Lobby exit = method(status,
+Root exit = method(status,
     status ifNone(
         System exit(0)
     )

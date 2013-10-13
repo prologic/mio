@@ -1,6 +1,6 @@
 Object do (
     eval = method(code, context,
-        Parser parse(code) eval(context ifNone(return Lobby))
+        Parser parse(code) eval(context ifNone(return Root))
     )
 
     list = method(

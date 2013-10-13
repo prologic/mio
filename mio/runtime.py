@@ -9,18 +9,18 @@ from os import path
 from pkg_resources import resource_filename, resource_listdir
 
 
-lobby = None
+root = None
 state = None
 
 
 def init(args=None, opts=None, reinit=False):
-    global lobby, state
+    global root, state
 
     from state import State
     from object import Object
 
-    lobby = Object()
-    state = State(args, opts, lobby)
+    root = Object()
+    state = State(args, opts, root)
     state.create_objects()
 
     for resource in resource_listdir(__package__, "lib"):
@@ -29,5 +29,5 @@ def init(args=None, opts=None, reinit=False):
 
 
 def find(name):
-    global lobby
-    return lobby[name]
+    global root
+    return root[name]
