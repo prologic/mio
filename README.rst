@@ -10,20 +10,26 @@
 .. _Downloads Page: https://bitbucket.org/prologic/mio/downloads
 
 
-Overview
---------
-
-mio is a **Toy Programming Language** written in the
+mio is a minimalistic IO programming language written in the
 `Python Programming Language`_ based on MIo (*a port from Ruby to Python*)
 in the book `How To Create Your Own Freaking Awesome Programming Language`_ by
 `Marc-André Cournoye`_.
 
-Links:
 
-- `Project Website`_
-- `PyPi Page`_
-- `Documentation`_
-- `Downloads Page`_
+Examples
+--------
+
+Factorial:
+
+.. include:: ../../examples/fact.mio
+   :code:
+   :start-line: 2
+
+Hello World:
+
+.. include:: ../../examples/hello.mio
+   :code:
+   :start-line: 2
 
 
 Features
@@ -37,14 +43,6 @@ Features
 - Object Orienated Language
 - Written in an easy to understand language
 - Supports Imperative, Functional, Object Oriented and Behavior Driven Development styles.
-
-
-Requirements
-------------
-
-`funcparserlib`_::
-
-    > pip install funcparserlib
 
 
 Installation
@@ -75,18 +73,4 @@ or::
     > easy_install mio==dev
 
 
-License
--------
-
-mio is licensed under the `MIT License`_.
-
-
-Feedback
---------
-
-I welcome any questions or feedback about bugs and suggestions on how to 
-improve mio. Let me know what you think about mio.
-
-Do you have suggestions for improvement? Then please `Create an Issue`_
-with details of what you would like to see. I'll take a look at it and
-work with you to either incorporate the idea or find a better solution.
+For further information see the `mio documentation <http://mio.readthedocs.org/>`_.
