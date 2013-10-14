@@ -67,11 +67,7 @@ class Method(Object):
             else:
                 self.locals[arg] = runtime.find("None")
 
-        try:
-            runtime.state.reset()
-            return self.body.eval(self.locals, self.locals)
-        finally:
-            runtime.state.reset()
+        return self.body.eval(self.locals, self.locals)
 
     @method("args")
     def _args(self, receiver, context, m):

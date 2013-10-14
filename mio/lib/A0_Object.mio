@@ -1,5 +1,5 @@
 Object do (
-    "" = method(call message arg(0))
+    "" = method(call message arg(0, self))
 
 	#ifNone returns self
 	ifNone = method(self)
@@ -13,7 +13,7 @@ Object do (
 
 True do (
 	#ifTrue evaluates the argument and returns self
-	ifTrue = method(call message arg(0); self)
+	ifTrue = method(call message arg(0, self))
 
 	#ifFalse does not evaluate the argument and returns True
 	ifFalse = True

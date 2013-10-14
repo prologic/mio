@@ -3,8 +3,9 @@ from copy import copy
 from inspect import getmembers, ismethod
 
 import runtime
-from errors import AttributeError, TypeError
-from utils import format_object, method, Null
+from .errors import AttributeError, TypeError
+from .utils import format_object, method, Null
+from .states import BreakState, ContinueState, ReturnState
 
 
 class Object(object):
@@ -204,61 +205,61 @@ class Object(object):
 
     @method()
     def foreach(self, receiver, context, m, *args):
-        result = runtime.find("None")
-        runtime.state.reset()
-
-        vars, expression = args[:-1], args[-1]
-
-        for item in receiver:
-            if runtime.state.isContinue:
-                runtime.state.reset()
-                continue
-
-            if len(vars) == 2:
-                context[vars[0].name], context[vars[1].name] = item
-            elif len(vars) == 1:
-                context[vars[0].name] = item
-
-            result = expression.eval(context)
-
-            if runtime.state.stop():
-                return runtime.state.returnValue
-
         try:
+            result = runtime.find("None")
+            vars, expression = args[:-1], args[-1]
+
+            for item in receiver:
+                if runtime.state.state.isContinue:
+                    runtime.state.reset()
+                    continue
+
+                if len(vars) == 2:
+                    context[vars[0].name], context[vars[1].name] = item
+                elif len(vars) == 1:
+                    context[vars[0].name] = item
+
+                result = expression.eval(context)
+
+                if runtime.state.stop:
+                    return runtime.state.reset().returnValue or runtime.state.find("None")
             return result
         finally:
             runtime.state.reset()
 
     @method("while")
     def _while(self, receiver, context, m, condition, expression):
-        result = runtime.find("None")
+        try:
+            result = runtime.find("None")
 
-        runtime.state.reset()
+            while condition.eval(context):
+                if runtime.state.state.isContinue:
+                    runtime.state.reset()
+                    continue
 
-        while condition.eval(context) and (not runtime.state.stop()):
-            result = expression.eval(context)
+                result = expression.eval(context)
 
-        runtime.state.reset()
-
-        return result
+                if runtime.state.stop:
+                    return runtime.state.reset().returnValue or runtime.state.find("None")
+            return result
+        finally:
+            runtime.state.reset()
 
     @method("continue")
     def _continue(self, receiver, context, m):
-        runtime.state.isContinue = True
+        runtime.state.set(ContinueState())
         return runtime.find("None")
 
     @method("break")
     def _break(self, reciver, context, m, *args):
         value = args[0].eval(context) if args else runtime.find("None")
-        runtime.state.isBreak = True
-        runtime.state.returnValue = value
+        runtime.state.set(BreakState(value))
         return value
 
     @method("return")
     def _return(self, reciver, context, m, *args):
         value = args[0].eval(context) if args else runtime.find("None")
-        runtime.state.isReturn = True
-        runtime.state.returnValue = value
+        runtime.state.set(ReturnState(value))
         return value
 
     # I/O

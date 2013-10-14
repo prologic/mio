@@ -49,6 +49,10 @@ class Message(Object):
         if m is None:
             m = self
 
+        #print("Evaluating {0:s}{1:s} in {2:s} at {3:s}".format(
+        #    repr(m.name), "({0:s})".format(repr(self.args)) if self.args else "", repr(context), repr(receiver)
+        #))
+
         if self.terminator:
             value = context
         elif self.value is not None:
@@ -56,15 +60,17 @@ class Message(Object):
         else:
             value = receiver[self.name](receiver, context, m, *self.args)
 
-        if runtime.state.stop():
-            return runtime.state.returnValue
-        elif runtime.state.isContinue:
-            runtime.state.isContinue = False
-            return runtime.state.find("None")
+        returnValue = None
+        if runtime.state.stop:
+            returnValue = runtime.state.reset().returnValue or runtime.find("None")
         elif self.next is not None:
-            return self.next.eval(value, context)
+            returnValue = self.next.eval(value, context)
         else:
-            return receiver if self.terminator else value
+            returnValue = receiver if self.terminator else value
+
+        #print(" Return: {0:s}".format(repr(returnValue)))
+
+        return returnValue
 
     @method("eval")
     def _eval(self, receiver, context, m, target=None):
@@ -72,10 +78,11 @@ class Message(Object):
         return receiver.eval(target)
 
     @method("arg")
-    def evalArg(self, receiver, context, m, index):
+    def evalArg(self, receiver, context, m, index, target=None):
         index = int(index.eval(context))
+        target = target.eval(context) if target is not None else context
         if index < len(receiver.args):
-            return receiver.args[index].eval(context)
+            return receiver.args[index].eval(context, target)
         return runtime.find("None")
 
     @method("args")
