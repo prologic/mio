@@ -82,7 +82,7 @@ class Message(Object):
         index = int(index.eval(context))
         target = target.eval(context) if target is not None else context
         if index < len(receiver.args):
-            return receiver.args[index].eval(context, target)
+            return receiver.args[index].eval(target)
         return runtime.find("None")
 
     @method("args")
