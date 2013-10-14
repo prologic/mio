@@ -63,7 +63,7 @@ class Method(Object):
 
         for i, arg in enumerate(self.args):
             if i < len(args):
-                self.locals[arg] = args[i].eval(context) 
+                self.locals[arg] = args[i].eval(context)
             else:
                 self.locals[arg] = runtime.find("None")
 
