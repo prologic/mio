@@ -49,10 +49,7 @@ class Message(Object):
         if m is None:
             m = self
 
-        #print("Evaluating {0:s}{1:s} in {2:s} at {3:s}".format(
-        #    repr(m.name), "({0:s})".format(repr(self.args)) if self.args else "", repr(context), repr(receiver)
-        #))
-
+        #if not runtime.state.stop:
         if self.terminator:
             value = context
         elif self.value is not None:
@@ -67,8 +64,6 @@ class Message(Object):
             returnValue = self.next.eval(value, context)
         else:
             returnValue = receiver if self.terminator else value
-
-        #print(" Return: {0:s}".format(repr(returnValue)))
 
         return returnValue
 
