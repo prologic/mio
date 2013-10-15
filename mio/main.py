@@ -32,6 +32,12 @@ def parse_options():
         help="enable debugging output"
     )
 
+    add_option(
+        "-S", "",
+        action="store_true", default=False, dest="nosys",
+        help="don't load system libraries"
+    )
+
     opts, args = parser.parse_args()
 
     return opts, args
