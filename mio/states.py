@@ -23,4 +23,4 @@ class ContinueState(StopState):
 
 class ReturnState(StopState):
 
-    isREturn = True
+    isReturn = True
