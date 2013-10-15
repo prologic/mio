@@ -21,7 +21,7 @@ def format_object(o):
 
 def method(name=None):
     def wrapper(f):
-        f.name = name or f.__name__
+        f.name = name if name is not None else f.__name__
         f.method = True
 
         argspec = getargspec(f)
