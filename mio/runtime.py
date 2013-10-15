@@ -23,7 +23,7 @@ def init(args=None, opts=None, reinit=False):
     state = State(args, opts, root)
     state.create_objects()
 
-    if not opts.nosys:
+    if opts is None or (opts is not None and not opts.nosys):
         for resource in resource_listdir(__package__, "lib"):
             filename = resource_filename(__package__, path.join("lib", resource))
             state.load(filename)
