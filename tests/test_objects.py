@@ -125,6 +125,42 @@ def test_del(mio):
         mio.eval("Foo a", reraise=True)
 
 
+def test_return1(mio):
+    mio.eval("""x = method(return "foo"; "bar")""")
+    assert mio.eval("x") == "foo"
+
+
+def test_return2(mio):
+    mio.eval("""x = method(
+        return "foo"
+        "bar"
+    )""")
+
+    assert mio.eval("x") == "foo"
+
+
+def test_return3(mio):
+    mio.eval("""x = method(
+        y = method(
+            return "foo"
+        )
+        return y
+        "bar"
+    )""")
+
+    assert mio.eval("x") == "foo"
+
+
+def test_return4(mio):
+    mio.eval("""Number foo = method(
+        (self < 2) ifTrue(return "foo")
+        "bar"
+    )""")
+
+    assert mio.eval("1 foo") == "foo"
+    assert mio.eval("2 foo") == "bar"
+
+
 def test_str(mio):
     pass
 
