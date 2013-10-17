@@ -44,28 +44,35 @@ class Message(Object):
     __repr__ = __str__
 
     def eval(self, receiver, context=None, m=None, target=None):
-        if context is None:
-            context = receiver
-        if m is None:
-            m = self
+        context = receiver if context is None else context
+        m = self if m is None else m
 
-        #if not runtime.state.stop:
-        if self.terminator:
-            value = context
-        elif self.value is not None:
-            value = self.value
-        else:
-            value = receiver[self.name](receiver, context, m, *self.args)
+        while m is not None:
+            if m.terminator:
+                value = context
+            elif m.value is not None:
+                runtime.state.value = value = m.value
+            else:
+                obj = receiver[m.name]
 
-        returnValue = None
-        if runtime.state.stop:
-            returnValue = runtime.state.reset().returnValue or runtime.find("None")
-        elif self.next is not None:
-            returnValue = self.next.eval(value, context)
-        else:
-            returnValue = receiver if self.terminator else value
+                if callable(obj):
+                    runtime.state.value = value = obj(receiver, context, m, *m.args)
+                else:
+                    runtime.state.value = value = obj
 
-        return returnValue
+            if runtime.state.stop:
+               return runtime.state.reset().returnValue
+
+            receiver = value
+            m = m.next
+
+        try:
+            if runtime.state.value is not None:
+                return runtime.state.value
+            else:
+                return receiver
+        finally:
+            runtime.state.value = None
 
     @method("eval")
     def _eval(self, receiver, context, m, target=None):

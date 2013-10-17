@@ -88,9 +88,6 @@ class Object(object):
             del self.behaviors[k]
         self.traits.remvoe(trait)
 
-    def __call__(self, *args, **kwargs):
-        return self
-
     def __str__(self):
         default = "%s_%s" % (self.type, hex(id(self)))
         return str(self.value) if self.value is not Null else default

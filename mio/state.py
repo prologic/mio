@@ -35,7 +35,16 @@ class State(object):
         if self.args is None:
             self.args = []
 
+        self._value = None
         self._states = stack()
+
+    @property
+    def value(self):
+        return self._value
+
+    @value.setter
+    def value(self, value):
+        self._value = value
 
     @property
     def state(self):
