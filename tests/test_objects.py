@@ -153,6 +153,16 @@ def test_return3(mio):
 
 def test_return4(mio):
     mio.eval("""Number foo = method(
+
+        (self)
+
+    )""")
+
+    assert mio.eval("1 foo") == 1
+
+
+def test_return5(mio):
+    mio.eval("""Number foo = method(
         (self < 2) ifTrue(return "foo")
         "bar"
     )""")
