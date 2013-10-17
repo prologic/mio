@@ -69,7 +69,7 @@ def test_get(mio):
 def test_has(mio):
     mio.eval("Foo = Object clone")
     assert mio.eval("Foo x = 1")
-    assert mio.eval("Foo has(\"x\")") == True
+    assert mio.eval("Foo has(\"x\")").value is True
 
 
 def test_hash(mio):
@@ -101,7 +101,7 @@ def test_method(mio):
 
 
 def test_neq(mio):
-    assert mio.eval("1 !=(0)") == True
+    assert mio.eval("1 !=(0)").value is True
 
 
 def test_println(mio):
@@ -119,7 +119,7 @@ def test_set(mio):
 def test_del(mio):
     mio.eval("Foo = Object clone")
     assert mio.eval("Foo a = 1")
-    assert mio.eval("Foo del(\"a\")") == None
+    assert mio.eval("Foo del(\"a\")").value is None
 
     with raises(AttributeError):
         mio.eval("Foo a", reraise=True)
