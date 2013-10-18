@@ -88,6 +88,8 @@ class State(object):
         root["Range"] = Range()
         root["System"] = System()
 
+        root["_"] = root["None"]
+
     def find(self, name):
         return self.root.attrs[name]
 

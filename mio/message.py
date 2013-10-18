@@ -76,6 +76,7 @@ class Message(Object):
             returnValue = runtime.state.value if runtime.state.value is not None else receiver
             if runtime.state.opts and runtime.state.opts.debug:
                 print "return {0:s}".format(repr(returnValue))
+            context["_"] = returnValue
             return returnValue
         finally:
             runtime.state.value = None
