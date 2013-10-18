@@ -11,7 +11,7 @@ from .states import BreakState, ContinueState, ReturnState
 
 class Object(object):
 
-    __slots__ = ("attrs", "parent", "state", "value", "traits", "behaviors",)
+    __slots__ = ("attrs", "parent", "_state", "value", "traits", "behaviors",)
 
     def __init__(self, value=Null, methods=False):
         super(Object, self).__init__()
@@ -23,7 +23,7 @@ class Object(object):
         self.traits = []
         self.behaviors = {}
 
-        self.state = NormalState()
+        self._state = NormalState()
 
         if methods:
             self.create_methods()
@@ -110,6 +110,16 @@ class Object(object):
 
     def forward(self, key):
         return runtime.state.find(key)
+
+    @property
+    def state(self):
+        return self._state
+
+    @state.setter
+    def state(self, state):
+        if runtime.state.opts and runtime.state.opts.debug:
+            print("Setting state on {0:s} to {1:s}".format(repr(self), repr(self.state)))
+        self._state = state
 
     @property
     def type(self):
@@ -263,6 +273,7 @@ class Object(object):
 
     @method("return")
     def _return(self, receiver, context, m, *args):
+        import pudb; pudb.set_trace()
         value = args[0].eval(context) if args else runtime.find("None")
         context.state = ReturnState(value)
         return receiver
@@ -294,7 +305,7 @@ class Object(object):
     # Introspection
 
     @method("state")
-    def _state(self, receiver, context, m):
+    def __state(self, receiver, context, m):
         TrueValue = runtime.find("True")
         FalseValue = runtime.find("False")
 
