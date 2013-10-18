@@ -100,6 +100,23 @@ def test_method(mio):
     assert mio.eval("Foo foo") == 1
 
 
+def test_block(mio):
+    mio.eval("foo = block(1)")
+    assert mio.eval("foo") == 1
+
+    mio.eval("Foo = Object clone")
+    assert mio.eval("Foo x = 1") == 1
+
+    mio.eval("Foo foo = block(self x)")
+
+    with raises(AttributeError):
+        mio.eval("Foo foo") == 1
+
+    mio.eval("Foo foo = block(x = 1; y = block(x); y)")
+
+    assert mio.eval("Foo foo") == 1
+
+
 def test_neq(mio):
     assert mio.eval("1 !=(0)").value is True
 
