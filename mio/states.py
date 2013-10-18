@@ -1,26 +1,31 @@
-class StopState(object):
+class State(object):
 
-    returnValue = None
     isContinue = False
     isReturn = False
+    isNormal = False
     isBreak = False
 
     def __init__(self, returnValue=None):
-        super(StopState, self).__init__()
+        super(State, self).__init__()
 
         self.returnValue = returnValue
 
 
-class BreakState(StopState):
+class NormalState(State):
+
+    isNormal = True
+
+
+class BreakState(State):
 
     isBreak = True
 
 
-class ContinueState(StopState):
+class ContinueState(State):
 
     isContinue = True
 
 
-class ReturnState(StopState):
+class ReturnState(State):
 
     isReturn = True

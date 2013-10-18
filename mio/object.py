@@ -254,10 +254,10 @@ class Object(object):
         return value
 
     @method("return")
-    def _return(self, reciver, context, m, *args):
+    def _return(self, receiver, context, m, *args):
         value = args[0].eval(context) if args else runtime.find("None")
         runtime.state.set(ReturnState(value))
-        return value
+        return receiver
 
     # I/O
 

@@ -4,8 +4,8 @@ from traceback import format_exc
 
 from .errors import Error
 from .version import version
-from .states import StopState
-from .utils import tryimport, stack
+from .utils import tryimport
+from .states import NormalState
 from .parser import parse, tokenize
 
 from .method import Method
@@ -36,7 +36,7 @@ class State(object):
             self.args = []
 
         self._value = None
-        self._states = stack()
+        self._state = NormalState()
 
     @property
     def value(self):
@@ -48,17 +48,17 @@ class State(object):
 
     @property
     def state(self):
-        return (self._states and self._states[-1]) or StopState()
+        return self._state
 
     @property
     def stop(self):
         return self.state.isBreak or self.state.isContinue or self.state.isReturn
 
     def reset(self):
-        return self._states.pop() if self._states else StopState()
+        self._state = NormalState()
 
     def set(self, state):
-        self._states.push(state)
+        self._state = state
 
     def create_objects(self):
         root = self.root

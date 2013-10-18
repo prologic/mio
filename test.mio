@@ -1,0 +1,12 @@
+Number foo = method(
+    (self < 2) ifTrue(return "foo")
+    "XXX" println
+)
+
+Number bar = method(
+    double = method(n,
+        return (n * 2)
+    )
+    return double(self)
+    "XXX" println
+)
