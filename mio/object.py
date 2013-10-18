@@ -273,7 +273,6 @@ class Object(object):
 
     @method("return")
     def _return(self, receiver, context, m, *args):
-        import pudb; pudb.set_trace()
         value = args[0].eval(context) if args else runtime.find("None")
         context.state = ReturnState(value)
         return receiver
