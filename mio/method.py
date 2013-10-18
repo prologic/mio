@@ -1,7 +1,7 @@
 import runtime
-from utils import method
-
-from object import Object
+from .utils import method
+from .object import Object
+from .states import NormalState
 
 
 class Call(Object):
@@ -67,7 +67,10 @@ class Method(Object):
             else:
                 self.locals[arg] = runtime.find("None")
 
-        return self.body.eval(self.locals, self.locals)
+        try:
+            return self.body.eval(self.locals, self.locals)
+        finally:
+            context.state = NormalState()
 
     @method("args")
     def _args(self, receiver, context, m):

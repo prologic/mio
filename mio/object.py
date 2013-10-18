@@ -3,6 +3,7 @@ from copy import copy
 from inspect import getmembers, ismethod
 
 import runtime
+from .states import NormalState
 from .errors import AttributeError, TypeError
 from .utils import format_object, method, Null
 from .states import BreakState, ContinueState, ReturnState
@@ -10,7 +11,7 @@ from .states import BreakState, ContinueState, ReturnState
 
 class Object(object):
 
-    __slots__ = ("attrs", "parent", "value", "traits", "behaviors",)
+    __slots__ = ("attrs", "parent", "state", "value", "traits", "behaviors",)
 
     def __init__(self, value=Null, methods=False):
         super(Object, self).__init__()
@@ -21,6 +22,8 @@ class Object(object):
 
         self.traits = []
         self.behaviors = {}
+
+        self.state = NormalState()
 
         if methods:
             self.create_methods()
@@ -256,7 +259,7 @@ class Object(object):
     @method("return")
     def _return(self, receiver, context, m, *args):
         value = args[0].eval(context) if args else runtime.find("None")
-        runtime.state.set(ReturnState(value))
+        context.state = ReturnState(value)
         return receiver
 
     # I/O
@@ -284,6 +287,24 @@ class Object(object):
         return runtime.find("None")
 
     # Introspection
+
+    @method("state")
+    def _state(self, receiver, context, m):
+        TrueValue = runtime.find("True")
+        FalseValue = runtime.find("False")
+
+        obj = self.clone()
+
+        obj["type"] = runtime.find("String").clone(self.state.__class__.__name__)
+
+        obj["isContinue"] = TrueValue if self.state.isContinue else FalseValue
+        obj["isReturn"] = TrueValue if self.state.isReturn else FalseValue
+        obj["isNormal"] = TrueValue if self.state.isNormal else FalseValue
+        obj["isBreak"] = TrueValue if self.state.isBreak else FalseValue
+
+        obj["returnValue"] = self.state.returnValue
+
+        return obj
 
     @method("parent")
     def _parent(self, receiver, context, m):

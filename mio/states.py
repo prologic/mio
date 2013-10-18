@@ -10,6 +10,10 @@ class State(object):
 
         self.returnValue = returnValue
 
+    @property
+    def stop(self):
+        return not self.isNormal
+
 
 class NormalState(State):
 

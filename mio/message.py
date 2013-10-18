@@ -63,11 +63,8 @@ class Message(Object):
                 else:
                     runtime.state.value = value = obj
 
-            if runtime.state.stop:
-                try:
-                    return runtime.state.state.returnValue
-                finally:
-                    runtime.state.reset()
+            if context.state.stop:
+                return context.state.returnValue
 
             receiver = value
             m = m.next
