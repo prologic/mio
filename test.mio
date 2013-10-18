@@ -10,3 +10,9 @@ Number bar = method(
     return double(self)
     "XXX" println
 )
+
+Number baz = block(
+    x = 1
+    y = method(return x)
+    return y
+)

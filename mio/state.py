@@ -8,7 +8,7 @@ from .utils import tryimport
 from .states import NormalState
 from .parser import parse, tokenize
 
-from .method import Method
+from .block import Block
 from .object import Object
 from .parser import Parser
 from .message import Message
@@ -82,7 +82,7 @@ class State(object):
         root["Parser"] = Parser()
         root["Message"] = Message("")
         root["Continuation"] = Continuation()
-        root["Method"] = Method(None, Message(""), [], {})
+        root["Block"] = Block(None, [], {})
 
         root["File"] = File()
         root["Range"] = Range()

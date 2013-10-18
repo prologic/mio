@@ -178,28 +178,33 @@ class Object(object):
     def getBehaviors(self, receiver, context, m):
         return runtime.find("List").clone(receiver.behaviors.keys())
 
-    # Method Operations
+    # Block Operations
+
+    @method()
+    def block(self, receiver, context, m, *args):
+        args, body = args[:-1], args[-1:][0]
+
+        # Evaluate kwargs first
+        ctx = runtime.find("Object").clone()
+        kwargs = dict([(arg.name, arg.eval(ctx, context)) for arg in args if arg.name == "set"])
+
+        args = [arg.name for arg in args if not arg.name == "set"]
+
+        from .block import Block
+        return Block(body, args, kwargs)
 
     @method("method")
     def _method(self, receiver, context, m, *args):
-        scope = context if "call" in context else None
         args, body = args[:-1], args[-1:][0]
 
-        method = runtime.find("Method").clone()
-
-        kwargs = [arg for arg in args if arg.name == "set"]
-
+        # Evaluate kwargs first
         ctx = runtime.find("Object").clone()
-        for kwarg in kwargs:
-            kwarg.eval(ctx, context)
+        kwargs = dict([(arg.name, arg.eval(ctx, context)) for arg in args if arg.name == "set"])
 
-        method.args = [arg.name for arg in args if not arg.name == "set"]
-        method.kwargs = ctx.attrs
+        args = [arg.name for arg in args if not arg.name == "set"]
 
-        method.scope = scope
-        method.body = body
-
-        return method
+        from .block import Block
+        return Block(body, args, kwargs, False)
 
     # Flow Control
 

@@ -22,7 +22,7 @@ syntax keyword xKeyword and arg at str bool break
 syntax keyword xKeyword call catch clone continue
 syntax keyword xKeyword dict do else elif foreach filter
 syntax keyword xKeyword get has if id hash type
-syntax keyword xKeyword list map method not or parent eval
+syntax keyword xKeyword list map block method not or parent eval
 syntax keyword xKeyword print println raise 
 syntax keyword xKeyword del range return reduce yield
 syntax keyword xKeyword sum set keys summary then

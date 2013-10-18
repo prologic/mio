@@ -12,16 +12,15 @@ class Locals(Object):
     """Locals Object"""
 
 
-class Method(Object):
+class Block(Object):
 
-    def __init__(self, scope, body, args, kwargs):
-        super(Method, self).__init__()
+    def __init__(self, body, args, kwargs, lexical=True):
+        super(Block, self).__init__()
 
-        self.scope = scope
         self.body = body
-
         self.args = args
         self.kwargs = kwargs
+        self.lexical = lexical
 
         self.locals = None
 
@@ -30,20 +29,19 @@ class Method(Object):
 
     def __str__(self):
         args = ",".join(self.args)
-        return "method(%s)" % args
+        return "{0:s}({1:s})".format("block" if self.lexical else "method", args)
 
     def create_locals(self, receiver, context, m):
         self.locals = Locals()
 
-        if self.scope is not None:
-            self.locals["self"] = self.scope
-            self.locals.parent = self.scope
+        if self.lexical:
+            self.locals["self"] = context
+            self.locals.parent = context
         else:
             self.locals["self"] = receiver
             self.locals.parent = receiver
 
         call = Call()
-        call["method"] = self
         call.parent = runtime.state.find("Object")
 
         call["message"] = m
@@ -79,7 +77,3 @@ class Method(Object):
     @method("body")
     def _body(self, receiver, context, m):
         return self.body
-
-    @method("scope")
-    def _scope(self, receiver, context, m):
-        return self.scope if self.scope is not None else self["None"]
