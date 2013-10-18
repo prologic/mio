@@ -48,7 +48,8 @@ class Message(Object):
         m = self if m is None else m
 
         while m is not None:
-            print "eval {0:s} in {1:s} at {2:s}".format(repr(m.name), repr(context), repr(receiver))
+            if runtime.state.opts and runtime.state.opts.debug:
+                print "eval {0:s} in {1:s} at {2:s}".format(repr(m.name), repr(context), repr(receiver))
 
             if m.terminator:
                 value = context
@@ -62,15 +63,19 @@ class Message(Object):
                 else:
                     runtime.state.value = value = obj
 
-            #if runtime.state.stop:
-            #    return runtime.state.state.returnValue
+            if runtime.state.stop:
+                try:
+                    return runtime.state.state.returnValue
+                finally:
+                    runtime.state.reset()
 
             receiver = value
             m = m.next
 
         try:
             returnValue = runtime.state.value if runtime.state.value is not None else receiver
-            print "return {0:s}".format(repr(returnValue))
+            if runtime.state.opts and runtime.state.opts.debug:
+                print "return {0:s}".format(repr(returnValue))
             return returnValue
         finally:
             runtime.state.value = None
