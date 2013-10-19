@@ -1,6 +1,7 @@
 from pytest import raises
 
 from mio import runtime
+from mio.utils import format_object
 from mio.errors import AttributeError, TypeError
 
 
@@ -121,8 +122,10 @@ def test_neq(mio):
     assert mio.eval("1 !=(0)").value is True
 
 
-def test_println(mio):
-    pass
+def test_println(mio, capsys):
+    assert mio.eval("\"Hello World!\" println") == "Hello World!"
+    out, err = capsys.readouterr()
+    assert out == "Hello World!\n"
 
 
 def test_set(mio):
@@ -192,13 +195,22 @@ def test_str(mio):
     pass
 
 
-def test_summary(mio):
-    pass
+def test_summary(mio, capsys):
+    mio.eval("Foo = Object clone")
+    assert mio.eval("Foo x = 1")
+
+    assert mio.eval("Foo summary") == mio.eval("Foo")
+    out, err = capsys.readouterr()
+    assert out == "{0:s}\n".format(format_object(mio.eval("Foo")))
 
 
-def test_write(mio):
-    pass
+def test_write(mio, capsys):
+    assert mio.eval("write(\"Hello World!\")").value is None
+    out, err = capsys.readouterr()
+    assert out == "Hello World!"
 
 
-def test_writeln(mio):
-    pass
+def test_writeln(mio, capsys):
+    assert mio.eval("writeln(\"Hello World!\")").value is None
+    out, err = capsys.readouterr()
+    assert out == "Hello World!\n"
