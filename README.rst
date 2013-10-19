@@ -11,6 +11,20 @@ mio is a minimalistic IO programming language written in the
 in the book `How To Create Your Own Freaking Awesome Programming Language`_ by
 `Marc-Andre Cournoye`_.
 
+This project is being developed for educational purposes only and should serve as
+a teaching tool for others wanting to learn how to implement your own programming
+language (*albeit in the style of Smalltalk, Io, etc*). Many thanks go to `Marc-Andre Cournoye`_
+and his wonderful book which was a great refresher and overview of the overall processing
+and techniques involved in programming language design and implementation. Thanks also go to the
+guys in the ``#io`` channel on the FreeNode IRC Network specifically **jer** nad **locks**
+for their many valuable tips and help.
+
+The overall goal for this project is to create a fully useable and working programming language
+implementation of a langauge quite similar to `Io <http://iolanguage.com>`_ with heavy influence
+from `Python <http://python.org>`_ (*because Python is awesome!*). This has already largely been
+achived in the current version. See the `RoadMap <http://mio-lang.readthedocs.org/roadmap.html>`_
+for what might be coming up next.
+
 
 Examples
 --------
