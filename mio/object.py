@@ -199,7 +199,7 @@ class Object(object):
         args = [arg.name for arg in args if not arg.name == "set"]
 
         from .block import Block
-        return Block(body, args, kwargs)
+        return Block(body, args, kwargs, context)
 
     @method("method")
     def _method(self, receiver, context, m, *args):
@@ -212,7 +212,7 @@ class Object(object):
         args = [arg.name for arg in args if not arg.name == "set"]
 
         from .block import Block
-        return Block(body, args, kwargs, False)
+        return Block(body, args, kwargs)
 
     # Flow Control
 

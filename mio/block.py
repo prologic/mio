@@ -16,13 +16,14 @@ class Locals(Object):
 
 class Block(Object):
 
-    def __init__(self, body, args, kwargs, lexical=True):
+    def __init__(self, body, args, kwargs, scope=None):
         super(Block, self).__init__()
 
         self.body = body
         self.args = args
         self.kwargs = kwargs
-        self.lexical = lexical
+
+        self.scope = scope
 
         self.locals = None
 
@@ -31,16 +32,16 @@ class Block(Object):
 
     def __str__(self):
         args = ",".join(self.args)
-        return "{0:s}({1:s})\n{2:s}".format("block" if self.lexical else "method", args, repr(self.body))
+        return "{0:s}({1:s})\n{2:s}".format("block" if self.scope is not None else "method", args, repr(self.body))
 
     __repr__ = __str__
 
     def create_locals(self, receiver, context, m):
         self.locals = Locals()
 
-        if self.lexical:
-            self.locals["self"] = context
-            self.locals.parent = context
+        if self.scope is not None:
+            self.locals["self"] = self.scope
+            self.locals.parent = self.scope
         else:
             self.locals["self"] = receiver
             self.locals.parent = receiver
