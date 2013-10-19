@@ -74,7 +74,15 @@ def docs(**options):
 
 @task()
 @requires("py.test")
-def test(*args):
+def test():
     """Run all unit tests and doctests."""
 
     local("python setup.py test")
+
+
+@task()
+def release():
+    """Performs a full release"""
+
+    local("python setup.py egg_info sdist bdist_egg register upload")
+    local("python setup.py build_sphinx upload_sphinx")
