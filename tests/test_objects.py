@@ -51,6 +51,27 @@ def test_foreach(mio):
     assert mio.eval("sum(xs)") == 6
 
 
+def test_while(mio):
+    assert mio.eval("xs = List clone") == []
+    assert mio.eval("xs append(1)") == [1]
+    assert mio.eval("xs append(2)") == [1, 2]
+    assert mio.eval("xs append(3)") == [1, 2, 3]
+
+    mio.eval("""
+        sum = method(xs,
+            i = 0
+            sum = 0
+            while (i < xs len,
+                sum = sum + xs at(i)
+                i += 1
+            )
+            sum
+        )
+    """)
+
+    assert mio.eval("sum(xs)") == 6
+
+
 def test_forward(mio):
     mio.eval("Foo = Object clone")
     assert mio.eval("Foo x = 1")
