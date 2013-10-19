@@ -1,76 +1,82 @@
 Object do (
-    "" = method(call message arg(0, self))
+    "" = Object get("evalArg")
 
-	#ifNone returns self
-	ifNone = method(self)
+    #ifNone returns self
+    ifNone = method(self)
 
-	#or returns True
+    #ifTrue returns self
+    ifTrue = method(self)
+
+    #ifFalse returns self
+    ifFalse = method(self)
+
+
+    #or returns True
     or = True
 
-	#and evaluates the argument and return the result
-    and = method(call message arg(0))
+    #and evaluates the argument and return the result
+    and = Object get("evalArg")
 )
 
 True do (
-	#ifTrue evaluates the argument and returns self
-    ifTrue = Object get("evalArgAndReturnSelf")
-	#ifTrue = method(call message arg(0, self))
+    #ifTrue evaluates the argument and returns the result
+    ifTrue = Object get("evalArg")
 
-	#ifFalse does not evaluate the argument and returns True
-	ifFalse = True
+    #ifFalse does not evaluate the argument and returns True
+    ifFalse = True
 
-	#and evaluates the argument and returns the result
-    and = method(call message arg(0))
+    #and evaluates the argument and returns the result
+    and = Object get("evalArg")
 
-	#or does not evaluate the argument and returns True
+    #or does not evaluate the argument and returns True
     or = True
 
-	#not returns False
-	not = False
+    #not returns False
+    not = False
 
-	#clone returns True
-	clone = True
+    #clone returns True
+    clone = True
 )
 
 False do (
-	#ifTrue does not evaluate the argument and returns False
-	ifTrue = False
+    #ifTrue does not evaluate the argument and returns False
+    ifTrue = False
 
-	#ifFalse evaluates the argument and returns self
-	ifFalse = method(call message arg(0); self) 
+    #ifFalse evaluates the argument and returns self
+    ifFalse = Object get("evalArg")
 
-	#and does not evaluate the argument and returns False
-	and = False
+    #and does not evaluate the argument and returns False
+    and = False
 
-	#or evaluates the argument and returns the result
-    or = method(call message arg(0))
+    #or evaluates the argument and returns the result
+    or = Object get("evalArg")
 
-	#not returns True
-	not = True
+    #not returns True
+    not = True
 
-	#clone returns False
-	clone = False
+    #clone returns False
+    clone = False
 )
 
 None do (
-	#ifTrue does not evaluate the argument and returns False
-	ifTrue = False
+    #ifTrue does not evaluate the argument and returns False
+    ifTrue = False
 
-	#ifFalse evaluates the argument and returns self
-	ifFalse = method(call message arg(0); self) 
+    #ifFalse evaluates the argument and returns self
+    ifFalse = method(call message arg(0); self) 
 
-	#ifNone evaluates the argument and returns self
-	ifNone = method(call message arg(0); self) 
+    #ifNone evaluates the argument and returns self
+    ifNone = Object get("evalArg")
 
-	#and does not evaluate the argument and returns False
-	and = False
+    #and does not evaluate the argument and returns False
+    and = False
 
-	#or evaluates the argument and returns the result
-    or = method(call message arg(0))
+    #or evaluates the argument and returns the result
+    or = Object get("evalArg")
 
-	#not returns True
-	not = True
+    #not returns True
+    not = True
 
-	#clone returns False
-	clone = None
+    #clone returns False
+    clone = None
 )

@@ -3,6 +3,10 @@ Number foo = method(
     "XXX" println
 )
 
+Number x = method(
+    (self == 1) ifTrue("foo")
+)
+
 Number bar = method(
     double = method(n,
         return (n * 2)
