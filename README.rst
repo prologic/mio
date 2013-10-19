@@ -22,7 +22,7 @@ for their many valuable tips and help.
 The overall goal for this project is to create a fully useable and working programming language
 implementation of a langauge quite similar to `Io <http://iolanguage.com>`_ with heavy influence
 from `Python <http://python.org>`_ (*because Python is awesome!*). This has already largely been
-achived in the current version. See the `RoadMap <http://mio-lang.readthedocs.org/roadmap.html>`_
+achived in the current version. See the `RoadMap <http://mio-lang.readthedocs.org/en/latest/roadmap.html>`_
 for what might be coming up next.
 
 

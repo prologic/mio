@@ -23,6 +23,7 @@ Documentation
    :maxdepth: 2
 
    grammar
+   roadmap
    changelog
 
 
