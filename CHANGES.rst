@@ -7,7 +7,8 @@ mio 0.0.3.dev
 
 - Improved test coverage
 - Improved the ``Range`` object
-- Fixed the scoping of ``block``(s).
+- Fixed the scoping of ``block`` (s).
+- Fixed the ``write`` and ``writeln`` methods of ``Object`` to not join arguments by a single space.
 
 
 mio 0.0.2
