@@ -289,13 +289,14 @@ class Object(object):
     @method()
     def write(self, receiver, context, m, *args):
         args = [arg.eval(context) for arg in args]
-        sys.stdout.write("%s" % " ".join([str(arg) for arg in args]))
+        sys.stdout.write("".join([str(arg) for arg in args]))
         return runtime.find("None")
 
     @method()
     def writeln(self, receiver, context, m, *args):
         args = [arg.eval(context) for arg in args]
-        sys.stdout.write("%s\n" % " ".join([str(arg) for arg in args]))
+        sys.stdout.write("".join([str(arg) for arg in args]))
+        sys.stdout.write("\n")
         return runtime.find("None")
 
     # Introspection

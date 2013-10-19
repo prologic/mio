@@ -231,7 +231,19 @@ def test_write(mio, capsys):
     assert out == "Hello World!"
 
 
+def test_write2(mio, capsys):
+    assert mio.eval("write(\"a\", \"b\", \"c\")").value is None
+    out, err = capsys.readouterr()
+    assert out == "abc"
+
+
 def test_writeln(mio, capsys):
     assert mio.eval("writeln(\"Hello World!\")").value is None
     out, err = capsys.readouterr()
     assert out == "Hello World!\n"
+
+
+def test_writeln2(mio, capsys):
+    assert mio.eval("writeln(\"a\", \"b\", \"c\")").value is None
+    out, err = capsys.readouterr()
+    assert out == "abc\n"
