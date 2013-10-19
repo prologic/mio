@@ -368,6 +368,11 @@ class Object(object):
         return self
 
     @method()
+    def evalArgAndReturnNone(self, receiver, context, m, arg):
+        receiver.evalArg(receiver, context, m, arg)
+        return runtime.find("None")
+
+    @method()
     def do(self, receiver, context, m, expression):
         expression.eval(receiver)
         return receiver
