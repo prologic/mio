@@ -5,6 +5,9 @@ Change Log
 mio 0.0.3.dev
 .............
 
+- Improved test coverage
+- Improved the ``Range`` object
+
 
 mio 0.0.2
 .........
