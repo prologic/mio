@@ -110,7 +110,7 @@ def test_block(mio):
     mio.eval("Bar bar = block(self y)")
 
     with raises(AttributeError):
-        mio.eval("Bar bar") == 1
+        mio.eval("Bar bar", reraise=True) == 1
 
     mio.eval("Bar bar = block(y = 1; z = block(y); z)")
 
