@@ -30,4 +30,4 @@ def test_complex_assignment2(mio):
     assert mio.eval("Foo x") == 1
 
     mio.eval("Foo x = Foo x + 1")
-    assert mio.eval("x") == 2
+    assert mio.eval("Foo x") == 2
