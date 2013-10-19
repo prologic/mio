@@ -7,6 +7,7 @@ mio 0.0.3.dev
 
 - Improved test coverage
 - Improved the ``Range`` object
+- Fixed the scoping of ``block``(s).
 
 
 mio 0.0.2
