@@ -31,7 +31,9 @@ class Block(Object):
 
     def __str__(self):
         args = ",".join(self.args)
-        return "{0:s}({1:s})".format("block" if self.lexical else "method", args)
+        return "{0:s}({1:s})\n{2:s}".format("block" if self.lexical else "method", args, repr(self.body))
+
+    __repr__ = __str__
 
     def create_locals(self, receiver, context, m):
         self.locals = Locals()
