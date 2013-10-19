@@ -13,7 +13,8 @@ Object do (
 
 True do (
 	#ifTrue evaluates the argument and returns self
-	ifTrue = method(call message arg(0, self))
+    ifTrue = Object get("evalArgAndReturnSelf")
+	#ifTrue = method(call message arg(0, self))
 
 	#ifFalse does not evaluate the argument and returns True
 	ifFalse = True

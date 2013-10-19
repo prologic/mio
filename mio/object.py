@@ -359,6 +359,15 @@ class Object(object):
     # Object Operations
 
     @method()
+    def evalArg(self, receiver, context, m, arg):
+        return arg.eval(receiver, context)
+
+    @method()
+    def evalArgAndReturnSelf(self, receiver, context, m, arg):
+        receiver.evalArg(receiver, context, m, arg)
+        return self
+
+    @method()
     def do(self, receiver, context, m, expression):
         expression.eval(receiver)
         return receiver
