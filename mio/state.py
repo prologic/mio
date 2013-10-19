@@ -5,7 +5,6 @@ from traceback import format_exc
 from .errors import Error
 from .version import version
 from .utils import tryimport
-from .states import NormalState
 from .parser import parse, tokenize
 
 from .block import Block
@@ -36,7 +35,6 @@ class State(object):
             self.args = []
 
         self._value = None
-        self._state = NormalState()
 
     @property
     def value(self):
@@ -45,20 +43,6 @@ class State(object):
     @value.setter
     def value(self, value):
         self._value = value
-
-    @property
-    def state(self):
-        return self._state
-
-    @property
-    def stop(self):
-        return self.state.isBreak or self.state.isContinue or self.state.isReturn
-
-    def reset(self):
-        self._state = NormalState()
-
-    def set(self, state):
-        self._state = state
 
     def create_objects(self):
         root = self.root

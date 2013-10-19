@@ -117,8 +117,6 @@ class Object(object):
 
     @state.setter
     def state(self, state):
-        if runtime.state.opts and runtime.state.opts.debug:
-            print("Setting state on {0:s} to {1:s}".format(repr(self), repr(self.state)))
         self._state = state
 
     @property
@@ -225,8 +223,8 @@ class Object(object):
             vars, expression = args[:-1], args[-1]
 
             for item in receiver:
-                if runtime.state.state.isContinue:
-                    runtime.state.reset()
+                if context.state.isContinue:
+                    context.state = NormalState()
                     continue
 
                 if len(vars) == 2:
@@ -236,11 +234,11 @@ class Object(object):
 
                 result = expression.eval(context)
 
-                if runtime.state.stop:
-                    return runtime.state.reset().returnValue or runtime.state.find("None")
+                if context.state.stop:
+                    return context.state.returnValue
             return result
         finally:
-            runtime.state.reset()
+            context.state = NormalState()
 
     @method("while")
     def _while(self, receiver, context, m, condition, expression):
@@ -248,28 +246,27 @@ class Object(object):
             result = runtime.find("None")
 
             while condition.eval(context):
-                if runtime.state.state.isContinue:
-                    runtime.state.reset()
+                if context.state.isContinue:
+                    context.state = NormalState()
                     continue
 
                 result = expression.eval(context)
 
-                if runtime.state.stop:
-                    return runtime.state.reset().returnValue or runtime.state.find("None")
+                if context.state.stop:
+                    return context.state.returnValue
             return result
         finally:
-            runtime.state.reset()
+            context.state = NormalState()
 
     @method("continue")
     def _continue(self, receiver, context, m):
-        runtime.state.set(ContinueState())
+        context.state = ContinueState()
         return runtime.find("None")
 
     @method("break")
-    def _break(self, reciver, context, m, *args):
-        value = args[0].eval(context) if args else runtime.find("None")
-        runtime.state.set(BreakState(value))
-        return value
+    def _break(self, reciver, context, m):
+        context.state = BreakState()
+        return runtime.find("None")
 
     @method("return")
     def _return(self, receiver, context, m, *args):

@@ -71,9 +71,3 @@ class Null(type):
         return self
 
 Null.__class__ = Null
-
-
-class stack(list):
-
-    def push(self, item):
-        self.append(item)
