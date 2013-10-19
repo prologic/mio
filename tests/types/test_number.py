@@ -2,8 +2,16 @@ def test_int(mio):
     assert int(mio.eval("1")) == 1
 
 
+def test_int2(mio):
+    assert mio.eval("1.5 int") == 1
+
+
 def test_float(mio):
     assert float(mio.eval("1.0")) == 1.0
+
+
+def test_float2(mio):
+    assert mio.eval("1 float") == 1.0
 
 
 def test_str(mio):
