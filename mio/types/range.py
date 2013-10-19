@@ -8,20 +8,37 @@ from list import List
 
 class Range(Object):
 
-    def __init__(self, value=range(0)):
-        super(Range, self).__init__(value=value)
+    def __init__(self):
+        super(Range, self).__init__()
 
-        self["start"] = runtime.find("Number").clone(0)
-        self["stop"] = runtime.find("Number").clone(0)
-        self["step"] = runtime.find("Number").clone(1)
+        self["start"] = runtime.find("None")
+        self["stop"] = runtime.find("None")
+        self["step"] = runtime.find("None")
 
         self.create_methods()
         self.parent = runtime.state.find("Object")
 
     def __iter__(self):
-        while self["start"] < self["stop"]:
-            yield self["start"]
-            self["start"] = self["start"].clone(self["start"] + self["step"])
+        start = int(self["start"])
+
+        if self["stop"].value is None:
+            stop, start = start, 0
+        else:
+            stop = int(self["stop"])
+
+        step = 1 if self["step"].value is None else int(self["step"])
+
+        if (start < stop and step > 0) or (start > stop and step < 0):
+            while start < stop:
+                yield start
+                start += step
+
+    def __repr__(self):
+        keys = ("start", "stop", "step")
+        values = filter(None, [self[key] for key in keys])
+        return "range({0:s})".format(", ".join(map(str, values)))
+
+    __str__ = __repr__
 
     @method()
     def init(self, receiver, context, m, *args):
@@ -30,7 +47,6 @@ class Range(Object):
         else:
             args = [arg.eval(context) for arg in args]
 
-        ints = [int(arg) for arg in args]
         keys = ("start", "stop", "step")
 
         for i, key in enumerate(keys):
@@ -38,14 +54,6 @@ class Range(Object):
                 receiver[key] = args[i]
             else:
                 receiver[key] = runtime.find("None")
-
-        if receiver["stop"].value is None:
-            receiver["start"], receiver["stop"] = runtime.find("Number").clone(0), receiver["start"]
-
-        if receiver["step"].value is None:
-            receiver["step"] = runtime.find("Number").clone(1)
-
-        receiver.value = range(*ints)
 
     @method()
     def asList(self, receiver, context, m):
