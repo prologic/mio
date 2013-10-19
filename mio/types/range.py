@@ -39,10 +39,10 @@ class Range(Object):
             else:
                 receiver[key] = runtime.find("None")
 
-        if receiver["stop"] == None:
+        if receiver["stop"].value is None:
             receiver["start"], receiver["stop"] = runtime.find("Number").clone(0), receiver["start"]
 
-        if receiver["step"] == None:
+        if receiver["step"].value is None:
             receiver["step"] = runtime.find("Number").clone(1)
 
         receiver.value = range(*ints)
