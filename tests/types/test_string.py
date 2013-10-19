@@ -23,6 +23,18 @@ def test_str(mio):
     assert str(mio.eval("\"foo\"")) == "foo"
 
 
+def test_str2(mio):
+    assert mio.eval("\"foo\" str") == "foo"
+
+
+def test_repr(mio):
+    assert repr(mio.eval("\"foo\"")) == "'foo'"
+
+
+def test_repr2(mio):
+    assert mio.eval("\"foo\" repr") == "'foo'"
+
+
 def test_add(mio):
     assert mio.eval("\"foo\" + \"bar\"") == "foobar"
 
@@ -37,6 +49,7 @@ def test_find(mio):
 
 def test_find2(mio):
     assert mio.eval("\"foobar\" find(\"foo\", 0, 1)") == -1
+
 
 def test_lower(mio):
     assert mio.eval("\"FOO\" lower") == "foo"
