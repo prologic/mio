@@ -13,12 +13,6 @@ About
 .. include:: ../../README.rst
 
 
-Change Log
-==========
-
-.. include:: ../../CHANGES.rst
-
-
 .. _documentation-index:
 
 
@@ -29,6 +23,7 @@ Documentation
    :maxdepth: 2
 
    grammar
+   changelog
 
 
 Indices and tables
