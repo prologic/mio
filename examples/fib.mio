@@ -1,4 +1,7 @@
 #!/usr/bin/env mio
 
-fib = method(n, if (n < 2, n, fib(n - 1) + fib(n - 2)))
-fib(7) print
+Number fib = method(
+    (self < 2) ifTrue(return self)
+    return (((self - 1) fib) + ((self - 2) fib))
+)
+7 fib println
