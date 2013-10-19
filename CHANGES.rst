@@ -1,13 +1,13 @@
 Change Log
-==========
+----------
 
 
 mio 0.0.3.dev
--------------
+.............
 
 
 mio 0.0.2
----------
+.........
 
 - Include lib as package data
 - Allow mio modules to be loaded from anywhere so mio can be more usefully run from anywhere
@@ -24,6 +24,6 @@ mio 0.0.2
 
 
 mio 0.0.1
----------
+.........
 
 - Initial Release
