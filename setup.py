@@ -1,17 +1,21 @@
 #!/usr/bin/env python
 
+from os import path
 from glob import glob
+from imp import new_module
+
 
 from setuptools import setup, find_packages
 
 
-import mio as pkg
+version = new_module("version")
+exec(compile(open(path.join(path.dirname(__file__), "circuits/version.py"), "r").read(), "circuits/version.py", "exec"), version.__dict__)
 
 
 setup(
     name="mio-lang",
-    version=pkg.__version__,
-    description=pkg.__doc__.split("\n")[0],
+    version=version.version,
+    description="A Toy Programming Language written in Python",
     long_description="{0:s}\n\n{1:s}".format(
         open("README.rst").read(), open("RELEASE.rst").read()
     ),

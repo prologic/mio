@@ -2,7 +2,7 @@
 # Date:     15th April 2012
 # Author:   James Mills, prologic at shortcircuit dot net dot au
 
-"""mio - A Toy Programming Language written in Python
+"""A Toy Programming Language written in Python
 
 mio is a Toy Programming Language written in the `Python Programming Language`_.
 

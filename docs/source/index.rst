@@ -1,12 +1,22 @@
-==========================================
-mio - Minimalistic IO Programming Language
-==========================================
+===========================
+mio |version| Documentation
+===========================
+
+
+:Release: |release|
+:Date: |today|
 
 
 About
 =====
 
 .. include:: ../../README.rst
+
+
+Change Log
+==========
+
+.. include:: ../../CHANGES.rst
 
 
 .. _documentation-index:

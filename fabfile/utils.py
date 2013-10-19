@@ -40,7 +40,7 @@ def pip(*args, **kwargs):
     requirements = kwargs.get("requirements", None)
     if requirements is not None:
         with settings(hide("stdout", "stderr")):
-            local("pip install -r {0:s}".format(kwargs["requirements"]))
+            local("pip install -U -r {0:s}".format(kwargs["requirements"]))
     else:
         args = list(arg for arg in args if not has_module(arg))
         if args:
