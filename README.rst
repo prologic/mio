@@ -18,11 +18,8 @@ Examples
 Factorial::
     
     Number set("!", method(
-        if (self < 2) then (
-            return self
-        ) else (
-            return (self * ((self - 1) !))
-        )
+        (self < 2) ifTrue(return self)
+        return (self * ((self - 1) !))
     ))
 
 Hello World::
