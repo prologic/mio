@@ -17,4 +17,15 @@ Object do (
     )
 
     range = method(Range clone(call message argsEvaluatedIn(call sender)))
+
+    with = block(
+        obj = call message arg(0, call sender)
+        res = call message arg(1, call sender)
+        obj close
+        res
+    )
+
+    open = block(filename,
+        return File clone open(filename)
+    )
 )
