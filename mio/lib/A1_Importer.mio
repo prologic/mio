@@ -7,7 +7,6 @@ Object do (
 )
 
 Module = Object clone do (
-
     init = method(name, filename, code,
         self __name__ = name
         self __file__ = filename
@@ -20,8 +19,6 @@ Module = Object clone do (
 )
 
 Importer = Object clone do (
-    paths = List clone
-
     import  = method(name,
         filename = name + ".mio"
         with(f = open(filename),
