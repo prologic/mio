@@ -5,6 +5,7 @@ Change Log
 mio 0.0.4.dev
 .............
 
+- Moved the implementation of ``super`` to the mio std. lib
 
 
 mio 0.0.3
