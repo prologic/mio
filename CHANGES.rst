@@ -9,6 +9,10 @@ mio 0.0.3.dev
 - Improved the ``Range`` object
 - Fixed the scoping of ``block`` (s).
 - Fixed the ``write`` and ``writeln`` methods of ``Object`` to not join arguments by a single space.
+- Don't display ``None`` results in the REPL.
+- Improved the ``__repr__`` of the ``File`` object.
+- Added ``open`` and ``with`` builtins to the mio standard library.
+- Don't display ``None`` returned values in the REPL.
 
 
 mio 0.0.2
