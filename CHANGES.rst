@@ -6,7 +6,7 @@ mio 0.0.4.dev
 .............
 
 - Moved the implementation of ``super`` to the mio std. lib
-
+- Only set ``_`` as the last result in the Root object (*the Lobby*)
 
 mio 0.0.3
 .........
