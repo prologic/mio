@@ -30,11 +30,11 @@ class Block(Object):
         self.create_methods()
         self.parent = runtime.state.find("Object")
 
-    def __str__(self):
-        args = ",".join(self.args)
-        return "{0:s}({1:s})\n{2:s}".format("block" if self.scope is not None else "method", args, repr(self.body))
+    def __repr__(self):
+        args = ", ".join(self.args)
+        return "{0:s}({1:s})".format("block" if self.scope is not None else "method", args)
 
-    __repr__ = __str__
+    __str__ = __repr__
 
     def create_locals(self, receiver, context, m):
         self.locals = Locals()
