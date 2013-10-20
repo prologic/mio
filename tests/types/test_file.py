@@ -1,15 +1,15 @@
-def test_str(mio):
+def test_repr(mio):
     file = mio.eval("File")
-    assert str(file) == "None"
+    assert repr(file) == "<type 'File'>"
 
 
-def test_str2(mio, tmpdir):
-    tmpdir.ensure("test.txt")
-    filename = tmpdir.join("test.txt")
+def test_repr2(mio, tmpdir):
+    filename = str(tmpdir.ensure("test.txt"))
+    mode = "r"
 
-    file =  mio.eval("File open(\"%s\", \"r\")" % filename)
-    assert str(file) == "File(%s, r)" % filename
-    
+    file = mio.eval("File open(\"%s\", \"r\")" % filename)
+    assert repr(file) == "<open File {0:s}, mode={1:s} at {2:s}>".format(repr(filename), repr(mode), hex(id(file)))
+
 
 def test_open(mio, tmpdir):
     tmpdir.ensure("test.txt")
@@ -17,7 +17,7 @@ def test_open(mio, tmpdir):
 
     file = mio.eval("File open(\"%s\", \"r\")" % filename)
     assert file.value.name == filename
-    assert file.value.closed == False
+    assert file.value.closed is False
     assert file.value.mode == "r"
 
 
@@ -27,7 +27,7 @@ def test_open_status(mio, tmpdir):
 
     mio.eval("f = File open(\"%s\", \"r\")" % filename)
     assert mio.eval("f filename") == filename
-    assert mio.eval("f closed") == False
+    assert mio.eval("f closed").value is False
     assert mio.eval("f mode") == "r"
 
 
@@ -38,11 +38,11 @@ def test_close(mio, tmpdir):
     mio.eval("f = File open(\"%s\", \"r\")" % filename)
     f = mio.eval("f")
     assert f.value.name == filename
-    assert f.value.closed == False
+    assert f.value.closed is False
     assert f.value.mode == "r"
 
     mio.eval("f close")
-    assert f.value.closed == True
+    assert f.value.closed is True
 
 
 def test_closed_status(mio, tmpdir):
@@ -51,11 +51,11 @@ def test_closed_status(mio, tmpdir):
 
     mio.eval("f = File open(\"%s\", \"r\")" % filename)
     assert mio.eval("f filename") == filename
-    assert mio.eval("f closed") == False
+    assert mio.eval("f closed").value is False
     assert mio.eval("f mode") == "r"
 
     mio.eval("f close")
-    assert mio.eval("f closed") == True
+    assert mio.eval("f closed").value is True
 
 
 def test_read(mio, tmpdir):
@@ -136,7 +136,7 @@ def test_iter(mio, tmpdir):
     data = "Hello World!"
     filename.open("w").write(data)
 
-    file =  mio.eval("File open(\"%s\", \"r\")" % filename)
+    file = mio.eval("File open(\"%s\", \"r\")" % filename)
     assert list(iter(file)) == [data]
 
 
@@ -147,7 +147,7 @@ def test_pos(mio, tmpdir):
     data = "Hello World!"
     filename.open("w").write(data)
 
-    file =  mio.eval("f = File open(\"%s\", \"r\")" % filename)
+    mio.eval("f = File open(\"%s\", \"r\")" % filename)
     mio.eval("f read(1)")
     assert mio.eval("f pos") == 1
 
