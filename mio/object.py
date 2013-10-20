@@ -143,7 +143,6 @@ class Object(object):
         key = key.eval(context)
         value = value.eval(context)
         receiver[key] = value
-        return value
 
     @method()
     def get(self, receiver, context, m, key, default=None):
