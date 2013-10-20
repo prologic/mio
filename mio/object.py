@@ -365,10 +365,6 @@ class Object(object):
         expression.eval(receiver)
         return receiver
 
-    @method()
-    def super(self, receiver, context, m):
-        return receiver["self"].parent
-
     @method("clone")
     def _clone(self, receiver, context, m, *args):
         object = receiver.clone()

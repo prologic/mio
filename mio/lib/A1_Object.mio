@@ -1,6 +1,10 @@
 Object do (
+    super = method(
+        return self parent
+    )
+
     eval = method(code, context,
-        Parser parse(code) eval(context ifNone(return Root))
+        Parser parse(code) eval(context ifNone(Root))
     )
 
     list = method(
@@ -9,11 +13,6 @@ Object do (
         ) else (
             return (List clone(call message argsEvaluatedIn(call sender)))
         )
-    )
-
-    str = method(
-        args = call message args
-        String clone(if(args, args at(0), ""))
     )
 
     range = method(Range clone(call message argsEvaluatedIn(call sender)))
