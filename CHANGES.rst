@@ -12,7 +12,7 @@ mio 0.0.3.dev
 - Don't display ``None`` results in the REPL.
 - Improved the ``__repr__`` of the ``File`` object.
 - Added ``open`` and ``with`` builtins to the mio standard library.
-- Don't display ``None`` returned values in the REPL.
+- Implemented a basic import system in the mio standard library.
 
 
 mio 0.0.2
