@@ -25,8 +25,11 @@ class File(Object):
     def __str__(self):
         if isinstance(self.value, file):
             filename, mode = self.value.name, self.value.mode
-            return "File(%s, %s)" % (filename, mode)
-        return super(File, self).__str__()
+            state = "closed" if self.value.closed else "open"
+            return "<{0:s} File {1:s}, mode={2:s} at {3:s}>".format(state, repr(filename), repr(mode), hex(id(self)))
+        return "<type 'File'>"
+
+    __repr__ = __str__
 
     def update_status(self):
         mode = self.value.mode
