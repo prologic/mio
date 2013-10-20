@@ -135,9 +135,7 @@ terminator = (op(";") | op("\r") | op("\n")) >> make_terminator
 expression.define((
     many(message | terminator)) >> make_chain)
 
-message.define((
-    (symbol +
-    maybe(arguments)) | arguments) >> make_message)
+message.define(((symbol + maybe(arguments)) | arguments) >> make_message)
 
 opening = op_("(") | op_("{") | op_("[")
 closing = op_(")") | op_("}") | op_("]")
