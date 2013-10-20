@@ -2,8 +2,8 @@ Change Log
 ----------
 
 
-mio 0.0.3.dev
-.............
+mio 0.0.3
+.........
 
 - Improved test coverage
 - Improved the ``Range`` object
