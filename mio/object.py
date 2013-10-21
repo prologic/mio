@@ -400,14 +400,6 @@ class Object(object):
     def cmp(self, receiver, context, m, other):
         return runtime.find("Number").clone(cmp(receiver, other.eval(context)))
 
-    @method("and")
-    def _and(self, receiver, context, m, other):
-        return self.clone(receiver and other.eval(context))
-
-    @method("or")
-    def _or(self, receiver, context, m, other):
-        return self.clone(receiver or other.eval(context))
-
     @method("not")
     def _not(self, receiver, context, m, value=None):
         value = value.eval(context) if value is not None else receiver
