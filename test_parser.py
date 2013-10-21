@@ -1,10 +1,12 @@
 #!/usr/bin/python -i
 
+from mio import parser
 from mio import runtime
+
+
 runtime.init()
+eval = runtime.state.eval
 
-from mio.parser import parse, tokenize
 
-
-def eval(s):
-    return parse(tokenize(s))
+def parse(s):
+    return parser.parse(parser.tokenize(s))
