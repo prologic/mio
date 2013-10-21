@@ -91,11 +91,8 @@ class Object(object):
             del self.behaviors[k]
         self.traits.remvoe(trait)
 
-    def __str__(self):
-        default = "%s_%s" % (self.type, hex(id(self)))
-        return str(self.value) if self.value is not Null else default
-
-    __repr__ = __str__
+    def __repr__(self):
+        return repr(self.value) if self.value is not Null else self.type
 
     def clone(self, value=Null):
         obj = copy(self)
