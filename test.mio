@@ -1,40 +1,26 @@
-with = block(
-    obj = call message arg(0, call sender)
-    res = call message arg(1, call sender)
-    obj close
-    res
+True do (
+    ifTrue = Object get("evalArg")
 )
 
-open = block(filename,
-    return File clone open(filename)
+Number foo = method(
+    (self < 2) ifTrue(return "foo")
+    "XXX" println
 )
 
-import = block(
-    name = call message args at(0) name
-    self set(name, Importer import(name))
-    None
+Number x = method(
+    (self == 1) ifTrue("foo")
 )
 
-Module = Object clone do (
-
-    init = method(name, filename, code,
-        self __name__ = name
-        self __file__ = filename
-        eval(code, self)
+Number bar = method(
+    double = method(n,
+        return (n * 2)
     )
-
-    repr = method(
-        "<Module " + self __name__ repr + " from " + self __file__ repr + ">"
-    )
+    return double(self)
+    "XXX" println
 )
 
-Importer = Object clone do (
-    paths = List clone
-
-    import  = method(name,
-        filename = name + ".mio"
-        with(f = open(filename),
-            return Module clone(name, filename, f read)
-        )
-    )
+Number baz = block(
+    x = 1
+    y = method(return x)
+    return y
 )
