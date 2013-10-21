@@ -11,6 +11,17 @@ def test_clone(mio):
     assert mio.eval("World parent") == runtime.find("Object")
 
 
+def test_type(mio):
+    mio.eval("World = Object clone")
+    assert mio.eval("World")
+    assert mio.eval("World parent") == runtime.find("Object")
+    assert mio.eval("World type") == "World"
+
+
+def test_type1(mio):
+    assert mio.eval("Object clone type") == "Object"
+
+
 def test_setParent(mio):
     assert mio.eval("World = Object clone")
     assert mio.eval("World parent") == runtime.find("Object")

@@ -121,6 +121,8 @@ class Object(object):
 
     @property
     def type(self):
+        if "type" in self.attrs:
+            return str(self.attrs["type"])
         return self.__class__.__name__
 
     # Attribute Operations
@@ -325,10 +327,6 @@ class Object(object):
             return receiver.parent
         return receiver
 
-    @method("type")
-    def _type(self, receiver, context, m):
-        return runtime.find("String").clone(receiver.type)
-
     @method("value")
     def _value(self, receiver, context, m):
         if receiver.value is not Null:
@@ -368,6 +366,11 @@ class Object(object):
     @method("clone")
     def _clone(self, receiver, context, m, *args):
         object = receiver.clone()
+        setter = m.previous.previous
+        if setter is not None and setter.name == "set":
+            object["type"] = runtime.find("String").clone(setter.args[0].name)
+        else:
+            object["type"] = runtime.find("String").clone(object.__class__.__name__)
 
         try:
             m = runtime.find("Message").clone()
