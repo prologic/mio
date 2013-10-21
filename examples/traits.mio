@@ -2,7 +2,7 @@
 
 TGreeting = Object clone do (
     hello = method(
-        writeln("Hello", self getGreeting)
+        writeln("Hello ", self getGreeting)
     )
 )
 
