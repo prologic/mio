@@ -1,21 +1,13 @@
 #!/usr/bin/env mio
 
-TGreeting = Object clone do (
+TGreetable = Object clone do (
     hello = method(
-        writeln("Hello ", self getGreeting)
+        writeln("Hello ", self name)
     )
 )
 
 World = Object clone do (
-    uses(TGreeting)
+    uses(TGreetable)
 
-    greeting = "World!"
-
-    getGreeting = method(
-       return (self greeting)
-    )
-
-    setGreeting = method(aGreeting,
-        self greeting = aGreeting
-    )
+    name = "World!"
 )
