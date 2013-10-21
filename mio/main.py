@@ -27,12 +27,6 @@ def parse_options():
     )
 
     add_option(
-        "-d", "",
-        action="store_true", default=False, dest="debug",
-        help="enable debugging output"
-    )
-
-    add_option(
         "-S", "",
         action="store_true", default=False, dest="nosys",
         help="don't load system libraries"

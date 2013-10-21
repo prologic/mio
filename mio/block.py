@@ -70,14 +70,8 @@ class Block(Object):
             else:
                 self.locals[arg] = runtime.find("None")
 
-        if runtime.state.opts and runtime.state.opts.debug:
-            print("Calling {0:s} with args={1:s} and kwargs={2:s} and body={3:s}".format(repr(self), repr(self.args), repr(self.kwargs), repr(self.body)))
-
         try:
-            returnValue = self.body.eval(self.locals, self.locals)
-            if runtime.state.opts and runtime.state.opts.debug:
-                print("Return {0:s}".format(repr(returnValue)))
-            return returnValue
+            return self.body.eval(self.locals, self.locals)
         finally:
             context.state = NormalState()
 

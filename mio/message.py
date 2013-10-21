@@ -48,9 +48,6 @@ class Message(Object):
         m = self if m is None else m
 
         while m is not None:
-            if runtime.state.opts and runtime.state.opts.debug:
-                print "eval {0:s} in {1:s} at {2:s}".format(repr(m.name), repr(context), repr(receiver))
-
             if m.terminator:
                 value = context
             elif m.value is not None:
@@ -71,8 +68,6 @@ class Message(Object):
 
         try:
             returnValue = runtime.state.value if runtime.state.value is not None else receiver
-            if runtime.state.opts and runtime.state.opts.debug:
-                print "return {0:s}".format(repr(returnValue))
             runtime.find("Root")["_"] = returnValue
             return returnValue
         finally:

@@ -80,32 +80,20 @@ class State(object):
     def eval(self, code, receiver=None, context=None, reraise=False):
         message = None
         try:
-            if self.opts and self.opts.debug:
-                tokens = tokenize(code)
-                message = parse(tokens)
-                print("Tokens:\n%s\n" % tokens)
-                print("Messages:\n%r\n" % message)
-            else:
-                message = parse(tokenize(code))
-
-            return message.eval(self.root if receiver is None else receiver, self.root if context is None else context, message)
+            return parse(tokenize(code)).eval(self.root if receiver is None else receiver, self.root if context is None else context, message)
         except Error as e:
             type = e.__class__.__name__
             underline = "-" * (len(type) + 1)
             print("\n  %s: %s\n  %s\n  %r\n" % (type, e, underline, message))
             if reraise:
                 raise
-        except Exception as e:
-            print("%s\n%s" % (e, format_exc()))
+        except Exception as e:  # pragma: no cover
+            print("ERROR: {0:s}\n{1:s}".format(e, format_exc()))
             if reraise:
                 raise
 
     def load(self, filename):
-        try:
-            self.eval(open(filename, "r").read())
-        except Exception as e:
-            print("ERROR: %s" % e)
-            print(format_exc())
+        self.eval(open(filename, "r").read())
 
     def repl(self):
         tryimport("readline")
@@ -119,5 +107,5 @@ class State(object):
                     result = self.eval(code)
                     if result is not None and result.value is not None:
                         print("==> {0:s}".format(self.eval("repr", receiver=result)))
-            except EOFError:
+            except EOFError:  # pragma: no cover
                 raise SystemExit(0)
