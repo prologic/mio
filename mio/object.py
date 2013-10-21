@@ -80,7 +80,7 @@ class Object(object):
 
     def __addtrait__(self, trait):
         attrs = ((k, v) for k, v in trait.attrs.items())
-        methods = ((k, v) for k, v in attrs if v.type == "Method")
+        methods = ((k, v) for k, v in attrs if v.type == "Block")
         behaviors = ((k, v) for k, v in methods if not k in self.attrs)
 
         self.behaviors.update(behaviors)
