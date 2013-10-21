@@ -11,6 +11,7 @@ mio 0.0.4.dev
 - Improved test coverage
 - Added unit tests for traits
 - Removed python implementations of ``Object and`` and ``Obejct or`` as these are implemented in the mio std. lib.
+- Added support for ``()``, ``[]`` and ``{}`` special messages that can be used to define syntactic suguar for lists, dicts, etc.
 
 
 mio 0.0.3

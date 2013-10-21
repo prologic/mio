@@ -36,7 +36,7 @@ def tokenize(str):
         Spec('number',     r'-?([0-9]+(\.[0-9]*)?)'),
         Spec('operator',   ops),
         Spec('identifier', r'[A-Za-z_][A-Za-z0-9_]*'),
-        Spec('op',         r'[(){}\[\],;\n\r]'),
+        Spec('op',         r'[(){}\[\],:;\n\r]'),
     ]
     useless = ["comment", "whitespace"]
     t = make_tokenizer(specs)
@@ -44,16 +44,36 @@ def tokenize(str):
 
 
 def make_arguments(n):
-    return (n[0],) + tuple(n[1])
+    return (n[0], (n[1][0],) + tuple(n[1][1]), n[2])
 
 
 def make_message(n):
     if len(n) == 2:
-        name, args = n
+        if n[1] is not None and getattr(n[1][0], "type") == "op":
+            if n[1][0].value == "(":
+                name = n[0]  # Message arguments i.e: foo(1, 2, 3)
+            elif n[1][0].value == "[":
+                name = (n[0], "[]")
+            elif n[1][0].value == "{":
+                name = (n[0], "{}")
+            args = n[1][1]
+        else:
+            name, args = n
     else:
-        name, args = "", n
+        if n[0].value == "(":
+            name = "()"
+        elif n[0].value == "[":
+            name = "[]"
+        elif n[0].value == "{":
+            name = "{}"
+        args = n[1]
 
     args = tuple(args) if args is not None else ()
+
+    if isinstance(name, tuple):
+        name, next = name
+    else:
+        next = None
 
     if hasattr(name, "value"):
         value = name
@@ -61,7 +81,13 @@ def make_message(n):
     else:
         value = None
 
-    return Message(name, *args, value=value)
+    if next is not None:
+        message = Message(name, value=value)
+        message.next = Message(next, *args, value=next)
+    else:
+        message = Message(name, *args, value=value)
+
+    return message
 
 
 def is_assignment(message):
@@ -86,8 +112,10 @@ def make_chain(messages, all=True):
 
             op = messages.pop(0)
 
-            if op.args:
-                value = Message("", *op.args)
+            if op.name == "=" and op.next is not None and op.next.name in ("()", "[]", "{}",):
+                value = Message("()", Message(op.next.name, *op.next.args))
+            elif op.args:
+                value = Message("()", *op.args)
             else:
                 value = make_chain(messages, all=False)
 
@@ -137,13 +165,13 @@ expression.define((
 
 message.define(((symbol + maybe(arguments)) | arguments) >> make_message)
 
-opening = op_("(") | op_("{") | op_("[")
-closing = op_(")") | op_("}") | op_("]")
+opening = op("(") | op("{") | op("[")
+closing = op(")") | op("}") | op("]")
 
-arguments.define((
-    skip(opening) +
-    maybe(expression + maybe(many(skip(op_(",")) + expression))) +
-    skip(closing)) >> make_arguments)
+paren_arguments = op("(") + maybe(expression + maybe(many(skip(op_(",")) + expression))) + op(")")
+bracket_arguments = op("[") + maybe(expression + maybe(many(skip(op_(",")) + expression))) + op("]")
+brace_arguments = op("{") + maybe(expression + maybe(many(skip(op_(",")) + expression))) + op("}")
+arguments.define((paren_arguments | bracket_arguments | brace_arguments) >> make_arguments)
 
 symbol.define(identifier | number | operator | string)
 
