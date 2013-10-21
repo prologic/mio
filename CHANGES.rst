@@ -8,6 +8,9 @@ mio 0.0.4.dev
 - Moved the implementation of ``super`` to the mio std. lib
 - Only set ``_`` as the last result in the Root object (*the Lobby*)
 - Chnaged the semantics of ``type`` such that ``type`` is bound to the name of the binding object.
+- Improved test coverage
+- Added unit tests for traits
+
 
 mio 0.0.3
 .........
