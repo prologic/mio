@@ -28,4 +28,4 @@ def test_basic_trait(mio, capsys):
     mio.eval("World setGreeting(\"John\")")
     mio.eval("World hello")
     out, err = capsys.readouterr()
-    assert out == "Hello John!\n"
+    assert out == "Hello John\n"
