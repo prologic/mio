@@ -15,7 +15,7 @@ def format_method(f):
 
 
 def format_object(o):
-    attrs = "\n".join(["  {0:s} = {1:s}".format(str(k).ljust(15), format_method(v) if ismethod(v) else str(v)) for k, v in sorted(o.attrs.items())])
+    attrs = "\n".join(["  {0:s} = {1:s}".format(str(k).ljust(15), format_method(v) if ismethod(v) else repr(v)) for k, v in sorted(o.attrs.items())])
     return "{0:s}:\n{1:s}".format(o.type, attrs)
 
 
