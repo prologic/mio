@@ -1,17 +1,12 @@
 from mio import runtime
-from mio.utils import method
-
 from mio.object import Object
-
-from list import List
-from number import Number
-from string import String
+from mio.utils import method, Null
 
 
 class File(Object):
 
-    def __init__(self, value=None):
-        super(File, self).__init__(value=value)
+    def __init__(self, value=Null):
+        super(File, self).__init__(value=Null)
 
         self.create_methods()
         self.parent = runtime.state.find("Object")
@@ -19,25 +14,23 @@ class File(Object):
     def __iter__(self):
         data = self.value.read()
         while data:
-            yield String(data)
+            yield runtime.find("String").clone(data)
             data = self.value.read()
 
-    def __str__(self):
+    def __repr__(self):
         if isinstance(self.value, file):
             filename, mode = self.value.name, self.value.mode
             state = "closed" if self.value.closed else "open"
-            return "<{0:s} File {1:s}, mode={2:s} at {3:s}>".format(state, repr(filename), repr(mode), hex(id(self)))
-        return "<type 'File'>"
-
-    __repr__ = __str__
+            return "File({0:s}, mode={1:s}, state={2:s})".format(repr(filename), repr(mode), repr(state))
+        return "File"
 
     def update_status(self):
         mode = self.value.mode
         closed = self.value.closed
         filename = self.value.name
 
-        self["mode"] = String(mode)
-        self["filename"] = String(filename)
+        self["mode"] = runtime.find("String").clone(mode)
+        self["filename"] = runtime.find("String").clone(filename)
 
         if closed:
             self["closed"] = runtime.find("True")
@@ -63,16 +56,16 @@ class File(Object):
     @method()
     def read(self, receiver, context, m, size=None):
         size = int(size.eval(context)) if size is not None else -1
-        return String(receiver.value.read(size))
+        return runtime.find("String").clone(receiver.value.read(size))
 
     @method()
     def readline(self, receiver, context, m):
-        return String(receiver.value.readline())
+        return runtime.find("String").clone(receiver.value.readline())
 
     @method()
     def readlines(self, receiver, context, m):
-        lines = [String(line) for line in receiver.value.readlines()]
-        return List(lines)
+        lines = [runtime.find("String").clone(line) for line in receiver.value.readlines()]
+        return runtime.find("List").clone(lines)
 
     @method()
     def seek(self, receiver, context, m, offset, whence=None):
@@ -82,7 +75,7 @@ class File(Object):
 
     @method()
     def pos(self, receiver, context, m):
-        return Number(receiver.value.tell())
+        return runtime.find("Number").clone(receiver.value.tell())
 
     @method()
     def truncate(self, receiver, context, m, size=None):
