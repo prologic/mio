@@ -92,7 +92,7 @@ class Object(object):
     def __deltrait__(self, trait):
         for k, v in trait.attrs.items():
             del self.behaviors[k]
-        self.traits.remvoe(trait)
+        self.traits.remove(trait)
 
     def __repr__(self):
         return repr(self.value) if self.value is not Null else self.type
