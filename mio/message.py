@@ -86,12 +86,12 @@ class Message(Object):
 
     @method("args")
     def getArgs(self, receiver, context, m):
-        return runtime.find("List").clone(self.args)
+        return runtime.find("List").clone(receiver.args)
 
     @method()
     def argsEvaluatedIn(self, receiver, context, m, target=None):
         target = target.eval(context) if target is not None else context
-        args = [arg.eval(target) for arg in self.args]
+        args = [arg.eval(target) for arg in receiver.args]
         return runtime.find("List").clone(list(args))
 
     @method("first")
@@ -126,11 +126,7 @@ class Message(Object):
 
     @method()
     def setNext(self, receiver, context, m, message):
-        result = message.eval(context)
-        if isinstance(result, Message):
-            receiver.next = result
-        else:
-            receiver.next = message
+        receiver.next = message.eval(context)
         return receiver
 
     @property

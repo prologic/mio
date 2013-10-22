@@ -13,6 +13,7 @@ mio 0.0.4.dev
 - Implemented ``Dict`` object type and ``{a=1, b=2}`` syntactic sugar to the builtint (*mio std. lib*) ``dict()`` method.
 - Refactored the ``File`` object implementation and made it's repr more consistent with other objects in mio.
 - Fixed keyword argument support.
+- Fixed a few minor bugs in the ``Message`` object and improved test coverage.
 
 
 mio 0.0.3 (*2013-10-20*)
