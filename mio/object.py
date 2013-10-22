@@ -102,9 +102,13 @@ class Object(object):
 
         obj.attrs = {}
         obj.parent = self
+        obj.value = value if value is not Null else obj.value
 
-        if value is not Null:
-            obj.value = value
+        obj.traits = []
+        obj.behaviors = {}
+
+        obj._state = NormalState()
+        obj._type = obj.__class__.__name__
 
         return obj
 
