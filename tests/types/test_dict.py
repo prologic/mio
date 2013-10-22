@@ -14,6 +14,10 @@ def test_clone_dict(mio):
 
 
 def test_repr(mio):
+    assert repr(mio.eval("Dict")) == "Dict"
+
+
+def test_repr2(mio):
     mio.eval("d = Dict clone")
     mio.eval("d set(\"a\", 1)")
     mio.eval("d set(\"b\", 2)")
