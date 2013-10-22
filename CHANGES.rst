@@ -9,12 +9,9 @@ mio 0.0.4.dev
 - Only set ``_`` as the last result in the Root object (*the Lobby*)
 - Chnaged the semantics of ``type`` such that ``type`` is bound to the name of the binding object.
 - Improved test coverage
-- Added unit tests for traits
-- Removed python implementations of ``Object and`` and ``Obejct or`` as these are implemented in the mio std. lib.
 - Added support for ``()``, ``[]`` and ``{}`` special messages that can be used to define syntactic suguar for lists, dicts, etc.
 - Implemented ``Dict`` object type and ``{a=1, b=2}`` syntactic sugar to the builtint (*mio std. lib*) ``dict()`` method.
 - Refactored the ``File`` object implementation and made it's repr more consistent with other objects in mio.
-- Added unit tetss for the new ``Dict`` object and refactored ``List`` and ``Dict`` 's ``init`` method(s).
 - Fixed keyword argument support.
 
 
