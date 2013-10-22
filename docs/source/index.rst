@@ -24,7 +24,7 @@ Documentation
 
    grammar
    roadmap
-   changelog
+   changes
 
 
 Indices and tables

@@ -1,5 +1,5 @@
-Change Log
-----------
+Changes
+-------
 
 
 mio 0.0.4.dev
@@ -15,8 +15,8 @@ mio 0.0.4.dev
 - Fixed keyword argument support.
 
 
-mio 0.0.3
-.........
+mio 0.0.3 (*2013-10-20*)
+........................
 
 - Improved test coverage
 - Improved the ``Range`` object
@@ -28,8 +28,8 @@ mio 0.0.3
 - Implemented a basic import system in the mio standard library.
 
 
-mio 0.0.2
-.........
+mio 0.0.2 (*2013-10-19*)
+........................
 
 - Include lib as package data
 - Allow mio modules to be loaded from anywhere so mio can be more usefully run from anywhere
@@ -45,7 +45,7 @@ mio 0.0.2
 - Implemented Object evalArgAndReturnNone
 
 
-mio 0.0.1
-.........
+mio 0.0.1 (*2013-10-19*)
+........................
 
 - Initial Release
