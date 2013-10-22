@@ -12,8 +12,8 @@ def test_method_body(mio):
 def test_method_scope(mio):
     mio.eval("Foo = Object clone")
     mio.eval("Foo n = 1")
-    mio.eval("Foo x = method(n)")
-    assert mio.eval("x") == 1
+    mio.eval("Foo x = method(self n)")
+    assert mio.eval("Foo x") == 1
 
 
 def test_method_get_args(mio):

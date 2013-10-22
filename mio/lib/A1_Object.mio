@@ -8,7 +8,7 @@ Object do (
     )
 
     list = block(
-        return (List clone(call message argsEvaluatedIn(call sender)))
+        return (List clone(call message evalArgs(call sender)))
     )
 
     dict = block(
@@ -23,7 +23,7 @@ Object do (
     set("[]", get("list"))
     set("{}", get("dict"))
 
-    range = method(Range clone(call message argsEvaluatedIn(call sender)))
+    range = method(Range clone(call message evalArgs(call sender)))
 
     with = block(
         obj = call message arg(0, call sender)

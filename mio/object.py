@@ -309,24 +309,6 @@ class Object(object):
     def getType(self, receiver, context, m):
         return runtime.find("String").clone(receiver.type)
 
-    @method("state")
-    def __state(self, receiver, context, m):
-        TrueValue = runtime.find("True")
-        FalseValue = runtime.find("False")
-
-        obj = self.clone()
-
-        obj["type"] = runtime.find("String").clone(self.state.__class__.__name__)
-
-        obj["isContinue"] = TrueValue if self.state.isContinue else FalseValue
-        obj["isReturn"] = TrueValue if self.state.isReturn else FalseValue
-        obj["isNormal"] = TrueValue if self.state.isNormal else FalseValue
-        obj["isBreak"] = TrueValue if self.state.isBreak else FalseValue
-
-        obj["returnValue"] = self.state.returnValue
-
-        return obj
-
     @method("parent")
     def _parent(self, receiver, context, m):
         if receiver.parent is not None:

@@ -18,11 +18,10 @@ class Message(Object):
 
         self.terminator = self.value is None and name in ["\r", "\n", ";"]
 
-        self._next = None
         self._previous = self
-
         self._first = self
         self._last = self
+        self._next = None
 
         self.create_methods()
         self.parent = runtime.state.find("Object")
@@ -71,6 +70,13 @@ class Message(Object):
         finally:
             runtime.state.value = None
 
+    @method()
+    def init(self, receiver, context, m):
+        receiver._previous = receiver
+        receiver._first = receiver
+        receiver._last = receiver
+        receiver._next = None
+
     @method("eval")
     def _eval(self, receiver, context, m, target=None):
         target = target.eval(context) if target is not None else context
@@ -89,7 +95,7 @@ class Message(Object):
         return runtime.find("List").clone(receiver.args)
 
     @method()
-    def argsEvaluatedIn(self, receiver, context, m, target=None):
+    def evalArgs(self, receiver, context, m, target=None):
         target = target.eval(context) if target is not None else context
         args = [arg.eval(target) for arg in receiver.args]
         return runtime.find("List").clone(list(args))
@@ -149,12 +155,15 @@ class Message(Object):
 
     @next.setter
     def next(self, message):
-        if self._first is None:
-            self._first = self
         message._first = self._first
         message._previous = self
+
         self._next = message
-        self._last = message
+
+        next = self._first
+        while next is not None:
+            next._last = message
+            next = next._next
 
     @property
     def last(self):

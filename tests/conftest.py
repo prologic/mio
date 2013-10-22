@@ -11,7 +11,9 @@ from pytest import fixture
 from mio import runtime
 
 
-@fixture(scope="module")
+runtime.init()
+
+
+@fixture(scope="session")
 def mio(request):
-    runtime.init()
     return runtime.state

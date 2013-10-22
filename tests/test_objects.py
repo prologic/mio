@@ -133,23 +133,6 @@ def test_method(mio):
     assert mio.eval("Foo foo") == 1
 
 
-def test_block(mio):
-    mio.eval("bar = block(1)")
-    assert mio.eval("bar") == 1
-
-    mio.eval("Bar = Object clone")
-    assert mio.eval("Bar y = 1") == 1
-
-    mio.eval("Bar bar = block(self y)")
-
-    with raises(AttributeError):
-        mio.eval("Bar bar", reraise=True) == 1
-
-    mio.eval("Bar bar = block(y = 1; z = block(y); z)")
-
-    assert mio.eval("Bar bar") == 1
-
-
 def test_neq(mio):
     assert mio.eval("1 !=(0)").value is True
 
@@ -170,11 +153,11 @@ def test_set(mio):
 
 def test_del(mio):
     mio.eval("Foo = Object clone")
-    assert mio.eval("Foo a = 1")
-    assert mio.eval("Foo del(\"a\")").value is None
+    assert mio.eval("Foo count = 1")
+    assert mio.eval("Foo del(\"count\")").value is None
 
     with raises(AttributeError):
-        mio.eval("Foo a", reraise=True)
+        mio.eval("Foo count", reraise=True)
 
 
 def test_return1(mio):
@@ -223,10 +206,6 @@ def test_return5(mio):
     assert mio.eval("2 foo") == "bar"
 
 
-def test_str(mio):
-    pass
-
-
 def test_summary(mio, capsys):
     mio.eval("Foo = Object clone")
     assert mio.eval("Foo x = 1")
@@ -258,3 +237,20 @@ def test_writeln2(mio, capsys):
     assert mio.eval("writeln(\"a\", \"b\", \"c\")").value is None
     out, err = capsys.readouterr()
     assert out == "abc\n"
+
+
+def test_repr(mio):
+    assert mio.eval("1 repr") == "1"
+    assert mio.eval("\"foo\" repr") == "'foo'"
+
+
+def test_str(mio):
+    assert mio.eval("1 str") == "1"
+    assert mio.eval("\"foo\" str") == "foo"
+
+
+def test_bool(mio):
+    assert mio.eval("1 bool").value is True
+    assert mio.eval("0 bool").value is False
+    assert mio.eval("\"foo\" bool").value is True
+    assert mio.eval("\"\" bool").value is False

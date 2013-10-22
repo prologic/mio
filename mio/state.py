@@ -2,6 +2,7 @@ from __future__ import print_function
 
 from traceback import format_exc
 
+
 from .errors import Error
 from .version import version
 from .utils import tryimport
@@ -31,11 +32,6 @@ class State(object):
         self.args = args
         self.opts = opts
         self.root = root
-
-        if self.args is None:
-            self.args = []
-
-        self._value = None
 
     @property
     def value(self):

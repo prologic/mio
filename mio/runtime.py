@@ -13,7 +13,7 @@ root = None
 state = None
 
 
-def init(args=None, opts=None, reinit=False):
+def init(args=[], opts=None):
     global root, state
 
     from state import State
@@ -31,4 +31,5 @@ def init(args=None, opts=None, reinit=False):
 
 def find(name):
     global root
+
     return root[name]
