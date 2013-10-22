@@ -20,6 +20,14 @@ def test_parens2():
     assert chain.args[0] == Number(1)
 
 
+def test_parens3():
+    chain = parse(tokenize("x = (1)"))
+    assert chain.name == "set"
+    assert chain.args[0].name == "x"
+    assert chain.args[1].name == "()"
+    assert chain.args[1].args[0] == Number(1)
+
+
 def test_brackets():
     chain = parse(tokenize("[1]"))
     assert chain.name == "[]"
@@ -33,6 +41,15 @@ def test_brackets2():
     assert chain.next.args[0] == Number(1)
 
 
+def test_brackets3():
+    chain = parse(tokenize("x = [1]"))
+    assert chain.name == "set"
+    assert chain.args[0].name == "x"
+    assert chain.args[1].name == "()"
+    assert chain.args[1].args[0].name == "[]"
+    assert chain.args[1].args[0].args[0] == Number(1)
+
+
 def test_braces():
     chain = parse(tokenize("{1}"))
     assert chain.name == "{}"
@@ -44,6 +61,15 @@ def test_braces2():
     assert chain.name == "x"
     assert chain.next.name == "{}"
     assert chain.next.args[0] == Number(1)
+
+
+def test_braces3():
+    chain = parse(tokenize("x = {1}"))
+    assert chain.name == "set"
+    assert chain.args[0].name == "x"
+    assert chain.args[1].name == "()"
+    assert chain.args[1].args[0].name == "{}"
+    assert chain.args[1].args[0].args[0] == Number(1)
 
 
 def test_number_message():
