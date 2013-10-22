@@ -17,6 +17,7 @@ from .types import Boolean
 from .types import Number
 from .types import String
 from .types import List
+from .types import Dict
 from .types import File
 from .types import Range
 from .types import System
@@ -58,6 +59,7 @@ class State(object):
         root["Number"] = Number()
         root["String"] = String()
         root["List"] = List()
+        root["Dict"] = Dict()
 
         root["None"] = Boolean(None)
         root["True"] = Boolean(True)

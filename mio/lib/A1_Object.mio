@@ -11,7 +11,17 @@ Object do (
         return (List clone(call message argsEvaluatedIn(call sender)))
     )
 
+    dict = block(
+        d = Dict clone
+        call message args foreach(arg,
+            arg eval(d)
+        )
+        d
+    )
+
+
     set("[]", get("list"))
+    set("{}", get("dict"))
 
     range = method(Range clone(call message argsEvaluatedIn(call sender)))
 

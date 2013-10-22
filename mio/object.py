@@ -11,7 +11,7 @@ from .states import BreakState, ContinueState, ReturnState
 
 class Object(object):
 
-    __slots__ = ("attrs", "parent", "_state", "value", "traits", "behaviors",)
+    __slots__ = ("attrs", "parent", "_state", "_type", "value", "traits", "behaviors",)
 
     def __init__(self, value=Null, methods=False):
         super(Object, self).__init__()
@@ -24,6 +24,7 @@ class Object(object):
         self.behaviors = {}
 
         self._state = NormalState()
+        self._type = self.__class__.__name__
 
         if methods:
             self.create_methods()
@@ -118,9 +119,11 @@ class Object(object):
 
     @property
     def type(self):
-        if "type" in self.attrs:
-            return str(self.attrs["type"])
-        return self.__class__.__name__
+        return self._type
+
+    @type.setter
+    def type(self, type):
+        self._type = type
 
     # Attribute Operations
 
@@ -300,6 +303,10 @@ class Object(object):
 
     # Introspection
 
+    @method("type")
+    def getType(self, receiver, context, m):
+        return runtime.find("String").clone(receiver.type)
+
     @method("state")
     def __state(self, receiver, context, m):
         TrueValue = runtime.find("True")
@@ -365,9 +372,7 @@ class Object(object):
         object = receiver.clone()
         setter = m.previous.previous
         if setter is not None and setter.name == "set":
-            object["type"] = runtime.find("String").clone(setter.args[0].name)
-        else:
-            object["type"] = runtime.find("String").clone(object.__class__.__name__)
+            object.type = setter.args[0].name
 
         try:
             m = runtime.find("Message").clone()

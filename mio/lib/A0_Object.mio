@@ -1,16 +1,6 @@
 Object do (
     set("()", Object get("evalArg"))
 
-    set("{}",
-        block(
-            obj = Object clone
-            call message args foreach(arg,
-                arg eval(obj)
-            )
-            obj
-        )
-    )
-
     #ifNone returns self
     ifNone = method(self)
 
