@@ -14,6 +14,7 @@ mio 0.0.4.dev
 - Added support for ``()``, ``[]`` and ``{}`` special messages that can be used to define syntactic suguar for lists, dicts, etc.
 - Implemented ``Dict`` object type and ``{a=1, b=2}`` syntactic sugar to the builtint (*mio std. lib*) ``dict()`` method.
 - Refactored the ``File`` object implementation and made it's repr more consistent with other objects in mio.
+- Added unit tetss for the new ``Dict`` object and refactored ``List`` and ``Dict`` 's ``init`` method(s).
 
 
 mio 0.0.3

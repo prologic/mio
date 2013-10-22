@@ -1,5 +1,7 @@
+from copy import copy
+
+
 from mio import runtime
-from mio.errors import TypeError
 from mio.utils import method, Null
 
 from mio.object import Object
@@ -9,29 +11,24 @@ from number import Number
 
 class List(Object):
 
-    def __init__(self, value=[]):
+    def __init__(self, value=Null):
         super(List, self).__init__(value=value)
 
         self.create_methods()
         self.parent = runtime.state.find("Object")
 
     def __iter__(self):
-        return iter(self.value)
+        return iter(self.value) if isinstance(self.value, list) else iter([])
 
     def __repr__(self):
-        values = ", ".join([repr(item) for item in self.value])
-        return "list(%s)" % values
-
-    __str__ = __repr__
+        if isinstance(self.value, list):
+            values = ", ".join([repr(item) for item in self.value])
+            return "list({0:s})".format(values)
+        return "List"
 
     @method()
-    def init(self, receiver, context, m, iterable=None):
-        if iterable is not None:
-            iterable = iterable.eval(context)
-        else:
-            iterable = runtime.find("List").clone()
-
-        receiver.value = list(iterable)
+    def init(self, receiver, context, m, l=None):
+        receiver.value = copy(l.eval(context).value) if l is not None else list()
 
     # General Operations
 
