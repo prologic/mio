@@ -65,7 +65,6 @@ def docs(**options):
     view = tobool(options.get("view", False))
 
     with lcd("docs"):
-        pip(requirements="requirements.txt")
         local("make clean html") if clean else local("make html")
 
         if view:
