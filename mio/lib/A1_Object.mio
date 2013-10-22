@@ -23,6 +23,17 @@ Object do (
     set("[]", get("list"))
     set("{}", get("dict"))
 
+    set("?",
+        block(
+            name = call message args at(0) name
+            call target has(name) ifTrue(
+                call target get(name)
+            ) ifFalse(
+                None
+            )
+        )
+    )
+
     range = method(Range clone(call message evalArgs(call sender)))
 
     with = block(

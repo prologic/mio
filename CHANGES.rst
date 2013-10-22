@@ -14,6 +14,7 @@ mio 0.0.4.dev
 - Refactored the ``File`` object implementation and made it's repr more consistent with other objects in mio.
 - Fixed keyword argument support.
 - Fixed a few minor bugs in the ``Message`` object and improved test coverage.
+- Added ``?`` as a valid operator and an implementation of ``Object ?message`` in the mio std. lib.
 
 
 mio 0.0.3 (*2013-10-20*)
