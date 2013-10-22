@@ -15,6 +15,7 @@ mio 0.0.4.dev
 - Implemented ``Dict`` object type and ``{a=1, b=2}`` syntactic sugar to the builtint (*mio std. lib*) ``dict()`` method.
 - Refactored the ``File`` object implementation and made it's repr more consistent with other objects in mio.
 - Added unit tetss for the new ``Dict`` object and refactored ``List`` and ``Dict`` 's ``init`` method(s).
+- Fixed keyword argument support.
 
 
 mio 0.0.3

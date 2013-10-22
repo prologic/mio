@@ -1,5 +1,8 @@
 from __future__ import print_function
 
+from itertools import chain
+
+
 import runtime
 from .utils import method
 from .object import Object
@@ -31,10 +34,8 @@ class Block(Object):
         self.parent = runtime.state.find("Object")
 
     def __repr__(self):
-        args = ", ".join(self.args)
+        args = ", ".join(chain(self.args, ("{0:s}={1:s}".format(str(k), repr(v)) for k, v in self.kwargs.items())))
         return "{0:s}({1:s})".format("block" if self.scope is not None else "method", args)
-
-    __str__ = __repr__
 
     def create_locals(self, receiver, context, m):
         self.locals = Locals()
@@ -60,15 +61,20 @@ class Block(Object):
 
         self.locals.attrs.update(self.kwargs)
 
-        for arg in args:
-            if arg.name == "set":
-                arg.eval(self.locals, context)
-
+        # Set positional arguments
         for i, arg in enumerate(self.args):
             if i < len(args):
                 self.locals[arg] = args[i].eval(context)
             else:
                 self.locals[arg] = runtime.find("None")
+
+        # Set default keyword argumetns
+        for k, v in self.kwargs.items():
+            self.locals[k] = v
+
+        # Set keyword argumetns
+        for arg in [arg for arg in args if arg.name == "set"]:
+            self.locals[arg.args[0].name] = arg.eval(context)
 
         try:
             return self.body.eval(self.locals, self.locals)
@@ -76,9 +82,13 @@ class Block(Object):
             context.state = NormalState()
 
     @method("args")
-    def _args(self, receiver, context, m):
-        return self["List"].clone(self.args)
+    def get_args(self, receiver, context, m):
+        return runtime.find("List").clone(receiver.args)
+
+    @method("kwargs")
+    def get_kwargs(self, receiver, context, m):
+        return runtime.find("Dict").clone(receiver.kwargs)
 
     @method("body")
-    def _body(self, receiver, context, m):
-        return self.body
+    def get_body(self, receiver, context, m):
+        return receiver.body

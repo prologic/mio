@@ -27,7 +27,7 @@ class Message(Object):
         self.create_methods()
         self.parent = runtime.state.find("Object")
 
-    def __str__(self):
+    def __repr__(self):
         messages = []
 
         next = self
@@ -40,8 +40,6 @@ class Message(Object):
             next = next.next
 
         return " ".join(messages)
-
-    __repr__ = __str__
 
     def eval(self, receiver, context=None, m=None, target=None):
         context = receiver if context is None else context

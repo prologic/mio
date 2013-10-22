@@ -1,6 +1,8 @@
 import sys
 from copy import copy
+from collections import OrderedDict
 from inspect import getmembers, ismethod
+
 
 import runtime
 from .states import NormalState
@@ -196,7 +198,7 @@ class Object(object):
 
         # Evaluate kwargs first
         ctx = runtime.find("Object").clone()
-        kwargs = dict([(arg.name, arg.eval(ctx, context)) for arg in args if arg.name == "set"])
+        kwargs = OrderedDict([(arg.args[0].name, arg.eval(ctx)) for arg in args if arg.name == "set"])
 
         args = [arg.name for arg in args if not arg.name == "set"]
 
@@ -209,7 +211,7 @@ class Object(object):
 
         # Evaluate kwargs first
         ctx = runtime.find("Object").clone()
-        kwargs = dict([(arg.name, arg.eval(ctx, context)) for arg in args if arg.name == "set"])
+        kwargs = OrderedDict([(arg.args[0].name, arg.eval(ctx)) for arg in args if arg.name == "set"])
 
         args = [arg.name for arg in args if not arg.name == "set"]
 
