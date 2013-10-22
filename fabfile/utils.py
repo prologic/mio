@@ -6,9 +6,8 @@
 
 from functools import wraps
 from imp import find_module
-from contextlib import contextmanager
 
-from fabric.api import abort, hide, local, puts, quiet, settings, warn
+from fabric.api import abort, local, quiet, warn
 
 
 def tobool(s):
@@ -23,29 +22,14 @@ def toint(s):
     return int(s)
 
 
-@contextmanager
-def msg(s):
-    """Print message given as ``s`` in a context manager
-
-    Prints "{s} ... OK"
-    """
-
-    puts("{0:s} ... ".format(s), end="", flush=True)
-    with settings(hide("everything")):
-        yield
-    puts("OK", show_prefix=False, flush=True)
-
-
 def pip(*args, **kwargs):
     requirements = kwargs.get("requirements", None)
     if requirements is not None:
-        with settings(hide("stdout", "stderr")):
-            local("pip install -U -r {0:s}".format(kwargs["requirements"]))
+        local("pip install -U -r {0:s}".format(kwargs["requirements"]))
     else:
         args = list(arg for arg in args if not has_module(arg))
         if args:
-            with settings(hide("stdout", "stderr")):
-                local("pip install {0:s}".format(" ".join(args)))
+            local("pip install {0:s}".format(" ".join(args)))
 
 
 def has_module(name):
