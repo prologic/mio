@@ -6,7 +6,10 @@ from mio.utils import method, Null
 class File(Object):
 
     def __init__(self, value=Null):
-        super(File, self).__init__(value=Null)
+        super(File, self).__init__(value=value)
+
+        if isinstance(value, file):
+            self.update_status()
 
         self.create_methods()
         self.parent = runtime.state.find("Object")
