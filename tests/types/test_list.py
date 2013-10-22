@@ -1,6 +1,5 @@
-from pytest import raises
-
-from mio.errors import TypeError
+def test_null(mio):
+    assert list(iter(mio.eval("List"))) == []
 
 
 def test_clone(mio):
@@ -12,6 +11,10 @@ def test_clone_list(mio):
 
 
 def test_repr(mio):
+    assert repr(mio.eval("List")) == "List"
+
+
+def test_repr2(mio):
     mio.eval("xs = List clone")
     mio.eval("xs append(1)")
     mio.eval("xs append(2)")

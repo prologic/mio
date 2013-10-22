@@ -2,14 +2,13 @@ from copy import copy
 
 
 from mio import runtime
-from mio.utils import method
-
 from mio.object import Object
+from mio.utils import method, Null
 
 
 class Dict(Object):
 
-    def __init__(self, value={}):
+    def __init__(self, value=Null):
         super(Dict, self).__init__(value=value)
 
         self.create_methods()
@@ -19,8 +18,10 @@ class Dict(Object):
         return iter(self.value) if isinstance(self.value, dict) else iter({})
 
     def __repr__(self):
-        items = ", ".join(["{0:s}={1:s}".format(repr(k), repr(v)) for k, v in self.value.items()])
-        return "dict({0:s})".format(items)
+        if isinstance(self.value, dict):
+            items = ", ".join(["{0:s}={1:s}".format(repr(k), repr(v)) for k, v in self.value.items()])
+            return "dict({0:s})".format(items)
+        return "Dict"
 
     @method()
     def init(self, receiver, context, m, d=None):

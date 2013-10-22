@@ -1,6 +1,10 @@
 from itertools import permutations
 
 
+def test_null(mio):
+    assert dict(iter(mio.eval("Dict"))) == {}
+
+
 def test_clone(mio):
     assert mio.eval("Dict clone") == {}
 
