@@ -6,8 +6,10 @@
 
 from functools import wraps
 from imp import find_module
+from contextlib import contextmanager
 
-from fabric.api import abort, local, quiet, warn
+
+from fabric.api import abort, hide, local, puts, quiet, settings, task, warn
 
 
 def tobool(s):
@@ -20,6 +22,24 @@ def toint(s):
     if isinstance(s, int):
         return s
     return int(s)
+
+
+@task
+def shell(s):
+    local("/bin/bash -l -c '{0:s}'".format(s))
+
+
+@contextmanager
+def msg(s):
+    """Print message given as ``s`` in a context manager
+
+    Prints "{s} ... OK"
+    """
+
+    puts("{0:s} ... ".format(s), end="", flush=True)
+    with settings(hide("everything")):
+        yield
+    puts("OK", show_prefix=False, flush=True)
 
 
 def pip(*args, **kwargs):

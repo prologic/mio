@@ -5,9 +5,10 @@
 """Fabric fabfile"""
 
 
-from fabric.api import execute, hide, lcd, local, settings, task
+from fabric.api import execute, hide, lcd, local, prefix, settings, task
 
-from .utils import pip, requires, tobool
+
+from .utils import msg, pip, requires, shell, tobool
 
 
 @task()
@@ -83,5 +84,25 @@ def test():
 def release():
     """Performs a full release"""
 
-    local("python setup.py egg_info sdist bdist_egg register upload")
-    local("python setup.py build_sphinx upload_sphinx")
+    with msg("Creating env"):
+        shell("mkvirtualenv test_mio")
+
+    with msg("Bootstrapping"):
+        with prefix("workon test_mio"):
+            local("./bootstrap.sh")
+
+    with msg("Building"):
+        with prefix("workon test_mio"):
+            shell("fab develop")
+
+    with msg("Running tests"):
+        with prefix("workon test_mio"):
+            shell("fab test")
+
+    with msg("Building docs"):
+        with prefix("workon test_mio"):
+            shell("pip install -r docs/requirements.txt")
+            shell("fab docs")
+
+    #local("python setup.py egg_info sdist bdist_egg register upload")
+    #local("python setup.py build_sphinx upload_sphinx")
