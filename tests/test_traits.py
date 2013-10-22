@@ -29,3 +29,69 @@ def test_basic_trait(mio, capsys):
     mio.eval("World hello")
     out, err = capsys.readouterr()
     assert out == "Hello John\n"
+
+
+def test_hasTrait(mio):
+    mio.eval("""
+        TGreetable = Object clone
+        World = Object clone do (
+            uses(TGreetable)
+        )
+    """)
+
+    assert mio.eval("World hasTrait(TGreetable)").value is True
+
+
+def test_delTrait(mio):
+    mio.eval("""
+        TGreetable = Object clone
+        World = Object clone do (
+            uses(TGreetable)
+        )
+    """)
+
+    assert mio.eval("World hasTrait(TGreetable)").value is True
+    mio.eval("World delTrait(TGreetable)")
+    assert mio.eval("World hasTrait(TGreetable)").value is False
+
+
+def test_addTrait(mio):
+    mio.eval("""
+        TGreetable = Object clone
+        World = Object clone
+    """)
+
+    assert mio.eval("World hasTrait(TGreetable)").value is False
+    mio.eval("World addTrait(TGreetable)")
+    assert mio.eval("World hasTrait(TGreetable)").value is True
+
+
+def test_traits(mio):
+    mio.eval("""
+        TGreetable = Object clone
+        World = Object clone do (
+            uses(TGreetable)
+        )
+    """)
+
+    TGreetable = mio.eval("TGreetable")
+    assert mio.eval("World traits") == [TGreetable]
+
+
+def test_behaviors(mio, capsys):
+    mio.eval("""
+        TGreetable = Object clone do (
+            hello = method(
+                "Hello World!" println
+            )
+        )
+
+        World = Object clone do (
+            uses(TGreetable)
+        )
+    """)
+
+    assert mio.eval("World hello") == "Hello World!"
+    out, err = capsys.readouterr()
+    assert out == "Hello World!\n"
+    assert mio.eval("World behaviors") == ["hello"]
