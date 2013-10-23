@@ -103,7 +103,7 @@ class State(object):
                 code = raw_input(">>> ")
                 if code:
                     result = self.eval(code)
-                    if result is not None and result.value is not None:
+                    if result is not None and result.value is not None:# pragma: no cover
                         print("==> {0:s}".format(self.eval("repr", receiver=result)))
             except EOFError:  # pragma: no cover
                 raise SystemExit(0)
