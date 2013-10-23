@@ -357,12 +357,6 @@ class Object(object):
     def cmp(self, receiver, context, m, other):
         return runtime.find("Number").clone(cmp(receiver, other.eval(context)))
 
-    @method("not")
-    def _not(self, receiver, context, m, value=None):
-        value = value.eval(context) if value is not None else receiver
-        test = not bool(value)
-        return runtime.find("True") if test else runtime.find("False")
-
     # Type Conversion
 
     @method("bool")

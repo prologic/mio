@@ -1,20 +1,49 @@
 # Standard Operators
 
 Object do(
-    set("==", method(other, not self cmp(other)))
-    set("!=", method(other, not self == other))
+    set("==", method(other, self cmp(other) bool not))
+    set("!=", method(other, (self == other) not))
 
     set("<", method(other, self cmp(other) == -1))
-    set("<=", method(other, self cmp(other) < 1))
     set(">", method(other, self cmp(other) == 1))
+    set("<=", method(other, self cmp(other) < 1))
     set(">=", method(other, self cmp(other) > -1))
-
-    set("is", method(other, self id == (other id)))
 
     set("+=", method(other,
         attr = call message previous name
         call sender set(attr, self + other)
     ))
+
+    set("-=", method(other,
+        attr = call message previous name
+        call sender set(attr, self - other)
+    ))
+
+    set("*=", method(other,
+        attr = call message previous name
+        call sender set(attr, self * other)
+    ))
+
+    set("/=", method(other,
+        attr = call message previous name
+        call sender set(attr, self / other)
+    ))
+
+    not = method(
+        (call message args len == 1) ifTrue(
+            (call message arg(0)) bool not
+        ) ifFalse(
+            other bool not
+        )
+    )
+
+    is = method(other,
+        (call message args len == 1) ifTrue(
+            (self id) == (call message arg(0))
+        ) ifFalse(
+            (self id) == (other id)
+        )
+    )
 )
 
 Number do(
