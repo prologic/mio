@@ -4,7 +4,7 @@ test = block(**kwargs,
 
 complement = block(f,
     block(arg,
-        not f(arg)
+        f(arg) bool not
     )
 )
 
