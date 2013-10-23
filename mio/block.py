@@ -1,6 +1,7 @@
 from __future__ import print_function
 
 from itertools import chain
+from operator import attrgetter
 
 
 import runtime
@@ -34,7 +35,7 @@ class Block(Object):
         self.parent = runtime.state.find("Object")
 
     def __repr__(self):
-        args = ", ".join(chain(self.args, ("{0:s}={1:s}".format(str(k), repr(v)) for k, v in self.kwargs.items())))
+        args = ", ".join(chain(map(attrgetter("name"), self.args), ("{0:s}={1:s}".format(str(k), repr(v)) for k, v in self.kwargs.items())))
         return "{0:s}({1:s})".format("block" if self.scope is not None else "method", args)
 
     def create_locals(self, receiver, context, m):
@@ -68,9 +69,9 @@ class Block(Object):
             # Set positional arguments
             for i, arg in enumerate(self.args):
                 if i < len(args):
-                    self.locals[arg] = args[i].eval(context)
+                    self.locals[arg.name] = args[i].eval(context)
                 else:
-                    self.locals[arg] = runtime.find("None")
+                    self.locals[arg.name] = runtime.find("None")
 
         # Set keyword argumetns **kwargs
         if "**" in [arg.name for arg in self.args]:
@@ -95,7 +96,7 @@ class Block(Object):
 
     @method("args")
     def get_args(self, receiver, context, m):
-        return runtime.find("List").clone(receiver.args)
+        return runtime.find("List").clone(map(attrgetter("name"), receiver.args))
 
     @method("kwargs")
     def get_kwargs(self, receiver, context, m):
