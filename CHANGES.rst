@@ -21,6 +21,7 @@ mio 0.0.4.dev
 - Implemented ``*args`` and ``**kwargs`` support for methods and blocks.
 - Removed ``Object`` methods ``print``, ``println``, ``write`` and ``writeln`` in favor of the new builtin ``print`` function in the mio std. lib
 - Added an implemenation of ``map`` to the mio std. lib
+- Fixed a bug with the parser where an argument's previous attribute was not getting set correctly.
 
 
 mio 0.0.3 (*2013-10-20*)

@@ -102,7 +102,7 @@ def make_chain(messages, all=True):
     if messages == []:
         return Message("")
 
-    root = node = Message("")
+    root = node = None
 
     while messages:
         if len(messages) > 1 and is_assignment(messages[1]):
@@ -125,15 +125,20 @@ def make_chain(messages, all=True):
             if messages:
                 chain = make_chain(messages, all=False)
                 if chain is not None:
+                    # Set the argument (a Message) previous attribute to the current message
+                    chain.previous = message
                     message.args.append(chain)
         elif messages[0].terminator and not all:
             break
         else:
             message = messages.pop(0)
 
-        node.next = node = message
+        if root is None:
+            root = node = message
+        else:
+            node.next = node = message
 
-    return root.next
+    return root
 
 
 def make_number(n):
