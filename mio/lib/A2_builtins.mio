@@ -5,6 +5,10 @@ print = block(*args, sep=" ", end="\n", file=System stdout,
     None
 )
 
+abs = block(x,
+    x :__abs__
+)
+
 map = block(f, xs,
     rs = List clone
     xs foreach(x,

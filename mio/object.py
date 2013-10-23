@@ -313,6 +313,14 @@ class Object(object):
 
     # Object Operations
 
+    @method(":")
+    def primitive(self, receiver, context, m, method, *args):
+        method = method.name
+        args = [arg.eval(context).value for arg in args]
+        if hasattr(receiver, method):
+            return runtime.tomio(getattr(receiver, method)(*args))
+        raise AttributeError("{0:s} has no attribute {1:s}".format(receiver.type, repr(method)))
+
     @method()
     def evalArg(self, receiver, context, m, arg):
         return arg.eval(receiver, context)

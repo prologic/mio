@@ -44,3 +44,8 @@ def test_mod2(mio):
 
 def test_pow(mio):
     assert mio.eval("2 ** 4") == 16
+
+
+def test_primitive_abs(mio):
+    assert mio.eval("-1 :__abs__ == 1")
+    assert mio.eval("1 :__abs__ == 1")

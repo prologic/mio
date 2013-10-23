@@ -369,3 +369,13 @@ def test_setValue(mio):
 
     mio.eval("Foo setValue(1)")
     assert mio.eval("Foo value == 1")
+
+
+def test_primitive(mio):
+    mio.eval("Foo = Object :clone")
+    assert mio.eval("Foo is Object").value is False
+
+
+def test_primitive2(mio):
+    with raises(AttributeError):
+        mio.eval("Object :asdf", reraise=True)

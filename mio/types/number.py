@@ -13,6 +13,9 @@ class Number(Object):
         self.create_methods()
         self.parent = runtime.state.find("Object")
 
+    def __abs__(self):
+        return abs(self.value)
+
     def __add__(self, other):
         return self.value + other.value
 
