@@ -55,7 +55,7 @@ def tryimport(modules, message=None):
         except ImportError:
             pass
 
-    if message:
+    if message is not None:
         warn(message)
 
 
