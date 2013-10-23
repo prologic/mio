@@ -4,11 +4,11 @@ from pytest import raises
 from mio.errors import AttributeError
 
 
-def test_basic_trait(mio, capsys):
+def test_basic_trait(mio, capfd):
     mio.eval("""
         TGreeting = Object clone do (
             hello = method(
-                writeln("Hello ", self getGreeting)
+                print("Hello", self getGreeting)
             )
         )
 
@@ -28,12 +28,12 @@ def test_basic_trait(mio, capsys):
     """)
 
     mio.eval("World hello")
-    out, err = capsys.readouterr()
+    out, err = capfd.readouterr()
     assert out == "Hello World!\n"
 
     mio.eval("World setGreeting(\"John\")")
     mio.eval("World hello")
-    out, err = capsys.readouterr()
+    out, err = capfd.readouterr()
     assert out == "Hello John\n"
 
 
@@ -62,11 +62,11 @@ def test_delTrait(mio):
     assert mio.eval("World hasTrait(TGreetable)").value is False
 
 
-def test_delTrait2(mio, capsys):
+def test_delTrait2(mio, capfd):
     mio.eval("""
         TGreetable = Object clone do (
             hello = method(
-                "Hello World!" println
+                print("Hello World!")
             )
         )
 
@@ -78,8 +78,8 @@ def test_delTrait2(mio, capsys):
     assert mio.eval("World hasTrait(TGreetable)").value is True
     assert mio.eval("World behaviors") == ["hello"]
 
-    assert mio.eval("World hello") == "Hello World!"
-    out, err = capsys.readouterr()
+    assert mio.eval("World hello").value is None
+    out, err = capfd.readouterr()
     assert out == "Hello World!\n"
 
     mio.eval("World delTrait(TGreetable)")
@@ -113,11 +113,11 @@ def test_traits(mio):
     assert mio.eval("World traits") == [TGreetable]
 
 
-def test_behaviors(mio, capsys):
+def test_behaviors(mio, capfd):
     mio.eval("""
         TGreetable = Object clone do (
             hello = method(
-                "Hello World!" println
+                print("Hello World!")
             )
         )
 
@@ -126,17 +126,17 @@ def test_behaviors(mio, capsys):
         )
     """)
 
-    assert mio.eval("World hello") == "Hello World!"
-    out, err = capsys.readouterr()
+    assert mio.eval("World hello").value is None
+    out, err = capfd.readouterr()
     assert out == "Hello World!\n"
     assert mio.eval("World behaviors") == ["hello"]
 
 
-def test_del_behavior(mio, capsys):
+def test_del_behavior(mio, capfd):
     mio.eval("""
         TGreetable = Object clone do (
             hello = method(
-                "Hello World!" println
+                print("Hello World!")
             )
         )
 
@@ -145,8 +145,8 @@ def test_del_behavior(mio, capsys):
         )
     """)
 
-    assert mio.eval("World hello") == "Hello World!"
-    out, err = capsys.readouterr()
+    assert mio.eval("World hello").value is None
+    out, err = capfd.readouterr()
     assert out == "Hello World!\n"
     assert mio.eval("World behaviors") == ["hello"]
 

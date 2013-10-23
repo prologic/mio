@@ -2,20 +2,20 @@
 
 Foo = Object clone do (
     foo = method(
-        "foo" println
+        print("foo")
     )
 )
 
 Bar = Foo clone do (
     foo = method(
         super foo
-        "bar" println
+        print("bar")
     )
 )
 
 World = Bar clone do (
     foo = method(
         super foo
-        "Hello World!" println
+        print("Hello World!")
     )
 )

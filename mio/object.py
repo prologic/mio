@@ -280,31 +280,6 @@ class Object(object):
         context.state = ReturnState(value)
         return receiver
 
-    # I/O
-
-    @method("print")
-    def _print(self, receiver, context, m):
-        sys.stdout.write("%s" % receiver.value)
-        return receiver
-
-    @method()
-    def println(self, receiver, context, m):
-        sys.stdout.write("%s\n" % receiver.value)
-        return receiver
-
-    @method()
-    def write(self, receiver, context, m, *args):
-        args = [arg.eval(context) for arg in args]
-        sys.stdout.write("".join([str(arg) for arg in args]))
-        return runtime.find("None")
-
-    @method()
-    def writeln(self, receiver, context, m, *args):
-        args = [arg.eval(context) for arg in args]
-        sys.stdout.write("".join([str(arg) for arg in args]))
-        sys.stdout.write("\n")
-        return runtime.find("None")
-
     # Introspection
 
     @method("type")

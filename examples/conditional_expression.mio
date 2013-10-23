@@ -2,5 +2,5 @@
 
 x = 1
 y = (x == 1) ifTrue(return "foo") ifFalse(return "bar")
-x print
-y print
+print(x)
+print(y)

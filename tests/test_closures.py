@@ -1,14 +1,16 @@
-def test_closure(mio):
+def test_closure(mio, capfd):
     mio.eval("""
         foo = method(
             return method(
-                "foo" println
+                print("foo")
             )
         )
     """)
 
     mio.eval("x = foo")
-    assert mio.eval("x") == "foo"
+    assert mio.eval("x").value is None
+    out, err = capfd.readouterr()
+    assert out == "foo\n"
 
 
 def test_closure_locals(mio):

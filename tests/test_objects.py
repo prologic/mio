@@ -66,7 +66,7 @@ def test_foreach(mio):
     assert mio.eval("sum(xs)") == 6
 
 
-def test_foreach2(mio, capsys):
+def test_foreach2(mio, capfd):
     assert mio.eval("xs = List clone") == []
     assert mio.eval("xs append(1)") == [1]
     assert mio.eval("xs append(2)") == [1, 2]
@@ -74,14 +74,14 @@ def test_foreach2(mio, capsys):
 
     mio.eval("""
         xs foreach(x,
-            (x == 2) ifTrue(continue) ifFalse(x print)
+            (x == 2) ifTrue(continue) ifFalse(print(x))
         )
     """)
-    out, err = capsys.readouterr()
-    assert out == "13"
+    out, err = capfd.readouterr()
+    assert out == "1\n3\n"
 
 
-def test_foreach3(mio, capsys):
+def test_foreach3(mio, capfd):
     assert mio.eval("xs = List clone") == []
     assert mio.eval("xs append(1)") == [1]
     assert mio.eval("xs append(2)") == [1, 2]
@@ -93,14 +93,14 @@ def test_foreach3(mio, capsys):
 
     mio.eval("""
         xs foreach(x,
-            (x is None) ifTrue(break) ifFalse(x print)
+            (x is None) ifTrue(break) ifFalse(print(x))
         )
     """)
-    out, err = capsys.readouterr()
-    assert out == "123"
+    out, err = capfd.readouterr()
+    assert out == "1\n2\n3\n"
 
 
-def test_foreach4(mio, capsys):
+def test_foreach4(mio, capfd):
     assert mio.eval("d = Dict clone") == {}
     assert mio.eval("d set(\"a\", 1)") == {"a": 1}
     assert mio.eval("d set(\"b\", 2)") == {"a": 1, "b": 2}
@@ -108,10 +108,10 @@ def test_foreach4(mio, capsys):
 
     mio.eval("""
         d items foreach(k, v,
-            writeln(k, "=", v)
+            print(k, "=", v, sep="")
         )
     """)
-    out, err = capsys.readouterr()
+    out, err = capfd.readouterr()
     assert out in ["{0:s}\n".format("\n".join(p)) for p in permutations(["a=1", "b=2", "c=3"])]
 
 
@@ -156,7 +156,7 @@ def test_while2(mio):
     #assert mio.eval("sum") == 4
 
 
-def test_while3(mio, capsys):
+def test_while3(mio):
     assert mio.eval("xs = List clone") == []
     assert mio.eval("xs append(1)") == [1]
     assert mio.eval("xs append(2)") == [1, 2]
@@ -249,12 +249,6 @@ def test_neq(mio):
     assert mio.eval("1 !=(0)").value is True
 
 
-def test_println(mio, capsys):
-    assert mio.eval("\"Hello World!\" println") == "Hello World!"
-    out, err = capsys.readouterr()
-    assert out == "Hello World!\n"
-
-
 def test_set(mio):
     mio.eval("Foo = Object clone")
     assert mio.eval("Foo x = 1")
@@ -318,37 +312,31 @@ def test_return5(mio):
     assert mio.eval("2 foo") == "bar"
 
 
-def test_summary(mio, capsys):
+def test_summary(mio, capfd):
     mio.eval("Foo = Object clone")
     assert mio.eval("Foo x = 1")
 
     assert mio.eval("Foo summary") == mio.eval("Foo")
-    out, err = capsys.readouterr()
+    out, err = capfd.readouterr()
     assert out == "{0:s}\n".format(format_object(mio.eval("Foo")))
 
 
-def test_write(mio, capsys):
-    assert mio.eval("write(\"Hello World!\")").value is None
-    out, err = capsys.readouterr()
-    assert out == "Hello World!"
-
-
-def test_write2(mio, capsys):
-    assert mio.eval("write(\"a\", \"b\", \"c\")").value is None
-    out, err = capsys.readouterr()
-    assert out == "abc"
-
-
-def test_writeln(mio, capsys):
-    assert mio.eval("writeln(\"Hello World!\")").value is None
-    out, err = capsys.readouterr()
+def test_print(mio, capfd):
+    assert mio.eval("print(\"Hello World!\")").value is None
+    out, err = capfd.readouterr()
     assert out == "Hello World!\n"
 
 
-def test_writeln2(mio, capsys):
-    assert mio.eval("writeln(\"a\", \"b\", \"c\")").value is None
-    out, err = capsys.readouterr()
-    assert out == "abc\n"
+def test_print_sep(mio, capfd):
+    assert mio.eval("print(1, 2, 3, sep=\", \")").value is None
+    out, err = capfd.readouterr()
+    assert out == "1, 2, 3\n"
+
+
+def test_print_end(mio, capfd):
+    assert mio.eval("print(1, 2, 3, end=\"\")").value is None
+    out, err = capfd.readouterr()
+    assert out == "1 2 3"
 
 
 def test_repr(mio):

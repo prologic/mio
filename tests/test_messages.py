@@ -86,7 +86,7 @@ def test_getNext(mio):
 
 def test_getLast(mio):
     mio.eval("m = Message clone")
-    n = mio.eval("n = Message clone")
+    mio.eval("n = Message clone")
     o = mio.eval("o = Message clone")
     mio.eval("m setNext(n)")
     mio.eval("n setNext(o)")
@@ -95,7 +95,8 @@ def test_getLast(mio):
     assert mio.eval("o last") is o
 
 
-def test_eval(mio):
-    mio.eval("m = Message clone setName(\"foo\") setValue(\"foo\")")
-    mio.eval("m setNext(Message clone setName(\"println\"))")
-    assert mio.eval("m eval") == "foo"
+def test_eval(mio, capfd):
+    mio.eval("m = Message clone setName(\"print\") setArgs(Message clone setName(\"foo\") setValue(\"foo\"))")
+    assert mio.eval("m eval").value is None
+    out, err = capfd.readouterr()
+    assert out == "foo\n"

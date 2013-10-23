@@ -64,7 +64,7 @@ class Block(Object):
 
         # Set positional arguments *args
         if len(self.args) == 1 and self.args[0].name == "*":
-            self.locals[self.args[0].args[0].name] = runtime.find("List").clone([arg.eval(context) for arg in args])
+            self.locals[self.args[0].args[0].name] = runtime.find("List").clone([arg.eval(context) for arg in args if (arg.name != "set" and not arg.args)])
         else:
             # Set positional arguments
             for i, arg in enumerate(self.args):

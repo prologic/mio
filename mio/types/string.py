@@ -58,6 +58,11 @@ class String(Object):
         return Number(receiver.value.find(sub, start, end))
 
     @method()
+    def join(self, receiver, context, m, xs):
+        xs = xs.eval(context)
+        return receiver.clone(receiver.value.join([str(x) for x in xs]))
+
+    @method()
     def lower(self, receiver, context, m):
         return self.clone(receiver.value.lower())
 

@@ -2,7 +2,7 @@
 
 Foo = Object clone do (
     foo = method(
-        "foo" println
+        print("foo")
     )
 )
 

@@ -49,6 +49,11 @@ class File(Object):
         return receiver
 
     @method()
+    def flush(self, receiver, context, m):
+        receiver.value.flush()
+        return receiver
+
+    @method()
     def open(self, receiver, context, m, filename, mode=None):
         filename = str(filename.eval(context))
         mode = str(mode.eval(context)) if mode is not None else "r"

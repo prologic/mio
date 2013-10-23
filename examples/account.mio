@@ -9,6 +9,7 @@ Account = Object clone do(
 
 myAccount = Account clone
 myAccount show
-"Depositing $10\n" print
+
+print("Depositing $10")
 myAccount deposit(10)
 myAccount show

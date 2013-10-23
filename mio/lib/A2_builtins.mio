@@ -1,0 +1,14 @@
+print = block(*args, sep=" ", end="\n", file=System stdout,
+    file write(sep join(args))
+    file write(end)
+    file flush
+    None
+)
+
+map = block(f, xs,
+    rs = List clone
+    xs foreach(x,
+        rs append(f(x))
+    )
+    rs
+)

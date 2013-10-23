@@ -8,9 +8,9 @@ TEST_FILE = os.path.join(os.path.dirname(__file__), "test.mio")
 
 
 def test_eval():
-    p = Popen([sys.executable, main_wrapper.__file__, "-e", "(1 + 2) print"], stdout=PIPE)
+    p = Popen([sys.executable, main_wrapper.__file__, "-e", "print(1 + 2)"], stdout=PIPE)
     stdout = p.communicate()[0]
-    assert stdout == "3"
+    assert stdout == "3\n"
 
 
 def test_interactive():
@@ -21,5 +21,5 @@ def test_interactive():
 
 def test_repl():
     p = Popen([sys.executable, main_wrapper.__file__], stdin=PIPE, stdout=PIPE)
-    stdout = p.communicate("(1 + 2) println\nexit\n")[0]
+    stdout = p.communicate("print(1 + 2)\nexit\n")[0]
     assert stdout.split()[3] == "3"

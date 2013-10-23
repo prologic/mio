@@ -19,6 +19,8 @@ mio 0.0.4.dev
 - Fixed a bug with ``Object foreach`` and ``continue``.
 - **Achived 100% test coverage!**
 - Implemented ``*args`` and ``**kwargs`` support for methods and blocks.
+- Removed ``Object`` methods ``print``, ``println``, ``write`` and ``writeln`` in favor of the new builtin ``print`` function in the mio std. lib
+- Added an implemenation of ``map`` to the mio std. lib
 
 
 mio 0.0.3 (*2013-10-20*)

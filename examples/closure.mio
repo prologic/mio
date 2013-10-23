@@ -2,7 +2,7 @@
 
 foo = method(
     return method(
-        "foo" println
+        print("foo")
     )
 )
 
