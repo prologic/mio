@@ -30,7 +30,7 @@ class Range(Object):
 
         if (start < stop and step > 0) or (start > stop and step < 0):
             while start < stop:
-                yield start
+                yield runtime.find("Number").clone(start)
                 start += step
 
     def __repr__(self):

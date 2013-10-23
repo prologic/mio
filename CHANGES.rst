@@ -15,6 +15,7 @@ mio 0.0.4.dev
 - Fixed keyword argument support.
 - Fixed a few minor bugs in the ``Message`` object and improved test coverage.
 - Added ``?`` as a valid operator and an implementation of ``Object ?message`` in the mio std. lib.
+- Fixed a bug with ``Range``'s internal iterator causing ``Range asList`` not to work.
 
 
 mio 0.0.3 (*2013-10-20*)
