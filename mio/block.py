@@ -10,6 +10,15 @@ from .object import Object
 from .states import NormalState
 
 
+def getargname(arg):
+    if arg.name == "*" and arg.args:
+        return "*{0:s}".format(arg.args[0])
+    elif arg.name == "**" and arg.args:
+        return "**{0:s}".format(arg.args[0])
+    else:
+        return arg.name
+
+
 class Call(Object):
     """Call Object"""
 
@@ -35,7 +44,7 @@ class Block(Object):
         self.parent = runtime.state.find("Object")
 
     def __repr__(self):
-        args = ", ".join(chain(map(attrgetter("name"), self.args), ("{0:s}={1:s}".format(str(k), repr(v)) for k, v in self.kwargs.items())))
+        args = ", ".join(chain(map(getargname, self.args), ("{0:s}={1:s}".format(str(k), repr(v)) for k, v in self.kwargs.items())))
         return "{0:s}({1:s})".format("block" if self.scope is not None else "method", args)
 
     def create_locals(self, receiver, context, m):
