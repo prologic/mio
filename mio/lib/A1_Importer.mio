@@ -1,8 +1,7 @@
 Object do (
     import = block(
         name = call message args at(0) name
-        self set(name, Importer import(name))
-        None
+        Importer import(name)
     )
 )
 
