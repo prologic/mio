@@ -74,7 +74,7 @@ class Object(object):
         try:
             return self.forward(key)
         except:
-            raise AttributeError("{0:s} has no attribute {1:s}".format(repr(self), repr(key)))
+            raise AttributeError("{0:s} has no attribute {1:s}".format(self.type, repr(key)))
 
     def __setitem__(self, key, value):
         self.attrs[key] = value
