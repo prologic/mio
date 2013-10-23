@@ -202,7 +202,7 @@ class Object(object):
         ctx = runtime.find("Object").clone()
         kwargs = OrderedDict([(arg.args[0].name, arg.eval(ctx)) for arg in args if arg.name == "set"])
 
-        args = [arg.name for arg in args if not arg.name == "set"]
+        args = [arg for arg in args if not arg.name == "set"]
 
         from .block import Block
         return Block(body, args, kwargs, context)
@@ -215,7 +215,7 @@ class Object(object):
         ctx = runtime.find("Object").clone()
         kwargs = OrderedDict([(arg.args[0].name, arg.eval(ctx)) for arg in args if arg.name == "set"])
 
-        args = [arg.name for arg in args if not arg.name == "set"]
+        args = [arg for arg in args if not arg.name == "set"]
 
         from .block import Block
         return Block(body, args, kwargs)

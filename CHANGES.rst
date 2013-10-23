@@ -18,6 +18,7 @@ mio 0.0.4.dev
 - Fixed a bug with ``Range``'s internal iterator causing ``Range asList`` not to work.
 - Fixed a bug with ``Object foreach`` and ``continue``.
 - **Achived 100% test coverage!**
+- Implemented ``*args`` and ``**kwargs`` support for methods and blocks.
 
 
 mio 0.0.3 (*2013-10-20*)

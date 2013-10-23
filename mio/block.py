@@ -61,20 +61,32 @@ class Block(Object):
 
         self.locals.attrs.update(self.kwargs)
 
-        # Set positional arguments
-        for i, arg in enumerate(self.args):
-            if i < len(args):
-                self.locals[arg] = args[i].eval(context)
-            else:
-                self.locals[arg] = runtime.find("None")
+        # Set positional arguments *args
+        if len(self.args) == 1 and self.args[0].name == "*":
+            self.locals[self.args[0].args[0].name] = runtime.find("List").clone([arg.eval(context) for arg in args])
+        else:
+            # Set positional arguments
+            for i, arg in enumerate(self.args):
+                if i < len(args):
+                    self.locals[arg] = args[i].eval(context)
+                else:
+                    self.locals[arg] = runtime.find("None")
 
-        # Set default keyword argumetns
-        for k, v in self.kwargs.items():
-            self.locals[k] = v
+        # Set keyword argumetns **kwargs
+        if "**" in [arg.name for arg in self.args]:
+            i = [arg.name for arg in self.args].find("**")
+            d = {}
+            for arg in [arg for arg in args if arg.name == "set"]:
+                d[arg.args[0].name] = arg.eval(context)
+            self.locals[self.args[i].args[0].name] = runtime.find("Dict").clone(d)
+        else:
+            # Set default keyword argumetns
+            for k, v in self.kwargs.items():
+                self.locals[k] = v
 
-        # Set keyword argumetns
-        for arg in [arg for arg in args if arg.name == "set"]:
-            self.locals[arg.args[0].name] = arg.eval(context)
+            # Set keyword arguments
+            for arg in [arg for arg in args if arg.name == "set"]:
+                self.locals[arg.args[0].name] = arg.eval(context)
 
         try:
             return self.body.eval(self.locals, self.locals)
