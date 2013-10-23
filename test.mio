@@ -1,3 +1,11 @@
+print = block(*args, sep=" ", end="\n", file=System stdout,
+    args foreach(arg,
+        file write(arg) write(sep)
+    )
+    write(end)
+    None
+)
+
 True do (
     ifTrue = Object get("evalArg")
 )
