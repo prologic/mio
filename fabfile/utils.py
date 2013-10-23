@@ -9,7 +9,7 @@ from imp import find_module
 from contextlib import contextmanager
 
 
-from fabric.api import abort, hide, local, puts, quiet, settings, task, warn
+from fabric.api import abort, hide, local, puts, quiet, settings, warn
 
 
 def tobool(s):
@@ -22,11 +22,6 @@ def toint(s):
     if isinstance(s, int):
         return s
     return int(s)
-
-
-@task
-def shell(s):
-    local("/bin/bash -l -c '{0:s}'".format(s))
 
 
 @contextmanager

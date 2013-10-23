@@ -5,10 +5,13 @@
 """Fabric fabfile"""
 
 
-from fabric.api import execute, hide, lcd, local, prefix, settings, task
+from os import getcwd
 
 
-from .utils import msg, pip, requires, shell, tobool
+from fabric.api import cd, execute, hide, hosts, lcd, local, prefix, run, settings, task
+
+
+from .utils import msg, pip, requires, tobool
 
 
 @task()
@@ -81,28 +84,33 @@ def test():
 
 
 @task()
+@hosts("localhost")
 def release():
     """Performs a full release"""
 
-    with msg("Creating env"):
-        shell("mkvirtualenv test_mio")
+    with cd(getcwd()):
+        with msg("Creating env"):
+            run("mkvirtualenv test_mio")
 
-    with msg("Bootstrapping"):
-        with prefix("workon test_mio"):
-            local("./bootstrap.sh")
+        with msg("Bootstrapping"):
+            with prefix("workon test_mio"):
+                run("./bootstrap.sh")
 
-    with msg("Building"):
-        with prefix("workon test_mio"):
-            shell("fab develop")
+        with msg("Building"):
+            with prefix("workon test_mio"):
+                run("fab develop")
 
-    with msg("Running tests"):
-        with prefix("workon test_mio"):
-            shell("fab test")
+        with msg("Running tests"):
+            with prefix("workon test_mio"):
+                run("fab test")
 
-    with msg("Building docs"):
-        with prefix("workon test_mio"):
-            shell("pip install -r docs/requirements.txt")
-            shell("fab docs")
+        with msg("Building docs"):
+            with prefix("workon test_mio"):
+                run("pip install -r docs/requirements.txt")
+                run("fab docs")
+
+        with msg("Destroying env"):
+            run("rmirtualenv test_mio")
 
     #local("python setup.py egg_info sdist bdist_egg register upload")
     #local("python setup.py build_sphinx upload_sphinx")
