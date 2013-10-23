@@ -1,12 +1,12 @@
 from mio import runtime
-from mio.utils import method, Null
+from mio.utils import Null
 
 from mio.object import Object
 
 
 class Boolean(Object):
 
-    def __init__(self, value=None):
+    def __init__(self, value=Null):
         super(Boolean, self).__init__(value=value)
 
         self.create_methods()
@@ -14,8 +14,3 @@ class Boolean(Object):
 
     def clone(self, value=Null):
         return self
-
-    def __repr__(self):
-        return repr(self.value)
-
-    __str__ = __repr__
