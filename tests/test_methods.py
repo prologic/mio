@@ -31,10 +31,20 @@ def test_method_args(mio):
     assert mio.eval("x(1)") == 1
 
 
+def test_method_star_args(mio):
+    mio.eval("x = method(*args, args)")
+    assert mio.eval("x(1, 2, 3)") == [1, 2, 3]
+
+
 def test_method_kwargs(mio):
     mio.eval("x = method(n=1, n)")
     assert mio.eval("x") == 1
     assert mio.eval("x(n=2)") == 2
+
+
+def test_method_star_star_kwargs(mio):
+    mio.eval("x = method(**kwargs, kwargs)")
+    assert mio.eval("x(a=1, b=2, c=3)") == {"a": 1, "b": 2, "c": 3}
 
 
 def test_method_args_kwargs(mio):

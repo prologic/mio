@@ -30,10 +30,20 @@ def test_block_args(mio):
     assert mio.eval("x(1)") == 1
 
 
+def test_block_star_args(mio):
+    mio.eval("x = block(*args, args)")
+    assert mio.eval("x(1, 2, 3)") == [1, 2, 3]
+
+
 def test_block_kwargs(mio):
     mio.eval("x = block(n=1, n)")
     assert mio.eval("x") == 1
     assert mio.eval("x(n=2)") == 2
+
+
+def test_block_star_start_kwargs(mio):
+    mio.eval("x = block(**kwargs, kwargs)")
+    assert mio.eval("x(a=1, b=2, c=3)") == {"a": 1, "b": 2, "c": 3}
 
 
 def test_block_args_kwargs(mio):

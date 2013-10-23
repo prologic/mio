@@ -75,7 +75,7 @@ class Block(Object):
 
         # Set keyword argumetns **kwargs
         if "**" in [arg.name for arg in self.args]:
-            i = [arg.name for arg in self.args].find("**")
+            i = [arg.name for arg in self.args].index("**")
             d = {}
             for arg in [arg for arg in args if arg.name == "set"]:
                 d[arg.args[0].name] = arg.eval(context)

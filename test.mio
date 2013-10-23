@@ -1,3 +1,7 @@
+test = block(**kwargs,
+    kwargs
+)
+
 complement = block(f,
     block(arg,
         not f(arg)
