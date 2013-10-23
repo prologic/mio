@@ -12,3 +12,19 @@ map = block(f, xs,
     )
     rs
 )
+
+filter = block(f, xs,
+    rs = List clone
+    xs foreach(x,
+        (f is None) ifTrue(
+            not x is None ifTrue(
+                rs append(x)
+            )
+        ) ifFalse(
+            f(x) ifTrue(
+                rs append(x)
+            )
+        )
+    )
+    rs
+)

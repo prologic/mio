@@ -1,3 +1,12 @@
+complement = block(f,
+    block(arg,
+        not f(arg)
+    )
+)
+
+odd = block(n, (n % 2) == 1)
+even = complement(get("odd"))
+    
 True do (
     ifTrue = Object get("evalArg")
 )
