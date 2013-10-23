@@ -331,9 +331,6 @@ class Object(object):
     @method("clone")
     def _clone(self, receiver, context, m, *args):
         object = receiver.clone()
-        setter = m.previous.previous
-        if setter is not None and setter.name == "set":
-            object.type = setter.args[0].name
 
         try:
             m = runtime.find("Message").clone()
