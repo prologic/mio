@@ -23,6 +23,7 @@ mio 0.0.4.dev
 - Reimplemented ``not`` in the mio std. lib and added ``-=``, ``*=`` and ``/=`` operators.
 - Added a ``Object :foo`` (*primitive*) method using the ``:`` operator. This allows us to dig into the host object's internal methods.
 - Added an implementation of ``abs`` builtin using the primitive method.
+- Changed the ``import`` function to return the imported module (*instead of ``None``*) so you can bind imported modules to explicitly bound names.
 
 
 mio 0.0.3 (*2013-10-20*)
