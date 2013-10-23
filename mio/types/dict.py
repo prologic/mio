@@ -43,6 +43,12 @@ class Dict(Object):
         return runtime.find("List").clone(receiver.value.keys())
 
     @method()
+    def items(self, receiver, context, m):
+        List = runtime.find("List")
+        items = [List.clone([k, v]) for k, v in receiver.value.items()]
+        return runtime.find("List").clone(items)
+
+    @method()
     def values(self, receiver, context, m):
         return runtime.find("List").clone(receiver.value.values())
 

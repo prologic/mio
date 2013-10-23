@@ -16,6 +16,8 @@ mio 0.0.4.dev
 - Fixed a few minor bugs in the ``Message`` object and improved test coverage.
 - Added ``?`` as a valid operator and an implementation of ``Object ?message`` in the mio std. lib.
 - Fixed a bug with ``Range``'s internal iterator causing ``Range asList`` not to work.
+- Fixed a bug with ``Object foreach`` and ``continue``.
+- **Achived 100% test coverage!**
 
 
 mio 0.0.3 (*2013-10-20*)
@@ -29,6 +31,7 @@ mio 0.0.3 (*2013-10-20*)
 - Improved the ``__repr__`` of the ``File`` object.
 - Added ``open`` and ``with`` builtins to the mio standard library.
 - Implemented a basic import system in the mio standard library.
+- Implemented ``Dict items`` method.
 
 
 mio 0.0.2 (*2013-10-19*)

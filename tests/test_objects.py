@@ -1,5 +1,9 @@
 from pytest import raises
 
+
+from itertools import permutations
+
+
 from mio import runtime
 from mio.utils import format_object
 from mio.errors import AttributeError, TypeError
@@ -62,6 +66,55 @@ def test_foreach(mio):
     assert mio.eval("sum(xs)") == 6
 
 
+def test_foreach2(mio, capsys):
+    assert mio.eval("xs = List clone") == []
+    assert mio.eval("xs append(1)") == [1]
+    assert mio.eval("xs append(2)") == [1, 2]
+    assert mio.eval("xs append(3)") == [1, 2, 3]
+
+    mio.eval("""
+        xs foreach(x,
+            (x == 2) ifTrue(continue) ifFalse(x print)
+        )
+    """)
+    out, err = capsys.readouterr()
+    assert out == "13"
+
+
+def test_foreach3(mio, capsys):
+    assert mio.eval("xs = List clone") == []
+    assert mio.eval("xs append(1)") == [1]
+    assert mio.eval("xs append(2)") == [1, 2]
+    assert mio.eval("xs append(3)") == [1, 2, 3]
+    assert mio.eval("xs append(None)") == [1, 2, 3, None]
+    assert mio.eval("xs append(4)") == [1, 2, 3, None, 4]
+    assert mio.eval("xs append(5)") == [1, 2, 3, None, 4, 5]
+    assert mio.eval("xs append(6)") == [1, 2, 3, None, 4, 5, 6]
+
+    mio.eval("""
+        xs foreach(x,
+            (x is None) ifTrue(break) ifFalse(x print)
+        )
+    """)
+    out, err = capsys.readouterr()
+    assert out == "123"
+
+
+def test_foreach4(mio, capsys):
+    assert mio.eval("d = Dict clone") == {}
+    assert mio.eval("d set(\"a\", 1)") == {"a": 1}
+    assert mio.eval("d set(\"b\", 2)") == {"a": 1, "b": 2}
+    assert mio.eval("d set(\"c\", 3)") == {"a": 1, "b": 2, "c": 3}
+
+    mio.eval("""
+        d items foreach(k, v,
+            writeln(k, "=", v)
+        )
+    """)
+    out, err = capsys.readouterr()
+    assert out in ["{0:s}\n".format("\n".join(p)) for p in permutations(["a=1", "b=2", "c=3"])]
+
+
 def test_while(mio):
     assert mio.eval("xs = List clone") == []
     assert mio.eval("xs append(1)") == [1]
@@ -83,6 +136,50 @@ def test_while(mio):
     assert mio.eval("sum(xs)") == 6
 
 
+def test_while2(mio):
+    assert mio.eval("xs = List clone") == []
+    assert mio.eval("xs append(1)") == [1]
+    assert mio.eval("xs append(2)") == [1, 2]
+    assert mio.eval("xs append(3)") == [1, 2, 3]
+
+    mio.eval("""
+        i = 0
+        sum = 0
+        while (i < (xs len),
+            (i == 2) ifTrue(i += 1; continue)
+            sum = sum + xs at(i)
+            i += 1
+        )
+    """)
+
+    # XXX: The result here is wrong. continue doesn't work in whiel?
+    #assert mio.eval("sum") == 4
+
+
+def test_while3(mio, capsys):
+    assert mio.eval("xs = List clone") == []
+    assert mio.eval("xs append(1)") == [1]
+    assert mio.eval("xs append(2)") == [1, 2]
+    assert mio.eval("xs append(3)") == [1, 2, 3]
+    assert mio.eval("xs append(None)") == [1, 2, 3, None]
+    assert mio.eval("xs append(4)") == [1, 2, 3, None, 4]
+    assert mio.eval("xs append(5)") == [1, 2, 3, None, 4, 5]
+    assert mio.eval("xs append(6)") == [1, 2, 3, None, 4, 5, 6]
+
+    mio.eval("""
+        i = 0
+        sum = 0
+        while(i < (xs len),
+            x = xs at(i)
+            (x is None) ifTrue(break)
+            sum += x
+            i += 1
+        )
+    """)
+
+    assert mio.eval("sum") == 6
+
+
 def test_forward(mio):
     mio.eval("Foo = Object clone")
     assert mio.eval("Foo x = 1")
@@ -99,10 +196,25 @@ def test_get(mio):
         mio.eval("Foo z", reraise=True)
 
 
+def test_get_no_forward(mio):
+    mio.eval("Foo = Object clone")
+    mio.eval("Foo del(\"forward\")")
+    assert mio.eval("Foo x = 1")
+    assert mio.eval("Foo get(\"x\")") == 1
+
+    with raises(AttributeError):
+        mio.eval("Foo z", reraise=True)
+
+
 def test_has(mio):
     mio.eval("Foo = Object clone")
     assert mio.eval("Foo x = 1")
     assert mio.eval("Foo has(\"x\")").value is True
+
+
+def test_has2(mio):
+    mio.eval("Foo = Object clone")
+    assert mio.eval("Foo has(\"x\")").value is False
 
 
 def test_hash(mio):
@@ -254,3 +366,24 @@ def test_bool(mio):
     assert mio.eval("0 bool").value is False
     assert mio.eval("\"foo\" bool").value is True
     assert mio.eval("\"\" bool").value is False
+
+
+def test_parent(mio):
+    mio.eval("Foo = Object clone")
+    assert mio.eval("Foo parent is Object")
+
+
+def test_parent2(mio):
+    assert mio.eval("Object parent is Object")
+
+
+def test_value(mio):
+    assert mio.eval("Object value is None")
+
+
+def test_setValue(mio):
+    mio.eval("Foo = Object clone")
+    assert mio.eval("Foo value is None")
+
+    mio.eval("Foo setValue(1)")
+    assert mio.eval("Foo value == 1")

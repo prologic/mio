@@ -71,12 +71,10 @@ class Object(object):
                     return parent[key]
                 parent = parent.parent
 
-        if hasattr(self, "forward"):
-            try:
-                return self.forward(key)
-            except:
-                raise AttributeError("%s has no attribute %r" % (self, key))
-        raise AttributeError("%s has no attribute %r" % (self, key))
+        try:
+            return self.forward(key)
+        except:
+            raise AttributeError("{0:s} has no attribute {1:s}".format(repr(self), repr(key)))
 
     def __setitem__(self, key, value):
         self.attrs[key] = value
@@ -231,10 +229,6 @@ class Object(object):
             vars, expression = args[:-1], args[-1]
 
             for item in receiver:
-                if context.state.isContinue:
-                    context.state = NormalState()
-                    continue
-
                 if len(vars) == 2:
                     context[vars[0].name], context[vars[1].name] = item
                 elif len(vars) == 1:
@@ -243,7 +237,11 @@ class Object(object):
                 result = expression.eval(context)
 
                 if context.state.stop:
-                    return context.state.returnValue
+                    if context.state.isContinue:
+                        context.state = NormalState()
+                        continue
+                    else:
+                        return context.state.returnValue
             return result
         finally:
             context.state = NormalState()
@@ -254,14 +252,14 @@ class Object(object):
             result = runtime.find("None")
 
             while condition.eval(context):
-                if context.state.isContinue:
-                    context.state = NormalState()
-                    continue
-
                 result = expression.eval(context)
 
                 if context.state.stop:
-                    return context.state.returnValue
+                    if context.state.isContinue:
+                        context.state = NormalState()
+                        continue
+                    else:
+                        return context.state.returnValue
             return result
         finally:
             context.state = NormalState()
