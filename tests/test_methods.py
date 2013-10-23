@@ -63,6 +63,31 @@ def test_method_repr_args(mio):
     assert repr(mio.eval("get(\"x\")")) == "method(n=1)"
 
 
+def test_method_repr_star_args(mio):
+    mio.eval("x = method(*args, args)")
+    assert repr(mio.eval("get(\"x\")")) == "method(*args)"
+
+
+def test_method_repr_kwargs(mio):
+    mio.eval("x = method(a=1, b=2, c=3, (a + b + c))")
+    assert repr(mio.eval("get(\"x\")")) == "method(a=1, b=2, c=3)"
+
+
+def test_method_repr_star_star_kwargs(mio):
+    mio.eval("x = method(**kwargs, kwargs)")
+    assert repr(mio.eval("get(\"x\")")) == "method(**kwargs)"
+
+
 def test_method_repr_args_kwargs(mio):
     mio.eval("x = method(x, y, z, a=1, b=2, c=3, (x + y + z) * (a + b + c))")
     assert repr(mio.eval("get(\"x\")")) == "method(x, y, z, a=1, b=2, c=3)"
+
+
+def test_method_repr_star_args_kwargs(mio):
+    mio.eval("x = method(*args, a=1, b=2, c=3, (x + y + z) * (a + b + c))")
+    assert repr(mio.eval("get(\"x\")")) == "method(*args, a=1, b=2, c=3)"
+
+
+def test_method_repr_star_args_star_star_kwargs(mio):
+    mio.eval("x = method(*args, **kwargs, args; kwargs)")
+    assert repr(mio.eval("get(\"x\")")) == "method(*args, **kwargs)"

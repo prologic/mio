@@ -41,7 +41,7 @@ def test_block_kwargs(mio):
     assert mio.eval("x(n=2)") == 2
 
 
-def test_block_star_start_kwargs(mio):
+def test_block_star_star_kwargs(mio):
     mio.eval("x = block(**kwargs, kwargs)")
     assert mio.eval("x(a=1, b=2, c=3)") == {"a": 1, "b": 2, "c": 3}
 
@@ -62,6 +62,31 @@ def test_block_repr_args(mio):
     assert repr(mio.eval("get(\"x\")")) == "block(n=1)"
 
 
+def test_block_repr_star_args(mio):
+    mio.eval("x = block(*args, args)")
+    assert repr(mio.eval("get(\"x\")")) == "block(*args)"
+
+
+def test_block_repr_kwargs(mio):
+    mio.eval("x = block(a=1, b=2, c=3, a + b + c))")
+    assert repr(mio.eval("get(\"x\")")) == "block(a=1, b=2, c=3)"
+
+
+def test_block_repr_star_kwargs(mio):
+    mio.eval("x = block(**kwargs, kwargs)")
+    assert repr(mio.eval("get(\"x\")")) == "block(**kwargs)"
+
+
 def test_block_repr_args_kwargs(mio):
     mio.eval("x = block(x, y, z, a=1, b=2, c=3, (x + y + z) * (a + b + c))")
     assert repr(mio.eval("get(\"x\")")) == "block(x, y, z, a=1, b=2, c=3)"
+
+
+def test_block_repr_star_args_kwargs(mio):
+    mio.eval("x = block(*args, a=1, b=2, c=3, (a + b + c))")
+    assert repr(mio.eval("get(\"x\")")) == "block(*args, a=1, b=2, c=3)"
+
+
+def test_block_repr_star_args_star_star_kwargs(mio):
+    mio.eval("x = block(*args, **kwargs, args; kwargs)")
+    assert repr(mio.eval("get(\"x\")")) == "block(*args, **kwargs)"
