@@ -1,5 +1,8 @@
+from mio.utils import Null
+
+
 def test_boolean(mio):
-    assert mio.eval("Boolean").value is None
+    assert mio.eval("Boolean").value is Null
     assert mio.eval("True").value is True
     assert mio.eval("False").value is False
     assert mio.eval("None").value is None
@@ -13,7 +16,7 @@ def test_init(mio):
 
 
 def test_repr(mio):
-    assert repr(mio.eval("Boolean")) == repr(None)
+    assert repr(mio.eval("Boolean")) == "Boolean"
     assert repr(mio.eval("True")) == repr(True)
     assert repr(mio.eval("False")) == repr(False)
     assert repr(mio.eval("None")) == repr(None)
