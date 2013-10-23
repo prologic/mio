@@ -14,4 +14,4 @@ mio is a Toy Programming Language written in the `Python Programming Language`_.
 __author__ = "James Mills"
 __date__ = "23rd October 2012"
 
-from .version import version as __version__
+from .version import version as __version__  # noqa
