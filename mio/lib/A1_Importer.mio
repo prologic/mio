@@ -3,6 +3,8 @@ Object do (
         name = call message args at(0) name
         Importer import(name)
     )
+
+    from = get("import")
 )
 
 Module = Object clone do (
@@ -10,6 +12,11 @@ Module = Object clone do (
         self __name__ = name
         self __file__ = filename
         eval(code, self)
+    )
+
+    import = method(
+        name = call message args at(0) name
+        self get(name)
     )
 
     repr = method(

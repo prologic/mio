@@ -24,6 +24,12 @@ mio 0.0.4.dev
 - Added a ``Object :foo`` (*primitive*) method using the ``:`` operator. This allows us to dig into the host object's internal methods.
 - Added an implementation of ``abs`` builtin using the primitive method.
 - Changed the ``import`` function to return the imported module (*instead of ``None``*) so you can bind imported modules to explicitly bound names.
+- Added ``from`` an alias to ``import`` and ``Module import`` so you can do:
+
+::
+    
+    bar = from(foo) import(bar)
+    
 
 
 mio 0.0.3 (*2013-10-20*)
