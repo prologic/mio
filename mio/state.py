@@ -14,16 +14,16 @@ from .parser import Parser
 from .message import Message
 from .continuation import Continuation
 
-from .types import Boolean
-from .types import Number
-from .types import String
-from .types import List
-from .types import Dict
-from .types import File
-from .types import Range
-from .types import System
-from .types import Module
-from .types import Importer
+from .core import Boolean
+from .core import Number
+from .core import String
+from .core import List
+from .core import Dict
+from .core import File
+from .core import Range
+from .core import System
+from .core import Module
+from .core import Importer
 
 
 class State(object):
