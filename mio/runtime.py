@@ -34,8 +34,8 @@ def init(args=[], opts=None):
     state.create_objects()
 
     if opts is None or (opts is not None and not opts.nosys):
-        for resource in resource_listdir(__package__, "lib"):
-            filename = resource_filename(__package__, path.join("lib", resource))
+        for resource in resource_listdir(__package__, path.join("lib", "bootstrap")):
+            filename = resource_filename(__package__, path.join("lib", "bootstrap", resource))
             state.load(filename)
 
 

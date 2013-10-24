@@ -36,6 +36,7 @@ mio 0.0.4.dev
 - Added List insert method and internal __len__.
 - Moved the implementations of the ``Importer`` and ``Module`` objects to the host language (*Python*).
 - Added support for modifying the ``Importer`` search path.
+- Restructured the mio std. library and moved all bootstrap modules into ./lib/bootstrap
 
 
 mio 0.0.3 (*2013-10-20*)
