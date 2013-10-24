@@ -257,7 +257,8 @@ class Object(object):
                         return context.state.returnValue
             return result
         finally:
-            context.state = NormalState()
+            if not context.state.isReturn:
+                context.state = NormalState()
 
     @method("continue")
     def _continue(self, receiver, context, m):
