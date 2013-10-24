@@ -4,7 +4,7 @@ from functools import wraps
 from inspect import isfunction, getmembers
 
 
-from funcy import compose, project
+from funcy import compose, project, partial
 
 
 from mio import runtime
@@ -20,8 +20,10 @@ def create_module(name, code):
 
 def wrap_function(f):
     @wraps(f)
-    def wrapper(receiver, context, m, *args, **kwds):
-        return runtime.state.tomio(f(*args, **kwds))
+    def wrapper(receiver, context, m, *args, **kwargs):
+        args = tuple(runtime.state.frommio(arg.eval(context)) for arg in args)
+        kwargs = dict((k, runtime.state.frommio(v.eval(context))) for k, v in kwargs.items())
+        return runtime.state.tomio(f(*args, **kwargs))
     return wrapper
 
 

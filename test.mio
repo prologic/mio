@@ -10,6 +10,12 @@ def foo():
     return "Foobar!"
 """)
 
+webbrowser = FFI clone("webbrowser", """
+from webbrowser import open
+
+__all__ = ("open",)
+""")
+
 complement = block(f,
     block(arg,
         f(arg) bool not

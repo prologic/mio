@@ -1,0 +1,7 @@
+webbrowser = FFI clone("webbrowser", """
+from webbrowser import open
+
+__all__ = ("open",)
+""")
+
+webbrowser open("http://xkcd.com/353/")
