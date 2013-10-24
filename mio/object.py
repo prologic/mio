@@ -238,7 +238,8 @@ class Object(object):
                         return context.state.returnValue
             return result
         finally:
-            context.state = NormalState()
+            if not context.state.isReturn:
+                context.state = NormalState()
 
     @method("while")
     def _while(self, receiver, context, m, condition, expression):
