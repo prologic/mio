@@ -32,6 +32,8 @@ mio 0.0.4.dev
     
 - Fixed some minor bugs in ``Object foreach`` and ``Object while`` where a ReturnState was not passed up to the callee.
 - Added implementations of ``all`` and ``any`` to the mio std. lib.
+- Added this.mio (The Zen of mio ala Zen of Python)
+- Added List insert method and internal __len__.
 
 
 mio 0.0.3 (*2013-10-20*)
