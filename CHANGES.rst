@@ -38,6 +38,7 @@ mio 0.0.4.dev
 - Added support for modifying the ``Importer`` search path.
 - Restructured the mio std. library and moved all bootstrap modules into ./lib/bootstrap
 - Added (almost) Python-style string literal support. Triple Quote, Double, Quote, Single Quote, Short and Long Strings
+- Added support for exponents with number literals.
 
 
 mio 0.0.3 (*2013-10-20*)

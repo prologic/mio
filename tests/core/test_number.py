@@ -2,12 +2,28 @@ def test_int(mio):
     assert int(mio.eval("1")) == 1
 
 
+def test_negative_int(mio):
+    assert int(mio.eval("-1")) == -1
+
+
+def test_e_int(mio):
+    assert int(mio.eval("1e3")) == 1000
+
+
 def test_int2(mio):
     assert mio.eval("1.5 int") == 1
 
 
 def test_float(mio):
     assert float(mio.eval("1.0")) == 1.0
+
+
+def test_negative_float(mio):
+    assert float(mio.eval("-1.0")) == -1.0
+
+
+def test_e_float(mio):
+    assert float(mio.eval("1.0e3")) == 1000.0
 
 
 def test_float2(mio):
