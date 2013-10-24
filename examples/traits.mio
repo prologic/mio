@@ -2,7 +2,7 @@
 
 TGreetable = Object clone do (
     hello = method(
-        writeln("Hello ", self name)
+        print("Hello", self name)
     )
 )
 
