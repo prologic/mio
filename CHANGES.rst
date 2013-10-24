@@ -30,6 +30,8 @@ mio 0.0.4.dev
     
     bar = from(foo) import(bar)
     
+- Fixed some minor bugs in ``Object foreach`` and ``Object while`` where a ReturnState was not passed up to the callee.
+- Added implementations of ``all`` and ``any`` to the mio std. lib.
 
 
 mio 0.0.3 (*2013-10-20*)
