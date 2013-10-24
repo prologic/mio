@@ -9,6 +9,20 @@ abs = block(x,
     x :__abs__
 )
 
+all = block(xs,
+    xs foreach(x,
+        (x bool) ifFalse(return False)
+    )
+    True
+)
+
+any = block(xs,
+    xs foreach(x,
+        (x bool) ifTrue(return True)
+    )
+    False
+)
+
 map = block(f, xs,
     rs = List clone
     xs foreach(x,
