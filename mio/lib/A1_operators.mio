@@ -33,7 +33,7 @@ Object do(
         (call message args len == 1) ifTrue(
             (call message arg(0)) bool not
         ) ifFalse(
-            other bool not
+            self bool not
         )
     )
 
