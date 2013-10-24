@@ -37,6 +37,7 @@ mio 0.0.4.dev
 - Moved the implementations of the ``Importer`` and ``Module`` objects to the host language (*Python*).
 - Added support for modifying the ``Importer`` search path.
 - Restructured the mio std. library and moved all bootstrap modules into ./lib/bootstrap
+- Added (almost) Python-style string literal support. Triple Quote, Double, Quote, Single Quote, Short and Long Strings
 
 
 mio 0.0.3 (*2013-10-20*)
