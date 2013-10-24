@@ -17,6 +17,9 @@ class List(Object):
         self.create_methods()
         self.parent = runtime.state.find("Object")
 
+    def __len__(self):
+        return len(self.value)
+
     def __iter__(self):
         return iter(self.value) if isinstance(self.value, list) else iter([])
 
@@ -35,6 +38,11 @@ class List(Object):
     @method()
     def append(self, receiver, context, m, item):
         receiver.value.append(item.eval(context))
+        return receiver
+
+    @method()
+    def insert(self, receiver, context, m, index, value):
+        receiver.value.insert(int(index.eval(context)), value.eval(context))
         return receiver
 
     @method()
