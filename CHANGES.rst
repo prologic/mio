@@ -39,6 +39,8 @@ mio 0.0.4.dev
 - Restructured the mio std. library and moved all bootstrap modules into ./lib/bootstrap
 - Added (almost) Python-style string literal support. Triple Quote, Double, Quote, Single Quote, Short and Long Strings
 - Added support for exponents with number literals.
+- Added internal ``tomio`` and ``frommio`` type converion function.
+- Added an ``FFI`` implementation that hooks directly into the host language (*Python*).
 
 
 mio 0.0.3 (*2013-10-20*)

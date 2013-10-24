@@ -4,6 +4,7 @@ from string import String
 from list import List
 from dict import Dict
 
+from ffi import FFI
 from file import File
 from range import Range
 from system import System

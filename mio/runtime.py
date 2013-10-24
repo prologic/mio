@@ -13,15 +13,6 @@ from pkg_resources import resource_filename, resource_listdir
 root = None
 state = None
 
-typemap = {
-    dict:    "Dict",
-    list:    "List",
-    str:     "String",
-    int:     "Number",
-    float:   "Number",
-    Decimal: "Number",
-}
-
 
 def init(args=[], opts=None):
     global root, state
@@ -37,10 +28,6 @@ def init(args=[], opts=None):
         for resource in resource_listdir(__package__, path.join("lib", "bootstrap")):
             filename = resource_filename(__package__, path.join("lib", "bootstrap", resource))
             state.load(filename)
-
-
-def tomio(x):
-    return find(typemap.get(type(x), "None")).clone(x)
 
 
 def find(name):

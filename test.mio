@@ -3,9 +3,12 @@ This is a multi-line string
 that spans over multiple lines
 """
 
-test = block(**kwargs,
-    kwargs
-)
+test = FFI clone("test", """
+x = 1
+
+def foo():
+    return "Foobar!"
+""")
 
 complement = block(f,
     block(arg,

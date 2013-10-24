@@ -1,6 +1,10 @@
 from __future__ import print_function
 
+from decimal import Decimal
 from traceback import format_exc
+
+
+from funcy import constantly
 
 
 from .errors import Error
@@ -19,11 +23,41 @@ from .core import Number
 from .core import String
 from .core import List
 from .core import Dict
+from .core import FFI
 from .core import File
 from .core import Range
 from .core import System
 from .core import Module
 from .core import Importer
+
+
+def fromDict(x):
+    return dict(x.value)
+
+
+def tobool(x):
+    return "True" if x else "False"
+
+
+typemap = {
+    "tomio": {
+        dict:       "Dict",
+        list:       "List",
+        str:        "String",
+        bool:       tobool,
+        int:        "Number",
+        type(None): "None",
+        float:      "Number",
+        Decimal:    "Number",
+    },
+    "frommio": {
+        "Dict":    fromDict,
+        "List":    list,
+        "String":  str,
+        "Boolean": bool,
+        "Number":  float
+    }
+}
 
 
 class State(object):
@@ -68,6 +102,7 @@ class State(object):
         root["Continuation"] = Continuation()
         root["Block"] = Block(None, [], {})
 
+        root["FFI"] = FFI()
         root["File"] = File()
         root["Range"] = Range()
         root["System"] = System()
@@ -75,6 +110,16 @@ class State(object):
         root["Importer"] = Importer()
 
         root["_"] = root["None"]
+
+    def frommio(self, x, default=None):
+        return typemap["frommio"].get(x.type, constantly(default))(x)
+
+    def tomio(self, x, default="None"):
+        mapto = typemap["tomio"].get(type(x), default)
+        if callable(mapto):
+            return self.find(mapto(x)).clone(x)
+        else:
+            return self.find(mapto).clone(x)
 
     def find(self, name):
         return self.root.attrs[name]
@@ -107,7 +152,7 @@ class State(object):
                 code = raw_input(">>> ")
                 if code:
                     result = self.eval(code)
-                    if result is not None and result.value is not None:# pragma: no cover
+                    if result is not None and result.value is not None:  # pragma: no cover
                         print("==> {0:s}".format(self.eval("repr", receiver=result)))
             except EOFError:  # pragma: no cover
                 raise SystemExit(0)
