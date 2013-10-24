@@ -8,3 +8,7 @@ class AttributeError(Error):
 
 class TypeError(Error):
     """TypeError"""
+
+
+class ImportError(Error):
+    """ImportError"""

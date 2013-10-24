@@ -7,5 +7,7 @@ from dict import Dict
 from file import File
 from range import Range
 from system import System
+from module import Module
+from importer import Importer
 
 # flake8: noqa

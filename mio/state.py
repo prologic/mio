@@ -22,6 +22,8 @@ from .types import Dict
 from .types import File
 from .types import Range
 from .types import System
+from .types import Module
+from .types import Importer
 
 
 class State(object):
@@ -69,6 +71,8 @@ class State(object):
         root["File"] = File()
         root["Range"] = Range()
         root["System"] = System()
+        root["Module"] = Module()
+        root["Importer"] = Importer()
 
         root["_"] = root["None"]
 
@@ -90,8 +94,8 @@ class State(object):
             if reraise:
                 raise
 
-    def load(self, filename):
-        self.eval(open(filename, "r").read())
+    def load(self, filename, receiver=None, context=None):
+        self.eval(open(filename, "r").read(), receiver=receiver, context=context)
 
     def repl(self):
         tryimport("readline")

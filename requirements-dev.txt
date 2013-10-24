@@ -1,3 +1,6 @@
+Fabric==1.8.0
+funcparserlib==0.3.6
+funcy==0.5.6
+pudb==2013.3.6
 pytest==2.4.2
 pytest-cov==1.6
-funcparserlib==0.3.6

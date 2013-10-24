@@ -1,7 +1,0 @@
-Foo = Object clone do (
-    x = 1
-
-    foo = method(
-        self x println
-    )
-)

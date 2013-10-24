@@ -34,6 +34,8 @@ mio 0.0.4.dev
 - Added implementations of ``all`` and ``any`` to the mio std. lib.
 - Added this.mio (The Zen of mio ala Zen of Python)
 - Added List insert method and internal __len__.
+- Moved the implementations of the ``Importer`` and ``Module`` objects to the host language (*Python*).
+- Added support for modifying the ``Importer`` search path.
 
 
 mio 0.0.3 (*2013-10-20*)
