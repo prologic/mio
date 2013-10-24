@@ -340,7 +340,7 @@ class Object(object):
             m = runtime.find("Message").clone()
             m.name = "init"
             m.args = args
-            m.eval(object, context)
+            m.eval(object, context, m)
         except AttributeError:
             pass
 
