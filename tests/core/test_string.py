@@ -1,5 +1,25 @@
 def test_string(mio):
-    assert mio.eval("\"foo\"") == "foo"
+    assert mio.eval('"foo"') == "foo"
+
+
+def test_string_multi_line(mio):
+    assert mio.eval('"foo\nbar"') == "foo\nbar"
+
+
+def test_string_single_quote(mio):
+    assert mio.eval("'foo'") == "foo"
+
+
+def test_string_triple_single_quote(mio):
+    assert mio.eval("'''foo'''") == "foo"
+
+
+def test_string_double_quote(mio):
+    assert mio.eval('"foo"') == "foo"
+
+
+def test_string_triple_double_quote(mio):
+    assert mio.eval('"""foo"""') == "foo"
 
 
 def test_init(mio):

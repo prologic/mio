@@ -24,6 +24,38 @@ operators = [
     "is", "or", "and", "not", "return",
 ]
 
+strtpl = """
+    {start:s}
+    [^\\{quote:s}]*?
+    (
+    (   \\\\[\000-\377]
+        |   {quote:s}
+        (   \\\\[\000-\377]
+        |   [^\\{quote:s}]
+        |   {quote:s}
+        (   \\\\[\000-\377]
+            |   [^\\{quote:s}]
+        )
+        )
+    )
+    [^\\{quote:s}]*?
+    )*?
+    {end:s}
+"""
+
+quotes = [
+    {"quote": "'", "start": "'''", "end": "'''"},
+    {"quote": '"', "start": '"""', "end": '"""'},
+    {"quote": "'", "start": "'", "end": "'"},
+    {"quote": '"', "start": '"', "end": '"'}
+]
+
+strre = "".join(strtpl.split())
+strre = "|".join([strre.format(**quote) for quote in quotes])
+strre = re.compile(strre.format(**quotes[3]))
+
+encodnig = "utf-8"
+
 
 def tokenize(str):
 
@@ -32,7 +64,7 @@ def tokenize(str):
     specs = [
         Spec("comment",    r'#.*'),
         Spec("whitespace", r"[ \t]+"),
-        Spec('string',     r'"[^"]*"'),
+        Spec('string',     strre),
         Spec('number',     r'-?([0-9]+(\.[0-9]*)?)'),
         Spec('operator',   ops),
         Spec('identifier', r'[A-Za-z_][A-Za-z0-9_]*'),
@@ -146,7 +178,14 @@ def make_number(n):
 
 
 def make_string(n):
-    return runtime.find("String").clone(eval(n))
+    if len(n) > 3 and (n[:3] in ("'''", '"""')):
+        n = n[3:-3]
+    else:
+        n = n[1:-1]
+
+    s = n.decode("string-escape")
+
+    return runtime.find("String").clone(s)
 
 
 def make_terminator(n):

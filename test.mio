@@ -1,3 +1,8 @@
+long_string = """
+This is a multi-line string
+that spans over multiple lines
+"""
+
 test = block(**kwargs,
     kwargs
 )
