@@ -1,33 +1,29 @@
-import mio
 import sys
 
+
+import mio
 from mio import runtime
-from mio.utils import method
-
 from mio.object import Object
-
-from list import List
-from file import File
-from string import String
+from mio.utils import method, Null
 
 
 class System(Object):
 
-    def __init__(self):
-        super(System, self).__init__()
+    def __init__(self, value=Null):
+        super(System, self).__init__(value=value)
 
         self["args"] = self.build_args()
-        self["version"] = String(mio.__version__)
+        self["version"] = runtime.find("String").clone((mio.__version__))
 
-        self["stdin"] = File(sys.stdin)
-        self["stdout"] = File(sys.stdout)
-        self["stderr"] = File(sys.stderr)
+        self["stdin"] = runtime.find("Find").clone(sys.stdin)
+        self["stdout"] = runtime.find("Find").clone(sys.stdout)
+        self["stderr"] = runtime.find("Find").clone(sys.stderr)
 
         self.create_methods()
         self.parent = runtime.state.find("Object")
 
     def build_args(self):
-        return List([String(arg) for arg in runtime.state.args])
+        return runtime.find("List").clone([runtime.find("String").clone(arg) for arg in runtime.state.args])
 
     @method()
     def exit(self, receiver, context, m, status=None):
