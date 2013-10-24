@@ -15,9 +15,9 @@ class System(Object):
         self["args"] = self.build_args()
         self["version"] = runtime.find("String").clone((mio.__version__))
 
-        self["stdin"] = runtime.find("Find").clone(sys.stdin)
-        self["stdout"] = runtime.find("Find").clone(sys.stdout)
-        self["stderr"] = runtime.find("Find").clone(sys.stderr)
+        self["stdin"] = runtime.find("File").clone(sys.stdin)
+        self["stdout"] = runtime.find("File").clone(sys.stdout)
+        self["stderr"] = runtime.find("File").clone(sys.stderr)
 
         self.create_methods()
         self.parent = runtime.state.find("Object")
