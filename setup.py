@@ -1,15 +1,19 @@
 #!/usr/bin/env python
 
-from os import path
 from glob import glob
 from imp import new_module
+from os import getcwd, path
 
 
 from setuptools import setup, find_packages
 
 
 version = new_module("version")
-exec(compile(open(path.join(path.dirname(__file__), "mio/version.py"), "r").read(), "mio/version.py", "exec"), version.__dict__)
+
+exec(
+    compile(open(path.join(path.dirname(globals().get("__file__", path.join(getcwd(), "mio"))), "mio/version.py"), "r").read(), "mio/version.py", "exec"),
+    version.__dict__
+)
 
 
 setup(
