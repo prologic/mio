@@ -1,0 +1,4 @@
+print("The Zen of mio, by James Mills")
+print
+print("Sorry! There is no Zen of mio! (yet)")
+System exit(-1)
