@@ -63,11 +63,11 @@ Installation
 The simplest and recommended way to install mio is with pip.
 You may install the latest stable release from PyPI with pip::
 
-    > pip install mio
+    > pip install mio-lang
 
 If you do not have pip, you may use easy_install::
 
-    > easy_install mio
+    > easy_install mio-lang
 
 Alternatively, you may download the source package from the
 `PyPI Page`_ or the `Downloads page`_ on the `Project Website`_;
@@ -76,13 +76,13 @@ extract it and install using::
     > python setup.py install
 
 You can also install the
-`latest-development version <https://bitbucket.org/prologic/mio-lang/get/tip.tar.gz#egg=mio-dev>`_ by using ``pip`` or ``easy_install``::
+`latest-development version <https://bitbucket.org/prologic/mio-lang/get/tip.tar.gz#egg=mio-lang>`_ by using ``pip`` or ``easy_install``::
     
-    > pip install mio==dev
+    > pip install mio-lang==dev
 
 or::
     
-    > easy_install mio==dev
+    > easy_install mio-lang==dev
 
 
 For further information see the `mio documentation <http://mio-lag.readthedocs.org/>`_.
