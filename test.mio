@@ -55,3 +55,8 @@ Number baz = block(
     y = method(return x)
     return y
 )
+
+Number set("!", method(
+    (self < 2) ifTrue(return self)
+    return (self * ((self - 1) !))
+))

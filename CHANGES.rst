@@ -43,6 +43,7 @@ mio 0.0.4.dev
 - Added an ``FFI`` implementation that hooks directly into the host language (*Python*).
 - Implemented the ``antigravity`` module in mio.
 - Added support for exposing builtin functions as well in the FFI.
+- Simplified the two examples used in the docs and readme and write a simple bash script to profile the factorial example.
 
 
 mio 0.0.3 (*2013-10-20*)

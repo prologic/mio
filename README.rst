@@ -31,18 +31,15 @@ Examples
 
 Factorial::
     
-    Number set("!", method(
+    Number fact = method(
         (self < 2) ifTrue(return self)
         return (self * ((self - 1) !))
     ))
 
 Hello World::
     
-    World = Object clone
-    World hello = method("Hello World!" println)
+    print("Hello World!")
     
-    World hello
-
 
 Features
 --------
