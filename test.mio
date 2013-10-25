@@ -10,6 +10,10 @@ def foo():
     return "Foobar!"
 """)
 
+time = FFI clone("time", """
+from time import time
+""")
+
 webbrowser = FFI clone("webbrowser", """
 from webbrowser import open
 

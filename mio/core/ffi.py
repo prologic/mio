@@ -1,10 +1,10 @@
 from os import path
 from imp import new_module
 from functools import wraps
-from inspect import isfunction, getmembers
+from inspect import isfunction, isbuiltin, getmembers
 
 
-from funcy import compose, project, partial
+from funcy import compose, project
 
 
 from mio import runtime
@@ -48,7 +48,7 @@ class FFI(Object):
             members = project(members, members["__all__"])
 
         for k, v in members.items():
-            if isfunction(v):
+            if isfunction(v) or isbuiltin(v):
                 self[k] = wrap_function(v)
             else:
                 v = runtime.state.tomio(v, Null)
