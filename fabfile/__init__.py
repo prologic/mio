@@ -90,27 +90,27 @@ def release():
 
     with cd(getcwd()):
         with msg("Creating env"):
-            run("mkvirtualenv test_mio")
+            run("mkvirtualenv test")
 
         with msg("Bootstrapping"):
-            with prefix("workon test_mio"):
+            with prefix("workon test"):
                 run("./bootstrap.sh")
 
         with msg("Building"):
-            with prefix("workon test_mio"):
+            with prefix("workon test"):
                 run("fab develop")
 
         with msg("Running tests"):
-            with prefix("workon test_mio"):
+            with prefix("workon test"):
                 run("fab test")
 
         with msg("Building docs"):
-            with prefix("workon test_mio"):
+            with prefix("workon test"):
                 run("pip install -r docs/requirements.txt")
                 run("fab docs")
 
         with msg("Destroying env"):
-            run("rmirtualenv test_mio")
+            run("rmvirtualenv test")
 
     #local("python setup.py egg_info sdist bdist_egg register upload")
     #local("python setup.py build_sphinx upload_sphinx")
