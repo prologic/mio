@@ -22,6 +22,7 @@ Documentation
 .. toctree::
    :maxdepth: 2
 
+   todo
    grammar
    roadmap
    changes
