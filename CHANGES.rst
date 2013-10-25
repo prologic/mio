@@ -42,6 +42,7 @@ mio 0.0.4.dev
 - Added internal ``tomio`` and ``frommio`` type converion function.
 - Added an ``FFI`` implementation that hooks directly into the host language (*Python*).
 - Implemented the ``antigravity`` module in mio.
+- Added support for exposing builtin functions as well in the FFI.
 
 
 mio 0.0.3 (*2013-10-20*)
