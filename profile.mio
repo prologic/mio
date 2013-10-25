@@ -1,0 +1,19 @@
+profile = FFI("profile", """
+from pstats import Stats
+from cProfile import Profile
+from StringIO import StringIO
+
+def profile(receiver, context, m, message, target=None):
+    profiler = Profile()
+    profiler.enable()
+
+    # ... eval message in target or context ...
+
+    profiler.disable()
+
+    buffer = StringIO.StringIO()
+    sortby = "cumulative"
+    stats = Stats(profile, stream=buffer).sort_stats(sortby)
+    stats.print_stats()
+    return buffer.getvalue()
+""")
