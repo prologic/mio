@@ -116,10 +116,14 @@ class State(object):
 
     def tomio(self, x, default="None"):
         mapto = typemap["tomio"].get(type(x), default)
-        if callable(mapto):
-            return self.find(mapto(x)).clone(x)
-        else:
-            return self.find(mapto).clone(x)
+
+        try:
+            if callable(mapto):
+                return self.find(mapto(x)).clone(x)
+            else:
+                return self.find(mapto).clone(x)
+        except:
+            return default
 
     def find(self, name):
         return self.root.attrs[name]
