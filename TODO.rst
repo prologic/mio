@@ -11,3 +11,8 @@ TODO
 - Implement a ``Tuple`` core object.
 - Implement a ``Bytes`` core object.
 - Implement an ``FFI`` core object.
+
+- Do a refresher on how to write an interpreter in RPython and write a really really simple one:
+
+  - http://doc.pypy.org/en/latest/coding-guide.html#restricted-python
+  - http://morepypy.blogspot.com.au/2011/04/tutorial-writing-interpreter-with-pypy.html
