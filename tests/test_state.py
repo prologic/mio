@@ -2,6 +2,7 @@ from decimal import Decimal
 
 
 from mio import runtime
+from mio.utils import Null
 
 
 # Supported Types
@@ -12,6 +13,32 @@ from mio import runtime
 #     bool:    "Boolean"
 #     Decimal: "Number"
 # }
+
+
+class Foo(object):
+    """Foo Class
+
+    mio does not support coerving Python user classes, methods or
+    objects. Trying to convert these to mio with ``runtime.state.tomio(...)``
+    will fail and if a ``default`` value is passed will return that.
+    """
+
+    def foo(self):
+        """foo method"""
+
+
+def test_tomio_class(mio):
+    assert runtime.state.tomio(Foo, Null) is Null
+
+
+def test_tomio_object(mio):
+    foo = Foo()
+    assert runtime.state.tomio(foo, Null) is Null
+
+
+def test_tomio_method(mio):
+    foo = Foo()
+    assert runtime.state.tomio(foo.foo, Null) is Null
 
 
 def test_frommio_Number(mio):
