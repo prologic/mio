@@ -33,7 +33,7 @@ Factorial::
     
     Number fact = method(
         (self < 2) ifTrue(return self)
-        return (self * ((self - 1) fact))
+        return (self * ((self - 1) fact()))
     ))
 
 Hello World::

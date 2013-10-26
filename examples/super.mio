@@ -8,14 +8,14 @@ Foo = Object clone do (
 
 Bar = Foo clone do (
     foo = method(
-        super foo
+        super() foo()
         print("bar")
     )
 )
 
 World = Bar clone do (
     foo = method(
-        super foo
+        super() foo()
         print("Hello World!")
     )
 )

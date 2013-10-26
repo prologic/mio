@@ -23,7 +23,7 @@ Foo = Object clone do (
 )
 
 world = World clone
-world hello
+world hello()
 
 foo = adapt(Foo, TGreetable)
-foo hello
+foo hello()

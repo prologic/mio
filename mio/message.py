@@ -6,16 +6,14 @@ from utils import method
 
 class Message(Object):
 
-    def __init__(self, name, *args, **kwargs):
-        value = kwargs.get("value")
+    def __init__(self, name=None, value=None, args=None):
         super(Message, self).__init__(value=value)
 
         self.name = name
+        self.value = value
+        self.args = args if args is not None else []
 
-        self._args = list(args)
-        for arg in args:
-            arg.previous = self
-
+        self.call = args is not None
         self.terminator = self.value is None and name in ["\r", "\n", ";"]
 
         self._previous = self
@@ -122,7 +120,8 @@ class Message(Object):
 
     @method()
     def setArgs(self, receiver, context, m, *args):
-        receiver.args = tuple(args)
+        receiver.args = list(args)
+        receiver.call = True
         return receiver
 
     @method()

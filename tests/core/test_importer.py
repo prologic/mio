@@ -16,7 +16,7 @@ def test_importer(mio, tmpdir, capfd):
     assert str(tmpdir) in list(mio.eval("Importer paths"))
 
     mio.eval("foo = import(foo)")
-    mio.eval("foo hello")
+    mio.eval("foo hello()")
 
     out, err = capfd.readouterr()
     assert out == "Hello World!\n"

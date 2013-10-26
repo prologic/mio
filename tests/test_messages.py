@@ -8,7 +8,7 @@ def test_name():
 
 def test_args():
     args = [Message("%d" % i) for i in range(3)]
-    m = Message("foo", *args)
+    m = Message("foo", args=args)
     assert m.name == "foo"
     assert m.args[0].name == "0"
     assert m.args[1].name == "1"
@@ -96,7 +96,7 @@ def test_getLast(mio):
 
 
 def test_eval(mio, capfd):
-    mio.eval("m = Message clone setName(\"print\") setArgs(Message clone setName(\"foo\") setValue(\"foo\"))")
-    assert mio.eval("m eval").value is None
+    mio.eval("m = Message clone() setName(\"print\") setArgs(Message clone() setName(\"foo\") setValue(\"foo\"))")
+    assert mio.eval("m eval()").value is None
     out, err = capfd.readouterr()
     assert out == "foo\n"

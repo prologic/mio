@@ -76,7 +76,10 @@ def tokenize(str):
 
 
 def make_arguments(n):
-    return (n[0], (n[1][0],) + tuple(n[1][1]), n[2])
+    opening, expression, expressions, closing = n
+    arguments = [] if expression is None else [expression]
+    arguments.extend(expressions)
+    return (opening, arguments, closing)
 
 
 def make_message(n):
@@ -100,8 +103,6 @@ def make_message(n):
             name = "{}"
         args = n[1]
 
-    args = tuple(args) if args is not None else ()
-
     if isinstance(name, tuple):
         name, next = name
     else:
@@ -114,10 +115,10 @@ def make_message(n):
         value = None
 
     if next is not None:
-        message = Message(name, value=value)
-        message.next = Message(next, *args, value=next)
+        message = Message(name, value)
+        message.next = Message(next, next, args)
     else:
-        message = Message(name, *args, value=value)
+        message = Message(name, value, args)
 
     return message
 
@@ -131,27 +132,24 @@ def is_operator(message):
 
 
 def make_chain(messages, all=True):
-    if messages == []:
-        return Message("")
-
     root = node = None
 
     while messages:
         if len(messages) > 1 and is_assignment(messages[1]):
             name = messages.pop(0).name
             object = runtime.find("String").clone(name)
-            key = Message(name, value=object)
+            key = Message(name, object)
 
             op = messages.pop(0)
 
             if op.name == "=" and op.next is not None and op.next.name in ("()", "[]", "{}",):
-                value = Message("()", Message(op.next.name, *op.next.args))
+                value = Message("()", args=[Message(op.next.name, args=op.next.args)])
             elif op.args:
-                value = Message("()", *op.args)
+                value = Message("()", args=op.args)
             else:
                 value = make_chain(messages, all=False)
 
-            message = Message("set", key, value)
+            message = Message("set", args=[key, value])
         elif is_operator(messages[0]):
             message = messages.pop(0)
             if messages:
@@ -160,6 +158,7 @@ def make_chain(messages, all=True):
                     # Set the argument (a Message) previous attribute to the current message
                     chain.previous = message
                     message.args.append(chain)
+                    message.call = True
         elif messages[0].terminator and not all:
             break
         else:
@@ -212,9 +211,9 @@ message.define(((symbol + maybe(arguments)) | arguments) >> make_message)
 opening = op("(") | op("{") | op("[")
 closing = op(")") | op("}") | op("]")
 
-paren_arguments = op("(") + maybe(expression + maybe(many(skip(op_(",")) + expression))) + op(")")
-bracket_arguments = op("[") + maybe(expression + maybe(many(skip(op_(",")) + expression))) + op("]")
-brace_arguments = op("{") + maybe(expression + maybe(many(skip(op_(",")) + expression))) + op("}")
+paren_arguments = op("(") + maybe(expression) + many(skip(op_(",")) + expression) + op(")")
+bracket_arguments = op("[") + maybe(expression) + many(skip(op_(",")) + expression) + op("]")
+brace_arguments = op("{") + maybe(expression) + many(skip(op_(",")) + expression) + op("}")
 arguments.define((paren_arguments | bracket_arguments | brace_arguments) >> make_arguments)
 
 symbol.define(identifier | number | operator | string)

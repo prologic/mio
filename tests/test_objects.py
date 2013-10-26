@@ -230,13 +230,13 @@ def test_keys(mio):
 
 def test_method(mio):
     mio.eval("foo = method(1)")
-    assert mio.eval("foo") == 1
+    assert mio.eval("foo()") == 1
 
     mio.eval("Foo = Object clone")
     assert mio.eval("Foo x = 1") == 1
 
     mio.eval("Foo foo = method(self x)")
-    assert mio.eval("Foo foo") == 1
+    assert mio.eval("Foo foo()") == 1
 
 
 def test_neq(mio):
@@ -262,7 +262,7 @@ def test_del(mio):
 
 def test_return1(mio):
     mio.eval("""x = method(return "foo"; "bar")""")
-    assert mio.eval("x") == "foo"
+    assert mio.eval("x()") == "foo"
 
 
 def test_return2(mio):
@@ -271,7 +271,7 @@ def test_return2(mio):
         "bar"
     )""")
 
-    assert mio.eval("x") == "foo"
+    assert mio.eval("x()") == "foo"
 
 
 def test_return3(mio):
@@ -279,11 +279,11 @@ def test_return3(mio):
         y = method(
             return "foo"
         )
-        return y
+        return y()
         "bar"
     )""")
 
-    assert mio.eval("x") == "foo"
+    assert mio.eval("x()") == "foo"
 
 
 def test_return4(mio):
@@ -293,7 +293,7 @@ def test_return4(mio):
 
     )""")
 
-    assert mio.eval("1 foo") == 1
+    assert mio.eval("1 foo()") == 1
 
 
 def test_return5(mio):
@@ -302,8 +302,8 @@ def test_return5(mio):
         "bar"
     )""")
 
-    assert mio.eval("1 foo") == "foo"
-    assert mio.eval("2 foo") == "bar"
+    assert mio.eval("1 foo()") == "foo"
+    assert mio.eval("2 foo()") == "bar"
 
 
 def test_summary(mio, capfd):

@@ -15,6 +15,6 @@ World = Object clone do (
     )
 
     hello = method(
-        writeln("Hello ", self greeting)
+        print("Hello ", self greeting)
     )
 )

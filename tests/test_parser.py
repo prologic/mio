@@ -3,9 +3,7 @@ from mio.parser import parse, tokenize
 
 
 def test_empty_message():
-    chain = parse(tokenize(""))
-    assert chain.name == ""
-    assert chain.args == []
+    assert parse(tokenize("")) is None
 
 
 def test_parens():

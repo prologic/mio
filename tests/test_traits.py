@@ -8,7 +8,7 @@ def test_basic_trait(mio, capfd):
     mio.eval("""
         TGreeting = Object clone do (
             hello = method(
-                print("Hello", self getGreeting)
+                print("Hello", self getGreeting())
             )
         )
 
@@ -27,12 +27,12 @@ def test_basic_trait(mio, capfd):
         )
     """)
 
-    mio.eval("World hello")
+    mio.eval("World hello()")
     out, err = capfd.readouterr()
     assert out == "Hello World!\n"
 
     mio.eval("World setGreeting(\"John\")")
-    mio.eval("World hello")
+    mio.eval("World hello()")
     out, err = capfd.readouterr()
     assert out == "Hello John\n"
 
@@ -78,7 +78,7 @@ def test_delTrait2(mio, capfd):
     assert mio.eval("World hasTrait(TGreetable)").value is True
     assert mio.eval("World behaviors") == ["hello"]
 
-    assert mio.eval("World hello").value is None
+    assert mio.eval("World hello()").value is None
     out, err = capfd.readouterr()
     assert out == "Hello World!\n"
 
@@ -87,7 +87,7 @@ def test_delTrait2(mio, capfd):
     assert mio.eval("World hasTrait(TGreetable)").value is False
 
     with raises(AttributeError):
-        mio.eval("World hello", reraise=True)
+        mio.eval("World hello()", reraise=True)
 
 
 def test_addTrait(mio):
@@ -126,7 +126,7 @@ def test_behaviors(mio, capfd):
         )
     """)
 
-    assert mio.eval("World hello").value is None
+    assert mio.eval("World hello()").value is None
     out, err = capfd.readouterr()
     assert out == "Hello World!\n"
     assert mio.eval("World behaviors") == ["hello"]
@@ -145,7 +145,7 @@ def test_del_behavior(mio, capfd):
         )
     """)
 
-    assert mio.eval("World hello").value is None
+    assert mio.eval("World hello()").value is None
     out, err = capfd.readouterr()
     assert out == "Hello World!\n"
     assert mio.eval("World behaviors") == ["hello"]
@@ -153,5 +153,5 @@ def test_del_behavior(mio, capfd):
     mio.eval("World del(\"hello\")")
 
     with raises(AttributeError):
-        mio.eval("World hello", reraise=True)
+        mio.eval("World hello()", reraise=True)
     assert mio.eval("World behaviors") == []

@@ -4,12 +4,12 @@ Account = Object clone do(
     balance = 0
     deposit = method(v, self balance = self balance + v)
     withdraw = method(v, self balance = self balance - v)
-    show = method(writeln("Account balance: $", self balance))
+    show = method(print("Account balance: $", self balance))
 )
 
 myAccount = Account clone
-myAccount show
+myAccount show()
 
 print("Depositing $10")
 myAccount deposit(10)
-myAccount show
+myAccount show()

@@ -1,8 +1,8 @@
 # Standard Operators
 
 Object do(
-    set("==", method(other, self cmp(other) bool not))
-    set("!=", method(other, (self == other) not))
+    set("==", method(other, self cmp(other) bool() not()))
+    set("!=", method(other, (self == other) not()))
 
     set("<", method(other, self cmp(other) == -1))
     set(">", method(other, self cmp(other) == 1))
@@ -33,15 +33,15 @@ Object do(
         (call message args len == 1) ifTrue(
             (call message arg(0)) bool not
         ) ifFalse(
-            self bool not
+            self bool() not()
         )
     )
 
     is = method(other,
         (call message args len == 1) ifTrue(
-            (self id) == (call message arg(0))
+            (self id()) == (call message arg(0))
         ) ifFalse(
-            (self id) == (other id)
+            (self id()) == (other id())
         )
     )
 )
