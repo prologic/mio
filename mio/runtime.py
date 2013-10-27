@@ -4,7 +4,6 @@
 """
 
 from os import path
-from decimal import Decimal
 
 
 from pkg_resources import resource_filename, resource_listdir
