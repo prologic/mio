@@ -2,8 +2,8 @@ Changes
 -------
 
 
-mio 0.0.4.dev
-.............
+mio 0.0.4
+.........
 
 - Moved the implementation of ``super`` to the mio std. lib
 - Only set ``_`` as the last result in the Root object (*the Lobby*)
