@@ -16,7 +16,8 @@ def test_init(mio):
 
 
 def test_repr(mio):
-    assert repr(mio.eval("Boolean")) == "Boolean"
+    Boolean = mio.eval("Boolean")
+    assert repr(mio.eval("Boolean")) == "Boolean at {0:s}".format(hex(id(Boolean)))
     assert repr(mio.eval("True")) == repr(True)
     assert repr(mio.eval("False")) == repr(False)
     assert repr(mio.eval("None")) == repr(None)

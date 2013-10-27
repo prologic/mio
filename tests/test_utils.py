@@ -4,7 +4,7 @@ from mio.utils import format_method, format_object, method, tryimport, Null
 
 
 class Foo(Object):
-        
+
     @method()
     def noargs(self, receiver, context, m):
         pass
@@ -18,7 +18,7 @@ class Foo(Object):
         pass
 
 
-FOO_TEMPLATE = """Foo:
+FOO_TEMPLATE = """Foo at {0:s}:
   args            = args(a, b, c)
   noargs          = noargs()
   varargs         = varargs(*args)"""
@@ -27,7 +27,7 @@ FOO_TEMPLATE = """Foo:
 def test_format_object():
     foo = Foo()
     foo.create_methods()
-    assert format_object(foo) == FOO_TEMPLATE
+    assert format_object(foo) == FOO_TEMPLATE.format(hex(id(foo)))
 
 
 def test_format_method():
@@ -44,7 +44,7 @@ def test_tryimport():
 
 def test_tryimport_fail():
     try:
-        m = tryimport("foo", "foo")
+        tryimport("foo", "foo")
     except Warning as w:
         assert w[0] == "foo"
 

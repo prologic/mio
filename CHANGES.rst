@@ -45,6 +45,7 @@ mio 0.0.4.dev
 - Added support for exposing builtin functions as well in the FFI.
 - Simplified the two examples used in the docs and readme and write a simple bash script to profile the factorial example.
 - Changed the calling semantics so that calls to methods/blocks are explicitly made with ``()``.
+- Added a new internal attribute to ``Object`` called ``binding`` used to show the binding of a bound object in repr(s).
 
 
 mio 0.0.3 (*2013-10-20*)

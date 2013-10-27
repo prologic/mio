@@ -13,7 +13,7 @@ from .states import BreakState, ContinueState, ReturnState
 
 class Object(object):
 
-    __slots__ = ("attrs", "parent", "state", "value", "traits", "behaviors",)
+    __slots__ = ("attrs", "binding", "parent", "state", "value", "traits", "behaviors",)
 
     def __init__(self, value=Null, methods=False):
         super(Object, self).__init__()
@@ -25,6 +25,7 @@ class Object(object):
         self.traits = []
         self.behaviors = {}
 
+        self.binding = None
         self.state = NormalState()
 
         if methods:
@@ -92,7 +93,9 @@ class Object(object):
         self.traits.remove(trait)
 
     def __repr__(self):
-        return repr(self.value) if self.value is not Null else self.type
+        type = "{0:s}({1:s})".format(self.binding, self.type) if self.binding is not None else self.type
+        default = "{0:s} at {1:s}".format(type, hex(id(self)))
+        return repr(self.value) if self.value is not Null else default
 
     def clone(self, value=Null):
         obj = copy(self)
@@ -327,6 +330,9 @@ class Object(object):
     @method("clone")
     def _clone(self, receiver, context, m, *args):
         object = receiver.clone()
+
+        if m.first.previous.name == "set":
+            object.binding = m.first.previous.args[0].name
 
         try:
             m = runtime.find("Message").clone()
