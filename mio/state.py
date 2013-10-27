@@ -109,8 +109,6 @@ class State(object):
         root["Module"] = Module()
         root["Importer"] = Importer()
 
-        root["_"] = root["None"]
-
     def frommio(self, x, default=None):
         return typemap["frommio"].get(x.type, constantly(default))(x)
 
