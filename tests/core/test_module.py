@@ -7,7 +7,7 @@ def test_module(mio, tmpdir, capfd):
         """)
 
     foo = mio.eval("""foo = Module clone("foo", "{0:s}")""".format(str(tmpdir.join("foo.mio"))))
-    assert repr(foo) == "Module(__name__={0:s}, __file__={1:s})".format(repr("foo"), repr(str(tmpdir.join("foo.mio"))))
+    assert repr(foo) == "Module(name={0:s}, file={1:s})".format(repr("foo"), repr(str(tmpdir.join("foo.mio"))))
 
     mio.eval("foo hello()")
 

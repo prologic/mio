@@ -15,7 +15,7 @@ class Object(object):
 
     __slots__ = ("attrs", "binding", "parent", "state", "value", "traits", "behaviors",)
 
-    def __init__(self, value=Null, methods=False):
+    def __init__(self, value=Null, methods=True):
         super(Object, self).__init__()
 
         self.attrs = {}

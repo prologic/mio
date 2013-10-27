@@ -45,7 +45,7 @@ def test_hasTrait(mio):
         )
     """)
 
-    assert mio.eval("World hasTrait(TGreetable)").value is True
+    assert mio.eval("World hasTrait(TGreetable)")
 
 
 def test_delTrait(mio):
@@ -56,10 +56,10 @@ def test_delTrait(mio):
         )
     """)
 
-    assert mio.eval("World hasTrait(TGreetable)").value is True
+    assert mio.eval("World hasTrait(TGreetable)")
     mio.eval("World delTrait(TGreetable)")
     assert mio.eval("World behaviors") == []
-    assert mio.eval("World hasTrait(TGreetable)").value is False
+    assert not mio.eval("World hasTrait(TGreetable)")
 
 
 def test_delTrait2(mio, capfd):
@@ -75,7 +75,7 @@ def test_delTrait2(mio, capfd):
         )
     """)
 
-    assert mio.eval("World hasTrait(TGreetable)").value is True
+    assert mio.eval("World hasTrait(TGreetable)")
     assert mio.eval("World behaviors") == ["hello"]
 
     assert mio.eval("World hello()").value is None
@@ -84,7 +84,7 @@ def test_delTrait2(mio, capfd):
 
     mio.eval("World delTrait(TGreetable)")
     assert mio.eval("World behaviors") == []
-    assert mio.eval("World hasTrait(TGreetable)").value is False
+    assert not mio.eval("World hasTrait(TGreetable)")
 
     with raises(AttributeError):
         mio.eval("World hello()", reraise=True)
@@ -96,9 +96,9 @@ def test_addTrait(mio):
         World = Object clone
     """)
 
-    assert mio.eval("World hasTrait(TGreetable)").value is False
+    assert not mio.eval("World hasTrait(TGreetable)")
     mio.eval("World addTrait(TGreetable)")
-    assert mio.eval("World hasTrait(TGreetable)").value is True
+    assert mio.eval("World hasTrait(TGreetable)")
 
 
 def test_traits(mio):

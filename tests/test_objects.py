@@ -203,12 +203,12 @@ def test_get_no_forward(mio):
 def test_has(mio):
     mio.eval("Foo = Object clone")
     assert mio.eval("Foo x = 1")
-    assert mio.eval("Foo has(\"x\")").value is True
+    assert mio.eval("Foo has(\"x\")")
 
 
 def test_has2(mio):
     mio.eval("Foo = Object clone")
-    assert mio.eval("Foo has(\"x\")").value is False
+    assert not mio.eval("Foo has(\"x\")")
 
 
 def test_hash(mio):
@@ -240,7 +240,7 @@ def test_method(mio):
 
 
 def test_neq(mio):
-    assert mio.eval("1 !=(0)").value is True
+    assert mio.eval("1 !=(0)")
 
 
 def test_set(mio):
@@ -344,10 +344,10 @@ def test_str(mio):
 
 
 def test_bool(mio):
-    assert mio.eval("1 bool").value is True
-    assert mio.eval("0 bool").value is False
-    assert mio.eval("\"foo\" bool").value is True
-    assert mio.eval("\"\" bool").value is False
+    assert mio.eval("1 bool")
+    assert not mio.eval("0 bool")
+    assert mio.eval("\"foo\" bool")
+    assert not mio.eval("\"\" bool")
 
 
 def test_parent(mio):
@@ -373,7 +373,7 @@ def test_setValue(mio):
 
 def test_primitive(mio):
     mio.eval("Foo = Object :clone")
-    assert mio.eval("Foo is Object").value is False
+    assert not mio.eval("Foo is Object")
 
 
 def test_primitive2(mio):

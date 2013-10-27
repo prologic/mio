@@ -29,7 +29,7 @@ def test_open_status(mio, tmpdir):
 
     mio.eval("f = File open(\"%s\", \"r\")" % filename)
     assert mio.eval("f filename") == filename
-    assert mio.eval("f closed").value is False
+    assert not mio.eval("f closed")
     assert mio.eval("f mode") == "r"
 
 
@@ -53,11 +53,11 @@ def test_closed_status(mio, tmpdir):
 
     mio.eval("f = File open(\"%s\", \"r\")" % filename)
     assert mio.eval("f filename") == filename
-    assert mio.eval("f closed").value is False
+    assert not mio.eval("f closed")
     assert mio.eval("f mode") == "r"
 
     mio.eval("f close")
-    assert mio.eval("f closed").value is True
+    assert mio.eval("f closed")
 
 
 def test_read(mio, tmpdir):

@@ -7,10 +7,10 @@ from mio.utils import Null
 from mio.object import Object
 
 
-class Core(Object):
+class Types(Object):
 
     def __init__(self, value=Null):
-        super(Core, self).__init__(value=value)
+        super(Types, self).__init__(value=value)
 
         self.create_objects()
 
@@ -18,14 +18,14 @@ class Core(Object):
         self.parent = runtime.find("Object")
 
     def __repr__(self):
-        return "Core"
+        return "Types"
 
     def load_objects(self):
         for filename in listdir(path.dirname(__file__)):
             name, ext = path.splitext(filename)
             if ext == ".py" and name != "__init__":
-                module = __import__("mio.core.{0:s}".format(name), fromlist=["mio.core"])
-                predicate = lambda x: isclass(x) and issubclass(x, Object) and getmodule(x) is module and x is not Core
+                module = __import__("mio.types.{0:s}".format(name), fromlist=["mio.types"])
+                predicate = lambda x: isclass(x) and issubclass(x, Object) and getmodule(x) is module and x is not Types
                 for name, object in getmembers(module, predicate):
                     yield name, object
 

@@ -1,4 +1,5 @@
-from mio.core import Number, String
+from mio.types.number import Number
+from mio.types.string import String
 from mio.parser import parse, tokenize
 
 

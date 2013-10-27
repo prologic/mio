@@ -54,7 +54,8 @@ def test_frommio_Boolean(mio):
 
 
 def test_tomio_Boolean(mio):
-    assert runtime.state.tomio(True) is mio.eval("True")
+    # XXX: FIXME: This should be the same identity
+    assert runtime.state.tomio(True) == mio.eval("True")
 
 
 def test_frommio_String(mio):

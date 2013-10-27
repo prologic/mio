@@ -2,6 +2,9 @@ from warnings import warn
 from inspect import getargspec, ismethod
 
 
+from mio import runtime
+
+
 def format_method(f):
     name = getattr(f, "name", getattr(f, "__name__"))
     argspec = getargspec(f)
@@ -15,7 +18,17 @@ def format_method(f):
 
 
 def format_object(o):
-    attrs = "\n".join(["  {0:s} = {1:s}".format(str(k).ljust(15), format_method(v) if ismethod(v) else repr(v)) for k, v in sorted(o.attrs.items())])
+    def format_key(k):
+        return str(k).ljust(15)
+
+    def format_value(v):
+        if ismethod(v):
+            return format_method(v)
+        else:
+            return str(runtime.state.eval("repr()", receiver=v))
+
+    attrs = "\n".join(["  {0:s} = {1:s}".format(format_key(k), format_value(v)) for k, v in sorted(o.attrs.items())])
+
     return "{0:s}:\n{1:s}".format(repr(o), attrs)
 
 

@@ -18,24 +18,21 @@ from .parser import Parser
 from .message import Message
 from .continuation import Continuation
 
-from .core import Boolean
-from .core import Number
-from .core import String
-from .core import List
-from .core import Dict
-from .core import FFI
-from .core import File
-from .core import Range
-from .core import System
-from .core import Module
-from .core import Importer
+from .core import Core
+from .types import Types
 
 
 def fromDict(x):
     return dict(x.value)
 
 
-def tobool(x):
+def fromBoolean(x):
+    if x.value is None:
+        return None
+    return bool(x.value)
+
+
+def toBoolean(x):
     return "True" if x else "False"
 
 
@@ -44,7 +41,7 @@ typemap = {
         dict:       "Dict",
         list:       "List",
         str:        "String",
-        bool:       tobool,
+        bool:       toBoolean,
         int:        "Number",
         type(None): "None",
         float:      "Number",
@@ -54,7 +51,7 @@ typemap = {
         "Dict":    fromDict,
         "List":    list,
         "String":  str,
-        "Boolean": bool,
+        "Boolean": fromBoolean,
         "Number":  float
     }
 }
@@ -62,12 +59,13 @@ typemap = {
 
 class State(object):
 
-    def __init__(self, args, opts, root):
+    def __init__(self, args, opts):
         super(State, self).__init__()
 
         self.args = args
         self.opts = opts
-        self.root = root
+
+        self.root = Object(methods=False)
 
     @property
     def value(self):
@@ -79,35 +77,18 @@ class State(object):
 
     def create_objects(self):
         root = self.root
-
-        object = Object(methods=True)
-
+        object = Object()
+        root.parent = object
         root["Root"] = root
         root["Object"] = object
 
-        root.parent = object
-
-        root["Boolean"] = Boolean()
-        root["Number"] = Number()
-        root["String"] = String()
-        root["List"] = List()
-        root["Dict"] = Dict()
-
-        root["None"] = Boolean(None)
-        root["True"] = Boolean(True)
-        root["False"] = Boolean(False)
+        root["Types"] = Types()
+        root["Core"] = Core()
 
         root["Parser"] = Parser()
         root["Message"] = Message("")
         root["Continuation"] = Continuation()
         root["Block"] = Block(None, [], {})
-
-        root["FFI"] = FFI()
-        root["File"] = File()
-        root["Range"] = Range()
-        root["System"] = System()
-        root["Module"] = Module()
-        root["Importer"] = Importer()
 
     def frommio(self, x, default=None):
         return typemap["frommio"].get(x.type, constantly(default))(x)
@@ -124,7 +105,14 @@ class State(object):
             return default
 
     def find(self, name):
-        return self.root[name]
+        if "Types" in self.root and name in self.root["Types"]:
+            return self.root["Types"][name]
+        elif "Core" in self.root and name in self.root["Core"]:
+            return self.root["Core"][name]
+        elif "builtins" in self.root and name in self.root["builtins"]:
+            return self.root["builtins"][name]
+        else:
+            return self.root[name]
 
     def eval(self, code, receiver=None, context=None, reraise=False):
         message = None

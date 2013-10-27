@@ -29,7 +29,7 @@ def foo():
 """)
     ''')
 
-    assert repr(mio.eval("foo")) == "FFI(__name__='foo', __file__=None)"
+    assert repr(mio.eval("foo")) == "FFI(name='foo', file=None)"
 
 
 def test_ffi_attrs(mio):
@@ -60,8 +60,8 @@ def foo():
     foo = mio.eval('foo = FFI fromfile("{0:s}")'.format(str(tmpdir.join("foo.py"))))
     assert foo.type == "FFI"
     assert foo.module is not None
-    assert foo["__name__"] == "foo"
-    assert foo["__file__"] == str(tmpdir.join("foo.py"))
+    assert foo.name == "foo"
+    assert foo.file == str(tmpdir.join("foo.py"))
 
     assert mio.eval("foo foo") == "Foobar!"
     assert mio.eval("foo x") == 1

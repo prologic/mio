@@ -33,14 +33,14 @@ class FFI(Object):
         super(FFI, self).__init__(value=value)
 
         self.module = None
-        self["__name__"] = runtime.find("None")
-        self["__file__"] = runtime.find("None")
+        self.name = None
+        self.file = None
 
         self.create_methods()
         self.parent = runtime.find("Object")
 
     def __repr__(self):
-        return "FFI(__name__={0:s}, __file__={1:s})".format(repr(self["__name__"]), repr(self["__file__"]))
+        return "FFI(name={0:s}, file={1:s})".format(repr(self.name), repr(self.file))
 
     def create_attributes(self):
         members = dict(getmembers(self.module))
@@ -57,10 +57,10 @@ class FFI(Object):
 
     @method()
     def init(self, receiver, context, m, name, code):
-        name = name.eval(context)
-        code = code.eval(context)
+        receiver.name = name = str(name.eval(context))
+        receiver.code = code = str(code.eval(context))
 
-        receiver.module = create_module(str(name), str(code))
+        receiver.module = create_module(name, code)
         receiver.create_attributes()
 
         return receiver
@@ -72,7 +72,8 @@ class FFI(Object):
         code = open(filename, "r").read()
 
         obj = receiver.clone()
-        obj["__file__"] = runtime.find("String").clone(filename)
+        obj.file = filename
+        obj.name = name
 
         obj.module = create_module(name, code)
         obj.create_attributes()

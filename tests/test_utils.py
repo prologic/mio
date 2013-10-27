@@ -26,7 +26,6 @@ FOO_TEMPLATE = """Foo at {0:s}:
 
 def test_format_object():
     foo = Foo()
-    foo.create_methods()
     assert format_object(foo) == FOO_TEMPLATE.format(hex(id(foo)))
 
 

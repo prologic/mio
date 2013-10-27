@@ -8,7 +8,7 @@ def test_closure(mio, capfd):
     """)
 
     mio.eval("x = foo()")
-    assert mio.eval("x()").value is None
+    assert mio.frommio(mio.eval("x()")) is None
     out, err = capfd.readouterr()
     assert out == "foo\n"
 

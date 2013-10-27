@@ -9,18 +9,15 @@ from os import path
 from pkg_resources import resource_filename, resource_listdir
 
 
-root = None
 state = None
 
 
 def init(args=[], opts=None):
-    global root, state
+    global state
 
     from state import State
-    from object import Object
 
-    root = Object()
-    state = State(args, opts, root)
+    state = State(args, opts)
     state.create_objects()
 
     if opts is None or (opts is not None and not opts.nosys):
@@ -30,6 +27,6 @@ def init(args=[], opts=None):
 
 
 def find(name):
-    global root
+    global state
 
-    return root[name]
+    return state.find(name)
