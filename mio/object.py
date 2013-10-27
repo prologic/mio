@@ -7,7 +7,7 @@ from inspect import getmembers, ismethod
 import runtime
 from .states import NormalState
 from .errors import AttributeError, TypeError
-from .utils import format_object, method, Null
+from .utils import format_object, memoize, method, Null
 from .states import BreakState, ContinueState, ReturnState
 
 

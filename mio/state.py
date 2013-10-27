@@ -124,7 +124,7 @@ class State(object):
             return default
 
     def find(self, name):
-        return self.root.attrs[name]
+        return self.root[name]
 
     def eval(self, code, receiver=None, context=None, reraise=False):
         message = None

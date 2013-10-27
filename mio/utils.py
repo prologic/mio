@@ -1,8 +1,6 @@
-from time import time
-from hashlib import md5
 from warnings import warn
 from threading import RLock
-from functools import wraps
+from functools import partial
 from inspect import getargspec, ismethod
 
 
@@ -79,44 +77,31 @@ class memoize(object):
              With modifications inspired from https://wiki.python.org/moin/PythonDecoratorLibrary#Memoize
     """
 
-    def __init__(self, timeout=None, manual_flush=False):
-        self.timeout = timeout
-        self.manual_flush = manual_flush
-
+    def __init__(self, func):
+        self.func = func
         self.cache = {}
-        self.cache_lock = RLock()
+        self.lock = RLock()
 
-    def __call__(self, fn):
-        def flush_cache():
-            with self.cache_lock:
-                for key in self.cache.keys():
-                    if (time() - self.cache[key][1]) > self.timeout:
-                        del(self.cache[key])
+    def flush(self):
+        self.cache.clear()
 
-        @wraps(fn)
-        def wrapped(*args, **kwargs):
-            kw = kwargs.items()
-            kw.sort()
-            key_str = repr((args, kw))
-            key = md5(key_str).hexdigest()
+    def __call__(self, *args):
+        key = args
 
-            with self.cache_lock:
-                try:
-                    result, cache_time = self.cache[key]
-                    if self.timeout is not None and (time() - cache_time) > self.timeout:
-                        raise KeyError
-                except KeyError:
-                    result, _ = self.cache[key] = (fn(*args, **kwargs), time())
+        if key in self.cache:
+            result = self.cache[key]
+        else:
+            result = self.cache[key] = self.func(*args)
 
-            if not self.manual_flush and self.timeout is not None:
-                flush_cache()
+        return result
 
-            return result
+    def __get__(self, obj, objtype=None):
+        if obj is None:
+            return self
 
-        if self.manual_flush:
-            wrapped.flush_cache = flush_cache
-
-        return wrapped
+        f = partial(self.__call__, obj)
+        f.flush = self.flush
+        return f
 
 
 class MetaNull(type):
