@@ -12,7 +12,7 @@ class Module(Object):
         self["__name__"] = runtime.find("None")
 
         self.create_methods()
-        self.parent = runtime.state.find("Object")
+        self.parent = runtime.find("Object")
 
     def __repr__(self):
         return "Module(__name__={0:s}, __file__={1:s})".format(repr(self["__name__"]), repr(self["__file__"]))

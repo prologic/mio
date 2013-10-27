@@ -41,7 +41,7 @@ class Block(Object):
         self.locals = None
 
         self.create_methods()
-        self.parent = runtime.state.find("Object")
+        self.parent = runtime.find("Object")
 
     def __repr__(self):
         args = ", ".join(chain(map(getargname, self.args), ("{0:s}={1:s}".format(str(k), repr(v)) for k, v in self.kwargs.items())))
@@ -58,7 +58,7 @@ class Block(Object):
             self.locals.parent = receiver
 
         call = Call()
-        call.parent = runtime.state.find("Object")
+        call.parent = runtime.find("Object")
 
         call["message"] = m
         call["target"] = receiver

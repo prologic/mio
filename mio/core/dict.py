@@ -12,7 +12,7 @@ class Dict(Object):
         super(Dict, self).__init__(value=value)
 
         self.create_methods()
-        self.parent = runtime.state.find("Object")
+        self.parent = runtime.find("Object")
 
     def __iter__(self):
         return iter(self.value) if isinstance(self.value, dict) else iter({})

@@ -109,7 +109,7 @@ class Object(object):
         return obj
 
     def forward(self, key):
-        return runtime.state.find(key)
+        return runtime.find(key)
 
     @property
     def state(self):
@@ -129,14 +129,14 @@ class Object(object):
     def _del(self, receiver, context, m, key):
         key = key.eval(context)
         del receiver[key]
-        return runtime.state.find("None")
+        return runtime.find("None")
 
     @method()
     def has(self, receiver, context, m, key):
         key = key.eval(context)
         if key in receiver:
-            return runtime.state.find("True")
-        return runtime.state.find("False")
+            return runtime.find("True")
+        return runtime.find("False")
 
     @method()
     def set(self, receiver, context, m, key, value):

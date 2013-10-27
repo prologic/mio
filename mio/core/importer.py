@@ -20,7 +20,7 @@ class Importer(Object):
         self["paths"] = self.build_paths()
 
         self.create_methods()
-        self.parent = runtime.state.find("Object")
+        self.parent = runtime.find("Object")
 
     def build_paths(self):
         paths = ["."]

@@ -20,7 +20,7 @@ class System(Object):
         self["stderr"] = runtime.find("File").clone(sys.stderr)
 
         self.create_methods()
-        self.parent = runtime.state.find("Object")
+        self.parent = runtime.find("Object")
 
     def build_args(self):
         return runtime.find("List").clone([runtime.find("String").clone(arg) for arg in runtime.state.args])

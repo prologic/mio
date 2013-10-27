@@ -9,7 +9,7 @@ class File(Object):
         super(File, self).__init__(value=value)
 
         self.create_methods()
-        self.parent = runtime.state.find("Object")
+        self.parent = runtime.find("Object")
 
     def __iter__(self):
         data = self.value.read()

@@ -16,7 +16,7 @@ class Range(Object):
         self["step"] = runtime.find("None")
 
         self.create_methods()
-        self.parent = runtime.state.find("Object")
+        self.parent = runtime.find("Object")
 
     def __iter__(self):
         start = int(self["start"])

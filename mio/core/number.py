@@ -11,7 +11,7 @@ class Number(Object):
         super(Number, self).__init__(value=Decimal(value))
 
         self.create_methods()
-        self.parent = runtime.state.find("Object")
+        self.parent = runtime.find("Object")
 
     def __abs__(self):
         return abs(self.value)
