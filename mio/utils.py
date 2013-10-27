@@ -1,6 +1,4 @@
 from warnings import warn
-from threading import RLock
-from functools import partial
 from inspect import getargspec, ismethod
 
 
@@ -59,49 +57,6 @@ def tryimport(modules, message=None):
 
     if message is not None:
         warn(message)
-
-
-class memoize(object):
-    """Memoize the results of a function.
-
-    Supports an optional timeout for automatic cache expiration.
-
-    If the optional manual_flush argument is True, a function called
-    "flush_cache" will be added to the wrapped function.  When
-    called, it will remove all the timed out values from the cache.
-
-    This decorator is thread safe.
-    This decorator also supports class and instance methods.
-
-    ..note:: Borrowed directly from the Wraptor library (https://pypi.python.org/pypi/Wraptor)
-             With modifications inspired from https://wiki.python.org/moin/PythonDecoratorLibrary#Memoize
-    """
-
-    def __init__(self, func):
-        self.func = func
-        self.cache = {}
-        self.lock = RLock()
-
-    def flush(self):
-        self.cache.clear()
-
-    def __call__(self, *args):
-        key = args
-
-        if key in self.cache:
-            result = self.cache[key]
-        else:
-            result = self.cache[key] = self.func(*args)
-
-        return result
-
-    def __get__(self, obj, objtype=None):
-        if obj is None:
-            return self
-
-        f = partial(self.__call__, obj)
-        f.flush = self.flush
-        return f
 
 
 class MetaNull(type):
