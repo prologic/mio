@@ -13,7 +13,7 @@ from .states import BreakState, ContinueState, ReturnState
 
 class Object(object):
 
-    __slots__ = ("attrs", "parent", "_state", "value", "traits", "behaviors",)
+    __slots__ = ("attrs", "parent", "state", "value", "traits", "behaviors",)
 
     def __init__(self, value=Null, methods=False):
         super(Object, self).__init__()
@@ -25,7 +25,7 @@ class Object(object):
         self.traits = []
         self.behaviors = {}
 
-        self._state = NormalState()
+        self.state = NormalState()
 
         if methods:
             self.create_methods()
@@ -104,20 +104,12 @@ class Object(object):
         obj.traits = []
         obj.behaviors = {}
 
-        obj._state = NormalState()
+        obj.state = NormalState()
 
         return obj
 
     def forward(self, key):
         return runtime.find(key)
-
-    @property
-    def state(self):
-        return self._state
-
-    @state.setter
-    def state(self, state):
-        self._state = state
 
     @property
     def type(self):
