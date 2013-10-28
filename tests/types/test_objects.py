@@ -344,10 +344,10 @@ def test_str(mio):
 
 
 def test_bool(mio):
-    assert mio.eval("1 bool")
-    assert not mio.eval("0 bool")
-    assert mio.eval("\"foo\" bool")
-    assert not mio.eval("\"\" bool")
+    assert mio.eval("bool(1)")
+    assert not mio.eval("bool(0)")
+    assert mio.eval("bool(\"foo\")")
+    assert not mio.eval("bool(\"\")")
 
 
 def test_parent(mio):
