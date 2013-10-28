@@ -4,9 +4,6 @@ from decimal import Decimal
 from traceback import format_exc
 
 
-from funcy import constantly
-
-
 from .errors import Error
 from .version import version
 from .utils import tryimport
@@ -81,7 +78,7 @@ class State(object):
         root["Core"] = Core()
 
     def frommio(self, x, default=None):
-        return typemap["frommio"].get(x.type, constantly(default))(x)
+        return typemap["frommio"].get(x.type, lambda x: default)(x)
 
     def tomio(self, x, default="None"):
         mapto = typemap["tomio"].get(type(x), default)

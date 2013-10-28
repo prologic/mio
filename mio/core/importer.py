@@ -1,7 +1,7 @@
 from os import path
+from itertools import imap, izip, repeat
 
 
-from funcy import compose, first, imap, izip, repeat, select
 from pkg_resources import resource_filename, resource_listdir
 
 
@@ -24,7 +24,7 @@ class Importer(Object):
 
     def build_paths(self):
         paths = ["."]
-        paths.append(path.dirname(resource_filename(mio.__package__, path.join("lib", first(resource_listdir(mio.__package__, "lib"))))))
+        paths.append(path.dirname(resource_filename(mio.__package__, path.join("lib", resource_listdir(mio.__package__, "lib")[0]))))
         paths.append(path.expanduser("~/lib/mio"))
         return runtime.find("List").clone(map(runtime.find("String").clone, paths))
 
@@ -34,10 +34,16 @@ class Importer(Object):
         file = "{0:s}.mio".format(name)
 
         paths = (
-            compose(path.abspath, path.expanduser, path.expandvars)(path.join(*p))
+            path.abspath(path.expanduser(path.expandvars(path.join(*p))))
             for p in izip(imap(str, self["paths"]), repeat(file, len(self["paths"])))
         )
-        filename = first(select(path.exists, paths))
+
+        matches = (p for p in paths if path.exists(p))
+
+        try:
+            filename = next(matches)
+        except StopIteration:
+            filename = None
 
         if filename is not None:
             return runtime.state.eval("""Module clone("{0:s}", "{1:s}")""".format(name, filename), receiver, context)

@@ -4,9 +4,6 @@ from functools import wraps
 from inspect import isfunction, isbuiltin, getmembers
 
 
-from funcy import compose, project
-
-
 from mio import runtime
 from mio.types.object import Object
 from mio.utils import method, Null
@@ -43,11 +40,11 @@ class FFI(Object):
         return "FFI(name={0:s}, file={1:s})".format(repr(self.name), repr(self.file))
 
     def create_attributes(self):
-        members = dict(getmembers(self.module))
+        members = getmembers(self.module)
         if "__all__" in members:
-            members = project(members, members["__all__"])
+            members = [(k, v) for k, v in members if k in members["__all__"]]
 
-        for k, v in members.items():
+        for k, v in members:
             if isfunction(v) or isbuiltin(v):
                 self[k] = wrap_function(v)
             else:
@@ -67,7 +64,7 @@ class FFI(Object):
 
     @method()
     def fromfile(self, receiver, context, m, filename):
-        filename = compose(path.abspath, path.expanduser, path.expandvars)(str(filename.eval(context)))
+        filename = path.abspath(path.expanduser(path.expandvars(str(filename.eval(context)))))
         name = path.splitext(path.basename(filename))[0]
         code = open(filename, "r").read()
 

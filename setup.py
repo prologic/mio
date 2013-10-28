@@ -54,7 +54,6 @@ setup(
     scripts=glob("bin/*"),
     install_requires=[
         "funcparserlib==0.3.6",
-        "funcy==0.5.6",
     ],
     entry_points={
         "console_scripts": [
