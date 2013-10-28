@@ -367,10 +367,6 @@ class Object(object):
 
     # Type Conversion
 
-    @method("bool")
-    def bool(self, receiver, context, m):
-        return runtime.find("True") if receiver else runtime.find("False")
-
     @method("repr")
     def repr(self, receiver, context, m):
         return runtime.find("String").clone(repr(receiver))

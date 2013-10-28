@@ -30,6 +30,8 @@ def dec_to_bin(x):
 
 bin = block(x, utils dec_to_bin(x))
 
+bool = block(x, x :__nonzero__())
+
 map = block(f, xs,
     rs = List clone
     xs foreach(x,
