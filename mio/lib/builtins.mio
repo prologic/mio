@@ -28,6 +28,14 @@ bin = block(x, utils tobin(x))
 
 bool = block(x, utils tobool(x))
 
+callable = block(x,
+    (x has("__call__")) ifTrue(
+        return True
+    ) ifFalse(
+        return (x type == "Block")
+    )
+)
+
 map = block(f, xs,
     rs = List clone
     xs foreach(x,

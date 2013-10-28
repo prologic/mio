@@ -9,6 +9,7 @@ mio 0.0.5.dev
 - Re-implemented ``True``, ``False`` and ``None`` in mio.
 - Implemented ``bin`` builtin.
 - Implemented ``bool`` builtin.
+- Implemented ``callable`` builtin.
 
 
 mio 0.0.4 (*2013-10-27*)
