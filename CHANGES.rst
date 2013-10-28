@@ -10,6 +10,7 @@ mio 0.0.5.dev
 - Implemented ``bin`` builtin.
 - Implemented ``bool`` builtin.
 - Implemented ``callable`` builtin.
+- Implemented ``cha`` builtin.
 
 
 mio 0.0.4 (*2013-10-27*)

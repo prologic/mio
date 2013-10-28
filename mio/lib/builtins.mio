@@ -4,6 +4,9 @@ def tobin(x):
 
 def tobool(x):
     return bool(x)
+
+def tochr(x):
+    return chr(int(x))
 """)
 
 abs = block(x,
@@ -35,6 +38,8 @@ callable = block(x,
         return (x type == "Block")
     )
 )
+
+chr = block(x, utils tochr(x))
 
 map = block(f, xs,
     rs = List clone
