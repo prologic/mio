@@ -33,10 +33,7 @@ class Object(object):
 
     def create_methods(self):
         keys = self.__class__.__dict__.keys()
-        predicate = lambda x: ismethod(x) and getattr(x, "method", False)
-        for name, method in getmembers(self, predicate):
-            if name in keys:
-                self[method.name] = method
+        self.attrs.update(((v.name, v) for k, v in getmembers(self, ismethod) if getattr(v, "method", False) and k in keys))
 
     def __hash__(self):
         return hash(self.value)
