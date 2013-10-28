@@ -1,8 +1,9 @@
 .. _Python Programming Language: http://www.python.org/
 .. _How To Create Your Own Freaking Awesome Programming Language: http://createyourproglang.com/
 .. _Marc-Andre Cournoye: http://macournoyer.com/
+.. _Project Website: https://mio-lang.org/
 .. _PyPi Page: http://pypi.python.org/pypi/mio-lang
-.. _Project Website: https://bitbucket.org/prologic/mio-lang/
+.. _Read the Docs: http://mil-lang.readthedocs.org/en/latest/
 .. _Downloads Page: https://bitbucket.org/prologic/mio-lang/downloads
 
 
@@ -24,6 +25,21 @@ implementation of a langauge quite similar to `Io <http://iolanguage.com>`_ with
 from `Python <http://python.org>`_ (*because Python is awesome!*). This has already largely been
 achived in the current version. See the `RoadMap <http://mio-lang.readthedocs.org/en/latest/roadmap.html>`_
 for what might be coming up next.
+
+- **Website**: http://mio-lang.org/
+- **Docs**: http://packages.python.org/circuits or `Read the Docs`_.
+
+.. image:: https://pypip.in/v/mio-lang/badge.png
+   :target: https://crate.io/packages/mio-lang/
+   :alt: Latest PyPI version
+
+.. image:: https://pypip.in/d/mio-lang/badge.png
+   :target: https://crate.io/packages/mio-lang/
+   :alt: Number of PyPI downloads
+
+.. image:: https://jenkins.shiningpanda-ci.com/prologic/job/mio-lang/badge/icon
+   :target: https://jenkins.shiningpanda-ci.com/prologic/job/mio-lang/
+   :alt: Build Status
 
 
 Examples
