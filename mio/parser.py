@@ -7,8 +7,6 @@ from funcparserlib.parser import forward_decl as fwd
 from funcparserlib.parser import a, many, maybe, skip, some
 
 import runtime
-from utils import method, Null
-from types.object import Object
 from core.message import Message
 
 tokval = lambda tok: tok.value
@@ -219,17 +217,3 @@ arguments.define((paren_arguments | bracket_arguments | brace_arguments) >> make
 symbol.define(identifier | number | operator | string)
 
 parse = expression.parse
-
-
-class Parser(Object):
-
-    def __init__(self, value=Null):
-        super(Parser, self).__init__(value=value)
-
-        self.create_methods()
-        self.parent = runtime.find("Object")
-
-    @method()
-    def parse(self, receiver, context, m, code):
-        code = str(code.eval(context))
-        return parse(tokenize(code))
