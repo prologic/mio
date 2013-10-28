@@ -1,7 +1,7 @@
 from mio import runtime
 from mio.utils import method
 
-from mio.types.object import Object
+from mio.object import Object
 
 
 class Range(Object):

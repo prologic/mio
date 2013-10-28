@@ -216,7 +216,7 @@ def test_hash(mio):
 
 
 def test_id(mio):
-    assert mio.eval("Object id") == id(runtime.find("Object"))
+    assert mio.eval("(Object id) == (Object id)")
 
 
 def test_keys(mio):

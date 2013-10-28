@@ -4,10 +4,10 @@ from itertools import chain
 from operator import attrgetter
 
 
-import runtime
-from .utils import method
-from .object import Object
-from .states import NormalState
+from mio import runtime
+from mio.utils import method, Null
+from mio.states import NormalState
+from mio.types.object import Object
 
 
 def getargname(arg):
@@ -26,10 +26,15 @@ class Call(Object):
 class Locals(Object):
     """Locals Object"""
 
+    def __init__(self, value=Null):
+        super(Locals, self).__init__(value=value)
+
+        self.parent = runtime.find("Object")
+
 
 class Block(Object):
 
-    def __init__(self, body, args, kwargs, scope=None):
+    def __init__(self, body=None, args=None, kwargs=None, scope=None):
         super(Block, self).__init__()
 
         self.body = body
@@ -50,10 +55,7 @@ class Block(Object):
     def create_locals(self, receiver, context, m):
         self.locals = Locals()
 
-        if self.scope is not None:
-            self.locals["self"] = self.scope
-            self.locals.parent = self.scope
-        else:
+        if self.scope is None:
             self.locals["self"] = receiver
             self.locals.parent = receiver
 

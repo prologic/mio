@@ -1,7 +1,7 @@
 
-import runtime
-from object import Object
-from utils import method
+from mio import runtime
+from mio.utils import method
+from mio.types.object import Object
 
 
 class Message(Object):

@@ -12,14 +12,9 @@ from .version import version
 from .utils import tryimport
 from .parser import parse, tokenize
 
-from .block import Block
-from .object import Object
-from .parser import Parser
-from .message import Message
-from .continuation import Continuation
-
 from .core import Core
 from .types import Types
+from .types.object import Object
 
 
 def fromDict(x):
@@ -85,11 +80,6 @@ class State(object):
         root["Types"] = Types()
         root["Core"] = Core()
 
-        root["Parser"] = Parser()
-        root["Message"] = Message("")
-        root["Continuation"] = Continuation()
-        root["Block"] = Block(None, [], {})
-
     def frommio(self, x, default=None):
         return typemap["frommio"].get(x.type, constantly(default))(x)
 
@@ -111,6 +101,8 @@ class State(object):
             return self.root["Core"][name]
         elif "builtins" in self.root and name in self.root["builtins"]:
             return self.root["builtins"][name]
+        elif name in ("Object", "Root"):
+            return self.root[name]
         else:
             return self.root[name]
 

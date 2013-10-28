@@ -7,9 +7,9 @@ from funcparserlib.parser import forward_decl as fwd
 from funcparserlib.parser import a, many, maybe, skip, some
 
 import runtime
-from object import Object
-from message import Message
 from utils import method, Null
+from types.object import Object
+from core.message import Message
 
 tokval = lambda tok: tok.value
 sometok = lambda type: (some(lambda t: t.type == type) >> tokval)

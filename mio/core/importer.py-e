@@ -7,7 +7,7 @@ from pkg_resources import resource_filename, resource_listdir
 
 import mio
 from mio import runtime
-from mio.types.object import Object
+from mio.object import Object
 from mio.utils import method, Null
 from mio.errors import ImportError
 

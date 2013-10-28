@@ -1,3 +1,6 @@
+from pytest import raises
+
+
 def test_block(mio):
     mio.eval("x = block(1)")
     assert mio.eval("x()") == 1
@@ -13,6 +16,14 @@ def test_block_scope(mio):
     mio.eval("n = 1")
     mio.eval("x = block(n)")
     assert mio.eval("x()") == 1
+
+
+def test_block_scope2(mio):
+    mio.eval("Foo = Object clone")
+    mio.eval("Foo n = 1")
+    mio.eval("Foo x = block(n)")
+    with raises(AttributeError):
+        assert mio.eval("Foo x()", reraise=True)
 
 
 def test_block_get_args(mio):

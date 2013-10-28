@@ -1,14 +1,14 @@
 #!/usr/bin/env mio
 
-foo = method(
-    return method(
+foo = block(
+    return block(
         print("foo")
     )
 )
 
 counter = method(n,
-    return block(
-        self n = n + 1
-        return n
+    return method(
+        self n = self n + 1
+        return self n
     )
 )

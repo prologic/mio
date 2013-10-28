@@ -4,11 +4,11 @@ from collections import OrderedDict
 from inspect import getmembers, ismethod
 
 
-import runtime
-from .states import NormalState
-from .errors import AttributeError, TypeError
-from .utils import format_object, method, Null
-from .states import BreakState, ContinueState, ReturnState
+from mio import runtime
+from mio.states import NormalState
+from mio.errors import AttributeError, TypeError
+from mio.utils import format_object, method, Null
+from mio.states import BreakState, ContinueState, ReturnState
 
 
 class Object(object):
@@ -193,7 +193,7 @@ class Object(object):
 
         args = [arg for arg in args if not arg.name == "set"]
 
-        from .block import Block
+        from mio.core.block import Block
         return Block(body, args, kwargs, context)
 
     @method("method")
@@ -206,7 +206,7 @@ class Object(object):
 
         args = [arg for arg in args if not arg.name == "set"]
 
-        from .block import Block
+        from mio.core.block import Block
         return Block(body, args, kwargs)
 
     # Flow Control

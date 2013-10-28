@@ -1,4 +1,4 @@
-from mio.message import Message
+from mio.core.message import Message
 
 
 def test_name():
