@@ -23,6 +23,15 @@ any = block(xs,
     False
 )
 
+utils = FFI clone("utils", """
+def dec_to_bin(x):
+    return bin(int(x))
+""")
+
+bin = block(x, utils dec_to_bin(x))
+
+bool = block(x, x :__nonzero__())
+
 map = block(f, xs,
     rs = List clone
     xs foreach(x,
