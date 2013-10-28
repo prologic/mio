@@ -1,9 +1,10 @@
-print = block(*args, sep=" ", end="\n", file=System stdout,
-    file write(sep join(args))
-    file write(end)
-    file flush
-    None
-)
+utils = FFI clone("utils", """
+def tobin(x):
+    return bin(int(x))
+
+def tobool(x):
+    return bool(x)
+""")
 
 abs = block(x,
     x :__abs__
@@ -23,14 +24,9 @@ any = block(xs,
     False
 )
 
-utils = FFI clone("utils", """
-def dec_to_bin(x):
-    return bin(int(x))
-""")
+bin = block(x, utils tobin(x))
 
-bin = block(x, utils dec_to_bin(x))
-
-bool = block(x, x :__nonzero__())
+bool = block(x, utils tobool(x))
 
 map = block(f, xs,
     rs = List clone
@@ -54,4 +50,11 @@ filter = block(f, xs,
         )
     )
     rs
+)
+
+print = block(*args, sep=" ", end="\n", file=System stdout,
+    file write(sep join(args))
+    file write(end)
+    file flush
+    None
 )
