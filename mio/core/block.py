@@ -58,6 +58,11 @@ class Block(Object):
         if self.scope is None:
             self.locals["self"] = receiver
             self.locals.parent = receiver
+        elif isinstance(self.scope, Locals):
+            self.locals["self"] = self.scope
+            self.locals.parent = self.scope
+        else:
+            self.locals.parent = runtime.find("Object")
 
         call = Call()
         call.parent = runtime.find("Object")

@@ -1,6 +1,9 @@
 from pytest import raises
 
 
+from mio.errors import AttributeError
+
+
 def test_block(mio):
     mio.eval("x = block(1)")
     assert mio.eval("x()") == 1
@@ -13,9 +16,12 @@ def test_block_body(mio):
 
 
 def test_block_scope(mio):
-    mio.eval("n = 1")
-    mio.eval("x = block(n)")
-    assert mio.eval("x()") == 1
+    try:
+        mio.eval("n = 1")
+        mio.eval("x = block(n)")
+        assert mio.eval("x()") == 1
+    finally:
+        mio.eval("del(\"n\")")
 
 
 def test_block_scope2(mio):

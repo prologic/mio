@@ -1,7 +1,19 @@
+from pytest import fixture
+
+
+from mio import runtime
+
+
+@fixture(scope="session")
+def mio(request):
+    runtime.init()
+    return runtime.state
+
+
 def test_closure(mio, capfd):
     mio.eval("""
-        foo = method(
-            return method(
+        foo = block(
+            return block(
                 print("foo")
             )
         )
@@ -15,7 +27,7 @@ def test_closure(mio, capfd):
 
 def test_closure_locals(mio):
     mio.eval("""
-        counter = method(n,
+        counter = block(n,
             return block(
                 self n = n + 1
                 return n
@@ -28,11 +40,13 @@ def test_closure_locals(mio):
 
     assert mio.eval("x()") == 2
     assert mio.eval("y()") == 3
+    assert mio.eval("x()") == 3
+    assert mio.eval("y()") == 4
 
 
 def test_closure_locals2(mio):
     mio.eval("""
-        counter = method(n,
+        counter = block(n,
             return block(
                 n = n + 1
                 return n

@@ -6,9 +6,9 @@ foo = block(
     )
 )
 
-counter = method(n,
-    return method(
-        self n = self n + 1
-        return self n
+counter = block(n,
+    return block(
+        self n = n + 1
+        return n
     )
 )
