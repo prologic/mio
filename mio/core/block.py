@@ -37,9 +37,9 @@ class Block(Object):
     def __init__(self, body=None, args=None, kwargs=None, scope=None):
         super(Block, self).__init__()
 
-        self.body = body
-        self.args = args
-        self.kwargs = kwargs
+        self.body = body if body is not None else self
+        self.args = args if args is not None else ()
+        self.kwargs = kwargs if kwargs is not None else {}
 
         self.scope = scope
 
