@@ -12,6 +12,8 @@ mio 0.0.5.dev
 - Implemented ``callable`` builtin.
 - Implemented ``cha`` builtin.
 - IMplemented ``from`` and ``import`` builtins.
+- Make the ``Object pimitive`` ``:foo`` method return the internal Python data type.
+- Fixed the ``abs`` builtin to return an newly cloned Number.
 
 
 mio 0.0.4 (*2013-10-27*)

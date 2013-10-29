@@ -10,7 +10,7 @@ def tochr(x):
 """)
 
 abs = block(x,
-    x :__abs__
+    Number clone setValue(x :__abs__)
 )
 
 all = block(xs,

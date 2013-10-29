@@ -312,7 +312,7 @@ class Object(object):
         method = method.name
         args = [arg.eval(context).value for arg in args]
         if hasattr(receiver, method):
-            return runtime.state.tomio(getattr(receiver, method)(*args))
+            return getattr(receiver, method)(*args)
         raise AttributeError("{0:s} has no attribute {1:s}".format(receiver.type, repr(method)))
 
     @method()
