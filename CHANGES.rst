@@ -11,6 +11,7 @@ mio 0.0.5.dev
 - Implemented ``bool`` builtin.
 - Implemented ``callable`` builtin.
 - Implemented ``cha`` builtin.
+- IMplemented ``from`` and ``import`` builtins.
 
 
 mio 0.0.4 (*2013-10-27*)

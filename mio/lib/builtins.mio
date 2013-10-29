@@ -41,6 +41,13 @@ callable = block(x,
 
 chr = block(x, utils tochr(x))
 
+from = get("import")
+
+import = block(
+    name = call message args at(0) name
+    Importer import(name)
+)
+
 map = block(f, xs,
     rs = List clone
     xs foreach(x,
