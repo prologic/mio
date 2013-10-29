@@ -1,7 +1,7 @@
 import sys
 
 
-from mio.types.object import Object
+from mio.object import Object
 from mio.utils import format_method, format_object, method, tryimport, Null
 
 
