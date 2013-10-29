@@ -291,8 +291,9 @@ class Object(object):
         return runtime.find("Number").clone(hash(receiver))
 
     @method()
-    def id(self, receiver, context, m):
-        return runtime.find("Number").clone(id(receiver))
+    def id(self, receiver, context, m, obj=None):
+        obj = obj.eval(context) if obj is not None else receiver
+        return runtime.find("Number").clone(id(obj))
 
     @method()
     def keys(self, receiver, context, m):

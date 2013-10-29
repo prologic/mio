@@ -5,7 +5,7 @@ Changes
 mio 0.0.6.dev
 .............
 
--
+- Allow an optional object to be passed to the ``Object id`` method.
 
 
 mio 0.0.5 (2013-10-29)
