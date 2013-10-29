@@ -1,10 +1,4 @@
 Object do (
-    clone = method(
-        obj = self :clone
-        obj ?init
-        obj
-    )
-
     super = method(
         return self parent
     )

@@ -134,8 +134,6 @@ class Object(object):
     def set(self, receiver, context, m, key, value):
         key = key.eval(context)
         value = value.eval(context)
-        if isinstance(value, Object):
-            value.binding = key
         receiver[key] = value
         return value
 
@@ -325,6 +323,23 @@ class Object(object):
     def do(self, receiver, context, m, expression):
         expression.eval(receiver)
         return receiver
+
+    @method("clone")
+    def _clone(self, receiver, context, m, *args):
+        object = receiver.clone()
+
+        if m.first.previous.name == "set":
+            object.binding = m.first.previous.args[0].name
+
+        try:
+            m = runtime.find("Message").clone()
+            m.name = "init"
+            m.args = args
+            m.eval(object, context, m)
+        except AttributeError:
+            pass
+
+        return object
 
     @method()
     def setParent(self, receiver, context, m, parent):
