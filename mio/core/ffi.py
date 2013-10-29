@@ -5,7 +5,7 @@ from inspect import isfunction, isbuiltin, getmembers
 
 
 from mio import runtime
-from mio.types.object import Object
+from mio.object import Object
 from mio.utils import method, Null
 
 

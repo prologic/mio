@@ -1,6 +1,6 @@
 from mio import runtime
 from mio.utils import method, Null
-from mio.types.object import Object
+from mio.object import Object
 from mio.parser import parse, tokenize
 
 

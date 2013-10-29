@@ -7,7 +7,7 @@ from operator import attrgetter
 from mio import runtime
 from mio.utils import method, Null
 from mio.states import NormalState
-from mio.types.object import Object
+from mio.object import Object
 
 
 def getargname(arg):

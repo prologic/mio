@@ -1,13 +1,9 @@
 from os import path
-from itertools import imap, izip, repeat
-
-
-from pkg_resources import resource_filename, resource_listdir
 
 
 import mio
 from mio import runtime
-from mio.types.object import Object
+from mio.object import Object
 from mio.utils import method, Null
 from mio.errors import ImportError
 
@@ -24,28 +20,39 @@ class Importer(Object):
 
     def build_paths(self):
         paths = ["."]
-        paths.append(path.dirname(resource_filename(mio.__package__, path.join("lib", resource_listdir(mio.__package__, "lib")[0]))))
-        paths.append(path.expanduser("~/lib/mio"))
+        paths.append(path.join(path.dirname(mio.__file__), "lib"))
+        paths.append(path.expanduser(path.join("~", "lib", "mio")))
         return runtime.find("List").clone(map(runtime.find("String").clone, paths))
+
+    def find_match(self, name, current=None):
+        # Temporarily put the package directory in the search path
+        paths = [current] if current is not None else []
+        paths.extend([path.abspath(path.expanduser(path.expandvars(str(p)))) for p in self["paths"]])
+
+        for p in paths:
+            m = path.join(p, "{0:s}.mio".format(name))
+            if path.exists(m):
+                return m
+
+            m = path.join(p, name, "__init__.mio")
+            if path.exists(m):
+                return m
 
     @method("import")
     def _import(self, receiver, context, m, name):
-        name = name.eval(context)
-        file = "{0:s}.mio".format(name)
+        name = str(name.eval(context))
 
-        paths = (
-            path.abspath(path.expanduser(path.expandvars(path.join(*p))))
-            for p in izip(imap(str, self["paths"]), repeat(file, len(self["paths"])))
-        )
+        context = context["call"]["target"] if context.type == "Locals" else context
 
-        matches = (p for p in paths if path.exists(p))
+        # Are we importing inside a package?
+        if context.type == "Module" and context.file.endswith("__init__.mio"):
+            current = path.dirname(context.file)
+        else:
+            current = None
 
-        try:
-            filename = next(matches)
-        except StopIteration:
-            filename = None
+        match = self.find_match(name, current)
 
-        if filename is not None:
-            return runtime.state.eval("""Module clone("{0:s}", "{1:s}")""".format(name, filename), receiver, context)
+        if match is not None:
+            return runtime.state.eval("""Module clone("{0:s}", "{1:s}")""".format(name, match), receiver, context)
         else:
             raise ImportError("No module named {0:s}".format(name))

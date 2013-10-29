@@ -2,11 +2,8 @@ from copy import copy
 
 
 from mio import runtime
+from mio.object import Object
 from mio.utils import method, Null
-
-from mio.types.object import Object
-
-from number import Number
 
 
 class List(Object):
@@ -47,7 +44,7 @@ class List(Object):
 
     @method()
     def count(self, receiver, context, m, value):
-        return Number(receiver.value.count(value.eval(context)))
+        return runtime.find("Number").clone(receiver.value.count(value.eval(context)))
 
     @method()
     def extend(self, receiver, context, m, *args):
@@ -57,7 +54,7 @@ class List(Object):
 
     @method()
     def len(self, receiver, context, m):
-        return Number(len(receiver.value))
+        return runtime.find("Number").clone(len(receiver.value))
 
     @method()
     def at(self, receiver, context, m, index):

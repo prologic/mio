@@ -1,5 +1,8 @@
+from os import path
+
+
 from mio import runtime
-from mio.types.object import Object
+from mio.object import Object
 from mio.utils import method, Null
 
 
@@ -21,6 +24,10 @@ class Module(Object):
     def init(self, receiver, context, m, name, file):
         receiver.name = name = str(name.eval(context))
         receiver.file = file = str(file.eval(context))
+
+        # Are we loading a package module?
+        if path.isdir(file):
+            file = path.join(file, "__init__.mio")
 
         runtime.state.load(file, receiver, receiver)
 

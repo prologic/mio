@@ -1,8 +1,0 @@
-A = Object clone do(
-    x = 0
-    updateX = method(newX,
-        x = x + newX
-    )
-)
-x = 40
-updateX = A updateX

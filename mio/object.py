@@ -307,7 +307,7 @@ class Object(object):
 
     # Object Operations
 
-    @method(":")
+    @method()
     def primitive(self, receiver, context, m, method, *args):
         method = method.name
         args = [arg.eval(context).value for arg in args]

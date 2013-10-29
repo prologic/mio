@@ -11,7 +11,7 @@ from .parser import parse, tokenize
 
 from .core import Core
 from .types import Types
-from .types.object import Object
+from .object import Object
 
 
 def fromDict(x):
@@ -77,6 +77,13 @@ class State(object):
         root["Types"] = Types()
         root["Core"] = Core()
 
+        # Bootstrap the system
+        if self.opts is None or (self.opts is not None and not self.opts.nosys):
+            self.eval("""Importer import("bootstrap")""")
+
+        # Reset the last value
+        del self.root["_"]
+
     def frommio(self, x, default=None):
         return typemap["frommio"].get(x.type, lambda x: default)(x)
 
@@ -98,8 +105,6 @@ class State(object):
             return self.root["Core"][name]
         elif "builtins" in self.root and name in self.root["builtins"]:
             return self.root["builtins"][name]
-        elif name in ("Object", "Root"):
-            return self.root[name]
         else:
             return self.root[name]
 
@@ -131,7 +136,11 @@ class State(object):
                 code = raw_input(">>> ")
                 if code:
                     result = self.eval(code)
-                    if result is not None and result.value is not None:  # pragma: no cover
-                        print("==> {0:s}".format(self.eval("repr()", receiver=result)))
+                    if result is not None:  # pragma: no cover
+                        if isinstance(result, Object):
+                            output = self.eval("repr()", receiver=result)
+                        else:
+                            output = repr(result)
+                        print("==> {0:s}".format(output))
             except EOFError:  # pragma: no cover
                 raise SystemExit(0)

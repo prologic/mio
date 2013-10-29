@@ -1,4 +1,4 @@
-Root exit = method(status,
+exit = method(status,
     status ifNone(
         System exit(0)
     )

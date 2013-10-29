@@ -1,9 +1,6 @@
 from mio import runtime
 from mio.utils import method
-
-from mio.types.object import Object
-
-from number import Number
+from mio.object import Object
 
 
 class String(Object):
@@ -55,7 +52,7 @@ class String(Object):
         sub = str(sub.eval(context))
         start = int(start.eval(context)) if start is not None else None
         end = int(end.eval(context)) if end is not None else None
-        return Number(receiver.value.find(sub, start, end))
+        return runtime.find("Number").clone(receiver.value.find(sub, start, end))
 
     @method()
     def join(self, receiver, context, m, xs):

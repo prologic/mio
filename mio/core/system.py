@@ -3,7 +3,7 @@ import sys
 
 import mio
 from mio import runtime
-from mio.types.object import Object
+from mio.object import Object
 from mio.utils import method, Null
 
 

@@ -3,8 +3,8 @@ from inspect import getmembers, getmodule, isclass
 
 
 from mio import runtime
-from object import Object
 from mio.utils import Null
+from mio.object import Object
 
 
 class Types(Object):

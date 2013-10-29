@@ -1,12 +1,10 @@
-Types True = Boolean clone setValue(1)
-Types False = Boolean clone setValue(0)
-Types None = Boolean clone
+Types True = Boolean primitive(clone) setValue(1)
+Types False = Boolean primitive(clone) setValue(0)
+Types None = Boolean primitive(clone)
 
 Boolean clone = Boolean
 
 Object do (
-    set("()", Object get("evalArg"))
-
     #ifNone returns self
     ifNone = method(self)
 
@@ -94,3 +92,10 @@ None do (
     #repr/str returns None
     repr = str = "None"
 )
+
+
+Root builtins = Importer import("builtins")
+
+import(object)
+import(operators)
+import(system)

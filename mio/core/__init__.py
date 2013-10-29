@@ -4,7 +4,7 @@ from inspect import getmembers, getmodule, isclass
 
 from mio import runtime
 from mio.utils import Null
-from mio.types.object import Object
+from mio.object import Object
 
 
 class Core(Object):

@@ -14,6 +14,10 @@ mio 0.0.5.dev
 - IMplemented ``from`` and ``import`` builtins.
 - Make the ``Object pimitive`` ``:foo`` method return the internal Python data type.
 - Fixed the ``abs`` builtin to return an newly cloned Number.
+- Implemented support for packages ala Python.
+- Restructured the mio std. lib
+- mio nwo bootstraps itself via an import of the "bootstrap" package.
+- Reimplemented ``Object clone`` in the mio std. lib.
 
 
 mio 0.0.4 (*2013-10-27*)

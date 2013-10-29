@@ -1,0 +1,5 @@
+Object do (
+    super = method(
+        return self parent
+    )
+)

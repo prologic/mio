@@ -1,5 +1,5 @@
 from mio import runtime
-from mio.types.object import Object
+from mio.object import Object
 
 
 class Boolean(Object):
