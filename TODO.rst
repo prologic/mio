@@ -2,6 +2,9 @@ TODO
 ====
 
 
+- Implement exception handling
+- Reimplement clone in mio.
+- Implement TCloneable and TIterable traits
 - Try to chnage the semantics of arguments such that:
 
   - Arguments are evaluated when blocks/methods are called.
