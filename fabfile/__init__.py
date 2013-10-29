@@ -5,10 +5,12 @@
 """Fabric fabfile"""
 
 
+from __future__ import print_function
+
 from os import getcwd
 
 
-from fabric.api import cd, execute, hide, hosts, lcd, local, prefix, run, settings, task
+from fabric.api import abort, cd, execute, hide, hosts, lcd, local, prefix, prompt, run, settings, task
 
 
 from .utils import msg, pip, requires, tobool
@@ -109,8 +111,16 @@ def release():
                 run("pip install -r docs/requirements.txt")
                 run("fab docs")
 
+        version = run("python setup.py --version")
+        if "dev" in version:
+            abort("Detected Development Version!")
+
+        print("Release version: {0:s}".format(version))
+
+        if prompt("Is this ok?", default="Y", validate=r"^[YyNn]?$") in "yY":
+            run("python setup.py --version")
+            #run("python setup.py egg_info sdist bdist_egg register upload")
+            #run("python setup.py build_sphinx upload_sphinx")
+
         with msg("Destroying env"):
             run("rmvirtualenv test")
-
-    #local("python setup.py egg_info sdist bdist_egg register upload")
-    #local("python setup.py build_sphinx upload_sphinx")
