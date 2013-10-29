@@ -7,9 +7,7 @@ TODO
   - Arguments are evaluated when blocks/methods are called.
   - A copy of unevaluated arguments are available in the message.
 
-- Remove dependency on ``pkg_resources`` library.
 - Somehow work out a way to make applying of ``*args`` and/or ``**kwargs`` as well as everything else.
-- Improve the ``Object primitive`` method to allow for nesting primitive calls. e.g: ``1 :__int__(:__format__("{0:b}"))``
 - Have another go at implementing operator precedence.
 - Implement a ``Tuple`` core object.
 - Implement a ``Bytes`` core object.
