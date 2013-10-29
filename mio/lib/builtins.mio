@@ -7,6 +7,9 @@ def tobool(x):
 
 def tochr(x):
     return chr(int(x))
+
+def tohex(x):
+    return hex(int(x))
 """)
 
 abs = block(x,
@@ -54,6 +57,8 @@ eval = block(code, context,
 )
 
 from = get("import")
+
+hex = block(x, utils tohex(x))
 
 import = block(
     name = call message args at(0) name
