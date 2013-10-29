@@ -2,8 +2,8 @@ Changes
 -------
 
 
-mio 0.0.5.dev
-.............
+mio 0.0.5 (2013-10-29)
+......................
 
 - Split up core into core and types.
 - Re-implemented ``True``, ``False`` and ``None`` in mio.
