@@ -1,6 +1,6 @@
-Types True = Boolean clone setValue(1)
-Types False = Boolean clone setValue(0)
-Types None = Boolean clone
+Types True = Boolean :clone ; setValue(1)
+Types False = Boolean :clone ; setValue(0)
+Types None = Boolean :clone
 
 Boolean clone = Boolean
 
