@@ -118,9 +118,8 @@ def release():
         print("Release version: {0:s}".format(version))
 
         if prompt("Is this ok?", default="Y", validate=r"^[YyNn]?$") in "yY":
-            run("python setup.py --version")
-            #run("python setup.py egg_info sdist bdist_egg register upload")
-            #run("python setup.py build_sphinx upload_sphinx")
+            run("python setup.py egg_info sdist bdist_egg register upload")
+            run("python setup.py build_sphinx upload_sphinx")
 
         with msg("Destroying env"):
             run("rmvirtualenv test")
