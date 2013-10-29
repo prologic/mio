@@ -65,7 +65,8 @@ def test_read(mio, tmpdir):
     filename = tmpdir.join("test.txt")
 
     data = "Hello World!"
-    filename.open("w").write(data)
+    with filename.open("w") as f:
+        f.write(data)
 
     assert mio.eval("File open(\"%s\", \"r\") read" % filename) == data
 
@@ -75,7 +76,8 @@ def test_read_limited(mio, tmpdir):
     filename = tmpdir.join("test.txt")
 
     data = "Hello World!"
-    filename.open("w").write(data)
+    with filename.open("w") as f:
+        f.write(data)
 
     assert mio.eval("File open(\"%s\", \"r\") read(5)" % filename) == data[:5]
 
@@ -85,7 +87,8 @@ def test_readline(mio, tmpdir):
     filename = tmpdir.join("test.txt")
 
     data = "Hello World!\nGoodbye World!"
-    filename.open("w").write(data)
+    with filename.open("w") as f:
+        f.write(data)
 
     mio.eval("f = File open(\"%s\", \"r\")" % filename)
     s = mio.eval("f readline")
@@ -97,7 +100,8 @@ def test_write(mio, tmpdir):
     filename = tmpdir.join("test.txt")
 
     data = "Hello World!"
-    mio.eval("File open(\"%s\", \"w\") write(\"%s\")" % (filename, data))
+    mio.eval("f = File open(\"%s\", \"w\") write(\"%s\")" % (filename, data))
+    mio.eval("f close()")
 
     assert mio.eval("File open(\"%s\", \"r\") read" % filename) == data
 
@@ -107,7 +111,8 @@ def test_readlines(mio, tmpdir):
     filename = tmpdir.join("test.txt")
 
     data = ["Hello World!", "Goodbye World!"]
-    filename.open("w").writelines(data)
+    with filename.open("w") as f:
+        f.writelines(data)
 
     s = ["".join(data)]
     assert mio.eval("File open(\"%s\", \"r\") readlines" % filename) == s
@@ -136,7 +141,8 @@ def test_iter(mio, tmpdir):
     filename = tmpdir.join("test.txt")
 
     data = "Hello World!"
-    filename.open("w").write(data)
+    with filename.open("w") as f:
+        f.write(data)
 
     file = mio.eval("File open(\"%s\", \"r\")" % filename)
     assert list(iter(file)) == [data]
@@ -147,7 +153,8 @@ def test_pos(mio, tmpdir):
     filename = tmpdir.join("test.txt")
 
     data = "Hello World!"
-    filename.open("w").write(data)
+    with filename.open("w") as f:
+        f.write(data)
 
     mio.eval("f = File open(\"%s\", \"r\")" % filename)
     mio.eval("f read(1)")
@@ -159,7 +166,8 @@ def test_seek(mio, tmpdir):
     filename = tmpdir.join("test.txt")
 
     data = "Hello World!"
-    filename.open("w").write(data)
+    with filename.open("w") as f:
+        f.write(data)
 
     mio.eval("f = File open(\"%s\", \"r\")" % filename)
     mio.eval("f read") == data
@@ -173,7 +181,8 @@ def test_truncate(mio, tmpdir):
     filename = tmpdir.join("test.txt")
 
     data = "Hello World!"
-    filename.open("w").write(data)
+    with filename.open("w") as f:
+        f.write(data)
 
     mio.eval("f = File open(\"%s\", \"w+\")" % filename)
     mio.eval("f read") == data
