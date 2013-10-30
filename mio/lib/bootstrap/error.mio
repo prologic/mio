@@ -1,0 +1,4 @@
+Error do (
+    set("isError", True)
+    ifError = Object get("evalArg")
+)

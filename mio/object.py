@@ -25,7 +25,7 @@ class Object(object):
 
         self.binding = None
 
-        from mio.core.states import State
+        from mio.core.state import State
         if self.__class__ is not State:
             self.state = State()
 
@@ -107,7 +107,7 @@ class Object(object):
 
         self.binding = None
 
-        from mio.core.states import State
+        from mio.core.state import State
         if self.__class__ is not State:
             self.state = State()
 
@@ -346,6 +346,7 @@ class Object(object):
             m = runtime.find("Message").clone()
             m.name = "init"
             m.args = args
+            m.call = True
             m.eval(object, context, m)
         except AttributeError:
             pass

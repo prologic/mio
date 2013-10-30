@@ -4,7 +4,6 @@ TODO
 
 - Work out why ``not(0) ifTrue(print("foo"))`` returns ``True``.
 - Implement internally tail recursion so we don't exceed Python's recursion depth.
-- Implement exception handling
 - Reimplement clone in mio.
 - Implement TCloneable and TIterable traits
 - Try to chnage the semantics of arguments such that:
