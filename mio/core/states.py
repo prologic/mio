@@ -29,10 +29,15 @@ class State(Object):
 
         return "{0:s}State({1:s})".format(type, value)
 
+    def reset(self):
+        keys = ("isContinue", "isReturn", "isBreak",)
+        for key in keys:
+            setattr(self, key, False)
+
     @property
     def stop(self):
         keys = ("isContinue", "isReturn", "isBreak",)
-        return not any((getattr(self, key) for key in keys))
+        return any((getattr(self, key) for key in keys))
 
     @method("stop")
     def _stop(self, receiver, context, m):
@@ -40,12 +45,18 @@ class State(Object):
 
     @method()
     def setContinue(self, receiver, context, m, value=None):
+        if context.type != "Locals":
+            return receiver
+
         value = bool(value.eval(context)) if value is not None else True
         receiver.isContinue = value
         return receiver
 
     @method()
     def setReturn(self, receiver, context, m, value=None):
+        if context.type != "Locals":
+            return receiver
+
         value = value.eval(context) if value is not None else Null
         receiver.isReturn = True
         receiver.value = value
@@ -53,6 +64,9 @@ class State(Object):
 
     @method()
     def setBreak(self, receiver, context, m, value=None):
+        if context.type != "Locals":
+            return receiver
+
         value = bool(value.eval(context)) if value is not None else True
         receiver.isBreak = value
         return receiver

@@ -56,7 +56,7 @@ class Message(Object):
                     runtime.state.value = value = obj
 
             if context.state.stop:
-                return context.state.returnValue
+                return context.state.value
 
             receiver = value
             m = m.next

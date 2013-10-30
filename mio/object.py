@@ -5,10 +5,8 @@ from inspect import getmembers, ismethod
 
 
 from mio import runtime
-from mio.states import NormalState
 from mio.errors import AttributeError, TypeError
 from mio.utils import format_object, method, Null
-from mio.states import BreakState, ContinueState, ReturnState
 
 
 class Object(object):
@@ -26,7 +24,10 @@ class Object(object):
         self.behaviors = {}
 
         self.binding = None
-        self.state = NormalState()
+
+        from mio.core.states import State
+        if self.__class__ is not State:
+            self.state = State()
 
         if methods:
             self.create_methods()
@@ -104,7 +105,11 @@ class Object(object):
         obj.traits = []
         obj.behaviors = {}
 
-        obj.state = NormalState()
+        self.binding = None
+
+        from mio.core.states import State
+        if self.__class__ is not State:
+            self.state = State()
 
         return obj
 
@@ -224,14 +229,14 @@ class Object(object):
 
                 if context.state.stop:
                     if context.state.isContinue:
-                        context.state = NormalState()
+                        context.state.reset()
                         continue
                     else:
-                        return context.state.returnValue
+                        return context.state.value
             return result
         finally:
             if not context.state.isReturn:
-                context.state = NormalState()
+                context.state.reset()
 
     @method("while")
     def _while(self, receiver, context, m, condition, expression):
@@ -243,32 +248,37 @@ class Object(object):
 
                 if context.state.stop:
                     if context.state.isContinue:
-                        context.state = NormalState()
+                        context.state.reset()
                         continue
                     else:
-                        return context.state.returnValue
+                        return context.state.value
             return result
         finally:
             if not context.state.isReturn:
-                context.state = NormalState()
+                context.state.reset()
 
     @method("continue")
     def _continue(self, receiver, context, m):
-        context.state = ContinueState()
+        context.state.isContinue = True
         return runtime.find("None")
 
     @method("break")
     def _break(self, reciver, context, m):
-        context.state = BreakState()
+        context.state.isBreak = True
         return runtime.find("None")
 
     @method("return")
     def _return(self, receiver, context, m, *args):
         value = args[0].eval(context) if args else runtime.find("None")
-        context.state = ReturnState(value)
+        context.state.isReturn = True
+        context.state.value = value
         return receiver
 
     # Introspection
+
+    @method("state")
+    def getState(self, receiver, context, m):
+        return receiver.state
 
     @method("type")
     def getType(self, receiver, context, m):

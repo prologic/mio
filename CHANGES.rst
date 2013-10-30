@@ -9,6 +9,9 @@ mio 0.0.6.dev
 - Implemented ``hex`` builtin.
 - Implemented ``Bytes`` and ``Tuple`` objects.
 - Implemented ``State`` core object and sample ``loop`` builtin (*in testing*).
+- Refactored all of the context state management code (*stopStatus*) and exposed it to the end user.
+
+  - This means we can now write flow based constructs such as loops directly in mio.
 
 
 mio 0.0.5 (2013-10-29)

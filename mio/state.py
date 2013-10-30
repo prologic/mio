@@ -57,8 +57,6 @@ class State(object):
         self.args = args
         self.opts = opts
 
-        self.root = Object(methods=False)
-
     @property
     def value(self):
         return self._value
@@ -67,13 +65,21 @@ class State(object):
     def value(self, value):
         self._value = value
 
-    def create_objects(self):
-        root = self.root
-        object = Object()
-        root.parent = object
-        root["Root"] = root
-        root["Object"] = object
+    def bootstrap(self):
+        self.root = {"Object": None}
 
+        object = Object()
+
+        root = Object(methods=False)
+        root.parent = object
+
+        root["Object"] = object
+        root["Root"] = root
+
+        self.root = root
+
+    def initialize(self):
+        root = self.root
         root["Types"] = Types()
         root["Core"] = Core()
 
@@ -91,10 +97,8 @@ class State(object):
         mapto = typemap["tomio"].get(type(x), default)
 
         try:
-            if callable(mapto):
-                return self.find(mapto(x)).clone(x)
-            else:
-                return self.find(mapto).clone(x)
+            obj = self.find(mapto(x)) if callable(mapto) else self.find(mapto)
+            return obj.clone(x)
         except:
             return default
 

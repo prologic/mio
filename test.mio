@@ -1,7 +1,7 @@
 loop = block(
-    condition = Continuation current
-    not(state stop) ifTrue(
+    start = Continuation current
+    (not(state stop)) ifTrue(
         call message arg(0)
-        condition call
+        start call
     )
 )

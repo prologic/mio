@@ -13,7 +13,8 @@ def init(args=[], opts=None):
     from state import State
 
     state = State(args, opts)
-    state.create_objects()
+    state.bootstrap()
+    state.initialize()
 
 
 def find(name):

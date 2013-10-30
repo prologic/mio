@@ -5,9 +5,8 @@ from operator import attrgetter
 
 
 from mio import runtime
-from mio.utils import method, Null
-from mio.states import NormalState
 from mio.object import Object
+from mio.utils import method, Null
 
 
 def getargname(arg):
@@ -111,7 +110,7 @@ class Block(Object):
         try:
             return self.body.eval(self.locals, self.locals)
         finally:
-            context.state = NormalState()
+            context.state.reset()
 
     @method("args")
     def get_args(self, receiver, context, m):
