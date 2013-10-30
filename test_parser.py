@@ -11,8 +11,8 @@ class FakeOpts(object):
 
         self.__dict__.update(**kwargs)
 
-
-runtime.init(opts=FakeOpts(nosys=True))
+opts = FakeOpts(nosys=False)
+runtime.init(opts=opts)
 eval = runtime.state.eval
 
 

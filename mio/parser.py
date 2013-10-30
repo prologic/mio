@@ -150,7 +150,7 @@ def make_chain(messages, all=True):
             message = Message("set", args=[key, value])
         elif is_operator(messages[0]):
             message = messages.pop(0)
-            if messages:
+            if messages and not message.args:
                 chain = make_chain(messages, all=False)
                 if chain is not None:
                     # Set the argument (a Message) previous attribute to the current message

@@ -158,6 +158,11 @@ def test_return2():
     assert repr(chain) == "set(foo, method(return(1 +(2))))"
 
 
+def test_return3():
+    chain = parse(tokenize("foo = method(return(1 + 2))"))
+    assert repr(chain) == "set(foo, method(return(1 +(2))))"
+
+
 def test_grouping():
     chain = parse(tokenize("1 + (2 * 3)"))
     assert repr(chain) == "1 +(2 *(3))"
