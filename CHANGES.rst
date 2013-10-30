@@ -8,6 +8,7 @@ mio 0.0.6.dev
 - Allow an optional object to be passed to the ``Object id`` method.
 - Implemented ``hex`` builtin.
 - Implemented ``Bytes`` and ``Tuple`` objects.
+- Implemented ``State`` core object and sample ``loop`` builtin (*in testing*).
 
 
 mio 0.0.5 (2013-10-29)

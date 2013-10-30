@@ -1,62 +1,7 @@
-long_string = """
-This is a multi-line string
-that spans over multiple lines
-"""
-
-test = FFI clone("test", """
-x = 1
-
-def foo():
-    return "Foobar!"
-""")
-
-time = FFI clone("time", """
-from time import time
-""")
-
-webbrowser = FFI clone("webbrowser", """
-from webbrowser import open
-
-__all__ = ("open",)
-""")
-
-complement = block(f,
-    block(arg,
-        f(arg) bool not
+loop = block(
+    condition = Continuation current
+    not(state stop) ifTrue(
+        call message arg(0)
+        condition call
     )
 )
-
-odd = block(n, (n % 2) == 1)
-even = complement(get("odd"))
-    
-True do (
-    ifTrue = Object get("evalArg")
-)
-
-Number foo = method(
-    (self < 2) ifTrue(return "foo")
-    "XXX" println
-)
-
-Number x = method(
-    (self == 1) ifTrue("foo")
-)
-
-Number bar = method(
-    double = method(n,
-        return (n * 2)
-    )
-    return double(self)
-    "XXX" println
-)
-
-Number baz = block(
-    x = 1
-    y = method(return x)
-    return y
-)
-
-Number set("!", method(
-    (self < 2) ifTrue(return self)
-    return (self * ((self - 1) !))
-))
