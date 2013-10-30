@@ -2,6 +2,7 @@ TODO
 ====
 
 
+- Bring test coverage back up to 100%
 - Work out why ``not(0) ifTrue(print("foo"))`` returns ``True``.
 - Implement internally tail recursion so we don't exceed Python's recursion depth.
 - Reimplement clone in mio.
