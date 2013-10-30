@@ -1,6 +1,6 @@
 loop = block(
     start = Continuation current
-    (not(state stop)) ifTrue(
+    not(state stop) ifTrue(
         call message arg(0)
         start call
     )
