@@ -3,10 +3,10 @@ from mio.utils import method
 from mio.object import Object
 
 
-class String(Object):
+class Bytes(Object):
 
-    def __init__(self, value=u""):
-        super(String, self).__init__(value=value)
+    def __init__(self, value=b""):
+        super(Bytes, self).__init__(value=value)
 
         self.create_methods()
         self.parent = runtime.find("Object")
@@ -30,21 +30,18 @@ class String(Object):
     def __repr__(self):
         return repr(self.value)
 
-    def __bytes__(self):
-        return self.value.encode("utf-8")
-
     def __str__(self):
-        return str(self.value)
+        return self.value.decode("utf-8")
 
     @method()
     def init(self, receiver, context, m, value=None):
-        receiver.value = value.eval(context) if value is not None else u""
+        receiver.value = value.eval(context) if value is not None else b""
 
     # General Operations
 
     @method("+")
     def add(self, receiver, context, m, other):
-        return self.clone(receiver + str(other.eval(context)))
+        return self.clone(receiver + bytes(other.eval(context)))
 
     @method("*")
     def mul(self, receiver, context, m, other):
@@ -52,7 +49,7 @@ class String(Object):
 
     @method()
     def find(self, receiver, context, m, sub, start=None, end=None):
-        sub = str(sub.eval(context))
+        sub = bytes(sub.eval(context))
         start = int(start.eval(context)) if start is not None else None
         end = int(end.eval(context)) if end is not None else None
         return runtime.find("Number").clone(receiver.value.find(sub, start, end))
@@ -60,7 +57,7 @@ class String(Object):
     @method()
     def join(self, receiver, context, m, xs):
         xs = xs.eval(context)
-        return receiver.clone(receiver.value.join([str(x) for x in xs]))
+        return receiver.clone(receiver.value.join([bytes(x) for x in xs]))
 
     @method()
     def lower(self, receiver, context, m):

@@ -12,8 +12,7 @@ TODO
 
 - Somehow work out a way to make applying of ``*args`` and/or ``**kwargs`` as well as everything else.
 - Have another go at implementing operator precedence.
-- Implement a ``Tuple`` core object.
-- Implement a ``Bytes`` core object.
+- Write unit tests for ``Bytes`` and ``Tuple``
 
 - Do a refresher on how to write an interpreter in RPython and write a really really simple one:
 
