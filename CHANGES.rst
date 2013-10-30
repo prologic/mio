@@ -13,6 +13,7 @@ mio 0.0.6.dev
 
   - This means we can now write flow based constructs such as loops directly in mio.
 - Fixed a minor bug in the parser where ``not(0) ifTrue(print("foo"))`` would parse as ``not(0, ifTrue(print("foo")))``
+- Fixed a minor bug in the parser where ``isError`` would parse as ``is(Error)``. Parse identifiers before operators.
 
 
 mio 0.0.5 (2013-10-29)
