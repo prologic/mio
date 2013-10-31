@@ -3,9 +3,7 @@ TODO
 
 
 - Bring test coverage back up to 100%
-- Work out why ``not(0) ifTrue(print("foo"))`` returns ``True``.
-- Implement internally tail recursion so we don't exceed Python's recursion depth.
-- Reimplement clone in mio.
+- Figure out a way to avoid recursion so ``loop(print("foo"))`` works as expected.
 - Implement TCloneable and TIterable traits
 - Try to chnage the semantics of arguments such that:
 
@@ -13,7 +11,6 @@ TODO
   - A copy of unevaluated arguments are available in the message.
 
 - Somehow work out a way to make applying of ``*args`` and/or ``**kwargs`` as well as everything else.
-- Write unit tests for ``Bytes`` and ``Tuple``
 
 - Do a refresher on how to write an interpreter in RPython and write a really really simple one:
 
