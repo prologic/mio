@@ -17,6 +17,12 @@ mio 0.0.6.dev
 - Implemented basic excpetion handling and error object(s) (*no stack traces yet*).
 - Moved ``exit`` to builtins.
 - Moved the setting of ``.binding`` attribute to ``Object`` ``set/del`` methods.
+- Added support for ``..`` operator and added this to ``Number``. This allows you to write:
+
+::
+    
+    x = 1 .. 5  # a Range from 1 to 5
+    
 
 
 mio 0.0.5 (2013-10-29)

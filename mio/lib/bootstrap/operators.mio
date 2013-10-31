@@ -43,4 +43,6 @@ Number do(
 
     set("<<", method(other, self * (2 ** other)))
     set(">>", method(other, self / (2 ** other)))
+
+    set("..", method(other, Range clone(self, other)))
 )
