@@ -15,11 +15,11 @@ def test_eval():
 
 def test_interactive():
     p = Popen([sys.executable, main_wrapper.__file__, "-i", TEST_FILE], stdin=PIPE, stdout=PIPE)
-    stdout = p.communicate("exit\n")[0]
+    stdout = p.communicate("exit()\n")[0]
     assert stdout.split()[0] == "3"
 
 
 def test_repl():
     p = Popen([sys.executable, main_wrapper.__file__], stdin=PIPE, stdout=PIPE)
-    stdout = p.communicate("print(1 + 2)\nexit\n")[0]
+    stdout = p.communicate("print(1 + 2)\nexit()\n")[0]
     assert stdout.split()[3] == "3"

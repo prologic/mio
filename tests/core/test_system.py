@@ -11,7 +11,7 @@ def test_version(mio):
 
 def test_exit(mio):
     try:
-        mio.eval("System exit")
+        mio.eval("System exit()")
         assert False
     except SystemExit as e:
         assert e.args[0] == 0

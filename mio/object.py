@@ -124,27 +124,32 @@ class Object(object):
 
     @method("del")
     def _del(self, receiver, context, m, key):
-        key = key.eval(context)
+        key = str(key.eval(context))
+        value = receiver[key]
         del receiver[key]
+        if isinstance(value, Object):
+            value.bindig = None
         return runtime.find("None")
 
     @method()
     def has(self, receiver, context, m, key):
-        key = key.eval(context)
+        key = str(key.eval(context))
         if key in receiver:
             return runtime.find("True")
         return runtime.find("False")
 
     @method()
     def set(self, receiver, context, m, key, value):
-        key = key.eval(context)
+        key = str(key.eval(context))
         value = value.eval(context)
+        if isinstance(value, Object):
+            value.binding = key
         receiver[key] = value
         return value
 
     @method()
     def get(self, receiver, context, m, key, default=None):
-        key = key.eval(context)
+        key = str(key.eval(context))
         default = default.eval(context) if default else runtime.find("None")
         return receiver.attrs.get(key, default)
 
@@ -338,9 +343,6 @@ class Object(object):
     @method("clone")
     def _clone(self, receiver, context, m, *args):
         object = receiver.clone()
-
-        if m.first.previous.name == "set":
-            object.binding = m.first.previous.args[0].name
 
         try:
             m = runtime.find("Message").clone()

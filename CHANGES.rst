@@ -16,6 +16,7 @@ mio 0.0.6.dev
 - Fixed a minor bug in the parser where ``isError`` would parse as ``is(Error)``. Parse identifiers before operators.
 - Implemented basic excpetion handling and error object(s) (*no stack traces yet*).
 - Moved ``exit`` to builtins.
+- Moved the setting of ``.binding`` attribute to ``Object`` ``set/del`` methods.
 
 
 mio 0.0.5 (2013-10-29)
