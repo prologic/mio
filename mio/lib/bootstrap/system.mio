@@ -1,6 +1,0 @@
-exit = method(status,
-    status ifNone(
-        System exit(0)
-    )
-    System exit(status)
-)

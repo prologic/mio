@@ -15,6 +15,7 @@ mio 0.0.6.dev
 - Fixed a minor bug in the parser where ``not(0) ifTrue(print("foo"))`` would parse as ``not(0, ifTrue(print("foo")))``
 - Fixed a minor bug in the parser where ``isError`` would parse as ``is(Error)``. Parse identifiers before operators.
 - Implemented basic excpetion handling and error object(s) (*no stack traces yet*).
+- Moved ``exit`` to builtins.
 
 
 mio 0.0.5 (2013-10-29)

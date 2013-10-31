@@ -56,6 +56,13 @@ eval = block(code, context,
     Parser parse(code) eval(context ifNone(Root))
 )
 
+exit = block(status,
+    status ifNone(
+        System exit(0)
+    )
+    System exit(status)
+)
+
 from = get("import")
 
 hex = block(x, utils tohex(x))
