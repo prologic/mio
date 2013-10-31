@@ -66,6 +66,7 @@ class State(object):
         self._value = value
 
     def bootstrap(self):
+        # Fake Object to solve chicken/egg problem.
         self.root = {"Object": None}
 
         object = Object()
@@ -80,6 +81,7 @@ class State(object):
 
     def initialize(self):
         root = self.root
+
         root["Types"] = Types()
         root["Core"] = Core()
 
