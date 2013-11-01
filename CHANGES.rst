@@ -29,6 +29,14 @@ mio 0.0.6.dev
     
     x = (1 .. 5) + 2  # a Range from 1 to 5 in increment of 2
     
+- Changed default REPL prompt to: 
+
+::
+    
+    $ mio
+    mio 0.0.6.dev
+    mio>
+    
 - 
 
 

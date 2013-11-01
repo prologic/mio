@@ -137,7 +137,7 @@ class State(object):
 
         while True:
             try:
-                code = raw_input(">>> ")
+                code = raw_input("mio> ")
                 if code:
                     result = self.eval(code)
                     if result is not None:  # pragma: no cover
@@ -145,6 +145,6 @@ class State(object):
                             output = self.eval("repr()", receiver=result)
                         else:
                             output = repr(result)
-                        print("==> {0:s}".format(output))
+                        print("===> {0:s}".format(output))
             except EOFError:  # pragma: no cover
                 raise SystemExit(0)
