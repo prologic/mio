@@ -113,6 +113,14 @@ print = block(*args, sep=" ", end="\n", file=System stdout,
 
 range = block(Range clone(call message evalArgs(call sender)))
 
+sum = block(xs,
+    r = 0
+    xs foreach(x,
+        r += x
+    )
+    r
+)
+
 with = block(
     obj = call message arg(0, call sender)
     res = call message arg(1, call sender)

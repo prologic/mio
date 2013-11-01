@@ -37,7 +37,7 @@ mio 0.0.6.dev
     mio 0.0.6.dev
     mio>
     
-- 
+- Implemented ``sum`` builtin.
 
 
 mio 0.0.5 (2013-10-29)
