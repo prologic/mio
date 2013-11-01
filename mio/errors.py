@@ -12,3 +12,7 @@ class TypeError(Error):
 
 class ImportError(Error):
     """ImportError"""
+
+
+class UserError(Error):
+    """UserError"""

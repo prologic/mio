@@ -3,6 +3,7 @@ from sys import exc_info
 
 from mio import runtime
 from mio.object import Object
+from mio.errors import UserError
 from mio.utils import method, Null
 
 
@@ -27,3 +28,7 @@ class Exception(Object):
             message = str(evalue)
 
             return runtime.state.eval("""Error clone("{0:s}", "{1:s}")""".format(error, message))
+
+    @method("raise")
+    def raiseError(self, receiver, context, m, error):
+        raise UserError(error.eval(context))

@@ -113,7 +113,7 @@ print = block(*args, sep=" ", end="\n", file=System stdout,
 
 range = block(Range clone(call message evalArgs(call sender)))
 
-raise = Exception raise
+raise = Exception get("raise")
 
 sum = block(xs,
     r = 0
@@ -123,7 +123,7 @@ sum = block(xs,
     r
 )
 
-try = Exception try
+try = Exception get("try")
 
 with = block(
     obj = call message arg(0, call sender)
