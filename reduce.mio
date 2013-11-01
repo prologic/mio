@@ -1,0 +1,26 @@
+diff --git a/mio/lib/builtins.mio b/mio/lib/builtins.mio
+--- a/mio/lib/builtins.mio
++++ b/mio/lib/builtins.mio
+@@ -113,6 +113,22 @@
+ 
+ range = block(Range clone(call message evalArgs(call sender)))
+ 
++reduce = block(f, xs, s=None,
++    s ifNone (
++        try (
++            s = next(xs)
++        ) catch(StopIteration) (
++            raise TypeError("reduce() of empty sequence with no initial value")
++        )
++    )
++
++    a = s
++    xs foreach(x,
++        a = f(a, x)
++    )
++    a
++)
++
+ sum = block(xs,
+     r = 0
+     xs foreach(x,
