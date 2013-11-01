@@ -38,6 +38,7 @@ mio 0.0.6.dev
     mio>
     
 - Implemented ``sum`` builtin.
+- Added ``try`` and ``raise`` builtins. (*``raise`` is not implemented yet...*).
 
 
 mio 0.0.5 (2013-10-29)

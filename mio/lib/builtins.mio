@@ -113,6 +113,8 @@ print = block(*args, sep=" ", end="\n", file=System stdout,
 
 range = block(Range clone(call message evalArgs(call sender)))
 
+raise = Exception raise
+
 sum = block(xs,
     r = 0
     xs foreach(x,
@@ -120,6 +122,8 @@ sum = block(xs,
     )
     r
 )
+
+try = Exception try
 
 with = block(
     obj = call message arg(0, call sender)
