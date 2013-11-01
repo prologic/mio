@@ -1,14 +1,16 @@
 reduce = block(f, xs, s=None,
+    it = iter(xs)
+
     s ifNone (
         try (
-            s = next(xs)
+            s = next(it)
         ) catch(StopIteration) (
             raise TypeError("reduce() of empty sequence with no initial value")
         )
     )
 
     a = s
-    xs foreach(x,
+    it foreach(x,
         a = f(a, x)
     )
     a
