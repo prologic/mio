@@ -1,0 +1,4 @@
+Range do (
+    set("+", method(other, self setStep(other)))
+    set("-", method(other, self setStep(other * -1)))
+)

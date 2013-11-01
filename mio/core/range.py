@@ -52,5 +52,10 @@ class Range(Object):
                 setattr(receiver, key, None)
 
     @method()
+    def setStep(self, receiver, context, m, value):
+        receiver.step = int(value.eval(context))
+        return receiver
+
+    @method()
     def asList(self, receiver, context, m):
         return runtime.find("List").clone(list(receiver))

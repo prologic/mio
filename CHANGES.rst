@@ -23,6 +23,13 @@ mio 0.0.6.dev
     
     x = 1 .. 5  # a Range from 1 to 5
     
+- Added ``+`` and ``-`` operators to the ``Range`` object so you can do things like:
+
+::
+    
+    x = (1 .. 5) + 2  # a Range from 1 to 5 in increment of 2
+    
+- 
 
 
 mio 0.0.5 (2013-10-29)
