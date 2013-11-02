@@ -71,6 +71,13 @@ from = import = Importer get("import")
 
 iter = block(iterable, iterable __iter__())
 
+loop = block(
+    code = call message args at(0)
+    c = Continuation current()
+    code eval(call sender)
+    c()
+)
+
 map = block(f, xs,
     rs = List clone
     xs foreach(x,
