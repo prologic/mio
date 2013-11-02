@@ -216,69 +216,6 @@ class Object(object):
         from mio.core.block import Block
         return Block(body, args, kwargs)
 
-    # Flow Control
-
-    @method()
-    def foreach(self, receiver, context, m, *args):
-        try:
-            result = runtime.find("None")
-            vars, expression = args[:-1], args[-1]
-
-            for item in receiver:
-                if len(vars) == 2:
-                    context[vars[0].name], context[vars[1].name] = item
-                elif len(vars) == 1:
-                    context[vars[0].name] = item
-
-                result = expression.eval(context)
-
-                if context.state.stop:
-                    if context.state.isContinue:
-                        context.state.reset()
-                        continue
-                    else:
-                        return context.state.value
-            return result
-        finally:
-            if not context.state.isReturn:
-                context.state.reset()
-
-    @method("while")
-    def _while(self, receiver, context, m, condition, expression):
-        try:
-            result = runtime.find("None")
-
-            while condition.eval(context):
-                result = expression.eval(context)
-
-                if context.state.stop:
-                    if context.state.isContinue:
-                        context.state.reset()
-                        continue
-                    else:
-                        return context.state.value
-            return result
-        finally:
-            if not context.state.isReturn:
-                context.state.reset()
-
-    @method("continue")
-    def _continue(self, receiver, context, m):
-        context.state.isContinue = True
-        return runtime.find("None")
-
-    @method("break")
-    def _break(self, reciver, context, m):
-        context.state.isBreak = True
-        return runtime.find("None")
-
-    @method("return")
-    def _return(self, receiver, context, m, *args):
-        value = args[0].eval(context) if args else runtime.find("None")
-        context.state.isReturn = True
-        context.state.value = value
-        return receiver
-
     # Introspection
 
     @method("state")

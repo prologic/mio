@@ -13,7 +13,7 @@ def mio(request):
 def test_closure(mio, capfd):
     mio.eval("""
         foo = block(
-            return block(
+            block(
                 print("foo")
             )
         )
@@ -28,9 +28,9 @@ def test_closure(mio, capfd):
 def test_closure_locals(mio):
     mio.eval("""
         counter = block(n,
-            return block(
+            block(
                 self n = n + 1
-                return n
+                n
             )
         )
     """)
@@ -47,9 +47,9 @@ def test_closure_locals(mio):
 def test_closure_locals2(mio):
     mio.eval("""
         counter = block(n,
-            return block(
+            block(
                 n = n + 1
-                return n
+                n
             )
         )
     """)

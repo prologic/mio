@@ -18,7 +18,7 @@ def test_basic_trait(mio, capfd):
             greeting = "World!"
 
             getGreeting = method(
-               return (self greeting)
+               self greeting
             )
 
             setGreeting = method(aGreeting,

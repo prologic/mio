@@ -52,6 +52,7 @@ mio 0.0.6.dev
 - ``Object evalArg`` should evaluate the argument with context as the receiver.
 - Added ``List __getitem__`` and ``List __len__`` methods.
 - Added ``TIterable`` trait to the mio bootstrap library and added this to ``List``.
+- Removed ``foreach``, ``whilte``, ``continue``, ``break`` and ``return`` ``Object`` methods. These will be re-implemented as traits and builtins.
 
 
 mio 0.0.5 (2013-10-29)
