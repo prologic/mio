@@ -18,14 +18,14 @@ abs = block(x,
 
 all = block(xs,
     xs foreach(x,
-        (x bool) ifFalse(return False)
+        (x bool) ifFalse(False)
     )
     True
 )
 
 any = block(xs,
     xs foreach(x,
-        (x bool) ifTrue(return True)
+        (x bool) ifTrue(True)
     )
     False
 )
@@ -36,9 +36,9 @@ bool = block(x, utils tobool(x))
 
 callable = block(x,
     (x has("__call__")) ifTrue(
-        return True
+        True
     ) ifFalse(
-        return (x type == "Block")
+        (x type == "Block")
     )
 )
 
@@ -94,11 +94,11 @@ filter = block(f, xs,
 )
 
 list = block(
-    return (List clone(call message evalArgs(call sender)))
+    (List clone(call message evalArgs(call sender)))
 )
 
 open = block(filename,
-    return File clone open(filename)
+    File clone open(filename)
 )
 
 print = block(*args, sep=" ", end="\n", file=System stdout,
