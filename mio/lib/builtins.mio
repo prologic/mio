@@ -114,6 +114,8 @@ range = block(Range clone(call message evalArgs(call sender)))
 
 raise = Exception get("raise")
 
+return = block(value, call sender state setReturn(value); value)
+
 sum = block(xs,
     r = 0
     xs foreach(x,
