@@ -17,9 +17,10 @@ class Continuation(Object):
         self.create_methods()
         self.parent = runtime.find("Object")
 
-    @method("call")
-    def call(self, receiver, context, m):
-        return receiver.message.eval(receiver.context)
+    def __call__(self, receiver, context, m):
+        if not m.call:
+            return self
+        return self.message.eval(self.context)
 
     @method("current")
     def current(self, receiver, context, m):

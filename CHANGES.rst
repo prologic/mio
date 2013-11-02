@@ -40,6 +40,15 @@ mio 0.0.6.dev
 - Implemented ``sum`` builtin.
 - Added ``try`` and ``raise`` builtins. (*``raise`` is not implemented yet...*).
 - Added support for User level Error(s) and implemented ``Exception raise``
+- Replaced ``Continuation call`` with activatable object semantics. This means:
+
+::
+    
+    c = Continuation current()
+    print("foo")
+    c()
+    
+-
 
 
 mio 0.0.5 (2013-10-29)

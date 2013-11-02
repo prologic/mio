@@ -3,5 +3,5 @@ def test(mio):
     assert mio.eval("x = Continuation current; i += 1")
     assert mio.eval("i == 1")
 
-    mio.eval("x call")
+    mio.eval("x()")
     assert mio.eval("i == 2")
