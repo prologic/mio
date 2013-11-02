@@ -117,9 +117,17 @@ class State(object):
         try:
             return parse(tokenize(code)).eval(self.root if receiver is None else receiver, self.root if context is None else context, message)
         except Error as e:
-            type = e.__class__.__name__
+            if e.args and isinstance(e.args[0], Object):
+                error = e.args[0]
+                type = str(error["type"]) if error["type"] is not None else error.type
+                message = str(error["message"]) if error["message"] is not None else ""
+            else:
+                type = e.__class__.__name__
+                message = str(e)
+
+            stack = "\n".join([repr(m) for m in e.stack])
             underline = "-" * (len(type) + 1)
-            print("\n  %s: %s\n  %s\n  %r\n" % (type, e, underline, message))
+            print("\n  {0:s}: {1:s}\n  {2:s}\n  {3:s}\n".format(type, message, underline, stack))
             if reraise:
                 raise
         except Exception as e:  # pragma: no cover
@@ -142,9 +150,13 @@ class State(object):
                     result = self.eval(code)
                     if result is not None:  # pragma: no cover
                         if isinstance(result, Object):
-                            output = self.eval("repr()", receiver=result)
+                            if result.value is not None:
+                                output = self.eval("repr()", receiver=result)
+                            else:
+                                output = None
                         else:
                             output = repr(result)
-                        print("===> {0:s}".format(output))
+                        if output is not None:
+                            print("===> {0:s}".format(output))
             except EOFError:  # pragma: no cover
                 raise SystemExit(0)

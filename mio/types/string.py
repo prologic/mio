@@ -58,6 +58,11 @@ class String(Object):
         return runtime.find("Number").clone(receiver.value.find(sub, start, end))
 
     @method()
+    def format(self, receiver, context, m, *args):
+        args = [str(arg.eval(context)) for arg in args]
+        return receiver.clone(receiver.value.format(*args))
+
+    @method()
     def join(self, receiver, context, m, xs):
         xs = xs.eval(context)
         return receiver.clone(receiver.value.join([str(x) for x in xs]))

@@ -5,7 +5,41 @@ Changes
 mio 0.0.7.dev
 .............
 
--
+- Added rudamentary stack trace support to errors. A somewhat "okay" stack trace is displayed on error(s).
+- Added ``String format`` method for performing string iterpolation. Only supports ``{0}``, ``{1}``, etc.
+- Implemented ``ListIterator`` iterable object with ``iter`` added to mio std. lib. This works similiarly to Python's iterators:
+
+::
+    
+    mio> xs = [1, 2, 3, 4]
+    ===> list(1, 2, 3, 4)
+    mio> it = iter(xs)
+    ===> ListIterator(list(1, 2, 3, 4))
+    mio> it next()
+    ===> 1
+    mio> it next()
+    ===> 2
+    mio> it next()
+    ===> 3
+    mio> it next()
+    ===> 4
+    
+A further iterator would result in:
+
+::
+    
+    mio> it next()
+
+      StopIteration: 
+      --------------
+      next
+    ifFalse(
+     raise(StopIteration) 
+    ) 
+
+    raise(StopIteration) 
+    
+- 
 
 
 mio 0.0.6 (2013-11-02)

@@ -1,5 +1,6 @@
 
 from mio import runtime
+from mio.errors import Error
 from mio.utils import method
 from mio.object import Object
 
@@ -42,24 +43,32 @@ class Message(Object):
         context = receiver if context is None else context
         m = self if m is None else m
 
-        while m is not None:
-            if m.terminator:
-                value = context
-            elif m.value is not None:
-                runtime.state.value = value = m.value
-            else:
-                obj = receiver[m.name]
-
-                if callable(obj):
-                    runtime.state.value = value = obj(receiver, context, m, *m.args)
+        try:
+            while m is not None:
+                if m.terminator:
+                    value = context
+                elif m.value is not None:
+                    runtime.state.value = value = m.value
                 else:
-                    runtime.state.value = value = obj
+                    try:
+                        obj = receiver[m.name]
+                    except Error as e:
+                        e.stack.insert(0, receiver)
+                        raise
 
-            if context.state.stop:
-                return context.state.value
+                    if callable(obj):
+                        runtime.state.value = value = obj(receiver, context, m, *m.args)
+                    else:
+                        runtime.state.value = value = obj
 
-            receiver = value
-            m = m.next
+                if context.state.stop:
+                    return context.state.value
+
+                receiver = value
+                m = m.next
+        except Error as e:
+            e.stack.insert(0, m)
+            raise
 
         try:
             returnValue = runtime.state.value if runtime.state.value is not None else receiver

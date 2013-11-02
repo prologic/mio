@@ -8,21 +8,21 @@ class Error(Object):
     def __init__(self, value=Null):
         super(Error, self).__init__(value=value)
 
+        self["type"] = None
         self["message"] = None
-        self["error"] = None
 
         self.create_methods()
         self.parent = runtime.find("Object")
 
     def __repr__(self):
-        error = str(self["error"]) if self["error"] is not None else self.type
+        type = str(self["type"]) if self["type"] is not None else self.type
         message = str(self["message"]) if self["message"] is not None else ""
-        return "{0:s}({1:s})".format(error, message)
+        return "{0:s}({1:s})".format(type, message)
 
     @method()
-    def init(self, receiver, context, m, error=None, message=None):
-        if error is not None:
-            receiver["error"] = error.eval(context)
+    def init(self, receiver, context, m, type=None, message=None):
+        if type is not None:
+            receiver["type"] = type.eval(context)
         if message is not None:
             receiver["message"] = message.eval(context)
         return receiver

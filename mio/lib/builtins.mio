@@ -69,6 +69,8 @@ hex = block(x, utils tohex(x))
 
 from = import = Importer get("import")
 
+iter = block(iterable, iterable __iter__())
+
 map = block(f, xs,
     rs = List clone
     xs foreach(x,
@@ -150,3 +152,4 @@ set("?",
 )
 
 from errors import *
+from iterators import *
