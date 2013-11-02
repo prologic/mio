@@ -11,10 +11,12 @@ World = Object clone do (
     greeting = "World!"
 
     init = method(greeting,
-        self greeting = greeting
+        (greeting is not None) ifTrue(
+            self greeting = greeting
+        )
     )
 
     hello = method(
-        print("Hello ", self greeting)
+        print("Hello", self greeting)
     )
 )

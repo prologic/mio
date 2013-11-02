@@ -1,13 +1,16 @@
 # -*- coding: utf-8 -*-
 
 import re
-from funcparserlib.lexer import make_tokenizer, Token
+from collections import OrderedDict
 
+
+from funcparserlib.lexer import make_tokenizer, Token
 from funcparserlib.parser import forward_decl as fwd
 from funcparserlib.parser import a, many, maybe, skip, some
 
-import runtime
-from core.message import Message
+
+from mio import runtime
+from mio.core.message import Message
 
 tokval = lambda tok: tok.value
 sometok = lambda type: (some(lambda t: t.type == type) >> tokval)
@@ -15,12 +18,17 @@ op = lambda name: a(Token('op', name))
 op_ = lambda name: skip(op(name))
 Spec = lambda name, value: (name, (value,))
 
-operators = [
-    "**", "++", "--", "+=", "-=", "*=", "/=", "<<", ">>",
-    "==", "!=", "<=", ">=", "..",
-    "+", "-", "*", "/", "=", "<", ">", "!", "%", "|", "^", "&", "?", ":",
-    "is", "or", "and", "not", "return", "from", "import",
-]
+operators = OrderedDict([
+    ("**", 1), ("++", 1), ("--", 1), ("+=", 1), ("-=", 1), ("*=", 1), ("/=", 1),
+    ("<<", 1), (">>", 1), ("==", 0), ("!=", 0), ("<=", 0), (">=", 0), ("..", 1),
+
+    ("+", 1), ("-", 1), ("*", 1), ("/", 1), ("=", 0), ("<", 0), (">", 0),
+    ("!", 0), ("%", 1), ("|", 0), ("^", 0), ("&", 0), ("?", 1), (":", 1),
+
+    ("is", 0), ("or", 0), ("and", 0), ("not", 0),
+
+    ("return", 0), ("from", 1), ("import", 1), ("return", 0), ("raise", 0),
+])
 
 strtpl = """
     {start:s}
@@ -129,6 +137,20 @@ def is_operator(message):
     return message.name in operators
 
 
+def reshuffle(ms):
+    r = []
+
+    while ms:
+        #x is not None --> not x is None
+        if ms[0].name == "is" and ms[1].name == "not":
+            r = r[:-1] + [ms[1], r[-1], ms[0]]
+            ms = ms[2:]
+            continue
+        r.append(ms.pop(0))
+
+    return r
+
+
 def make_chain(messages, all=True):
     root = node = None
 
@@ -151,16 +173,19 @@ def make_chain(messages, all=True):
         elif is_operator(messages[0]):
             message = messages.pop(0)
             if messages and not message.args:
-                arg = messages.pop(0)
-                arg.previous = message
-                message.args.append(arg)
-                message.call = True
-                #chain = make_chain(messages, all=False)
-                #if chain is not None:
-                #    # Set the argument (a Message) previous attribute to the current message
-                #    chain.previous = message
-                #    message.args.append(chain)
-                #    message.call = True
+                if operators.get(message.name) == 1:
+                    arg = messages.pop(0)
+                    # Set the argument (a Message) previous attribute to the current message
+                    arg.previous = message
+                    message.args.append(arg)
+                    message.call = True
+                else:
+                    chain = make_chain(messages, all=False)
+                    if chain is not None:
+                        # Set the argument (a Message) previous attribute to the current message
+                        chain.previous = message
+                        message.args.append(chain)
+                        message.call = True
         elif messages[0].terminator and not all:
             break
         else:
@@ -172,6 +197,10 @@ def make_chain(messages, all=True):
             node.next = node = message
 
     return root
+
+
+def make_expression(messages):
+    return make_chain(reshuffle(messages))
 
 
 def make_number(n):
@@ -206,7 +235,7 @@ symbol = fwd()
 terminator = (op(";") | op("\r") | op("\n")) >> make_terminator
 
 expression.define((
-    many(message | terminator)) >> make_chain)
+    many(message | terminator)) >> make_expression)
 
 message.define(((symbol + maybe(arguments)) | arguments) >> make_message)
 
