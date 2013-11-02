@@ -40,7 +40,7 @@ class Importer(Object):
 
     @method("import")
     def _import(self, receiver, context, m, name):
-        name = str(name.eval(context))
+        name = name.name if name.value is None else str(name.eval(context))
 
         context = context["call"]["target"] if context.type == "Locals" else context
 

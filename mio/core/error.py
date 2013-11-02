@@ -20,7 +20,9 @@ class Error(Object):
         return "{0:s}({1:s})".format(error, message)
 
     @method()
-    def init(self, receiver, context, m, error, message):
-        receiver["error"] = error.eval(context)
-        receiver["message"] = message.eval(context)
+    def init(self, receiver, context, m, error=None, message=None):
+        if error is not None:
+            receiver["error"] = error.eval(context)
+        if message is not None:
+            receiver["message"] = message.eval(context)
         return receiver

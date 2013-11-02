@@ -1,0 +1,4 @@
+AttributeError = Error clone()
+AssertionError = Error clone()
+TypeError = Error clone()
+KeyError = Error clone()

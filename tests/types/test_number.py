@@ -63,5 +63,5 @@ def test_pow(mio):
 
 
 def test_primitive_abs(mio):
-    assert mio.eval("-1 :__abs__ == 1")
-    assert mio.eval("1 :__abs__ == 1")
+    assert mio.eval("Number clone() setValue(-1 :__abs__) == 1")
+    assert mio.eval("Number clone() setValue(1 :__abs__) == 1")

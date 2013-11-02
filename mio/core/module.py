@@ -4,6 +4,8 @@ from os import path
 from mio import runtime
 from mio.object import Object
 from mio.utils import method, Null
+from mio.errors import AttributeError
+from mio.parser import parse, tokenize
 
 
 class Module(Object):
@@ -32,3 +34,19 @@ class Module(Object):
         runtime.state.load(file, receiver, receiver)
 
         return receiver
+
+    @method("import")
+    def _import(self, receiver, context, m, name):
+        name = name.name if name.value is None else str(name.eval(context))
+
+        # In case we're importing from inside a module.
+        if context.type == "Module" and receiver is context:
+            m = parse(tokenize("""Importer import("{0:s}")""".format(name)))
+            return m.eval(receiver, context, m)
+
+        if name == "*":
+            context.attrs.update(receiver.attrs)
+        else:
+            context[name] = receiver[name]
+
+        return runtime.find("None")

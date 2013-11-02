@@ -53,6 +53,29 @@ mio 0.0.6.dev
 - Added ``List __getitem__`` and ``List __len__`` methods.
 - Added ``TIterable`` trait to the mio bootstrap library and added this to ``List``.
 - Removed ``foreach``, ``whilte``, ``continue``, ``break`` and ``return`` ``Object`` methods. These will be re-implemented as traits and builtins.
+- Changed the way the parser parses and treats operators. They are no longer parsed in a deep right tree.
+
+Example::
+    
+    1 + 2 * 3
+
+OLD::
+    
+    1 +(2 *(3))
+    
+NEW::
+    
+    1 +(2) *(3)
+    
+  - This will probably make reshuffling and therefore implementing operator precedence a lot easier.
+  - This also makes the following expressions possible (*used in the builtins module*):
+
+::
+    
+    from foo import *
+    
+- Added ``TypeError``, ``KeyError`` and ``AttributeError`` to the mio std. lib.
+- Made it possible to import members from a module with: ``from foo import bar``
 
 
 mio 0.0.5 (2013-10-29)

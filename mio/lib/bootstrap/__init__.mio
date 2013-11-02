@@ -96,8 +96,8 @@ None do (
 
 Root builtins = Importer import("builtins")
 
-import(range)
-import(error)
-import(object)
-import(iterable)
-import(operators)
+import range
+import error
+import object
+import iterable
+import operators

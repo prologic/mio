@@ -19,7 +19,7 @@ operators = [
     "**", "++", "--", "+=", "-=", "*=", "/=", "<<", ">>",
     "==", "!=", "<=", ">=", "..",
     "+", "-", "*", "/", "=", "<", ">", "!", "%", "|", "^", "&", "?", ":",
-    "is", "or", "and", "not", "return",
+    "is", "or", "and", "not", "return", "from", "import",
 ]
 
 strtpl = """
@@ -151,12 +151,16 @@ def make_chain(messages, all=True):
         elif is_operator(messages[0]):
             message = messages.pop(0)
             if messages and not message.args:
-                chain = make_chain(messages, all=False)
-                if chain is not None:
-                    # Set the argument (a Message) previous attribute to the current message
-                    chain.previous = message
-                    message.args.append(chain)
-                    message.call = True
+                arg = messages.pop(0)
+                arg.previous = message
+                message.args.append(arg)
+                message.call = True
+                #chain = make_chain(messages, all=False)
+                #if chain is not None:
+                #    # Set the argument (a Message) previous attribute to the current message
+                #    chain.previous = message
+                #    message.args.append(chain)
+                #    message.call = True
         elif messages[0].terminator and not all:
             break
         else:

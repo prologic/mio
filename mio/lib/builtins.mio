@@ -63,14 +63,11 @@ exit = block(status,
     System exit(status)
 )
 
-from = get("import")
+forward = block(name, self get(name))
 
 hex = block(x, utils tohex(x))
 
-import = block(
-    name = call message args at(0) name
-    Importer import(name)
-)
+from = import = Importer get("import")
 
 map = block(f, xs,
     rs = List clone
@@ -151,3 +148,5 @@ set("?",
         )
     )
 )
+
+from errors import *
