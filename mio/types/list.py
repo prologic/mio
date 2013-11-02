@@ -30,6 +30,17 @@ class List(Object):
     def init(self, receiver, context, m, l=None):
         receiver.value = copy(l.eval(context).value) if l is not None else list()
 
+    # Special Methods
+
+    @method("__getitem__")
+    def mio__getitem__(self, receiver, context, m, i):
+        i = int(i.eval(context))
+        return receiver.value[i]
+
+    @method("__len__")
+    def mio__len__(self, receiver, context, m):
+        return runtime.find("Number").clone(len(receiver.value))
+
     # General Operations
 
     @method()
