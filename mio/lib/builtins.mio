@@ -115,7 +115,7 @@ range = block(Range clone(call message evalArgs(call sender)))
 raise = Exception get("raise")
 
 return = block(value,
-    (call sender type != "Block") ifTrue(
+    (call sender type != "Locals") ifTrue(
         raise(RunTimeError clone("return outside Block"))
     )
     call sender state setReturn(value)

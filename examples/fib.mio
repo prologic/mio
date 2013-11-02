@@ -4,4 +4,4 @@ Number fib = method(
     (self < 2) ifTrue(return self)
     return (((self - 1) fib()) + ((self - 2) fib()))
 )
-print(7 fib())
+print(10 fib())
