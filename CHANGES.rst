@@ -2,8 +2,8 @@ Changes
 -------
 
 
-mio 0.0.6.dev
-.............
+mio 0.0.6 (2013-11-02)
+......................
 
 - Allow an optional object to be passed to the ``Object id`` method.
 - Implemented ``hex`` builtin.
