@@ -48,7 +48,7 @@ mio 0.0.6.dev
     print("foo")
     c()
     
--
+- ``Object evalArg`` should evaluate the argument with context as the receiver.
 
 
 mio 0.0.5 (2013-10-29)

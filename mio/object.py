@@ -333,7 +333,7 @@ class Object(object):
 
     @method()
     def evalArg(self, receiver, context, m, arg):
-        return arg.eval(receiver, context)
+        return arg.eval(context)
 
     @method()
     def do(self, receiver, context, m, expression):
