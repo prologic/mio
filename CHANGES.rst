@@ -41,6 +41,8 @@ A further iterator would result in:
     
 - Re-implemented ``return`` function as part of the mio std. lib.
 - Don't allow ``return`` to be called outside of a ``Block`` (*block/method*) as this is illegal.
+- IMplemented ``while`` builtin as part of the mio std. lib.
+  (*no break or continue support yet*)
 
 
 mio 0.0.6 (2013-11-02)
