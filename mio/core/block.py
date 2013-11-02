@@ -107,10 +107,7 @@ class Block(Object):
             for arg in [arg for arg in args if arg.name == "set"]:
                 self.locals[arg.args[0].name] = arg.eval(context)
 
-        try:
-            return self.body.eval(self.locals, self.locals)
-        finally:
-            context.state.reset()
+        return self.body.eval(self.locals, self.locals)
 
     @method("args")
     def get_args(self, receiver, context, m):
