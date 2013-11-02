@@ -67,8 +67,8 @@ NEW::
     
     1 +(2) *(3)
     
-  - This will probably make reshuffling and therefore implementing operator precedence a lot easier.
-  - This also makes the following expressions possible (*used in the builtins module*):
+- This will probably make reshuffling and therefore implementing operator precedence a lot easier.
+- This also makes the following expressions possible (*used in the builtins module*):
 
 ::
     
