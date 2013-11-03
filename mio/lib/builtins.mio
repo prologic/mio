@@ -127,6 +127,26 @@ return = block(value,
     value
 )
 
+reduce = block(f, xs, s,
+    it = iter(xs)
+
+    s ifNone (
+        try (
+            s = next(it)
+        ) catch(StopIteration) (
+            raise TypeError("reduce() of empty sequence with no initial value")
+        )
+    )
+
+    a = s
+    c = Continuation current
+    try(
+        a = f(a, it next())
+        c()
+    )
+    a
+)
+
 sum = block(xs,
     r = 0
     xs foreach(x,
