@@ -46,6 +46,11 @@ A further iterator would result in:
 - Implemented ``loop`` builtin as part of the mio std. lib.
   (*no break or continue support yet*)
 - Implemented basic support for reshuffling messages before chaining to support ``x is not None`` --> ``not(x is None)``.
+- Finally implemented operator precedence support (*which seems to cover most edge cases*).
+
+.. note:: Need to write lots of unit tests for this!
+
+- 
 
 
 mio 0.0.6 (2013-11-02)

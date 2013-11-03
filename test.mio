@@ -1,7 +1,7 @@
-loop = block(
-    start = Continuation current
-    not(state stop) ifTrue(
-        call message arg(0)
-        start call
-    )
+Types True = Boolean primitive(clone) setValue(1)
+Types False = Boolean primitive(clone) setValue(0)
+Types None = Boolean primitive(clone)
+
+Object do (
+    set("()", Object get("evalArg"))
 )

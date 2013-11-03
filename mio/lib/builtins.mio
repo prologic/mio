@@ -63,8 +63,6 @@ exit = block(status,
     System exit(status)
 )
 
-forward = block(name, self get(name))
-
 hex = block(x, utils tohex(x))
 
 from = import = Importer get("import")
@@ -146,16 +144,16 @@ with = block(
     res
 )
 
-while = block(
-    test = call message args at(0)
-    code = call message args at(1)
-    c = Continuation current()
-    (test eval(call sender)) ifTrue(
-        code eval(call sender)
-        c()
-    )
-    None
-)
+#while = block(
+#    test = call message args at(0)
+#    code = call message args at(1)
+#    c = Continuation current()
+#    (test eval(call sender)) ifTrue(
+#        code eval(call sender)
+#        c()
+#    )
+#    None
+#)
 
 #
 # Syntactic Sugar

@@ -11,10 +11,12 @@ class FakeOpts(object):
 
         self.__dict__.update(**kwargs)
 
-opts = FakeOpts(nosys=False)
+opts = FakeOpts(nosys=True)
 runtime.init(opts=opts)
 eval = runtime.state.eval
 
 
 def parse(s):
     return parser.parse(parser.tokenize(s))
+
+x = parse(open("test.mio", "r").read())
