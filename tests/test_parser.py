@@ -1,6 +1,7 @@
+from mio.parser import parse
+from mio.lexer import tokenize
 from mio.types.number import Number
 from mio.types.string import String
-from mio.parser import parse, tokenize
 
 
 def test_empty_message(mio):
@@ -140,7 +141,7 @@ def test_operators(mio):
     assert repr(chain) == "1 +(2)"
 
     chain = parse(tokenize("1 + 2 * 3"))
-    assert repr(chain) == "1 +(2) *(3)"
+    assert repr(chain) == "1 +(2 *(3))"
 
 
 def test_operators_assignment(mio):

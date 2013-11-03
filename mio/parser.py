@@ -2,16 +2,14 @@
 
 from __future__ import print_function
 
-import re
-from collections import OrderedDict
 
-
-from funcparserlib.lexer import make_tokenizer, Token
+from funcparserlib.lexer import Token
 from funcparserlib.parser import forward_decl as fwd
 from funcparserlib.parser import a, many, maybe, skip, some
 
 
 from mio import runtime
+from mio.lexer import operators
 from mio.core.message import Message
 
 tokval = lambda tok: tok.value
@@ -19,137 +17,6 @@ sometok = lambda type: (some(lambda t: t.type == type) >> tokval)
 op = lambda name: a(Token('op', name))
 op_ = lambda name: skip(op(name))
 Spec = lambda name, value: (name, (value,))
-
-"""
-1 or
-2 and
-3 not
-4 in
-5 is
-6 <, <=, >, >=, !=, ==
-7 |
-8 ^
-9 &
-10 <<, >>
-11 +, -
-12 *, /, %
-13 +x, -x
-14 ~x
-15 **
-"""
-
-operators = OrderedDict([
-    ("**", (1, 15)), ("++", (1, 15)), ("--", (1, 15)), ("+=", (1, 0)), ("-=", (1, 0)), ("*=", (1, 0)), ("/=", (1, 0)),
-    ("<<", (1, 10)), (">>", (1, 10)), ("==", (0, 6)), ("!=", (0, 6)), ("<=", (0, 6)), (">=", (0, 6)), ("..", (1, 0)),
-
-    ("+", (1, 11)), ("-", (1, 11)), ("*", (1, 12)), ("/", (1, 12)), ("=", (1, 0)), ("<", (0, 6)), (">", (0, 6)),
-    ("!", (0, 0)), ("%", (12, 1)), ("|", (0, 7)), ("^", (0, 8)), ("&", (0, 9)), ("?", (1, 0)), (":", (1, 0)),
-
-    ("in", (0, 4)), ("is", (0, 5)), ("or", (0, 1)), ("and", (0, 2)), ("not", (0, 3)),
-
-    ("return", (0, 0)), ("from", (1, 0)), ("import", (1, 0)), ("raise", (0, 0)),
-])
-
-strtpl = """
-    {start:s}
-    [^\\{quote:s}]*?
-    (
-    (   \\\\[\000-\377]
-        |   {quote:s}
-        (   \\\\[\000-\377]
-        |   [^\\{quote:s}]
-        |   {quote:s}
-        (   \\\\[\000-\377]
-            |   [^\\{quote:s}]
-        )
-        )
-    )
-    [^\\{quote:s}]*?
-    )*?
-    {end:s}
-"""
-
-quotes = [
-    {"quote": "'", "start": "'''", "end": "'''"},
-    {"quote": '"', "start": '"""', "end": '"""'},
-    {"quote": "'", "start": "'", "end": "'"},
-    {"quote": '"', "start": '"', "end": '"'}
-]
-
-strre = "".join(strtpl.split())
-strre = "|".join([strre.format(**quote) for quote in quotes])
-strre = re.compile(strre.format(**quotes[3]))
-
-encodnig = "utf-8"
-
-
-def findtoken(tokens, *args):
-    for arg in args:
-        try:
-            return tokens.index(arg)
-        except ValueError:
-            pass
-
-
-def precedence(tokens):
-    lparen = Token("op", "(")
-    rparen = Token("op", ")")
-
-    level = None
-    levels = []
-    output = []
-
-    while tokens:
-        if tokens and tokens[0].value in ";\r\n":
-            while len(levels) > 1:
-                level = levels.pop()
-                output.append(rparen)
-            level = None
-            levels = []
-            output.append(tokens.pop(0))
-        elif tokens and tokens[0].value in "()":
-            level = None
-            levels = []
-            output.append(tokens.pop(0))
-        else:
-            if len(tokens) > 1 and tokens[1].value in operators:
-                level = operators[tokens[1].value][1]
-
-                if levels:
-                    if level > levels[-1]:
-                        levels.append(level)
-                        output.append(lparen)
-                else:
-                    levels.append(level)
-
-            output.append(tokens.pop(0))
-            while levels and level < levels[-1]:
-                level = levels.pop()
-                output.append(rparen)
-
-    while len(levels) > 1:
-        level = levels.pop()
-        output.append(rparen)
-
-    return output
-
-
-def tokenize(str):
-
-    ops = "|".join([re.escape(op) for op in operators])
-
-    specs = [
-        Spec("comment",    r'#.*'),
-        Spec("whitespace", r"[ \t]+"),
-        Spec('string',     strre),
-        Spec('number',     r'(-?(0|([1-9][0-9]*))(\.[0-9]+)?([Ee]-?[0-9]+)?)'),
-        Spec('identifier', r'[A-Za-z_][A-Za-z0-9_]*'),
-        Spec('operator',   ops),
-        Spec('op',         r'[(){}\[\],:;\n\r]'),
-    ]
-    useless = ["comment", "whitespace"]
-    t = make_tokenizer(specs)
-    return precedence([x for x in t(str) if x.type not in useless])
 
 
 def make_arguments(n):
@@ -240,6 +107,11 @@ def make_chain(messages, all=True):
             else:
                 value = make_chain(messages, all=False)
 
+            try:
+                assert key is not None
+                assert value is not None
+            except:
+                import pudb; pudb.set_trace()
             message = Message("set", args=[key, value])
         elif is_operator(messages[0]):
             message = messages.pop(0)

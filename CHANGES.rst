@@ -50,7 +50,7 @@ A further iterator would result in:
 
 .. note:: Need to write lots of unit tests for this!
 
-- 
+- Fixed all found edge cases with the new operator precedence lexer/parser.
 
 
 mio 0.0.6 (2013-11-02)

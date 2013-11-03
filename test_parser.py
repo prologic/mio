@@ -1,5 +1,6 @@
 #!/usr/bin/python -i
 
+from mio import lexer
 from mio import parser
 from mio import runtime
 
@@ -17,6 +18,4 @@ eval = runtime.state.eval
 
 
 def parse(s):
-    return parser.parse(parser.tokenize(s))
-
-x = parse(open("test.mio", "r").read())
+    return parser.parse(lexer.tokenize(s))

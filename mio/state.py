@@ -5,9 +5,10 @@ from traceback import format_exc
 
 
 from .errors import Error
-from .version import version
+from .parser import parse
+from .lexer import tokenize
 from .utils import tryimport
-from .parser import parse, tokenize
+from .version import version
 
 from .core import Core
 from .types import Types

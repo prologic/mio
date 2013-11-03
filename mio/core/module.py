@@ -2,10 +2,10 @@ from os import path
 
 
 from mio import runtime
+from mio.parser import parse
 from mio.object import Object
+from mio.lexer import tokenize
 from mio.utils import method, Null
-from mio.errors import AttributeError
-from mio.parser import parse, tokenize
 
 
 class Module(Object):
