@@ -24,7 +24,7 @@ mio 0.0.7.dev
     mio> it next()
     ===> 4
     
-A further iterator would result in:
+A further iteration would result in:
 
 ::
     
