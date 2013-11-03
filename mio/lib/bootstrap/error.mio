@@ -1,4 +1,17 @@
 Error do (
     set("isError", True)
+
     ifError = Object get("evalArg")
+
+    catch = method(
+        nargs = call message args len
+        (nargs == 1) ifTrue(
+            call message args at(0) eval(call sender)
+        ) ifFalse(
+            e = call message arg(0)
+            (self type == e type ) ifTrue(
+                call message args at(1) eval(call sender)
+            )
+        )
+    )
 )

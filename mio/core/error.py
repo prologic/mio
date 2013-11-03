@@ -21,8 +21,6 @@ class Error(Object):
 
     @method()
     def init(self, receiver, context, m, type=None, message=None):
-        if type is not None:
-            receiver["type"] = type.eval(context)
-        if message is not None:
-            receiver["message"] = message.eval(context)
+        receiver["type"] = type.eval(context) if type is not None else runtime.find("String").clone("Error")
+        receiver["message"] = message.eval(context) if message is not None else runtime.find("String").clone()
         return receiver

@@ -51,6 +51,7 @@ A further iteration would result in:
 .. note:: Need to write lots of unit tests for this!
 
 - Fixed all found edge cases with the new operator precedence lexer/parser.
+- Improved ``Error`` object and added ``Error catch`` method for catching errors.
 
 
 mio 0.0.6 (2013-11-02)
