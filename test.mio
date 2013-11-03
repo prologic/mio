@@ -1,7 +1,21 @@
-Types True = Boolean primitive(clone) setValue(1)
-Types False = Boolean primitive(clone) setValue(0)
-Types None = Boolean primitive(clone)
+reduce = block(f, xs, s=None,
+    it = iter(xs)
 
-Object do (
-    set("()", Object get("evalArg"))
+    s ifNone (
+        try (
+            s = next(it)
+        ) catch(StopIteration) (
+            raise TypeError("reduce() of empty sequence with no initial value")
+        )
+    )
+
+    a = s
+    it foreach(x,
+        a = f(a, x)
+    )
+    a
+)
+
+Number fact = method(
+    reduce(block(a, n, a * n), (1 .. self) asList, 0)
 )

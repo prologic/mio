@@ -175,5 +175,5 @@ set("?",
     )
 )
 
-from errors import *
-from iterators import *
+from(errors) import(*)
+from(iterators) import(*)

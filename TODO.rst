@@ -3,6 +3,7 @@ TODO
 
 
 - Bring test coverage back up to 100%
+- Figure out why ``from foo import *`` doesn't parse correctly.
 - Figure out a way to avoid recursion so ``loop(print("foo"))`` works as expected.
 - Implement TCloneable and TIterable traits
 - Try to chnage the semantics of arguments such that:
