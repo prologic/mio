@@ -1,25 +1,3 @@
-# Standard Operators
-
-Object do(
-    set("==", method(other, not(bool(self cmp(other)))))
-    set("!=", method(other, not(self == other)))
-
-    set("<", method(other, self cmp(other) == -1))
-    set(">", method(other, self cmp(other) == 1))
-    set("<=", method(other, self cmp(other) < 1))
-    set(">=", method(other, self cmp(other) > -1))
-
-    not = method(x, bool(x) not)
-
-    is = method(other,
-        (call message args len == 0) ifTrue(
-            (self id()) == (call message arg(0) id())
-        ) ifFalse(
-            (self id()) == (other id())
-        )
-    )
-)
-
 Number do(
     set("+=", method(other,
         attr = call message previous name

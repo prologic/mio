@@ -1,5 +1,5 @@
 Number fact = method(
-    reduce(block(a, n, a * n), (1 .. self) asList, 1)
+    reduce(block(a, n, a * n), range(self) asList)
 )
 
 print(10 fact())

@@ -53,6 +53,7 @@ A further iteration would result in:
 - Fixed all found edge cases with the new operator precedence lexer/parser.
 - Improved ``Error`` object and added ``Error catch`` method for catching errors.
 - Implemented ``reduce`` builtin.
+- Implemented TComparable trair
 
 
 mio 0.0.6 (2013-11-02)
