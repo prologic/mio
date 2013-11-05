@@ -1,7 +1,14 @@
 TODO
 ====
 
+- Fixed bugs in the operator precedence parser:
 
+::
+    
+    >>> x = tokenize("x < 5 and x > 2")
+    >>> x
+    'x < 5 ) and x > 2'
+    
 - Bring test coverage back up to 100%
 - Figure out why ``from foo import *`` doesn't parse correctly.
 - Figure out a way to avoid recursion so ``loop(print("foo"))`` works as expected.
