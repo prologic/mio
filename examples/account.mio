@@ -1,13 +1,13 @@
 #!/usr/bin/env mio
 
-Account = Object clone do(
+Account = Object clone() do(
     balance = 0
     deposit = method(v, self balance = self balance + v)
     withdraw = method(v, self balance = self balance - v)
     show = method(print("Account balance: $", self balance))
 )
 
-myAccount = Account clone
+myAccount = Account clone()
 myAccount show()
 
 print("Depositing $10")

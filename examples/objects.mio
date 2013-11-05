@@ -1,12 +1,12 @@
 #!/usr/bin/env mio
 
-Foo = Object clone do (
+Foo = Object clone() do (
     foo = method(
         print("foo")
     )
 )
 
-World = Object clone do (
+World = Object clone() do (
 
     greeting = "World!"
 
