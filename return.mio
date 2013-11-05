@@ -1,8 +1,0 @@
-return = block(value,
-    call sender state setReturn(value)
-)
-
-foo = block(n,
-    (n == 2) ifTrue(return "foo")
-    print(n)
-)
