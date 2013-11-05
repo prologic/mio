@@ -50,11 +50,7 @@ class Message(Object):
                 elif m.value is not None:
                     runtime.state.value = value = m.value
                 else:
-                    try:
-                        obj = receiver[m.name]
-                    except Error as e:
-                        e.stack.insert(0, receiver)
-                        raise
+                    obj = receiver[m.name]
 
                     if callable(obj):
                         if m.args and repr(m.args[0]) == "call message args":
