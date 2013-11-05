@@ -4,19 +4,6 @@ Types None = Boolean primitive("clone")
 
 Boolean clone = Boolean
 
-TCloneable = Object primitive("clone") do (
-
-    clone = method(
-        obj = self primitive("clone")
-        Exception try (
-            obj init(call message args)
-        )
-        obj
-    )
-)
-
-Object uses(TCloneable)
-
 Object do (
     #ifNone returns self
     ifNone = method(self)
@@ -106,11 +93,14 @@ None do (
     repr = str = "None"
 )
 
+# Order matters here. Cloneable first.
+Importer import("cloneable")
+Importer import("iterable")
+Importer import("comparable")
+
 Root builtins = Importer import("builtins")
 
 import range
 import error
 import object
-import iterable
 import operators
-import comparable

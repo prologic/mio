@@ -1,0 +1,12 @@
+TCloneable = Object primitive("clone") do (
+
+    clone = method(
+        obj = self primitive("clone")
+        Exception try (
+            obj init(call message args)
+        )
+        obj
+    )
+)
+
+Object uses(TCloneable)
