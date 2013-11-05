@@ -52,6 +52,9 @@ class Message(Object):
                 else:
                     obj = receiver[m.name]
 
+                    if not callable(obj) and "__call__" in obj and m.call:
+                        obj = obj["__call__"]
+
                     if callable(obj):
                         if m.args and repr(m.args[0]) == "call message args":
                             args = list(m.args[0].eval(context))
