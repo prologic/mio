@@ -10,7 +10,7 @@ from mio.errors import AttributeError, TypeError
 
 
 def test_clone(mio):
-    mio.eval("World = Object clone")
+    mio.eval("World = Object clone()")
     assert mio.eval("World")
     assert mio.eval("World parent") == runtime.find("Object")
 
@@ -21,13 +21,13 @@ def test_type(mio):
 
 
 def test_setParent(mio):
-    assert mio.eval("World = Object clone")
+    assert mio.eval("World = Object clone()")
     assert mio.eval("World parent") == runtime.find("Object")
 
     with raises(TypeError):
         mio.eval("World setParent(World)", reraise=True)
 
-    assert mio.eval("Foo = Object clone")
+    assert mio.eval("Foo = Object clone()")
     assert mio.eval("World setParent(Foo)")
     assert mio.eval("World parent") == mio.eval("Foo")
 
@@ -42,14 +42,14 @@ def test_eq(mio):
 
 
 def test_forward(mio):
-    mio.eval("Foo = Object clone")
+    mio.eval("Foo = Object clone()")
     assert mio.eval("Foo x = 1")
     assert mio.eval("Foo x") == 1
     assert mio.eval("Foo Object") == runtime.find("Object")
 
 
 def test_get(mio):
-    mio.eval("Foo = Object clone")
+    mio.eval("Foo = Object clone()")
     assert mio.eval("Foo x = 1")
     assert mio.eval("Foo get(\"x\")") == 1
 
@@ -58,7 +58,7 @@ def test_get(mio):
 
 
 def test_get_no_forward(mio):
-    mio.eval("Foo = Object clone")
+    mio.eval("Foo = Object clone()")
     mio.eval("Foo del(\"forward\")")
     assert mio.eval("Foo x = 1")
     assert mio.eval("Foo get(\"x\")") == 1
@@ -68,13 +68,13 @@ def test_get_no_forward(mio):
 
 
 def test_has(mio):
-    mio.eval("Foo = Object clone")
+    mio.eval("Foo = Object clone()")
     assert mio.eval("Foo x = 1")
     assert mio.eval("Foo has(\"x\")")
 
 
 def test_has2(mio):
-    mio.eval("Foo = Object clone")
+    mio.eval("Foo = Object clone()")
     assert not mio.eval("Foo has(\"x\")")
 
 
@@ -87,7 +87,7 @@ def test_id(mio):
 
 
 def test_keys(mio):
-    mio.eval("Foo = Object clone")
+    mio.eval("Foo = Object clone()")
     assert mio.eval("Foo x = 1")
     assert mio.eval("Foo y = 2")
     keys = list(mio.eval("Foo keys"))
@@ -99,7 +99,7 @@ def test_method(mio):
     mio.eval("foo = method(1)")
     assert mio.eval("foo()") == 1
 
-    mio.eval("Foo = Object clone")
+    mio.eval("Foo = Object clone()")
     assert mio.eval("Foo x = 1") == 1
 
     mio.eval("Foo foo = method(self x)")
@@ -111,7 +111,7 @@ def test_neq(mio):
 
 
 def test_set(mio):
-    mio.eval("Foo = Object clone")
+    mio.eval("Foo = Object clone()")
     assert mio.eval("Foo x = 1")
     assert mio.eval("Foo get(\"x\")") == 1
     assert mio.eval("Foo set(\"x\", 2)") == 2
@@ -119,7 +119,7 @@ def test_set(mio):
 
 
 def test_del(mio):
-    mio.eval("Foo = Object clone")
+    mio.eval("Foo = Object clone()")
     assert mio.eval("Foo count = 1")
     assert mio.eval("Foo del(\"count\")").value is None
 
@@ -128,7 +128,7 @@ def test_del(mio):
 
 
 def test_summary(mio, capfd):
-    mio.eval("Foo = Object clone")
+    mio.eval("Foo = Object clone()")
     assert mio.eval("Foo x = 1")
 
     assert mio.eval("Foo summary") == mio.eval("Foo")
@@ -172,7 +172,7 @@ def test_bool(mio):
 
 
 def test_parent(mio):
-    mio.eval("Foo = Object clone")
+    mio.eval("Foo = Object clone()")
     assert mio.eval("Foo parent is Object")
 
 
@@ -185,7 +185,7 @@ def test_value(mio):
 
 
 def test_setValue(mio):
-    mio.eval("Foo = Object clone")
+    mio.eval("Foo = Object clone()")
     assert mio.eval("Foo value is None")
 
     mio.eval("Foo setValue(1)")
@@ -193,7 +193,7 @@ def test_setValue(mio):
 
 
 def test_primitive(mio):
-    mio.eval("Foo = Object :clone")
+    mio.eval("Foo = Object :clone()")
     assert not mio.eval("Foo is Object")
 
 

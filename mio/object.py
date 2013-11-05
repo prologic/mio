@@ -277,21 +277,6 @@ class Object(object):
         expression.eval(receiver)
         return receiver
 
-    @method("clone")
-    def _clone(self, receiver, context, m, *args):
-        object = receiver.clone()
-
-        try:
-            m = runtime.find("Message").clone()
-            m.name = "init"
-            m.args = args
-            m.call = True
-            m.eval(object, context, m)
-        except AttributeError:
-            pass
-
-        return object
-
     @method()
     def setParent(self, receiver, context, m, parent):
         parent = parent.eval(context)

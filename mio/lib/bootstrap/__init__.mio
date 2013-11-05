@@ -1,8 +1,21 @@
-Types True = Boolean primitive(clone) setValue(1)
-Types False = Boolean primitive(clone) setValue(0)
-Types None = Boolean primitive(clone)
+Types True = Boolean primitive("clone") setValue(1)
+Types False = Boolean primitive("clone") setValue(0)
+Types None = Boolean primitive("clone")
 
 Boolean clone = Boolean
+
+TCloneable = Object primitive("clone") do (
+
+    clone = method(
+        obj = self primitive("clone")
+        Exception try (
+            obj init(call message args)
+        )
+        obj
+    )
+)
+
+Object uses(TCloneable)
 
 Object do (
     #ifNone returns self
@@ -92,7 +105,6 @@ None do (
     #repr/str returns None
     repr = str = "None"
 )
-
 
 Root builtins = Importer import("builtins")
 

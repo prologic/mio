@@ -1,4 +1,4 @@
- TComparable = Object clone do(
+ TComparable = Object clone() do(
 
     #requires(__cmp__)
 

@@ -27,32 +27,32 @@ def test_next_previous():
 
 
 def test_setName(mio):
-    m = mio.eval("m = Message clone")
+    m = mio.eval("m = Message clone()")
     mio.eval("m setName(\"foo\")")
     assert m.name == "foo"
 
 
 def test_setValue(mio):
-    m = mio.eval("m = Message clone")
+    m = mio.eval("m = Message clone()")
     mio.eval("m setValue(\"foo\")")
     assert m.value == "foo"
 
 
 def test_setArgs(mio):
-    m = mio.eval("m = Message clone")
+    m = mio.eval("m = Message clone()")
     mio.eval("m setArgs(1, 2, 3)")
     assert m.args == [1, 2, 3]
 
 
 def test_getArgs(mio):
-    m = mio.eval("m = Message clone")
+    m = mio.eval("m = Message clone()")
     mio.eval("m setArgs(1, 2, 3)")
     assert m.args == [1, 2, 3]
     assert list(mio.eval("m args")) == [1, 2, 3]
 
 
 def test_evalArg(mio):
-    m = mio.eval("m = Message clone")
+    m = mio.eval("m = Message clone()")
     mio.eval("m setArgs(1, 2, 3)")
     assert m.args == [1, 2, 3]
     assert mio.eval("m arg(0)") == 1
@@ -62,32 +62,32 @@ def test_evalArg(mio):
 
 
 def test_evalArgs(mio):
-    m = mio.eval("m = Message clone")
+    m = mio.eval("m = Message clone()")
     mio.eval("m setArgs(1, 2, 3)")
     assert m.args == [1, 2, 3]
     assert list(mio.eval("m evalArgs")) == [1, 2, 3]
 
 
 def test_getFirst(mio):
-    m = mio.eval("m = Message clone")
-    mio.eval("n = Message clone")
+    m = mio.eval("m = Message clone()")
+    mio.eval("n = Message clone()")
     mio.eval("m setNext(n)")
     assert mio.eval("m first") is m
     assert mio.eval("n first") is m
 
 
 def test_getNext(mio):
-    mio.eval("m = Message clone")
-    n = mio.eval("n = Message clone")
+    mio.eval("m = Message clone()")
+    n = mio.eval("n = Message clone()")
     mio.eval("m setNext(n)")
     assert mio.eval("m next") is n
     assert mio.eval("n next") is None
 
 
 def test_getLast(mio):
-    mio.eval("m = Message clone")
-    mio.eval("n = Message clone")
-    o = mio.eval("o = Message clone")
+    mio.eval("m = Message clone()")
+    mio.eval("n = Message clone()")
+    o = mio.eval("o = Message clone()")
     mio.eval("m setNext(n)")
     mio.eval("n setNext(o)")
     assert mio.eval("m last") is o

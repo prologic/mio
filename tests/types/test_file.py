@@ -6,7 +6,7 @@ def test_repr(mio):
 def test_repr2(mio, tmpdir):
     filename = str(tmpdir.ensure("test.txt"))
 
-    file = mio.eval("file = File clone open(\"{0:s}\", \"r\")".format(filename))
+    file = mio.eval("file = File clone() open(\"{0:s}\", \"r\")".format(filename))
     assert repr(file) == "File({0:s}, mode='r', state='open')".format(repr(filename))
 
     mio.eval("file close")
@@ -123,7 +123,7 @@ def test_writelines(mio, tmpdir):
     filename = tmpdir.join("test.txt")
 
     data = ["Hello World!", "Goodbye World!"]
-    mio.eval("lines = List clone")
+    mio.eval("lines = List clone()")
     for x in data:
         mio.eval("lines append(\"%s\")" % x)
 

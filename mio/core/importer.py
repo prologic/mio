@@ -53,6 +53,6 @@ class Importer(Object):
         match = self.find_match(name, current)
 
         if match is not None:
-            return runtime.state.eval("""Module clone("{0:s}", "{1:s}")""".format(name, match), receiver, context)
+            return runtime.state.eval("""Module primitive("clone") init("{0:s}", "{1:s}")""".format(name, match), receiver, context)
         else:
             raise ImportError("No module named {0:s}".format(name))

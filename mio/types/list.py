@@ -8,7 +8,7 @@ from mio.utils import method, Null
 
 class List(Object):
 
-    def __init__(self, value=Null):
+    def __init__(self, value=[]):
         super(List, self).__init__(value=value)
 
         self.create_methods()
@@ -27,8 +27,13 @@ class List(Object):
         return "List"
 
     @method()
-    def init(self, receiver, context, m, l=None):
-        receiver.value = copy(l.eval(context).value) if l is not None else list()
+    def init(self, receiver, context, m, *args):
+        ctx = runtime.find("Object").clone()
+        if len(args) == 1 and args[0].eval(ctx).type == "List":
+            receiver.value = args[0].eval(ctx).value
+        else:
+            receiver.value = [arg.eval(ctx) for arg in args]
+        return receiver
 
     # Special Methods
 

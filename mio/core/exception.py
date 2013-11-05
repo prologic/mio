@@ -27,7 +27,7 @@ class Exception(Object):
             error = etype.__name__
             message = str(evalue)
 
-            return runtime.state.eval("""Error clone("{0:s}", "{1:s}")""".format(error, message))
+            return runtime.state.eval("""Error primitive("clone") init("{0:s}", "{1:s}")""".format(error, message))
 
     @method("raise")
     def raiseError(self, receiver, context, m, error):

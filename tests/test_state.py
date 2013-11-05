@@ -59,24 +59,24 @@ def test_tomio_Boolean(mio):
 
 
 def test_frommio_String(mio):
-    assert runtime.state.frommio(mio.eval("String clone")) == ""
+    assert runtime.state.frommio(mio.eval("String clone()")) == ""
 
 
 def test_tomio_String(mio):
-    assert runtime.state.tomio("") == mio.eval("String clone")
+    assert runtime.state.tomio("") == mio.eval("String clone()")
 
 
 def test_frommio_List(mio):
-    assert runtime.state.frommio(mio.eval("List clone")) == []
+    assert runtime.state.frommio(mio.eval("List clone()")) == []
 
 
 def test_tomio_List(mio):
-    assert runtime.state.tomio([]) == mio.eval("List clone")
+    assert runtime.state.tomio([]) == mio.eval("List clone()")
 
 
 def test_frommio_Dict(mio):
-    assert runtime.state.frommio(mio.eval("Dict clone")) == {}
+    assert runtime.state.frommio(mio.eval("Dict clone()")) == {}
 
 
 def test_tomio_Dict(mio):
-    assert runtime.state.tomio({}) == mio.eval("Dict clone")
+    assert runtime.state.tomio({}) == mio.eval("Dict clone()")

@@ -57,7 +57,11 @@ class Message(Object):
                         raise
 
                     if callable(obj):
-                        runtime.state.value = value = obj(receiver, context, m, *m.args)
+                        if m.args and repr(m.args[0]) == "call message args":
+                            args = list(m.args[0].eval(context))
+                        else:
+                            args = m.args
+                        runtime.state.value = value = obj(receiver, context, m, *args)
                     else:
                         runtime.state.value = value = obj
 

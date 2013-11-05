@@ -1,4 +1,4 @@
-TIterable = Object clone do (
+TIterable = Object clone() do (
 
     #requires(__getitem__, __len__)
 

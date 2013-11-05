@@ -1,5 +1,5 @@
 def test_range_init(mio):
-    mio.eval("xs = List clone") == []
+    mio.eval("xs = List clone()") == []
     mio.eval("xs append(2)") == [2]
     mio.eval("xs append(8)") == [2, 8]
     mio.eval("xs append(2)") == [2, 8, 2]

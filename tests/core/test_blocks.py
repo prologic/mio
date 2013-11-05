@@ -25,7 +25,7 @@ def test_block_scope(mio):
 
 
 def test_block_scope2(mio):
-    mio.eval("Foo = Object clone")
+    mio.eval("Foo = Object clone()")
     mio.eval("Foo n = 1")
     mio.eval("Foo x = block(n)")
     with raises(AttributeError):

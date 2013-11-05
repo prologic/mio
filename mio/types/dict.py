@@ -8,7 +8,7 @@ from mio.utils import method, Null
 
 class Dict(Object):
 
-    def __init__(self, value=Null):
+    def __init__(self, value={}):
         super(Dict, self).__init__(value=value)
 
         self.create_methods()
@@ -24,18 +24,29 @@ class Dict(Object):
         return "Dict"
 
     @method()
-    def init(self, receiver, context, m, d=None):
-        receiver.value = copy(d.eval(context).value) if d is not None else dict()
+    def init(self, receiver, context, m, *args):
+        ctx = runtime.find("Object").clone()
+        if len(args) == 1 and args[0].eval(ctx).type == "Dict":
+            receiver.value = args[0].eval(ctx).value
+        else:
+            [arg.eval(ctx) for arg in args]
+            receiver.value = ctx.attrs
+        return receiver
 
     # General Operations
 
     @method()
-    def get(self, receiver, context, m, key):
+    def getitem(self, receiver, context, m, key):
         return receiver.value[key.eval(context)]
 
     @method()
-    def set(self, receiver, context, m, key, value):
+    def setitem(self, receiver, context, m, key, value):
         receiver.value[key.eval(context)] = value.eval(context)
+        return receiver
+
+    @method()
+    def delitem(self, receiver, context, m, key):
+        del receiver.value[key.eval(context)]
         return receiver
 
     @method()

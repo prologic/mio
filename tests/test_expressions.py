@@ -24,7 +24,7 @@ def test_complex_assignment_expression(mio):
 
 
 def test_complex_assignment_attribute(mio):
-    mio.eval("Foo = Object clone")
+    mio.eval("Foo = Object clone()")
 
     mio.eval("Foo x = 1")
     assert mio.eval("Foo x") == 1

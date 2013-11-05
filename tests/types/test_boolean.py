@@ -6,10 +6,10 @@ def test_boolean(mio):
 
 
 def test_init(mio):
-    assert mio.eval("Boolean clone is Boolean")
-    assert mio.eval("True clone is True")
-    assert mio.eval("False clone is False")
-    assert mio.eval("None clone is None")
+    assert mio.eval("Boolean clone() is Boolean")
+    assert mio.eval("True clone() is True")
+    assert mio.eval("False clone() is False")
+    assert mio.eval("None clone() is None")
 
 
 def test_repr(mio):
