@@ -2,8 +2,8 @@ Changes
 -------
 
 
-mio 0.0.7.dev
-.............
+mio 0.0.7 (2013-11-06)
+......................
 
 - Added rudamentary stack trace support to errors. A somewhat "okay" stack trace is displayed on error(s).
 - Added ``String format`` method for performing string iterpolation. Only supports ``{0}``, ``{1}``, etc.
