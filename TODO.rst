@@ -1,7 +1,7 @@
 TODO
 ====
 
-- Fixed bugs in the operator precedence parser:
+- Fix bugs in the operator precedence parser:
 
 ::
     
