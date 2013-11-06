@@ -58,6 +58,7 @@ A further iteration would result in:
 - Iterpret ``call message args`` to mean "pass all args to the callable"
 - Imroved Dict and List objects.
 - Implemented ``__call__`` calling semantics whereby an object can implement this as a method and ``Foo()`` will invoke ``Foo __call__`` if it exists.
+- IMplemented the ``__get__`` part of the Data Descriptor protocol.
 
 
 mio 0.0.6 (2013-11-02)

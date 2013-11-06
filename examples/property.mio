@@ -1,0 +1,29 @@
+Property = Object clone() do (
+
+    init = method(fget, fset, fdel, doc,
+        self fget = fget
+        self fset = fset
+        srlf fdel = fdel
+        self doc = doc
+    )
+
+    __get__ = method(obj, self fget())
+    __set__ = method(self __fset__(call message args))
+    __delete__ = method(self __fdel__())
+)
+
+property = method(fget, fset, fdel, doc,
+    return Property clone(fget, fset, fdel, doc)
+)
+
+Foo = Object clone() do (
+
+    _foo = "foo"
+
+    foo = property(method(
+        return self _foo
+    ))
+
+)
+
+foo = Foo clone()
