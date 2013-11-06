@@ -107,11 +107,6 @@ def make_chain(messages, all=True):
             else:
                 value = make_chain(messages, all=False)
 
-            try:
-                assert key is not None
-                assert value is not None
-            except:
-                import pudb; pudb.set_trace()
             message = Message("set", args=[key, value])
         elif is_operator(messages[0]):
             message = messages.pop(0)
