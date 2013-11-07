@@ -11,6 +11,9 @@ mio 0.0.8.dev
   - Operator precedence rules hare **HARD** to remember
   - Operator precedence is not the main goal of mio right now.
 
+- Tidied up the builtins module.
+- ``from foo import *`` works again (*operator precedence parsing broke it*).
+
 
 mio 0.0.7 (2013-11-06)
 ......................

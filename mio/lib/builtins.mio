@@ -65,25 +65,6 @@ exit = block(status,
 
 hex = block(x, utils tohex(x))
 
-from = import = Importer get("import")
-
-iter = block(iterable, iterable __iter__())
-
-loop = block(
-    code = call message args at(0)
-    c = Continuation current()
-    code eval(call sender)
-    c()
-)
-
-map = block(f, xs,
-    rs = List clone
-    xs foreach(x,
-        rs append(f(x))
-    )
-    rs
-)
-
 filter = block(f, xs,
     rs = List clone
     xs foreach(x,
@@ -100,8 +81,27 @@ filter = block(f, xs,
     rs
 )
 
+from = import = Importer get("import")
+
+iter = block(iterable, iterable __iter__())
+
 list = block(
     (List clone(call message evalArgs(call sender)))
+)
+
+loop = block(
+    code = call message args at(0)
+    c = Continuation current()
+    code eval(call sender)
+    c()
+)
+
+map = block(f, xs,
+    rs = List clone
+    xs foreach(x,
+        rs append(f(x))
+    )
+    rs
 )
 
 open = block(filename,
@@ -115,17 +115,9 @@ print = block(*args, sep=" ", end="\n", file=System stdout,
     None
 )
 
-range = block(Range clone(call message evalArgs(call sender)))
-
 raise = Exception get("raise")
 
-return = block(value,
-    (call sender type != "Locals") ifTrue(
-        raise(RunTimeError clone("return outside Block"))
-    )
-    call sender state setReturn(value)
-    value
-)
+range = block(Range clone(call message evalArgs(call sender)))
 
 reduce = block(f, xs, s,
     it = iter(xs)
@@ -147,6 +139,14 @@ reduce = block(f, xs, s,
     a
 )
 
+return = block(value,
+    (call sender type != "Locals") ifTrue(
+        raise(RunTimeError clone("return outside Block"))
+    )
+    call sender state setReturn(value)
+    value
+)
+
 sum = block(xs,
     r = 0
     xs foreach(x,
@@ -164,16 +164,16 @@ with = block(
     res
 )
 
-#while = block(
-#    test = call message args at(0)
-#    code = call message args at(1)
-#    c = Continuation current()
-#    (test eval(call sender)) ifTrue(
-#        code eval(call sender)
-#        c()
-#    )
-#    None
-#)
+while = block(
+    test = call message args at(0)
+    code = call message args at(1)
+    c = Continuation current()
+    (test eval(call sender)) ifTrue(
+        code eval(call sender)
+        c()
+    )
+    None
+)
 
 #
 # Syntactic Sugar
@@ -195,5 +195,5 @@ set("?",
     )
 )
 
-from(errors) import(*)
-from(iterators) import(*)
+from errors import *
+from iterators import *
