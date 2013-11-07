@@ -2,8 +2,8 @@ Changes
 -------
 
 
-mio 0.0.8.dev
-.............
+mio 0.0.8 2013-11-07
+....................
 
 - Removed operator precedence parsing.
 
