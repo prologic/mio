@@ -1,9 +1,6 @@
 from pytest import raises
 
 
-from itertools import permutations
-
-
 from mio import runtime
 from mio.utils import format_object
 from mio.errors import AttributeError, TypeError
@@ -200,3 +197,7 @@ def test_primitive(mio):
 def test_primitive2(mio):
     with raises(AttributeError):
         mio.eval("Object :asdf", reraise=True)
+
+
+def test_state(mio):
+    assert repr(mio.eval("state")) == "NormalState()"
