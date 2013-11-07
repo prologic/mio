@@ -2,11 +2,14 @@ TIterable = Object clone() do (
 
     #requires(__getitem__, __len__)
 
-    foreach = method(f,
+    foreach = method(
+        x = call message args at(0) name
+        code = call message args at(1)
         i = 0
         N = self __len__() - 1
         c = Continuation current()
-        f(self __getitem__(i))
+        call sender set(x, self __getitem__(i))
+        code eval(call sender)
         (i < N) ifTrue(i += 1; c())
         None
     )

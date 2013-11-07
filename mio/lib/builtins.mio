@@ -85,9 +85,7 @@ from = import = Importer get("import")
 
 iter = block(iterable, iterable __iter__())
 
-list = block(
-    (List clone(call message evalArgs(call sender)))
-)
+list = block(iterable, List clone(iterable))
 
 loop = block(
     code = call message args at(0)
@@ -181,7 +179,11 @@ while = block(
 
 set("()", Object get("evalArg"))
 set(":", Object get("primitive"))
-set("[]", get("list"))
+set("[]", block(*args,
+    xs = List clone()
+    args foreach(x, xs append(x))
+    xs
+))
 set("{}", get("dict"))
 
 set("?",
