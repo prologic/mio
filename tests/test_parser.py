@@ -141,7 +141,7 @@ def test_operators(mio):
     assert repr(chain) == "1 +(2)"
 
     chain = parse(tokenize("1 + 2 * 3"))
-    assert repr(chain) == "1 +(2 *(3))"
+    assert repr(chain) == "1 +(2) *(3)"
 
 
 def test_operators_assignment(mio):

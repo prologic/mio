@@ -111,7 +111,7 @@ def make_chain(messages, all=True):
         elif is_operator(messages[0]):
             message = messages.pop(0)
             if messages and not message.args:
-                if operators.get(message.name)[0] == 1:
+                if operators.get(message.name) == 1:
                     arg = messages.pop(0)
                     # Set the argument (a Message) previous attribute to the current message
                     arg.previous = message

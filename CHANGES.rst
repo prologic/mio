@@ -5,7 +5,11 @@ Changes
 mio 0.0.8.dev
 .............
 
--
+- Removed operator precedence parsing.
+
+  - Operator precedence is **HARD**
+  - Operator precedence rules hare **HARD** to remember
+  - Operator precedence is not the main goal of mio right now.
 
 
 mio 0.0.7 (2013-11-06)
