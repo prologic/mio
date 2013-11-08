@@ -11,6 +11,7 @@ TODO
 
 - Somehow work out a way to make applying of ``*args`` and/or ``**kwargs`` as well as everything else.
 
+- Write a testing framework for mio in mio.
 - Do a refresher on how to write an interpreter in RPython and write a really really simple one:
 
   - http://doc.pypy.org/en/latest/coding-guide.html#restricted-python
