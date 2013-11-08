@@ -1,8 +1,12 @@
+from pytest import raises
+
+
 from decimal import Decimal
 
 
 from mio import runtime
 from mio.utils import Null
+from mio.errors import AttributeError, Error
 
 
 # Supported Types
@@ -80,3 +84,17 @@ def test_frommio_Dict(mio):
 
 def test_tomio_Dict(mio):
     assert runtime.state.tomio({}) == mio.eval("Dict clone()")
+
+
+def test_error(mio, capfd):
+    with raises(AttributeError):
+        mio.eval("foobar()", reraise=True)
+    out, err = capfd.readouterr()
+    assert out == "\n  AttributeError: Object has no attribute 'foobar'\n  ---------------\n  foobar\n\n"
+
+
+def test_usererror(mio, capfd):
+    with raises(Error):
+        mio.eval("raise TypeError", reraise=True)
+    out, err = capfd.readouterr()
+    assert out == "\n  TypeError: \n  ----------\n  raise(TypeError)\n\n"
