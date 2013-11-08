@@ -40,11 +40,11 @@ class FFI(Object):
         return "FFI(name={0:s}, file={1:s})".format(repr(self.name), repr(self.file))
 
     def create_attributes(self):
-        members = getmembers(self.module)
+        members = dict(getmembers(self.module))
         if "__all__" in members:
-            members = [(k, v) for k, v in members if k in members["__all__"]]
+            members = dict((k, v) for k, v in members.items() if k in members["__all__"])
 
-        for k, v in members:
+        for k, v in members.items():
             if isfunction(v) or isbuiltin(v):
                 self[k] = wrap_function(v)
             else:

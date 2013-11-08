@@ -65,3 +65,24 @@ def foo():
 
     assert mio.eval("foo foo") == "Foobar!"
     assert mio.eval("foo x") == 1
+
+
+def test_ffi_importall(mio):
+    mio.eval('''
+date = FFI clone("date", """
+from datetime import date
+
+
+def foo():
+    return "foo"
+
+
+def today():
+    return date.today().strftime("%B %d, %Y")
+
+
+__all__ = ("today",)
+""")
+    ''')
+
+    assert mio.eval("date keys") == ["today"]
