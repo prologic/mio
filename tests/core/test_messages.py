@@ -1,12 +1,12 @@
 from mio.core.message import Message
 
 
-def test_name():
+def test_name(mio):
     m = Message("foo")
     assert m.name == "foo"
 
 
-def test_args():
+def test_args(mio):
     args = [Message("%d" % i) for i in range(3)]
     m = Message("foo", args=args)
     assert m.name == "foo"
@@ -15,7 +15,7 @@ def test_args():
     assert m.args[2].name == "2"
 
 
-def test_next_previous():
+def test_next_previous(mio):
     m = Message("foo")
     m.next = Message("bar")
 
@@ -100,3 +100,24 @@ def test_eval(mio, capfd):
     assert mio.eval("m eval()").value is None
     out, err = capfd.readouterr()
     assert out == "foo\n"
+
+
+def test_call(mio):
+    mio.eval("Foo = Object clone()")
+    mio.eval("""Foo __call__ = method("foo")""")
+    assert mio.eval("Foo()") == "foo"
+
+
+def test_get(mio):
+    mio.eval("Foo = Object clone()")
+    mio.eval("Bar = Object clone()")
+    mio.eval("""Bar __get__ = method(obj, "bar")""")
+    mio.eval("Foo bar = Bar")
+    assert mio.eval("Foo bar") == "bar"
+
+
+def test_state_stop(mio, capfd):
+    mio.eval("""foo = block(x = 1; print(x); state setReturn(2); print("foo"))""")
+    assert mio.eval("foo()") == 2
+    out, err = capfd.readouterr()
+    assert out == "1\n"
