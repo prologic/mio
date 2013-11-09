@@ -68,7 +68,7 @@ class List(Object):
         receiver.value.extend(args)
         return receiver
 
-    @method()
+    @method(property=True)
     def len(self, receiver, context, m):
         return runtime.find("Number").clone(len(receiver.value))
 

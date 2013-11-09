@@ -2,14 +2,20 @@ utils = FFI clone("utils", """
 def tobin(x):
     return bin(int(x))
 
+
 def tobool(x):
     return bool(x)
+
 
 def tochr(x):
     return chr(int(x))
 
+
 def tohex(x):
     return hex(int(x))
+
+
+__all__ = ("tobin", "tobool", "tochr", "tohex",)
 """)
 
 abs = block(x,
@@ -109,7 +115,7 @@ open = block(filename,
 print = block(*args, sep=" ", end="\n", file=System stdout,
     file write(sep join(args))
     file write(end)
-    file flush
+    file flush()
     None
 )
 

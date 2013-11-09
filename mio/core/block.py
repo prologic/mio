@@ -109,14 +109,14 @@ class Block(Object):
 
         return self.body.eval(self.locals, self.locals)
 
-    @method("args")
+    @method("args", True)
     def get_args(self, receiver, context, m):
         return runtime.find("List").clone(map(attrgetter("name"), receiver.args))
 
-    @method("kwargs")
+    @method("kwargs", True)
     def get_kwargs(self, receiver, context, m):
         return runtime.find("Dict").clone(receiver.kwargs)
 
-    @method("body")
+    @method("body", True)
     def get_body(self, receiver, context, m):
         return receiver.body

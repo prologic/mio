@@ -17,6 +17,10 @@ def format_method(f):
     return "%s(%s)" % (name, args)
 
 
+def format_function(f):
+    return getattr(f, "__doc__", "") or format_method(f)
+
+
 def format_object(o):
     def format_key(k):
         return str(k).ljust(15)
@@ -32,10 +36,11 @@ def format_object(o):
     return "{0:s}:\n{1:s}".format(repr(o), attrs)
 
 
-def method(name=None):
+def method(name=None, property=False):
     def wrapper(f):
         f.name = name if name is not None else f.__name__
         f.method = True
+        f.property = property
 
         argspec = getargspec(f)
         args = argspec.args

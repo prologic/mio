@@ -9,7 +9,7 @@ def test_repr2(mio, tmpdir):
     file = mio.eval("file = File clone() open(\"{0:s}\", \"r\")".format(filename))
     assert repr(file) == "File({0:s}, mode='r', state='open')".format(repr(filename))
 
-    mio.eval("file close")
+    mio.eval("file close()")
     assert repr(file) == "File({0:s}, mode='r', state='closed')".format(repr(filename))
 
 
@@ -43,7 +43,7 @@ def test_close(mio, tmpdir):
     assert f.value.closed is False
     assert f.value.mode == "r"
 
-    mio.eval("f close")
+    mio.eval("f close()")
     assert f.value.closed is True
 
 
@@ -56,7 +56,7 @@ def test_closed_status(mio, tmpdir):
     assert not mio.eval("f closed")
     assert mio.eval("f mode") == "r"
 
-    mio.eval("f close")
+    mio.eval("f close()")
     assert mio.eval("f closed")
 
 
@@ -68,7 +68,7 @@ def test_read(mio, tmpdir):
     with filename.open("w") as f:
         f.write(data)
 
-    assert mio.eval("File open(\"%s\", \"r\") read" % filename) == data
+    assert mio.eval("File open(\"%s\", \"r\") read()" % filename) == data
 
 
 def test_read_limited(mio, tmpdir):
@@ -91,7 +91,7 @@ def test_readline(mio, tmpdir):
         f.write(data)
 
     mio.eval("f = File open(\"%s\", \"r\")" % filename)
-    s = mio.eval("f readline")
+    s = mio.eval("f readline()")
     assert s == "Hello World!\n"
 
 
@@ -103,7 +103,7 @@ def test_write(mio, tmpdir):
     mio.eval("f = File open(\"%s\", \"w\") write(\"%s\")" % (filename, data))
     mio.eval("f close()")
 
-    assert mio.eval("File open(\"%s\", \"r\") read" % filename) == data
+    assert mio.eval("File open(\"%s\", \"r\") read()" % filename) == data
 
 
 def test_readlines(mio, tmpdir):
@@ -115,7 +115,7 @@ def test_readlines(mio, tmpdir):
         f.writelines(data)
 
     s = ["".join(data)]
-    assert mio.eval("File open(\"%s\", \"r\") readlines" % filename) == s
+    assert mio.eval("File open(\"%s\", \"r\") readlines()" % filename) == s
 
 
 def test_writelines(mio, tmpdir):
@@ -129,11 +129,11 @@ def test_writelines(mio, tmpdir):
 
     mio.eval("f = File open(\"%s\", \"w\")" % filename)
     mio.eval("f writelines(lines)")
-    mio.eval("f close")
+    mio.eval("f close()")
 
     s = ["".join(data)]
     assert filename.open("r").readlines() == s
-    assert mio.eval("File open(\"%s\", \"r\") readlines" % filename) == s
+    assert mio.eval("File open(\"%s\", \"r\") readlines()" % filename) == s
 
 
 def test_iter(mio, tmpdir):
@@ -170,10 +170,10 @@ def test_seek(mio, tmpdir):
         f.write(data)
 
     mio.eval("f = File open(\"%s\", \"r\")" % filename)
-    mio.eval("f read") == data
+    mio.eval("f read()") == data
 
     mio.eval("f seek(0)")
-    mio.eval("f read") == data
+    mio.eval("f read()") == data
 
 
 def test_truncate(mio, tmpdir):
@@ -185,8 +185,8 @@ def test_truncate(mio, tmpdir):
         f.write(data)
 
     mio.eval("f = File open(\"%s\", \"w+\")" % filename)
-    mio.eval("f read") == data
+    mio.eval("f read()") == data
 
-    mio.eval("f truncate")
+    mio.eval("f truncate()")
     mio.eval("f seek(0)")
-    mio.eval("f read") == ""
+    mio.eval("f read()") == ""

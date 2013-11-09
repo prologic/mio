@@ -16,7 +16,7 @@ def today():
     ''')
 
     today = date.today().strftime("%B %d, %Y")
-    assert mio.eval("date today") == today
+    assert mio.eval("date today()") == today
 
     mio.eval("""del("date")""")
 
@@ -43,7 +43,7 @@ def foo():
 """)
     ''')
 
-    assert mio.eval("foo foo") == "Foobar!"
+    assert mio.eval("foo foo()") == "Foobar!"
     assert mio.eval("foo x") == 1
 
 
@@ -63,7 +63,7 @@ def foo():
     assert foo.name == "foo"
     assert foo.file == str(tmpdir.join("foo.py"))
 
-    assert mio.eval("foo foo") == "Foobar!"
+    assert mio.eval("foo foo()") == "Foobar!"
     assert mio.eval("foo x") == 1
 
 

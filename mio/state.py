@@ -2,13 +2,14 @@ from __future__ import print_function
 
 from decimal import Decimal
 from traceback import format_exc
+from inspect import isfunction, ismethod
 
 
 from .errors import Error
 from .parser import parse
 from .lexer import tokenize
-from .utils import tryimport
 from .version import version
+from .utils import format_function, format_method, tryimport
 
 from .core import Core
 from .types import Types
@@ -155,6 +156,10 @@ class State(object):
                                 output = self.eval("repr()", receiver=result)
                             else:
                                 output = None
+                        elif ismethod(result):
+                            output = format_method(result)
+                        elif isfunction(result):
+                            output = format_function(result)
                         else:
                             output = repr(result)
                         if output is not None:

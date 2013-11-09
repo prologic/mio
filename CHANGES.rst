@@ -7,6 +7,8 @@ mio 0.0.9.dev
 
 - Fixed ``[]`` syntax for creating lists.
 - Fixed ``TIterable foreac`` to work more like a for loop.
+- Introduced properties for internal Python Functions exposed to mio.
+- Adopted calling with ``(...)``'s for all methods.
 
 
 mio 0.0.8 2013-11-07

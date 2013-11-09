@@ -78,7 +78,7 @@ class File(Object):
         receiver.value.seek(int(offset.eval(context)), whence)
         return receiver
 
-    @method()
+    @method(property=True)
     def pos(self, receiver, context, m):
         return runtime.find("Number").clone(receiver.value.tell())
 

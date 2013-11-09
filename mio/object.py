@@ -180,11 +180,11 @@ class Object(object):
         test = trait in receiver.traits
         return runtime.find("True") if test else runtime.find("False")
 
-    @method("traits")
+    @method("traits", True)
     def getTraits(self, receiver, context, m):
         return runtime.find("List").clone(receiver.traits)
 
-    @method("behaviors")
+    @method("behaviors", True)
     def getBehaviors(self, receiver, context, m):
         return runtime.find("List").clone(receiver.behaviors.keys())
 
@@ -218,42 +218,42 @@ class Object(object):
 
     # Introspection
 
-    @method("state")
+    @method("state", True)
     def getState(self, receiver, context, m):
         return receiver.state
 
-    @method("type")
+    @method("type", True)
     def getType(self, receiver, context, m):
         return runtime.find("String").clone(receiver.type)
 
-    @method("parent")
+    @method("parent", True)
     def _parent(self, receiver, context, m):
         if receiver.parent is not None:
             return receiver.parent
         return receiver
 
-    @method("value")
+    @method("value", True)
     def _value(self, receiver, context, m):
         if receiver.value is not Null:
             return receiver.value
         return runtime.find("None")
 
-    @method()
+    @method(property=True)
     def hash(self, receiver, context, m):
         return runtime.find("Number").clone(hash(receiver))
 
-    @method()
+    @method(property=True)
     def id(self, receiver, context, m, obj=None):
         obj = obj.eval(context) if obj is not None else receiver
         return runtime.find("Number").clone(id(obj))
 
-    @method()
+    @method(property=True)
     def keys(self, receiver, context, m):
         String = runtime.find("String")
         keys = [String.clone(key) for key in receiver.attrs.keys()]
         return runtime.find("List").clone(keys)
 
-    @method()
+    @method(property=True)
     def summary(self, receiver, context, m):
         sys.stdout.write("%s\n" % format_object(receiver))
         return receiver
@@ -300,10 +300,10 @@ class Object(object):
 
     # Type Conversion
 
-    @method("repr")
+    @method("repr", True)
     def repr(self, receiver, context, m):
         return runtime.find("String").clone(repr(receiver))
 
-    @method("str")
+    @method("str", True)
     def str(self, receiver, context, m):
         return runtime.find("String").clone(str(receiver))

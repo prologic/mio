@@ -1,9 +1,6 @@
-from copy import copy
-
-
 from mio import runtime
+from mio.utils import method
 from mio.object import Object
-from mio.utils import method, Null
 
 
 class Dict(Object):
@@ -49,20 +46,20 @@ class Dict(Object):
         del receiver.value[key.eval(context)]
         return receiver
 
-    @method()
+    @method(property=True)
     def keys(self, receiver, context, m):
         return runtime.find("List").clone(receiver.value.keys())
 
-    @method()
+    @method(property=True)
     def items(self, receiver, context, m):
         List = runtime.find("List")
         items = [List.clone([k, v]) for k, v in receiver.value.items()]
         return runtime.find("List").clone(items)
 
-    @method()
+    @method(property=True)
     def values(self, receiver, context, m):
         return runtime.find("List").clone(receiver.value.values())
 
-    @method()
+    @method(property=True)
     def len(self, receiver, context, m):
         return runtime.find("Number").clone(len(receiver.value))

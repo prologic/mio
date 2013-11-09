@@ -1,4 +1,3 @@
-
 from mio import runtime
 from mio.errors import Error
 from mio.utils import method
@@ -50,23 +49,26 @@ class Message(Object):
                 elif m.value is not None:
                     runtime.state.value = value = m.value
                 else:
-                    obj = receiver[m.name]
+                    if isinstance(receiver, Object):
+                        obj = receiver[m.name]
 
-                    if not callable(obj) and "__call__" in obj and m.call:
-                        obj = obj["__call__"]
+                        if not callable(obj) and "__call__" in obj and m.call:
+                            obj = obj["__call__"]
 
-                    if not callable(obj) and "__get__" in obj:
-                        obj = obj["__get__"]
-                        m.call = True
+                        if not callable(obj) and "__get__" in obj:
+                            obj = obj["__get__"]
+                            m.call = True
 
-                    if callable(obj):
-                        if m.args and repr(m.args[0]) == "call message args":
-                            args = list(m.args[0].eval(context))
+                        if callable(obj) and (m.call or getattr(obj, "property", False)):
+                            if m.args and repr(m.args[0]) == "call message args":
+                                args = list(m.args[0].eval(context))
+                            else:
+                                args = m.args
+                            runtime.state.value = value = obj(receiver, context, m, *args)
                         else:
-                            args = m.args
-                        runtime.state.value = value = obj(receiver, context, m, *args)
+                            runtime.state.value = value = obj
                     else:
-                        runtime.state.value = value = obj
+                        runtime.state.value = value = receiver
 
                 if context.state.stop:
                     return context.state.value
@@ -104,7 +106,7 @@ class Message(Object):
             return receiver.args[index].eval(target)
         return runtime.find("None")
 
-    @method("args")
+    @method("args", True)
     def getArgs(self, receiver, context, m):
         return runtime.find("List").clone(receiver.args)
 
@@ -114,23 +116,23 @@ class Message(Object):
         args = [arg.eval(target) for arg in receiver.args]
         return runtime.find("List").clone(list(args))
 
-    @method("first")
+    @method("first", True)
     def getFirst(self, receiver, context, m):
         return receiver.first
 
-    @method("name")
+    @method("name", True)
     def getName(self, receiver, context, m):
         return runtime.find("String").clone(receiver.name)
 
-    @method("next")
+    @method("next", True)
     def getNext(self, receiver, context, m):
         return receiver.next
 
-    @method("last")
+    @method("last", True)
     def getLast(self, receiver, context, m):
         return receiver.last
 
-    @method("previous")
+    @method("previous", True)
     def getPrevious(self, receiver, context, m):
         return receiver.previous
 

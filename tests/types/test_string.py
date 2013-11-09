@@ -64,8 +64,8 @@ def test_find2(mio):
 
 
 def test_lower(mio):
-    assert mio.eval("\"FOO\" lower") == "foo"
+    assert mio.eval("\"FOO\" lower()") == "foo"
 
 
 def test_upper(mio):
-    assert mio.eval("\"foo\" upper") == "FOO"
+    assert mio.eval("\"foo\" upper()") == "FOO"

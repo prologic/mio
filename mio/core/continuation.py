@@ -22,7 +22,7 @@ class Continuation(Object):
             return self
         return self.message.eval(self.context)
 
-    @method("current")
+    @method("current", True)
     def current(self, receiver, context, m):
         continuation = receiver.clone()
         continuation.context = copy(context)

@@ -80,7 +80,7 @@ def test_reverse(mio):
     mio.eval("xs append(3)")
     assert mio.eval("xs") == [1, 2, 3]
 
-    mio.eval("xs reverse")
+    mio.eval("xs reverse()")
     assert mio.eval("xs") == [3, 2, 1]
 
 
@@ -91,7 +91,7 @@ def test_reversed(mio):
     mio.eval("xs append(3)")
     assert mio.eval("xs") == [1, 2, 3]
 
-    assert mio.eval("xs reversed") == [3, 2, 1]
+    assert mio.eval("xs reversed()") == [3, 2, 1]
 
 
 def test_sort(mio):
@@ -101,7 +101,7 @@ def test_sort(mio):
     mio.eval("xs append(2)")
     assert mio.eval("xs") == [3, 1, 2]
 
-    mio.eval("xs sort")
+    mio.eval("xs sort()")
     assert mio.eval("xs") == [1, 2, 3]
 
 
@@ -112,4 +112,4 @@ def test_sorted(mio):
     mio.eval("xs append(2)")
     assert mio.eval("xs") == [3, 1, 2]
 
-    assert mio.eval("xs sorted") == [1, 2, 3]
+    assert mio.eval("xs sorted()") == [1, 2, 3]

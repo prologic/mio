@@ -65,7 +65,7 @@ def test_evalArgs(mio):
     m = mio.eval("m = Message clone()")
     mio.eval("m setArgs(1, 2, 3)")
     assert m.args == [1, 2, 3]
-    assert list(mio.eval("m evalArgs")) == [1, 2, 3]
+    assert list(mio.eval("m evalArgs()")) == [1, 2, 3]
 
 
 def test_getFirst(mio):
