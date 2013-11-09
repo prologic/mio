@@ -98,6 +98,7 @@ Importer import("cloneable")
 Importer import("iterable")
 Importer import("comparable")
 
+# Followed by builtins
 Root builtins = Importer import("builtins")
 
 import range
