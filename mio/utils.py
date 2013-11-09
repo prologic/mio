@@ -1,5 +1,5 @@
 from warnings import warn
-from inspect import getargspec, ismethod
+from inspect import getargspec, isfunction, ismethod
 
 
 from mio import runtime
@@ -28,6 +28,8 @@ def format_object(o):
     def format_value(v):
         if ismethod(v):
             return format_method(v)
+        elif isfunction(v):
+            return format_function(v)
         else:
             return str(runtime.state.eval("repr()", receiver=v))
 
