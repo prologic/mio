@@ -36,6 +36,13 @@ any = block(xs,
     False
 )
 
+assert = block(
+    expr = call message args at(0)
+    (expr eval(call sender)) ifFalse (
+        raise AssertionError(expr)
+    )
+)
+
 bin = block(x, utils tobin(x))
 
 bool = block(x, utils tobool(x))

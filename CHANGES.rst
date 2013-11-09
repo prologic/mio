@@ -22,6 +22,7 @@ mio 0.0.9.dev
 - Added ``ifError``, ``ifNonError`` and ``catch`` to the ``Object`` object to deal with non-errors.
 - Improved and fixed a lot of the builtins.
 - Improved the way ``*args`` is handled (*still needs more work*).
+- Implemented ``assert`` builtin.
 
 
 mio 0.0.8 2013-11-07
