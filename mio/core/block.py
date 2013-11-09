@@ -7,6 +7,7 @@ from operator import attrgetter
 from mio import runtime
 from mio.object import Object
 from mio.utils import method, Null
+from mio.core.message import Message
 
 
 def getargname(arg):
@@ -29,6 +30,10 @@ class Locals(Object):
         super(Locals, self).__init__(value=value)
 
         self.parent = runtime.find("Object")
+
+    @method("*")
+    def args(self, receiver, context, m, name):
+        return self[name.name]
 
 
 class Block(Object):
@@ -82,12 +87,13 @@ class Block(Object):
 
         # Set positional arguments *args
         if len(self.args) == 1 and self.args[0].name == "*":
-            self.locals[self.args[0].args[0].name] = runtime.find("List").clone([arg.eval(context) for arg in args if (arg.name != "set" and not arg.args)])
+            # XXX: Can we make this just a list of args? Or always a list of messages?
+            self.locals[self.args[0].args[0].name] = runtime.find("List").clone([arg.eval(context) if isinstance(arg, Message) else arg for arg in args if not isinstance(arg, Message) or (isinstance(arg, Message) and arg.name != "set" and not arg.args)])
         else:
             # Set positional arguments
             for i, arg in enumerate(self.args):
                 if i < len(args):
-                    self.locals[arg.name] = args[i].eval(context)
+                    self.locals[arg.name] = args[i].eval(context) if isinstance(args[i], Message) else args[i]
                 else:
                     self.locals[arg.name] = runtime.find("None")
 
@@ -104,7 +110,7 @@ class Block(Object):
                 self.locals[k] = v
 
             # Set keyword arguments
-            for arg in [arg for arg in args if arg.name == "set"]:
+            for arg in [arg for arg in args if isinstance(arg, Message) and arg.name == "set"]:
                 self.locals[arg.args[0].name] = arg.eval(context)
 
         return self.body.eval(self.locals, self.locals)

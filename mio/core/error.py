@@ -21,6 +21,11 @@ class Error(Object):
 
     @method()
     def init(self, receiver, context, m, type=None, message=None):
-        receiver["type"] = type.eval(context) if type is not None else runtime.find("String").clone("Error")
-        receiver["message"] = message.eval(context) if message is not None else runtime.find("String").clone()
+        receiver["type"] = str(type) if type is not None else "Error"
+        receiver["message"] = str(message) if message is not None else ""
+        return receiver
+
+    @method("__call__")
+    def call(self, receiver, context, m, message=None):
+        receiver["message"] = str(message.eval(context)) if message is not None else ""
         return receiver

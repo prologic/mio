@@ -95,6 +95,13 @@ class Object(object):
         default = "{0:s} at {1:s}".format(type, hex(id(self)))
         return repr(self.value) if self.value is not Null else default
 
+    def lookup(self, name):
+        try:
+            self[name]
+            return True
+        except AttributeError:
+            return False
+
     def clone(self, value=Null):
         obj = copy(self)
 
@@ -269,8 +276,11 @@ class Object(object):
         raise AttributeError("{0:s} has no attribute {1:s}".format(receiver.type, repr(method)))
 
     @method()
-    def evalArg(self, receiver, context, m, arg):
-        return arg.eval(context)
+    def evalArg(self, receiver, context, m, *args):
+        if len(args) > 1:
+            return runtime.find("Tuple").clone(tuple(arg.eval(context) for arg in args))
+        else:
+            return args[0].eval(context)
 
     @method()
     def do(self, receiver, context, m, expression):
@@ -300,10 +310,10 @@ class Object(object):
 
     # Type Conversion
 
-    @method("repr", True)
-    def repr(self, receiver, context, m):
+    @method("__repr__")
+    def getRepr(self, receiver, context, m):
         return runtime.find("String").clone(repr(receiver))
 
-    @method("str", True)
-    def str(self, receiver, context, m):
+    @method("__str__")
+    def getStr(self, receiver, context, m):
         return runtime.find("String").clone(str(receiver))

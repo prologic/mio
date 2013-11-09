@@ -1,6 +1,7 @@
 from mio import runtime
 from mio.utils import method
 from mio.object import Object
+from mio.core.message import Message
 
 
 class String(Object):
@@ -38,7 +39,7 @@ class String(Object):
 
     @method()
     def init(self, receiver, context, m, value=None):
-        receiver.value = value.eval(context) if value is not None else u""
+        receiver.value = value or u""
 
     # General Operations
 
@@ -63,9 +64,12 @@ class String(Object):
         return receiver.clone(receiver.value.format(*args))
 
     @method()
-    def join(self, receiver, context, m, xs):
-        xs = xs.eval(context)
-        return receiver.clone(receiver.value.join([str(x) for x in xs]))
+    def join(self, receiver, context, m, *args):
+        if len(args) == 1 and isinstance(args[0], Message):
+            args = args[0].eval(context)
+        else:
+            args = [arg.eval(context) if isinstance(arg, Message) else arg for arg in args]
+        return receiver.clone(receiver.value.join(map(str, args)))
 
     @method()
     def lower(self, receiver, context, m):

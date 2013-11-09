@@ -56,39 +56,20 @@ strre = re.compile(strre.format(**quotes[3]))
 encodnig = "utf-8"
 
 
-def findtoken(tokens, *args):
-    for arg in args:
-        try:
-            return tokens.index(arg)
-        except ValueError:
-            pass
+ops = "|".join([re.escape(op) for op in operators])
+
+specs = [
+    Spec("comment",    r'#.*'),
+    Spec("whitespace", r"[ \t]+"),
+    Spec('string',     strre),
+    Spec('number',     r'(-?(0|([1-9][0-9]*))(\.[0-9]+)?([Ee]-?[0-9]+)?)'),
+    Spec('identifier', r'[A-Za-z_][A-Za-z0-9_]*'),
+    Spec('operator',   ops),
+    Spec('op',         r'[(){}\[\],:;\n\r]'),
+]
+useless = ["comment", "whitespace"]
+tokenizer = make_tokenizer(specs)
 
 
-def getlevel(token):
-    type = token.type
-    value = token.value
-    return operators.get(value, operators.get(type, (0, 0)))[1]
-
-
-def isoperator(token):
-    type = token.type
-    value = token.value
-    return type in operators or value in operators
-
-
-def tokenize(str):
-
-    ops = "|".join([re.escape(op) for op in operators])
-
-    specs = [
-        Spec("comment",    r'#.*'),
-        Spec("whitespace", r"[ \t]+"),
-        Spec('string',     strre),
-        Spec('number',     r'(-?(0|([1-9][0-9]*))(\.[0-9]+)?([Ee]-?[0-9]+)?)'),
-        Spec('identifier', r'[A-Za-z_][A-Za-z0-9_]*'),
-        Spec('operator',   ops),
-        Spec('op',         r'[(){}\[\],:;\n\r]'),
-    ]
-    useless = ["comment", "whitespace"]
-    t = make_tokenizer(specs)
-    return [x for x in t(str) if x.type not in useless]
+def tokenize(s):
+    return [x for x in tokenizer(s) if x.type not in useless]

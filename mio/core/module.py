@@ -24,8 +24,8 @@ class Module(Object):
 
     @method()
     def init(self, receiver, context, m, name, file):
-        receiver.name = name = str(name.eval(context))
-        receiver.file = file = str(file.eval(context))
+        receiver.name = name = str(name)
+        receiver.file = file = str(file)
 
         # Are we loading a package module?
         if path.isdir(file):

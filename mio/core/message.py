@@ -1,7 +1,10 @@
+from inspect import ismethod
+
+
 from mio import runtime
-from mio.errors import Error
 from mio.utils import method
 from mio.object import Object
+from mio.errors import Error, AttributeError, TypeError
 
 
 class Message(Object):
@@ -52,16 +55,32 @@ class Message(Object):
                     if isinstance(receiver, Object):
                         obj = receiver[m.name]
 
-                        if not callable(obj) and "__call__" in obj and m.call:
-                            obj = obj["__call__"]
+                        if isinstance(obj, Object) and obj.type in ("Error", "Object"):
+                            if m.call:
+                                try:
+                                    receiver = obj
+                                    obj = obj["__call__"]
+                                except AttributeError:
+                                    raise TypeError("{0} is not callable".format(obj))
 
-                        if not callable(obj) and "__get__" in obj:
-                            obj = obj["__get__"]
-                            m.call = True
+                            else:
+                                if "__get__" in obj:
+                                    receiver = obj
+                                    obj = obj["__get__"]
+                                    m.call = True
 
                         if callable(obj) and (m.call or getattr(obj, "property", False)):
-                            if m.args and repr(m.args[0]) == "call message args":
-                                args = list(m.args[0].eval(context))
+                            # XXX: New way...
+                            if ismethod(obj) and obj.name not in ("block", "method",):
+                                if m.args and m.args[0].name == "*" and m.args[0].args:
+                                    args = tuple(m.args[0].eval(context))
+                                else:
+                                    args = m.args
+                            elif isinstance(obj, Object):
+                                if m.args and m.args[0].name == "*":
+                                    args = tuple(m.args[0].eval(context))
+                                else:
+                                    args = m.args
                             else:
                                 args = m.args
                             runtime.state.value = value = obj(receiver, context, m, *args)
@@ -138,7 +157,7 @@ class Message(Object):
 
     @method()
     def setArgs(self, receiver, context, m, *args):
-        receiver.args = list(args)
+        receiver.args = args
         receiver.call = True
         return receiver
 

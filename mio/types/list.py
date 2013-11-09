@@ -20,27 +20,23 @@ class List(Object):
     def __repr__(self):
         if isinstance(self.value, list):
             values = ", ".join([repr(item) for item in self.value])
-            return "list({0:s})".format(values)
-        return "List"
+            return "[{0:s}]".format(values)
+        return "[]"
 
     @method()
-    def init(self, receiver, context, m, *args):
-        ctx = runtime.find("Object").clone()
-        if len(args) == 1 and args[0].eval(ctx).type == "List":
-            receiver.value = args[0].eval(ctx).value
-        else:
-            receiver.value = [arg.eval(ctx) for arg in args]
+    def init(self, receiver, context, m, iterable=None):
+        receiver.value = list(iterable) if iterable is not None else list()
         return receiver
 
     # Special Methods
 
     @method("__getitem__")
-    def mio__getitem__(self, receiver, context, m, i):
+    def getItem(self, receiver, context, m, i):
         i = int(i.eval(context))
         return receiver.value[i]
 
     @method("__len__")
-    def mio__len__(self, receiver, context, m):
+    def getLen(self, receiver, context, m):
         return runtime.find("Number").clone(len(receiver.value))
 
     # General Operations

@@ -1,6 +1,3 @@
-from copy import copy
-
-
 from mio import runtime
 from mio.object import Object
 from mio.utils import method, Null
@@ -23,12 +20,24 @@ class Tuple(Object):
     def __repr__(self):
         if isinstance(self.value, tuple):
             values = ", ".join([repr(item) for item in self.value])
-            return "tuple({0:s})".format(values)
-        return "Tuple"
+            return "({0:s})".format(values)
+        return "()"
 
     @method()
-    def init(self, receiver, context, m, l=None):
-        receiver.value = copy(l.eval(context).value) if l is not None else tuple()
+    def init(self, receiver, context, m, iterable=None):
+        receiver.value = tuple(iterable) if iterable is not None else tuple()
+        return receiver
+
+    # Special Methods
+
+    @method("__getitem__")
+    def getItem(self, receiver, context, m, i):
+        i = int(i.eval(context))
+        return receiver.value[i]
+
+    @method("__len__")
+    def getLen(self, receiver, context, m):
+        return runtime.find("Number").clone(len(receiver.value))
 
     # General Operations
 

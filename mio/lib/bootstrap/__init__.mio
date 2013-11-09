@@ -5,6 +5,15 @@ Types None = Boolean primitive("clone")
 Boolean clone = Boolean
 
 Object do (
+    #ifNonError evaluates the argument and returns the result
+    ifNonError = Object get("evalArg")
+
+    #ifError returns self
+    ifError = method(self)
+
+    #catch returns self
+    catch = method(self)
+
     #ifNone returns self
     ifNone = method(self)
 
@@ -40,8 +49,8 @@ True do (
     #clone returns True
     clone = True
 
-    #repr/str returns True
-    repr = str = "True"
+    #__repr__/__str__ returns True
+    __repr__ = __str__ = method("True")
 )
 
 False do (
@@ -63,8 +72,8 @@ False do (
     #clone returns False
     clone = False
 
-    #repr/str returns False
-    repr = str = "False"
+    #__repr__/__str__ returns False
+    __repr__ = __str__ = method("False")
 )
 
 None do (
@@ -89,8 +98,8 @@ None do (
     #clone returns False
     clone = None
 
-    #repr/str returns None
-    repr = str = "None"
+    #__repr__/__str__ returns None
+    __repr__ = __str__ = method("None")
 )
 
 # Order matters here. Cloneable first.

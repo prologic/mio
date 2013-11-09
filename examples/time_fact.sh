@@ -1,7 +1,7 @@
 #!/bin/bash
 
 echo -n "mio: "
-python -m timeit -c -s "from mio import runtime; runtime.init(); runtime.state.load('fact.mio');" "runtime.state.eval('10 fact()')"
+python -m timeit -c -s "from mio import runtime; runtime.init(); runtime.state.eval('fact = block(n, reduce(block(a, x, a * x), 1..n))');" "runtime.state.eval('fact(10)')"
 
 echo -n "python: "
-python -m timeit -c -s "fact = lambda x: 1 if x == 0 else x * fact(x-1)" "fact(10)"
+python -m timeit -c -s "fact = lambda n: reduce(lambda a, x: a * x, range(1, n))" "fact(10)"

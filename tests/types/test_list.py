@@ -11,7 +11,7 @@ def test_clone_list(mio):
 
 
 def test_repr(mio):
-    assert repr(mio.eval("List")) == "list()"
+    assert repr(mio.eval("List")) == "[]"
 
 
 def test_repr2(mio):
@@ -20,7 +20,7 @@ def test_repr2(mio):
     mio.eval("xs append(2)")
     mio.eval("xs append(3)")
 
-    assert repr(mio.eval("xs")) == "list(1, 2, 3)"
+    assert repr(mio.eval("xs")) == "[1, 2, 3]"
 
 
 def test_append(mio):

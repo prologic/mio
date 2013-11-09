@@ -41,7 +41,7 @@ def test_get(mio):
     mio.eval("d setitem(\"a\", 1)")
     mio.eval("d setitem(\"b\", 2)")
     mio.eval("d setitem(\"c\", 3)")
-    assert mio.eval("d") == {"a": 1, "b": 2, "c": 3}
+    assert mio.frommio(mio.eval("d")) == {"a": 1, "b": 2, "c": 3}
 
     assert mio.eval("d getitem(\"a\")") == 1
 

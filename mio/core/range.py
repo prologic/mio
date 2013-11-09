@@ -1,7 +1,7 @@
 from mio import runtime
 from mio.utils import method
-
 from mio.object import Object
+from mio.errors import IndexError
 
 
 class Range(Object):
@@ -33,16 +33,11 @@ class Range(Object):
 
     def __repr__(self):
         keys = ("start", "stop", "step")
-        values = filter(None, [getattr(self, key, None) for key in keys])
+        values = [x for x in [getattr(self, key, None) for key in keys] if x is not None]
         return "range({0:s})".format(", ".join(map(str, values)))
 
     @method()
     def init(self, receiver, context, m, *args):
-        if len(args) == 1 and args[0].eval(context).type == "List":
-            args = list(args[0].eval(context))
-        else:
-            args = [arg.eval(context) for arg in args]
-
         keys = ("start", "stop", "step")
 
         for i, key in enumerate(keys):
@@ -56,6 +51,45 @@ class Range(Object):
         receiver.step = int(value.eval(context))
         return receiver
 
-    @method()
-    def asList(self, receiver, context, m):
-        return runtime.find("List").clone(list(receiver))
+    @method("__getitem__")
+    def getItem(self, receiver, context, m, i):
+        i = int(i.eval(context))
+
+        start = receiver.start
+
+        if receiver.stop is None:
+            stop, start = start, 0
+        else:
+            stop = receiver.stop
+
+        step = 1 if receiver.step is None else receiver.step
+
+        if (start < stop and step > 0) or (start > stop and step < 0):
+            length = ((stop - start) / step) + (stop % step)
+        else:
+            length = 0
+
+        if i > length:
+            raise IndexError("range index out of range")
+
+        value = start + (step * i)
+
+        return runtime.find("Number").clone(value)
+
+    @method("__len__")
+    def mio__len__(self, receiver, context, m):
+        start = receiver.start
+
+        if receiver.stop is None:
+            stop, start = start, 0
+        else:
+            stop = receiver.stop
+
+        step = 1 if receiver.step is None else receiver.step
+
+        if (start < stop and step > 0) or (start > stop and step < 0):
+            length = ((stop - start) / step) + (stop % step)
+        else:
+            length = 0
+
+        return runtime.find("Number").clone(length)

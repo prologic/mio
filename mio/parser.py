@@ -177,9 +177,6 @@ expression.define((
 
 message.define(((symbol + maybe(arguments)) | arguments) >> make_message)
 
-opening = op("(") | op("{") | op("[")
-closing = op(")") | op("}") | op("]")
-
 paren_arguments = op("(") + maybe(expression) + many(skip(op_(",")) + expression) + op(")")
 bracket_arguments = op("[") + maybe(expression) + many(skip(op_(",")) + expression) + op("]")
 brace_arguments = op("{") + maybe(expression) + many(skip(op_(",")) + expression) + op("}")

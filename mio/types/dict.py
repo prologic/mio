@@ -21,13 +21,11 @@ class Dict(Object):
         return "Dict"
 
     @method()
-    def init(self, receiver, context, m, *args):
-        ctx = runtime.find("Object").clone()
-        if len(args) == 1 and args[0].eval(ctx).type == "Dict":
-            receiver.value = args[0].eval(ctx).value
+    def init(self, receiver, context, m, iterable=None):
+        if isinstance(iterable, Dict):
+            receiver.value = iterable.value.copy()
         else:
-            [arg.eval(ctx) for arg in args]
-            receiver.value = ctx.attrs
+            receiver.value = dict(iterable) if iterable is not None else dict()
         return receiver
 
     # General Operations

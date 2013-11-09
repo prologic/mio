@@ -1,5 +1,6 @@
 AttributeError = Error clone("AttributeError")
 AssertionError = Error clone("AssertionError")
 RunTimeError = Error clone("RunTimeError")
+IndexError = Error clone("IndexError")
 TypeError = Error clone("TypeError")
 KeyError = Error clone("KeyError")

@@ -13,7 +13,7 @@ def test_init(mio):
 
 
 def test_repr(mio):
-    assert mio.eval("Boolean repr") == repr(None)
-    assert mio.eval("True repr") == repr(True)
-    assert mio.eval("False repr") == repr(False)
-    assert mio.eval("None repr") == repr(None)
+    assert mio.eval("Boolean __repr__()") == repr(None)
+    assert mio.eval("True __repr__()") == repr(True)
+    assert mio.eval("False __repr__()") == repr(False)
+    assert mio.eval("None __repr__()") == repr(None)

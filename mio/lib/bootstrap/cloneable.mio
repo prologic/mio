@@ -1,9 +1,9 @@
 TCloneable = Object primitive("clone") do (
 
-    clone = method(
+    clone = method(*args,
         obj = self primitive("clone")
         Exception try (
-            obj init(call message args)
+            obj init(*args)
         )
         obj
     )

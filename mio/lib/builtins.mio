@@ -19,7 +19,7 @@ __all__ = ("tobin", "tobool", "tochr", "tohex",)
 """)
 
 abs = block(x,
-    Number clone setValue(x :__abs__)
+    Number clone() setValue(x :__abs__)
 )
 
 all = block(xs,
@@ -51,7 +51,7 @@ callable = block(x,
 chr = block(x, utils tochr(x))
 
 dict = block(
-    d = Dict clone
+    d = Dict clone()
     call message args foreach(arg,
         arg eval(d)
     )
@@ -72,14 +72,14 @@ exit = block(status,
 hex = block(x, utils tohex(x))
 
 filter = block(f, xs,
-    rs = List clone
+    rs = List clone()
     xs foreach(x,
         (f is None) ifTrue(
-            not x is None ifTrue(
+            (x is not None) ifTrue(
                 rs append(x)
             )
         ) ifFalse(
-            f(x) ifTrue(
+            (f(x)) ifTrue(
                 rs append(x)
             )
         )
@@ -91,7 +91,11 @@ from = import = Importer get("import")
 
 iter = block(iterable, iterable __iter__())
 
-list = block(iterable, List clone(iterable))
+list = block(iterable,
+    xs = List clone()
+    iterable foreach(x, xs append(x))
+    xs
+)
 
 loop = block(
     code = call message args at(0)
@@ -101,19 +105,27 @@ loop = block(
 )
 
 map = block(f, xs,
-    rs = List clone
+    rs = List clone()
     xs foreach(x,
         rs append(f(x))
     )
     rs
 )
 
+next = block(iterator,
+    try (
+        iterator __next__()
+    ) catch (AttributeError,
+        raise TypeError("{0} is not an iterator" format(iterator))
+    )
+)
+
 open = block(filename,
-    File clone open(filename)
+    File clone() open(filename)
 )
 
 print = block(*args, sep=" ", end="\n", file=System stdout,
-    file write(sep join(args))
+    file write(sep join(*args))
     file write(end)
     file flush()
     None
@@ -121,7 +133,7 @@ print = block(*args, sep=" ", end="\n", file=System stdout,
 
 raise = Exception get("raise")
 
-range = block(Range clone(call message evalArgs(call sender)))
+range = block(*args, Range clone(*args))
 
 reduce = block(f, xs, s,
     it = iter(xs)
@@ -129,7 +141,7 @@ reduce = block(f, xs, s,
     s ifNone (
         try (
             s = next(it)
-        ) catch(StopIteration) (
+        ) catch(StopIteration,
             raise TypeError("reduce() of empty sequence with no initial value")
         )
     )
@@ -137,23 +149,27 @@ reduce = block(f, xs, s,
     a = s
     c = Continuation current
     try(
-        a = f(a, it next())
+        a = f(a, next(it))
         c()
     )
     a
 )
 
+repr = block(x, x __repr__())
+
 return = block(value,
     (call sender type != "Locals") ifTrue(
-        raise(RunTimeError clone("return outside Block"))
+        raise RunTimeError("return outside Block")
     )
     call sender state setReturn(value)
     value
 )
 
-sum = block(xs,
+str = block(x, x __str__())
+
+sum = block(iterable,
     r = 0
-    xs foreach(x,
+    iterable foreach(x,
         r += x
     )
     r
@@ -192,13 +208,12 @@ set("[]", block(*args,
 ))
 set("{}", get("dict"))
 
+set("*", block(call sender get(call message args at(0) name)))
+
 set("?",
     block(
-        name = call message args at(0) name
-        call target has(name) ifTrue(
-            call target get(name)
-        ) ifFalse(
-            None
+        try (
+            call message args at(0) eval(call target)
         )
     )
 )

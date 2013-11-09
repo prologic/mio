@@ -8,11 +8,16 @@ TIterable = Object clone() do (
         i = 0
         N = self __len__() - 1
         c = Continuation current()
-        call sender set(x, self __getitem__(i))
-        code eval(call sender)
-        (i < N) ifTrue(i += 1; c())
+        (i <= N) ifTrue(
+            call sender set(x, self __getitem__(i))
+            code eval(call sender)
+            i += 1
+            c()
+        )
         None
     )
 )
 
 List uses(TIterable)
+Tuple uses(TIterable)
+Range uses(TIterable)

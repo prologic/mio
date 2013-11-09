@@ -1,7 +1,6 @@
 Error do (
-    set("isError", True)
-
     ifError = Object get("evalArg")
+    ifNonError = method(self)
 
     catch = method(
         nargs = call message args len

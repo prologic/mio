@@ -1,5 +1,5 @@
 " Vim Syntax File
-" Language:     mIo
+" Language:     mio
 " Creator:      James Mills, prologic at shortcircuit dot net dot au
 " Last Change:  21st April 2012
 
@@ -12,7 +12,7 @@ endif
 syntax case match
 
 " equivalent to io-mode-prototype-names in io-mode.el
-syntax keyword xType File Globals List
+syntax keyword xType File Root List Tuple
 syntax keyword xType Dict Message Number Object
 syntax keyword xType String Range System
 syntax keyword xType True False None

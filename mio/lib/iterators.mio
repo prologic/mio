@@ -1,13 +1,14 @@
 StopIteration = Error clone("StopIteration")
 
-ListIterator = Object clone() do(
+Iterator = Object clone() do(
+
     init = method(iterable,
         self iterable = iterable
         self i = -1
-        self N = iterable __len__ - 1
+        self N = iterable __len__() - 1
     )
 
-    next = method(
+    __next__ = method(
         ((self i) < (self N)) ifTrue(
             self i = self i + 1
             self iterable __getitem__(self i)
@@ -17,10 +18,14 @@ ListIterator = Object clone() do(
     )
 
     repr = method(
-        "ListIterator({0})" format(self iterable)
+        "Iterator({0})" format((self has("iterable") and (self iterable)) or "")
     )
 )
 
 List __iter__ = method(
-    ListIterator clone(self)
+    Iterator clone(self)
+)
+
+Range __iter__ = method(
+    Iterator clone(self)
 )

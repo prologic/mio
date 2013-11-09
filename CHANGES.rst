@@ -9,6 +9,19 @@ mio 0.0.9.dev
 - Fixed ``TIterable foreac`` to work more like a for loop.
 - Introduced properties for internal Python Functions exposed to mio.
 - Adopted calling with ``(...)``'s for all methods.
+- Also format functions in ``format_object(...)``.
+- Added ``__call__`` to ``Error`` objects. This allows:
+
+::
+    
+    raise TypeError("foo")
+
+- Added iterator support for ``Range`` object.
+- Renamed ``str`` and ``repr`` methods of ``Object`` to ``__str__`` and ``__str__`` respectively and implemtned ``str`` and ``repr`` builtins.
+- Optimized the tokenizer
+- Added ``ifError``, ``ifNonError`` and ``catch`` to the ``Object`` object to deal with non-errors.
+- Improved and fixed a lot of the builtins.
+- Improved the way ``*args`` is handled (*still needs more work*).
 
 
 mio 0.0.8 2013-11-07

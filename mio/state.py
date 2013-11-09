@@ -153,7 +153,7 @@ class State(object):
                     if result is not None:  # pragma: no cover
                         if isinstance(result, Object):
                             if result.value is not None:
-                                output = self.eval("repr()", receiver=result)
+                                output = self.eval("__repr__()", receiver=result)
                             else:
                                 output = None
                         elif ismethod(result):

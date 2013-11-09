@@ -35,7 +35,7 @@ class Bytes(Object):
 
     @method()
     def init(self, receiver, context, m, value=None):
-        receiver.value = value.eval(context) if value is not None else b""
+        receiver.value = value or ""
 
     # General Operations
 

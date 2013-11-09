@@ -11,12 +11,16 @@ class AttributeError(Error):
     """AttributeError"""
 
 
-class TypeError(Error):
-    """TypeError"""
-
-
 class ImportError(Error):
     """ImportError"""
+
+
+class IndexError(Error):
+    """IndexError"""
+
+
+class TypeError(Error):
+    """TypeError"""
 
 
 class UserError(Error):

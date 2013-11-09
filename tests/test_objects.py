@@ -152,13 +152,13 @@ def test_print_end(mio, capfd):
 
 
 def test_repr(mio):
-    assert mio.eval("1 repr") == "1"
-    assert mio.eval("\"foo\" repr") == "'foo'"
+    assert mio.eval("1 __repr__()") == "1"
+    assert mio.eval("\"foo\"__repr__()") == "'foo'"
 
 
 def test_str(mio):
-    assert mio.eval("1 str") == "1"
-    assert mio.eval("\"foo\" str") == "foo"
+    assert mio.eval("1 __str__()") == "1"
+    assert mio.eval("\"foo\" __str__()") == "foo"
 
 
 def test_bool(mio):

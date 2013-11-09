@@ -31,7 +31,7 @@ def format_object(o):
         elif isfunction(v):
             return format_function(v)
         else:
-            return str(runtime.state.eval("repr()", receiver=v))
+            return str(runtime.state.eval("__repr__()", receiver=v))
 
     attrs = "\n".join(["  {0:s} = {1:s}".format(format_key(k), format_value(v)) for k, v in sorted(o.attrs.items())])
 

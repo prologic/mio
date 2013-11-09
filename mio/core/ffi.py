@@ -54,8 +54,8 @@ class FFI(Object):
 
     @method()
     def init(self, receiver, context, m, name, code):
-        receiver.name = name = str(name.eval(context))
-        receiver.code = code = str(code.eval(context))
+        receiver.name = name = str(name)
+        receiver.code = code = str(code)
 
         receiver.module = create_module(name, code)
         receiver.create_attributes()
