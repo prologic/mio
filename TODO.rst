@@ -1,7 +1,7 @@
 TODO
 ====
 
-- Fixed ``range()`` and ``list()``
+- Fix ``range()`` and ``list()``
 - Bring test coverage back up to 100%
 - Figure out a way to avoid recursion so ``loop(print("foo"))`` works as expected.
 - Rewrite factorial example like: ``Number fact = method((1..self) reduce(0, a, n, a * n))``
