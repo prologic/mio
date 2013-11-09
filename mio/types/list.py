@@ -1,9 +1,6 @@
-from copy import copy
-
-
 from mio import runtime
+from mio.utils import method
 from mio.object import Object
-from mio.utils import method, Null
 
 
 class List(Object):
