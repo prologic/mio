@@ -91,3 +91,9 @@ def test_method_repr_star_args_kwargs(mio):
 def test_method_repr_star_args_star_star_kwargs(mio):
     mio.eval("x = method(*args, **kwargs, args; kwargs)")
     assert repr(mio.eval("x")) == "method(*args, **kwargs)"
+
+
+def test_method_call(mio):
+    x = mio.eval("""x = method("foo")""")
+    assert mio.eval("x") == x
+    assert mio.eval("x()") == "foo"

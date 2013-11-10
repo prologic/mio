@@ -78,9 +78,6 @@ class Block(Object):
         self.locals["call"] = call
 
     def __call__(self, receiver, context=None, m=None, *args):
-        if not m.call:
-            return self
-
         self.create_locals(receiver, context, m)
 
         self.locals.attrs.update(self.kwargs)
