@@ -47,11 +47,8 @@ Examples
 
 Factorial::
     
-    Number fact = method(
-        (self < 2) ifTrue(return self)
-        return (self * ((self - 1) fact()))
-    )
-
+    Number fact = method(reduce(block(a, x, a * x), 1..self))
+    
 Hello World::
     
     print("Hello World!")

@@ -5,7 +5,7 @@ Changes
 mio 0.1.dev
 ...........
 
--
+- Updated factorial examples
 
 
 mio 0.0.9 2013-11-10
