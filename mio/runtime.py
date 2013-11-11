@@ -4,9 +4,6 @@
 """
 
 
-state = None
-
-
 def init(args=[], opts=None):
     global state
 
