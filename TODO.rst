@@ -1,6 +1,7 @@
 TODO
 ====
 
+- Fix keyword argument(s) parameters.
 - Bring test coverage back up to 100%
 - Figure out a way to avoid recursion so ``loop(print("foo"))`` works as expected.
 - Write a testing framework for mio in mio.
