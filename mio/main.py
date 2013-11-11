@@ -37,7 +37,7 @@ def parse_options(argv):
     return opts, args
 
 
-def main(argv):
+def main(argv=None):
     opts, args = parse_options(argv)
 
     signal(SIGINT, SIG_IGN)
