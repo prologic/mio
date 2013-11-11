@@ -10,7 +10,7 @@ USAGE = "%prog [options] ... [-e expr | file | -]"
 VERSION = "%prog v" + mio.__version__
 
 
-def parse_options():
+def parse_options(argv):
     parser = OptionParser(usage=USAGE, version=VERSION)
     add_option = parser.add_option
 
@@ -32,13 +32,13 @@ def parse_options():
         help="don't load system libraries"
     )
 
-    opts, args = parser.parse_args()
+    opts, args = parser.parse_args(argv)
 
     return opts, args
 
 
-def main():
-    opts, args = parse_options()
+def main(argv):
+    opts, args = parse_options(argv)
 
     signal(SIGINT, SIG_IGN)
 
@@ -52,3 +52,8 @@ def main():
             runtime.state.repl()
     else:
         runtime.state.repl()
+
+
+# RPython entry pint
+def target(*args):
+    return main, None

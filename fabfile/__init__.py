@@ -7,13 +7,18 @@
 
 from __future__ import print_function
 
-from os import getcwd
+from os import getcwd, path
 
 
-from fabric.api import abort, cd, execute, hide, hosts, lcd, local, prefix, prompt, run, settings, task
+from fabric.api import abort, cd, execute, hide, hosts, lcd, local, prefix, prompt, run, settings, shell_env, task
+from fabric.contrib.files import exists
 
 
 from .utils import msg, pip, requires, tobool
+
+
+# Path to pypy
+PYPY = path.expandvars("$HOME/work/pypy")
 
 
 @task()
@@ -123,5 +128,63 @@ def release():
                 run("python setup.py egg_info sdist bdist_egg register upload")
                 run("python setup.py build_sphinx upload_sphinx")
 
+        with msg("Destroying env"):
+            run("rmvirtualenv test")
+
+
+@task()
+@hosts("localhost")
+def compile():
+    """Compile an executable with RPython"""
+
+    try:
+        with cd(getcwd()):
+            with msg("Creating env"):
+                run("mkvirtualenv compile")
+
+            with msg("Bootstrapping"):
+                with prefix("workon compile"):
+                    run("./bootstrap.sh")
+
+            with msg("Building"):
+                with prefix("workon compile"):
+                    run("fab develop")
+
+            with msg("Running tests"):
+                with prefix("workon compile"):
+                    run("fab test")
+
+            with msg("Building docs"):
+                with prefix("workon compile"):
+                    run("pip install -r docs/requirements.txt")
+                    run("fab docs")
+
+            version = run("python setup.py --version")
+
+            print("Compile version: {0:s}".format(version))
+
+        output = path.join(getcwd(), "build", "mio")
+
+        options = (
+            "--output={0:s}".format(output),
+        )
+
+        target = path.join(getcwd(), "mio", "main.py")
+
+        print("Compile Options:")
+        print("\n".join(["    {0:s}".format(option) for option in options]))
+        print()
+        print("Target: {0:s}".format(target))
+
+        if prompt("Is this ok?", default="Y", validate=r"^[YyNn]?$") in "yY":
+            if not exists(output):
+                run("mkdir {0:s}".format(output))
+
+            with cd(PYPY):
+                args = (" ".join(options), target)
+                with shell_env(PYTHONPATH=":".join([getcwd(), "."])):
+                    run("./rpython/bin/rpython {0:s} {1:s}".format(*args))
+
+    finally:
         with msg("Destroying env"):
             run("rmvirtualenv test")

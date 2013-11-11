@@ -14,7 +14,8 @@ if __name__ == "__main__":
         if HAS_COVERAGE:
             _coverage = coverage(data_suffix=True)
             _coverage.start()
-        main()
+        import sys
+        main(sys.argv[1:])
     finally:
         if HAS_COVERAGE:
             _coverage.stop()

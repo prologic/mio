@@ -6,6 +6,9 @@ mio 0.1.dev
 ...........
 
 - Updated factorial examples
+- Added support for and a ``fab compile`` task for compiling mio with RPython
+
+.. warning:: This does not work yet!
 
 
 mio 0.0.9 2013-11-10
