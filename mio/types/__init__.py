@@ -1,10 +1,22 @@
 from os import listdir, path
+from operator import itemgetter
 from inspect import getmembers, getmodule, isclass
 
 
 from mio import runtime
 from mio.utils import Null
 from mio.object import Object
+
+
+def load_objects():
+    for filename in listdir(path.dirname(__file__)):
+        name, ext = path.splitext(filename)
+        if ext == ".py" and name != "__init__":
+            module = __import__("mio.types.{0:s}".format(name), fromlist=["mio.types"])
+            predicate = lambda x: isclass(x) and issubclass(x, Object) and getmodule(x) is module and x is not Types
+            for name, object in getmembers(module, predicate):
+                globals()[name] = object
+                yield name, object
 
 
 class Types(Object):
@@ -20,15 +32,12 @@ class Types(Object):
     def __repr__(self):
         return "Types"
 
-    def load_objects(self):
-        for filename in listdir(path.dirname(__file__)):
-            name, ext = path.splitext(filename)
-            if ext == ".py" and name != "__init__":
-                module = __import__("mio.types.{0:s}".format(name), fromlist=["mio.types"])
-                predicate = lambda x: isclass(x) and issubclass(x, Object) and getmodule(x) is module and x is not Types
-                for name, object in getmembers(module, predicate):
-                    yield name, object
-
     def create_objects(self):
-        for name, object in self.load_objects():
+        for name, object in objects:
             self[name] = object()
+
+
+objects = list(load_objects())
+
+
+#__all__ = tuple(map(itemgetter(0), objects))

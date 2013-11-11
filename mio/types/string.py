@@ -3,6 +3,7 @@ from mio.utils import method
 from mio.object import Object
 from mio.lexer import encoding
 from mio.core.message import Message
+from mio.errors import AttributeError
 
 
 class String(Object):
@@ -11,7 +12,11 @@ class String(Object):
         super(String, self).__init__(value=value)
 
         self.create_methods()
-        self.parent = runtime.find("Object")
+        try:
+            self.parent = runtime.find("String")
+        except AttributeError:
+            self.parent = runtime.find("Object")
+
 
     def __iter__(self):
         for c in self.value:

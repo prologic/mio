@@ -231,7 +231,8 @@ class Object(object):
 
     @method("type", True)
     def getType(self, receiver, context, m):
-        return runtime.find("String").clone(receiver.type)
+        from mio.types import String
+        return String(receiver.type)
 
     @method("parent", True)
     def _parent(self, receiver, context, m):
