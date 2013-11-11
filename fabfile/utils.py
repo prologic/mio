@@ -7,6 +7,7 @@
 from functools import wraps
 from imp import find_module
 from contextlib import contextmanager
+from os.path import abspath, expanduser, expandvars
 
 
 from fabric.api import abort, hide, local, puts, quiet, settings, warn
@@ -57,6 +58,10 @@ def has_module(name):
 def has_binary(name):
     with quiet():
         return local("which {0:s}".format(name)).succeeded
+
+
+def resolvepath(p):
+    return abspath(expandvars(expanduser(p)))
 
 
 def requires(*names, **kwargs):

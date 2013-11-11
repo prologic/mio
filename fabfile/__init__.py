@@ -14,11 +14,11 @@ from fabric.api import abort, cd, execute, hide, hosts, lcd, local, prefix, prom
 from fabric.contrib.files import exists
 
 
-from .utils import msg, pip, requires, tobool
+from .utils import msg, pip, requires, resolvepath, tobool
 
 
 # Path to pypy
-PYPY = path.expandvars("$HOME/work/pypy")
+PYPY = resolvepath("$HOME/work/pypy")
 
 
 @task()
@@ -134,8 +134,20 @@ def release():
 
 @task()
 @hosts("localhost")
-def compile():
-    """Compile an executable with RPython"""
+def compile(**options):
+    """Compile an executable with RPython
+
+    Options:
+        pypy    - Path to pypy repository
+        tests   - Whether to run the tests.
+        output  - Output filename for mio.
+        target  - Target module to compile.
+    """
+
+    pypy = resolvepath(options.get("pypy", PYPY))
+    tests = tobool(options.get("tests", "yes"))
+    output = resolvepath(options.get("output", "./build/mio"))
+    target = resolvepath(options.get("target", "./mio/main.py"))
 
     try:
         with cd(getcwd()):
@@ -150,27 +162,20 @@ def compile():
                 with prefix("workon compile"):
                     run("fab develop")
 
-            #with msg("Running tests"):
-            #    with prefix("workon compile"):
-            #        run("fab test")
-
-            #with msg("Building docs"):
-            #    with prefix("workon compile"):
-            #        run("pip install -r docs/requirements.txt")
-            #        run("fab docs")
+            if tests:
+                with msg("Running tests"):
+                    with prefix("workon compile"):
+                        run("fab test")
 
             version = run("python setup.py --version")
 
             print("Compile version: {0:s}".format(version))
 
-        build = path.join(getcwd(), "build")
-        output = path.join(build, "mio")
+        build = resolvepath(path.dirname(output))
 
         options = (
             "--output={0:s}".format(output),
         )
-
-        target = path.join(getcwd(), "mio", "target.py")
 
         print("Compile Options:")
         print("\n".join(["    {0:s}".format(option) for option in options]))
@@ -181,7 +186,7 @@ def compile():
             if not exists(build):
                 run("mkdir {0:s}".format(build))
 
-            with cd(PYPY):
+            with cd(pypy):
                 args = (" ".join(options), target)
                 with shell_env(PYTHONPATH=":".join([getcwd(), "."])):
                     run("./rpython/bin/rpython {0:s} {1:s}".format(*args))
