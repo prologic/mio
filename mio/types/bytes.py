@@ -2,6 +2,7 @@ from mio import runtime
 from mio.utils import method
 from mio.object import Object
 from mio.lexer import encoding
+from mio.core.message import Message
 
 
 class Bytes(Object):
@@ -59,9 +60,12 @@ class Bytes(Object):
         return runtime.find("Number").clone(receiver.value.find(sub, start, end))
 
     @method()
-    def join(self, receiver, context, m, xs):
-        xs = xs.eval(context)
-        return receiver.clone(receiver.value.join([bytes(x) for x in xs]))
+    def join(self, receiver, context, m, *args):
+        if len(args) == 1 and isinstance(args[0], Message):
+            args = args[0].eval(context)
+        else:
+            args = [arg.eval(context) if isinstance(arg, Message) else arg for arg in args]
+        return receiver.clone(receiver.value.join(map(bytes, args)))
 
     @method()
     def lower(self, receiver, context, m):
