@@ -8,6 +8,8 @@ TODO
 - Implement a "trace" hook into the interpreter. i.e: Python's ``sys.settrace()``
 - Implement a basic debugger.
 - Implement a basic coverage tool.
+- Add ``__doc__`` (*doc strings*) support.
+- Implement a basic help system.
 - Do a refresher on how to write an interpreter in RPython and write a really really simple one:
 
   - http://doc.pypy.org/en/latest/coding-guide.html#restricted-python
