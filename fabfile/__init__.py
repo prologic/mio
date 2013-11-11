@@ -150,14 +150,14 @@ def compile():
                 with prefix("workon compile"):
                     run("fab develop")
 
-            with msg("Running tests"):
-                with prefix("workon compile"):
-                    run("fab test")
+            #with msg("Running tests"):
+            #    with prefix("workon compile"):
+            #        run("fab test")
 
-            with msg("Building docs"):
-                with prefix("workon compile"):
-                    run("pip install -r docs/requirements.txt")
-                    run("fab docs")
+            #with msg("Building docs"):
+            #    with prefix("workon compile"):
+            #        run("pip install -r docs/requirements.txt")
+            #        run("fab docs")
 
             version = run("python setup.py --version")
 
@@ -169,7 +169,7 @@ def compile():
             "--output={0:s}".format(output),
         )
 
-        target = path.join(getcwd(), "mio", "main.py")
+        target = path.join(getcwd(), "mio", "target.py")
 
         print("Compile Options:")
         print("\n".join(["    {0:s}".format(option) for option in options]))
