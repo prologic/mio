@@ -50,7 +50,7 @@ def test_len(mio):
     mio.eval("xs append(3)")
     assert mio.eval("xs") == [1, 2, 3]
 
-    assert mio.eval("xs len") == 3
+    assert mio.eval("xs __len__()") == 3
 
 
 def test_count(mio):

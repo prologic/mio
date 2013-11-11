@@ -9,8 +9,8 @@ from funcparserlib.parser import a, many, maybe, skip, some
 
 
 from mio import runtime
-from mio.lexer import operators
 from mio.core.message import Message
+from mio.lexer import encoding, operators
 
 tokval = lambda tok: tok.value
 sometok = lambda type: (some(lambda t: t.type == type) >> tokval)
@@ -146,14 +146,23 @@ def make_number(n):
 
 
 def make_string(n):
+    if n and n[0] in "bu":
+        prefix = n[0]
+        n = n[1:]
+    else:
+        prefix = "u"
+
     if len(n) > 3 and (n[:3] in ("'''", '"""')):
         n = n[3:-3]
     else:
         n = n[1:-1]
 
-    s = n.decode("string-escape")
+    if prefix == "u":
+        s = n.decode("unicode-escape")
+    else:
+        s = n.decode("string-escape")
 
-    return runtime.find("String").clone(s)
+    return runtime.find("String" if prefix == "u" else "Bytes").clone(s)
 
 
 def make_terminator(n):

@@ -1,5 +1,13 @@
 def test_string(mio):
+    assert mio.eval('u"foo"') == "foo"
+
+
+def test_string_default(mio):
     assert mio.eval('"foo"') == "foo"
+
+
+def test_string_type(mio):
+    assert type(mio.eval('u"foo"').value) is unicode
 
 
 def test_string_multi_line(mio):
@@ -44,7 +52,7 @@ def test_str(mio):
 
 
 def test_repr(mio):
-    assert repr(mio.eval("\"foo\"")) == "'foo'"
+    assert repr(mio.eval("\"foo\"")) == "u\"foo\""
 
 
 def test_add(mio):

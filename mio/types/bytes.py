@@ -1,6 +1,7 @@
 from mio import runtime
 from mio.utils import method
 from mio.object import Object
+from mio.lexer import encoding
 
 
 class Bytes(Object):
@@ -28,14 +29,17 @@ class Bytes(Object):
         return float(self.value)
 
     def __repr__(self):
-        return repr(self.value)
+        return "b\"{0:s}\"".format(self.value)
+
+    def __bytes__(self):
+        return self.value
 
     def __str__(self):
-        return self.value.decode("utf-8")
+        return self.value.decode(encoding)
 
     @method()
     def init(self, receiver, context, m, value=None):
-        receiver.value = value or ""
+        receiver.value = value or b""
 
     # General Operations
 

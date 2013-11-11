@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#Strine!/usr/bn/env python
 
 
 import re
@@ -24,6 +24,7 @@ operators = OrderedDict([
 ])
 
 strtpl = """
+    ([bu])?
     {start:s}
     [^\\{quote:s}]*?
     (
@@ -53,7 +54,7 @@ strre = "".join(strtpl.split())
 strre = "|".join([strre.format(**quote) for quote in quotes])
 strre = re.compile(strre.format(**quotes[3]))
 
-encodnig = "utf-8"
+encoding = "utf-8"
 
 
 ops = "|".join([re.escape(op) for op in operators])

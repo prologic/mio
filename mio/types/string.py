@@ -1,6 +1,7 @@
 from mio import runtime
 from mio.utils import method
 from mio.object import Object
+from mio.lexer import encoding
 from mio.core.message import Message
 
 
@@ -29,17 +30,18 @@ class String(Object):
         return float(self.value)
 
     def __repr__(self):
-        return repr(self.value)
+        return "u\"{0:s}\"".format(self.value)
 
     def __bytes__(self):
-        return self.value.encode("utf-8")
+        return self.value.encode(encoding)
 
     def __str__(self):
-        return str(self.value)
+        return self.value
 
     @method()
     def init(self, receiver, context, m, value=None):
         receiver.value = value or u""
+        return receiver
 
     # General Operations
 

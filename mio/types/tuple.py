@@ -45,7 +45,7 @@ class Tuple(Object):
     def count(self, receiver, context, m, value):
         return runtime.find("Number").clone(receiver.value.count(value.eval(context)))
 
-    @method()
+    @method(property=True)
     def len(self, receiver, context, m):
         return runtime.find("Number").clone(len(receiver.value))
 
