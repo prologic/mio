@@ -1,11 +1,11 @@
 from mio import runtime
+from mio.utils import method
 from mio.object import Object
-from mio.utils import method, Null
 
 
 class Tuple(Object):
 
-    def __init__(self, value=Null):
+    def __init__(self, value=()):
         super(Tuple, self).__init__(value=value)
 
         self.create_methods()
@@ -18,10 +18,8 @@ class Tuple(Object):
         return iter(self.value) if isinstance(self.value, tuple) else iter(())
 
     def __repr__(self):
-        if isinstance(self.value, tuple):
-            values = ", ".join([repr(item) for item in self.value])
-            return "({0:s})".format(values)
-        return "()"
+        values = ", ".join([repr(item) for item in self.value])
+        return "({0:s})".format(values)
 
     @method()
     def init(self, receiver, context, m, iterable=None):
