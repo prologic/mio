@@ -1,6 +1,13 @@
 TODO
 ====
 
+- Change the way methods and blocks are bound and unifiy them into a single entity.
+
+  - Unified method: ``method(...)``.
+  - Can be dynamically bound to objects.
+  - Is always passed it's bound object as the first parameter ``self``.
+  - Are by default bound to the context they are created in.
+
 - Implement generators and ``yield``.
 - Fix keyword argument(s) parameters.
 - Bring test coverage back up to 100%
