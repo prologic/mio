@@ -163,7 +163,8 @@ def compile():
 
             print("Compile version: {0:s}".format(version))
 
-        output = path.join(getcwd(), "build", "mio")
+        build = path.join(getcwd(), "build")
+        output = path.join(build, "mio")
 
         options = (
             "--output={0:s}".format(output),
@@ -177,8 +178,8 @@ def compile():
         print("Target: {0:s}".format(target))
 
         if prompt("Is this ok?", default="Y", validate=r"^[YyNn]?$") in "yY":
-            if not exists(output):
-                run("mkdir {0:s}".format(output))
+            if not exists(build):
+                run("mkdir {0:s}".format(build))
 
             with cd(PYPY):
                 args = (" ".join(options), target)
