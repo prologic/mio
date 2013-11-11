@@ -26,10 +26,27 @@ def test_at(mio):
     assert mio.eval("xs at(0)") == 1
 
 
+def test_getitem(mio):
+    mio.eval("xs = (1, 2, 3)")
+    assert mio.eval("xs") == (1, 2, 3)
+    assert mio.eval("xs __getitem__(0)") == 1
+
+
 def test_len(mio):
     mio.eval("xs = (1, 2, 3)")
     assert mio.eval("xs") == (1, 2, 3)
     assert mio.eval("xs len") == 3
+
+
+def test_len2(mio):
+    mio.eval("xs = (1, 2, 3)")
+    assert mio.eval("xs") == (1, 2, 3)
+    assert mio.eval("xs __len__()") == 3
+
+
+def test_len3(mio):
+    xs = mio.eval("(1, 2, 3)")
+    assert len(xs) == 3
 
 
 def test_count(mio):
