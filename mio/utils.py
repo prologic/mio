@@ -14,13 +14,13 @@ def format_result(result):
     if result.value is None:
         return
 
-    if getattr(result, "type", None) == "Object":
+    if getattr(result, "type", None) in ("Boolean", "Number", "String"):
         try:
-            return runtime.eval("__repr__()", result)
+            return runtime.state.eval("__repr__()", result)
         except:
             return format_object(result)
     else:
-        return format_value(result)
+        return format_object(result)
 
 
 def format_value(value):
@@ -29,11 +29,7 @@ def format_value(value):
     elif ismethod(value):
         return format_method(value)
     else:
-        type = getattr(value, "type", None)
-        if type != "Object":
-            return runtime.state.eval("__repr__()", value)
-        else:
-            return default_repr(value)
+        return repr(value)
 
 
 def format_method(f):
