@@ -152,6 +152,8 @@ class State(object):
                 if code:
                     result = self.eval(code)
                     if result is not None:  # pragma: no cover
-                        print("===> {0:s}".format(format_result(result)))
+                        output = format_result(result)
+                        if output is not None:
+                            print("===> {0:s}".format(output))
             except EOFError:  # pragma: no cover
                 raise SystemExit(0)

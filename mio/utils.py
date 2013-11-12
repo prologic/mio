@@ -11,6 +11,9 @@ def default_repr(o):
 
 
 def format_result(result):
+    if result.value is None:
+        return
+
     if getattr(result, "type", None) == "Object":
         try:
             return runtime.eval("__repr__()", result)
