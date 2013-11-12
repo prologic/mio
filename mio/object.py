@@ -261,11 +261,6 @@ class Object(object):
         keys = [String.clone(key) for key in receiver.attrs.keys()]
         return runtime.find("List").clone(keys)
 
-    @method(property=True)
-    def summary(self, receiver, context, m):
-        sys.stdout.write("%s\n" % format_object(receiver))
-        return receiver
-
     # Object Operations
 
     @method()

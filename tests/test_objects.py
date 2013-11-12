@@ -124,15 +124,6 @@ def test_del(mio):
         mio.eval("Foo count", reraise=True)
 
 
-def test_summary(mio, capfd):
-    mio.eval("Foo = Object clone()")
-    assert mio.eval("Foo x = 1")
-
-    assert mio.eval("Foo summary") == mio.eval("Foo")
-    out, err = capfd.readouterr()
-    assert out == "{0:s}\n".format(format_object(mio.eval("Foo")))
-
-
 def test_print(mio, capfd):
     assert mio.eval("print(\"Hello World!\")").value is None
     out, err = capfd.readouterr()

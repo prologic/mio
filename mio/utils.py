@@ -5,6 +5,19 @@ from inspect import getargspec, isfunction, ismethod
 from mio import runtime
 
 
+def format_value(value):
+    if isfunction(value):
+        return format_function(value)
+    elif ismethod(value):
+        return format_method(value)
+    else:
+        type = getattr(value, "type", None)
+        if type in ("Boolean", "Number", "String"):
+            return runtime.state.eval("__repr__()", value)
+        else:
+            return format_object(value)
+
+
 def format_method(f):
     name = getattr(f, "name", getattr(f, "__name__"))
     argspec = getargspec(f)
@@ -25,17 +38,9 @@ def format_object(o):
     def format_key(k):
         return str(k).ljust(15)
 
-    def format_value(v):
-        if ismethod(v):
-            return format_method(v)
-        elif isfunction(v):
-            return format_function(v)
-        else:
-            return str(runtime.state.eval("__repr__()", receiver=v))
-
     attrs = "\n".join(["  {0:s} = {1:s}".format(format_key(k), format_value(v)) for k, v in sorted(o.attrs.items())])
 
-    return "{0:s}:\n{1:s}".format(repr(o), attrs)
+    return "{0:s}{1:s}".format(repr(o), ":\n{0:s}".format(attrs) if attrs else "")
 
 
 def method(name=None, property=False):
