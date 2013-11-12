@@ -17,9 +17,6 @@ class Core(Object):
         self.create_methods()
         self.parent = runtime.find("Object")
 
-    def __repr__(self):
-        return "Core"
-
     def load_objects(self):
         for filename in listdir(path.dirname(__file__)):
             name, ext = path.splitext(filename)

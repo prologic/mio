@@ -1,5 +1,4 @@
 from os import listdir, path
-from operator import itemgetter
 from inspect import getmembers, getmodule, isclass
 
 
@@ -28,9 +27,6 @@ class Types(Object):
 
         self.create_methods()
         self.parent = runtime.find("Object")
-
-    def __repr__(self):
-        return "Types"
 
     def create_objects(self):
         for name, object in objects:
