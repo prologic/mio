@@ -26,7 +26,11 @@ def format_value(value):
     elif ismethod(value):
         return format_method(value)
     else:
-        return runtime.state.eval("__repr__()", value)
+        type = getattr(value, "type", None)
+        if type != "Object":
+            return runtime.state.eval("__repr__()", value)
+        else:
+            return default_repr(value)
 
 
 def format_method(f):
