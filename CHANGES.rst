@@ -12,6 +12,7 @@ mio 0.1.dev
 
 - Changed the way results are printed on the REPL by implementing a ``format_value(...)`` utility function.
 - Added ``assert`` as a special name (*operator*).
+- Added optional message argument to ``assert``.
 
 
 mio 0.0.9 2013-11-10
