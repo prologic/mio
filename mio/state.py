@@ -8,7 +8,7 @@ from .errors import Error
 from .parser import parse
 from .lexer import tokenize
 from .version import version
-from .utils import format_value, tryimport
+from .utils import tryimport
 
 from .core import Core
 from .types import Types
@@ -150,8 +150,8 @@ class State(object):
             try:
                 code = raw_input("mio> ")
                 if code:
-                    value = self.eval(code)
-                    if value is not None:  # pragma: no cover
-                        print("===> {0:s}".format(format_value(value)))
+                    result = self.eval(code)
+                    if result is not None:  # pragma: no cover
+                        print("===> {0:s}".format(self.eval("__repr__()", result)))
             except EOFError:  # pragma: no cover
                 raise SystemExit(0)

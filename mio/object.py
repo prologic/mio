@@ -4,8 +4,8 @@ from inspect import getmembers, ismethod
 
 
 from mio import runtime
-from mio.utils import method, Null
 from mio.errors import AttributeError, TypeError
+from mio.utils import format_object, method, Null
 
 
 class Object(object):
@@ -90,9 +90,7 @@ class Object(object):
         self.traits.remove(trait)
 
     def __repr__(self):
-        type = "{0:s}({1:s})".format(self.binding, self.type) if self.binding is not None else self.type
-        default = "{0:s} at {1:s}".format(type, hex(id(self)))
-        return repr(self.value) if self.value is not Null else default
+        return format_object(self)
 
     def lookup(self, name):
         try:
