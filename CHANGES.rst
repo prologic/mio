@@ -10,6 +10,8 @@ mio 0.1.dev
 
 .. warning:: This does not work yet!
 
+- Changed the way results are printed on the REPL by implementing a ``format_value(...)`` utility function.
+
 
 mio 0.0.9 2013-11-10
 ....................
