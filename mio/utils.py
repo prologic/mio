@@ -10,6 +10,16 @@ def default_repr(o):
     return "{0:s} at {1:s}".format(type, hex(id(o)))
 
 
+def format_result(result):
+    if getattr(result, "type", None) == "Object":
+        try:
+            return runtime.eval("__repr__()", result)
+        except:
+            return format_object(result)
+    else:
+        return format_value(result)
+
+
 def format_value(value):
     if isfunction(value):
         return format_function(value)
