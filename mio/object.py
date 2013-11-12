@@ -1,12 +1,11 @@
-import sys
 from copy import copy
 from collections import OrderedDict
 from inspect import getmembers, ismethod
 
 
 from mio import runtime
+from mio.utils import method, Null
 from mio.errors import AttributeError, TypeError
-from mio.utils import format_object, method, Null
 
 
 class Object(object):
