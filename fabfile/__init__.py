@@ -34,7 +34,7 @@ def help(name=None):
         $ fab -l
 
     To display help on a specific task type:
-        
+
         $ fab help:<name>
     """
 
