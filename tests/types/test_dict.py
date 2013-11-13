@@ -14,7 +14,7 @@ def test_clone_dict(mio):
 
 
 def test_repr(mio):
-    assert repr(mio.eval("Dict")) == "dict()"
+    assert repr(mio.eval("Dict")) == "{}"
 
 
 def test_repr2(mio):
@@ -23,7 +23,7 @@ def test_repr2(mio):
     mio.eval("d setitem(\"b\", 2)")
     mio.eval("d setitem(\"c\", 3)")
 
-    assert repr(mio.eval("d")) in ["dict({0:s})".format(", ".join(p)) for p in permutations(["u\"a\"=1", "u\"b\"=2", "u\"c\"=3"])]
+    assert repr(mio.eval("d")) in ["{" + ", ".join(p) + "}" for p in permutations(["u\"a\": 1", "u\"b\": 2", "u\"c\": 3"])]
 
 
 def test_setitem(mio):

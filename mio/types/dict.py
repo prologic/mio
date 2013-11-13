@@ -15,10 +15,7 @@ class Dict(Object):
         return iter(self.value) if isinstance(self.value, dict) else iter({})
 
     def __repr__(self):
-        if isinstance(self.value, dict):
-            items = ", ".join(["{0:s}={1:s}".format(repr(k), repr(v)) for k, v in self.value.items()])
-            return "dict({0:s})".format(items)
-        return "Dict"
+        return repr(self.value)
 
     @method()
     def init(self, receiver, context, m, iterable=None):

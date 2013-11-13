@@ -18,8 +18,7 @@ class List(Object):
         return iter(self.value) if isinstance(self.value, list) else iter([])
 
     def __repr__(self):
-        values = ", ".join([repr(item) for item in self.value])
-        return "[{0:s}]".format(values)
+        return repr(self.value)
 
     @method()
     def init(self, receiver, context, m, iterable=None):
