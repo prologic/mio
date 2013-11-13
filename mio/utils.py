@@ -11,13 +11,22 @@ def default_repr(o):
 
 
 def format_result(result):
-    if result.value is None:
-        return
-
-    if result["__repr__"] is not result["Object"]["__repr__"]:
-        return runtime.state.eval("__repr__()", result)
+    if isfunction(result):
+        return format_function(result)
+    elif ismethod(result):
+        return format_method(result)
     else:
-        return format_object(result)
+        type = getattr(result, "type", None)
+        if type is not None:
+            if result.value is None:
+                return
+
+            if result["__repr__"] is not result["Object"]["__repr__"]:
+                return runtime.state.eval("__repr__()", result)
+            else:
+                return format_object(result)
+        else:
+            return repr(result)
 
 
 def format_value(value):
