@@ -35,6 +35,13 @@ mio 0.1.dev
 .. note:: Like Python this means any object whoose ``__hash__()`` method
           returns a non-``None`` value.
 
+- Fixed ``any`` and ``all`` builtins.
+- IMplemented ``in`` method of ``TComparable``
+
+::
+    
+    1 in(1, 0)
+    
 - 
 
 
