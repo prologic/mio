@@ -24,14 +24,14 @@ abs = block(x,
 
 all = block(xs,
     xs foreach(x,
-        (x bool) ifFalse(False)
+        bool(x) ifFalse(return False)
     )
     True
 )
 
 any = block(xs,
     xs foreach(x,
-        (x bool) ifTrue(True)
+        bool(x) ifTrue(return True)
     )
     False
 )
