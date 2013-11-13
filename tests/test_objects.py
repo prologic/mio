@@ -2,7 +2,6 @@ from pytest import raises
 
 
 from mio import runtime
-from mio.utils import format_object
 from mio.errors import AttributeError, TypeError
 
 
@@ -76,7 +75,7 @@ def test_has2(mio):
 
 
 def test_hash(mio):
-    assert mio.eval("Object hash") == hash(runtime.find("Object"))
+    assert mio.eval("Object __hash__()") == hash(runtime.find("Object"))
 
 
 def test_id(mio):

@@ -66,6 +66,7 @@ class Block(Object):
             self.locals["self"] = self.scope
             self.locals.parent = self.scope
         else:
+            self.locals["self"] = self.locals
             self.locals.parent = runtime.find("Object")
 
         call = Call()

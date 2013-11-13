@@ -11,6 +11,12 @@ class Dict(Object):
         self.create_methods()
         self.parent = runtime.find("Object")
 
+    def __hash__(self):
+        return None
+
+    def __len__(self):
+        return len(self.value)
+
     def __iter__(self):
         return iter(self.value) if isinstance(self.value, dict) else iter({})
 

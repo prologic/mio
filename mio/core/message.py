@@ -132,7 +132,7 @@ class Message(Object):
     @method()
     def evalArgs(self, receiver, context, m, target=None):
         target = target.eval(context) if target is not None else context
-        args = [arg.eval(target) for arg in receiver.args]
+        args = [arg.eval(target, context) for arg in receiver.args]
         return runtime.find("List").clone(list(args))
 
     @method("first", True)

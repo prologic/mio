@@ -29,6 +29,12 @@ mio 0.1.dev
     
 .. note:: This only works with keys as strings for the moment.
 
+- Added a ``hash`` builtin.
+- Improved ``{}`` dict literal so that any hashable keys can be used.
+
+.. note:: Like Python this means any object whoose ``__hash__()`` method
+          returns a non-``None`` value.
+
 - 
 
 

@@ -19,7 +19,7 @@ __all__ = ("tobin", "tobool", "tochr", "tohex",)
 """)
 
 abs = block(x,
-    Number clone() setValue(x :__abs__)
+    Number clone() setValue(x :("__abs__"))
 )
 
 all = block(xs,
@@ -74,6 +74,8 @@ exit = block(status,
     )
     System exit(status)
 )
+
+hash = block(x, x __hash__())
 
 hex = block(x, utils tohex(x))
 
@@ -206,14 +208,28 @@ while = block(
 #
 
 set("()", Object get("evalArg"))
-set(":", Object get("primitive"))
+set(":", block(
+    (call sender has("call") and (call sender call message name == "{}")) ifTrue(
+        value = call message arg(0)
+        key = call target
+        d = call sender d
+        (key __hash__()) ifNone(
+            raise TypeError("Unsupported type: {0}" format(key type))
+        )
+        d __setitem__(key, value)
+    ) ifFalse(
+        (call target keys) foreach(key,
+            print(key, ":", call target get(key))
+        )
+        call target primitive(call message arg(0))
+    )
+))
 set("[]", block(*args,
     xs = List clone()
     args foreach(x, xs append(x))
     xs
 ))
 set("{}", block(
-    String set(":", method(value, call sender __setitem__(self, value)))
     d = Dict clone()
     call message evalArgs(d)
     d

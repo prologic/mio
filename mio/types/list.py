@@ -11,6 +11,9 @@ class List(Object):
         self.create_methods()
         self.parent = runtime.find("Object")
 
+    def __hash__(self):
+        return None
+
     def __len__(self):
         return len(self.value)
 

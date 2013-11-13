@@ -245,9 +245,12 @@ class Object(object):
             return receiver.value
         return runtime.find("None")
 
-    @method(property=True)
+    @method("__hash__", property=True)
     def hash(self, receiver, context, m):
-        return runtime.find("Number").clone(hash(receiver))
+        try:
+            return runtime.find("Number").clone(hash(receiver))
+        except:
+            return runtime.find("None")
 
     @method(property=True)
     def id(self, receiver, context, m, obj=None):
@@ -264,7 +267,7 @@ class Object(object):
 
     @method()
     def primitive(self, receiver, context, m, method, *args):
-        method = method.name
+        method = str(method.eval(context))
         args = [arg.eval(context).value for arg in args]
         if hasattr(receiver, method):
             return getattr(receiver, method)(*args)
