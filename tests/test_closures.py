@@ -29,7 +29,7 @@ def test_closure_locals(mio):
     mio.eval("""
         counter = block(n,
             block(
-                self n = n + 1
+                this n = n + 1
                 n
             )
         )

@@ -8,7 +8,7 @@ foo = block(
 
 counter = block(n,
     return block(
-        self n = n + 1
+        this n = n + 1
         return n
     )
 )

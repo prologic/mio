@@ -63,7 +63,9 @@ class Block(Object):
             self.locals["self"] = receiver
             self.locals.parent = receiver
         elif isinstance(self.scope, Locals):
-            self.locals["self"] = self.scope
+            if "self" in self.scope:
+                self.locals["self"] = self.scope["self"]
+            self.locals["this"] = self.scope
             self.locals.parent = self.scope
         else:
             self.locals["self"] = self.locals

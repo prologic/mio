@@ -42,7 +42,17 @@ mio 0.1.dev
     
     1 in(1, 0)
     
-- 
+- Changed the semantics of closures.
+
+  - ``this`` is a new attribute of ``Locals`` that always references the
+    current block scope.
+  - ``self`` is a reference to the current object in scope.
+
+.. warning:: This behavior may change as I'm not 100% happy with this.
+
+.. note:: This is sort of a work-around to allow blocks to access the
+          currently scoped object ``self`` inside the scope of a method
+          or nested blocks within a method.
 
 
 mio 0.0.9 2013-11-10
