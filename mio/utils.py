@@ -14,11 +14,8 @@ def format_result(result):
     if result.value is None:
         return
 
-    if getattr(result, "type", None) in ("Boolean", "Number", "String"):
-        try:
-            return runtime.state.eval("__repr__()", result)
-        except:
-            return format_object(result)
+    if result["__repr__"] is not result["Object"]["__repr__"]:
+        return runtime.state.eval("__repr__()", result)
     else:
         return format_object(result)
 
@@ -52,9 +49,9 @@ def format_object(o):
     def format_key(k):
         return str(k).ljust(15)
 
-    attrs = "\n".join(["  {0:s} = {1:s}".format(format_key(k), format_value(v) if v is not o else default_repr(v)) for k, v in sorted(o.attrs.items())])
+    attrs = "\n".join(["  {0:s} = {1:s}".format(format_key(k), format_value(v)) for k, v in sorted(o.attrs.items())])
 
-    return "{0:s}{1:s}".format(default_repr(o), ":\n{0:s}".format(attrs) if attrs else "")
+    return "{0:s}{1:s}".format(repr(o), ":\n{0:s}".format(attrs) if attrs else "")
 
 
 def method(name=None, property=False):
