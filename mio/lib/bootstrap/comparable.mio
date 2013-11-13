@@ -19,6 +19,10 @@
             (self id()) == (other id())
         )
     )
+
+    in = method(*args,
+        any(map(block(x, (self == x)), args))
+    )
 )
 
 Object uses(TComparable)
