@@ -27,16 +27,16 @@ class Dict(Object):
 
     # General Operations
 
-    @method()
+    @method("__getitem__")
     def getitem(self, receiver, context, m, key):
         return receiver.value[key.eval(context)]
 
-    @method()
+    @method("__setitem__")
     def setitem(self, receiver, context, m, key, value):
         receiver.value[key.eval(context)] = value.eval(context)
         return receiver
 
-    @method()
+    @method("__delitem__")
     def delitem(self, receiver, context, m, key):
         del receiver.value[key.eval(context)]
         return receiver

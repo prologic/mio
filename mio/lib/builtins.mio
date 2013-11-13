@@ -212,7 +212,12 @@ set("[]", block(*args,
     args foreach(x, xs append(x))
     xs
 ))
-set("{}", get("dict"))
+set("{}", block(
+    String set(":", method(value, call sender __setitem__(self, value)))
+    d = Dict clone()
+    call message evalArgs(d)
+    d
+))
 
 set("*", block(call sender get(call message args at(0) name)))
 

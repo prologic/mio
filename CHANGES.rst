@@ -21,6 +21,14 @@ mio 0.1.dev
     xs = [1, 2, 3, 4]
     xs[0]
     
+- Implemented dict literals.
+
+::
+    
+    {"a": 1, "b": 2}
+    
+.. note:: This only works with keys as strings for the moment.
+
 - 
 
 
