@@ -75,10 +75,6 @@ exit = block(status,
     System exit(status)
 )
 
-hash = block(x, x __hash__())
-
-hex = block(x, utils tohex(x))
-
 filter = block(f, xs,
     rs = List clone()
     xs foreach(x,
@@ -96,6 +92,10 @@ filter = block(f, xs,
 )
 
 from = import = Importer get("import")
+
+hash = block(x, x __hash__())
+
+hex = block(x, utils tohex(x))
 
 iter = block(iterable, iterable __iter__())
 
