@@ -9,8 +9,8 @@ from funcparserlib.parser import a, many, maybe, skip, some
 
 
 from mio import runtime
+from mio.lexer import operators
 from mio.core.message import Message
-from mio.lexer import encoding, operators
 
 tokval = lambda tok: tok.value
 sometok = lambda type: (some(lambda t: t.type == type) >> tokval)
@@ -60,7 +60,7 @@ def make_message(n):
 
     if next is not None:
         message = Message(name, value)
-        message.next = Message(next, next, args)
+        message.next = Message(next, None, args)
     else:
         message = Message(name, value, args)
 

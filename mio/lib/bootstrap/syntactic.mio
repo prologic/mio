@@ -1,0 +1,11 @@
+Dict do (
+    set("[]", method(key, self __getitem__(key)))
+)
+
+List do (
+    set("[]", method(index, self __getitem__(index)))
+)
+
+Tuple do (
+    set("[]", method(index, self __getitem__(index)))
+)

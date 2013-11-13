@@ -14,6 +14,14 @@ mio 0.1.dev
 - Added ``assert`` as a special name (*operator*).
 - Added optional message argument to ``assert``.
 - Improved repr of ``Core`` and ``Types`` objects.
+- Fixed a bug in the parser so that we can use ``[]`` and ``{}`` as methods.
+
+::
+    
+    xs = [1, 2, 3, 4]
+    xs[0]
+    
+- 
 
 
 mio 0.0.9 2013-11-10
