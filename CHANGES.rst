@@ -2,8 +2,8 @@ Changes
 -------
 
 
-mio 0.1.dev
-...........
+mio 0.1 (2013-11-14)
+....................
 
 - Updated factorial examples
 - Added support for and a ``fab compile`` task for compiling mio with RPython
