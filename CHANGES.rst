@@ -46,7 +46,7 @@ mio 0.1.dev
 
   - ``this`` is a new attribute of ``Locals`` that always references the
     current block scope.
-  - ``self`` is a reference to the current object in scope.
+  - ``self`` is a reference to the current object in scope (*if there is one*).
 
 .. warning:: This behavior may change as I'm not 100% happy with this.
 
