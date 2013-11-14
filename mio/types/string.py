@@ -17,7 +17,6 @@ class String(Object):
         except AttributeError:
             self.parent = runtime.find("Object")
 
-
     def __iter__(self):
         for c in self.value:
             yield self.clone(c)
@@ -85,3 +84,11 @@ class String(Object):
     @method()
     def upper(self, receiver, context, m):
         return self.clone(receiver.value.upper())
+
+    @method()
+    def startswith(self, receiver, context, m, prefix, start=None, end=None):
+        prefix = str(prefix.eval(context))
+        start = int(start.eval(context)) if start is not None else None
+        end = int(end.eval(context)) if end is not None else None
+        truth = receiver.value.startswith(prefix, start, end)
+        return runtime.find("True") if truth else runtime.find("False")
