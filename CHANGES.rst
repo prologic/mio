@@ -6,6 +6,7 @@ mio 0.1.1.dev
 .............
 
 - The beginnings of a testing framework.
+- Implemented unit tests for mio builtins: ``abs``, ``all`` and ``any``.
 
 
 mio 0.1 (2013-11-14)

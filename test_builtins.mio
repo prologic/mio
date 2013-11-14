@@ -1,6 +1,18 @@
- test_abs = block(
+test_abs = block(
     assert abs(-1) == 1
     assert abs(1) == 1
+)
+
+
+test_all = block(
+    assert all([1, 1])
+    assert not all([1, 0])
+)
+
+
+test_any = block(
+    assert any([1, 0])
+    assert not all([0, 0])
 )
 
 
