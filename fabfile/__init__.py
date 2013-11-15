@@ -2,19 +2,19 @@
 # Date:     18th June 2013
 # Author:   James Mills, j dot mills at griffith dot edu dot au
 
-"""Fabric fabfile"""
+"""Development Tasks"""
 
 
 from __future__ import print_function
 
-from os import getcwd, path
+from os import getcwd
 
 
 from fabric.tasks import Task
-from fabric.contrib.files import exists
-from fabric.api import abort, cd, execute, hide, hosts, lcd, local, prefix, prompt, run, settings, shell_env, task
+from fabric.api import abort, cd, execute, hide, hosts, lcd, local, prefix, prompt, run, settings, task
 
 
+import compile  # noqa
 from .utils import msg, pip, requires, resolvepath, tobool
 
 
@@ -162,69 +162,5 @@ def release():
                 run("python setup.py egg_info sdist bdist_egg register upload")
                 run("python setup.py build_sphinx upload_sphinx")
 
-        with msg("Destroying env"):
-            run("rmvirtualenv test")
-
-
-@task()
-@hosts("localhost")
-def compile(**options):
-    """Compile an executable with RPython
-
-    Options:
-        pypy    - Path to pypy repository
-        tests   - Whether to run the tests.
-        output  - Output filename for mio.
-        target  - Target module to compile.
-    """
-
-    pypy = resolvepath(options.get("pypy", PYPY))
-    tests = tobool(options.get("tests", "yes"))
-    output = resolvepath(options.get("output", "./build/mio"))
-    target = resolvepath(options.get("target", "./mio/main.py"))
-
-    try:
-        with cd(getcwd()):
-            with msg("Creating env"):
-                run("mkvirtualenv compile")
-
-            with msg("Bootstrapping"):
-                with prefix("workon compile"):
-                    run("./bootstrap.sh")
-
-            with msg("Building"):
-                with prefix("workon compile"):
-                    run("fab develop")
-
-            if tests:
-                with msg("Running tests"):
-                    with prefix("workon compile"):
-                        run("fab test")
-
-            version = run("python setup.py --version")
-
-            print("Compile version: {0:s}".format(version))
-
-        build = resolvepath(path.dirname(output))
-
-        options = (
-            "--output={0:s}".format(output),
-        )
-
-        print("Compile Options:")
-        print("\n".join(["    {0:s}".format(option) for option in options]))
-        print()
-        print("Target: {0:s}".format(target))
-
-        if prompt("Is this ok?", default="Y", validate=r"^[YyNn]?$") in "yY":
-            if not exists(build):
-                run("mkdir {0:s}".format(build))
-
-            with cd(pypy):
-                args = (" ".join(options), target)
-                with shell_env(PYTHONPATH=":".join([getcwd(), "."])):
-                    run("./rpython/bin/rpython {0:s} {1:s}".format(*args))
-
-    finally:
         with msg("Destroying env"):
             run("rmvirtualenv test")

@@ -57,6 +57,6 @@ def main(argv=None):
     except SystemExit as e:
         return e[0]
     except Exception as e:
-        print("ERROR: {0:s}".foramt(e))
+        print("ERROR: {0:s}".format(e))
         print(format_exc())
         return 1
