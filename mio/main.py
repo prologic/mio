@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 
+from traceback import format_exc
 from optparse import OptionParser
 from signal import signal, SIGINT, SIG_IGN
 
@@ -38,22 +39,24 @@ def parse_options(argv):
 
 
 def main(argv=None):
-    opts, args = parse_options(argv)
+    try:
+        opts, args = parse_options(argv)
 
-    signal(SIGINT, SIG_IGN)
+        signal(SIGINT, SIG_IGN)
 
-    runtime.init(args, opts)
+        runtime.init(args, opts)
 
-    if opts.eval:
-        runtime.state.eval(opts.eval)
-    elif args:
-        runtime.state.load(args[0])
-        if opts.interactive:
+        if opts.eval:
+            runtime.state.eval(opts.eval)
+        elif args:
+            runtime.state.load(args[0])
+            if opts.interactive:
+                runtime.state.repl()
+        else:
             runtime.state.repl()
-    else:
-        runtime.state.repl()
-
-
-# RPython entry pint
-def target(*args):
-    return main, None
+    except SystemExit as e:
+        return e[0]
+    except Exception as e:
+        print("ERROR: {0:s}".foramt(e))
+        print(format_exc())
+        return 1
