@@ -146,7 +146,23 @@ class State(object):
         self.eval(open(filename, "r").read(), receiver=receiver, context=context)
 
     def repl(self):
-        tryimport("readline")
+        readline = tryimport("readline")
+
+        if readline is not None:
+            objects = self.root.attrs.keys()
+            objects.extend(self.root["Types"].attrs.keys())
+            objects.extend(self.root["Core"].attrs.keys())
+            objects.extend(self.root["builtins"].attrs.keys())
+
+            def completer(text, state):
+                options = [i for i in objects if i.startswith(text)]
+                if state < len(options):
+                    return options[state]
+                else:
+                    return None
+
+            readline.parse_and_bind("tab: complete")
+            readline.set_completer(completer)
 
         print("mio {0:s}".format(version))
 

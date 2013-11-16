@@ -8,6 +8,9 @@ mio 0.1.1.dev
 - The beginnings of a testing framework.
 - Implemented unit tests for mio builtins: ``abs``, ``all`` and ``any``.
 - Added paren detection to the REPL so you start write long functions over multiple lines. (*Borrowed from: https://bitbucket.org/pypy/lang-scheme/src/b1d5a1b8744f3c7c844775cb420c1a5d4c584592/scheme/interactive.py?at=default*).
+- Added basic tab completion support to the REPL.
+
+.. note:: This is not context aware and build up a list of known objects from ``Root``, ``Types``, ``Core`` and ``builtins``.
 
 
 mio 0.1 (2013-11-14)
