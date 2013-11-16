@@ -12,7 +12,7 @@ from os import getcwd, path
 
 from fabric.tasks import Task
 from fabric.contrib.files import exists
-from fabric.api import cd, execute, hosts, prefix, prompt, run, task
+from fabric.api import cd, execute, hosts, prefix, run, task
 
 from py.path import local as localpath
 
@@ -39,7 +39,7 @@ def compile(**options):
     pypy = resolvepath(options.get("pypy", PYPY))
     tests = tobool(options.get("tests", "yes"))
     output = resolvepath(options.get("output", "./build/mio"))
-    target = resolvepath(options.get("target", "./mio/main.py"))
+    target = resolvepath(options.get("target", "./targets/target_mio.py"))
 
     try:
         with cd(getcwd()):
@@ -59,32 +59,21 @@ def compile(**options):
                     with prefix("workon compile"):
                         run("fab test")
 
-            version = run("python setup.py --version")
-
-            print("Compile version: {0:s}".format(version))
-
         build = resolvepath(path.dirname(output))
+        if not exists(build):
+            run("mkdir {0:s}".format(build))
 
         options = (
             "--output={0:s}".format(output),
         )
 
-        print("Compile Options:")
-        print("\n".join(["    {0:s}".format(option) for option in options]))
-        print()
-        print("Target: {0:s}".format(target))
-
-        if prompt("Is this ok?", default="Y", validate=r"^[YyNn]?$") in "yY":
-            if not exists(build):
-                run("mkdir {0:s}".format(build))
-
-            with cd(pypy):
-                with prefix("workon compile"):
-                    run("python setup.py develop")
-
-            args = (" ".join(options), target)
+        with cd(pypy):
             with prefix("workon compile"):
-                run("rpython {0:s} {1:s}".format(*args))
+                run("python setup.py develop")
+
+        args = (" ".join(options), target)
+        with prefix("workon compile"):
+            run("rpython {0:s} {1:s}".format(*args))
 
     finally:
         with msg("Destroying env"):
