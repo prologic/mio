@@ -60,6 +60,11 @@ class BoxInt(BaseBox):
     def __init__(self, value):
         self.value = value
 
+    def __repr__(self):
+        """NOT RPYTHON"""
+
+        return repr(self.value)
+
     def getint(self):
         return self.value
 
