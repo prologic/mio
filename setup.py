@@ -57,7 +57,7 @@ setup(
     ],
     entry_points={
         "console_scripts": [
-            "mio=mio.main:main",
+            "mio=mio.main:entrypoint",
         ]
     },
     test_suite="tests.main.main",

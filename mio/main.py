@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 
 
-import sys
 from traceback import format_exc
 from signal import signal, SIGINT, SIG_IGN
 
@@ -37,9 +36,6 @@ def parse_arg(name, argv):
 
 
 def parse_args(argv):
-    if argv is None:
-        argv = sys.argv
-
     opts = Options()
 
     opts.setoption("eval", parse_arg("-e", argv))
@@ -61,7 +57,7 @@ def parse_args(argv):
     return opts, argv
 
 
-def main(argv=None):
+def main(argv):
     try:
         opts, args = parse_args(argv)
 
@@ -83,3 +79,14 @@ def main(argv=None):
         print("ERROR: {0:s}".format(e))
         print(format_exc())
         return 1
+
+
+def entrypoint():
+    """SetupTools Entry Point"""
+
+    import sys
+    main(sys.argv)
+
+
+if __name__ == "__main__":
+    entrypoint()
