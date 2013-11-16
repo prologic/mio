@@ -1,5 +1,5 @@
 Fabric==1.8.0
-funcparserlib==0.3.6
+-e hg+https://bitbucket.org/prologic/funcparserlib#egg=funcparserlib
 rply==0.6.1
 pudb==2013.3.6
 tox==1.6.1
