@@ -1,46 +1,69 @@
 #!/usr/bin/env python
 
+
+import sys
 from traceback import format_exc
-from optparse import OptionParser
 from signal import signal, SIGINT, SIG_IGN
+
 
 import mio
 from mio import runtime
 
-USAGE = "%prog [options] ... [-e expr | file | -]"
-VERSION = "%prog v" + mio.__version__
+
+USAGE = "mio [-e expr | -i | -S] [file | -]"
+VERSION = "mio v{0:s}".format(mio.__version__)
 
 
-def parse_options(argv):
-    parser = OptionParser(usage=USAGE, version=VERSION)
-    add_option = parser.add_option
+class Options(object):
 
-    add_option(
-        "-e", "",
-        action="store", default=None, dest="eval", metavar="expr",
-        help="evalulate the given expression and exit"
-    )
+    def setoption(self, name, value):
+        setattr(self, name, value)
 
-    add_option(
-        "-i", "",
-        action="store_true", default=False, dest="interactive",
-        help="run interactively after processing the given files"
-    )
 
-    add_option(
-        "-S", "",
-        action="store_true", default=False, dest="nosys",
-        help="don't load system libraries"
-    )
+def parse_bool_arg(name, argv):
+    for i in xrange(len(argv)):
+        if argv[i] == name:
+            del(argv[i])
+            return True
+    return False
 
-    opts, args = parser.parse_args(argv)
 
-    return opts, args
+def parse_arg(name, argv):
+    for i in xrange(len(argv)):
+        if argv[i] == name:
+            del(argv[i])
+            return argv.pop(i)
+    return False
+
+
+def parse_args(argv):
+    if argv is None:
+        argv = sys.argv
+
+    opts = Options()
+
+    opts.setoption("eval", parse_arg("-e", argv))
+    opts.setoption("nosys", parse_bool_arg('-S', argv))
+    opts.setoption("inspect", parse_bool_arg('-i', argv))
+    opts.setoption("help", parse_bool_arg("-h", argv) or parse_bool_arg("--help", argv))
+    opts.setoption("version", parse_bool_arg("-v", argv) or parse_bool_arg("--version", argv))
+
+    if opts.help:
+        print(USAGE)
+        raise SystemExit(0)
+
+    if opts.version:
+        print(VERSION)
+        raise SystemExit(0)
+
+    del(argv[0])
+
+    return opts, argv
 
 
 def main(argv=None):
     try:
-        opts, args = parse_options(argv)
+        opts, args = parse_args(argv)
 
         signal(SIGINT, SIG_IGN)
 
@@ -50,7 +73,7 @@ def main(argv=None):
             runtime.state.eval(opts.eval)
         elif args:
             runtime.state.load(args[0])
-            if opts.interactive:
+            if opts.inspect:
                 runtime.state.repl()
         else:
             runtime.state.repl()

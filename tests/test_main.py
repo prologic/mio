@@ -13,7 +13,7 @@ def test_eval():
     assert stdout == "3\n"
 
 
-def test_interactive():
+def test_inspect():
     p = Popen([sys.executable, main_wrapper.__file__, "-i", TEST_FILE], stdin=PIPE, stdout=PIPE)
     stdout = p.communicate("exit()\n")[0]
     assert stdout.split()[0] == "3"
