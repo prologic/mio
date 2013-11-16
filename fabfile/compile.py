@@ -12,7 +12,7 @@ from os import getcwd, path
 
 from fabric.tasks import Task
 from fabric.contrib.files import exists
-from fabric.api import cd, execute, hosts, prefix, prompt, run, shell_env, task
+from fabric.api import cd, execute, hosts, prefix, prompt, run, task
 
 from py.path import local as localpath
 
@@ -78,15 +78,17 @@ def compile(**options):
             if not exists(build):
                 run("mkdir {0:s}".format(build))
 
-            cwd = getcwd()
             with cd(pypy):
-                args = (" ".join(options), target)
-                with shell_env(PYTHONPATH=":".join([cwd, "."])):
-                    run("./rpython/bin/rpython {0:s} {1:s}".format(*args))
+                with prefix("workon compile"):
+                    run("python setup.py develop")
+
+            args = (" ".join(options), target)
+            with prefix("workon compile"):
+                run("rpython {0:s} {1:s}".format(*args))
 
     finally:
         with msg("Destroying env"):
-            run("rmvirtualenv test")
+            run("rmvirtualenv compile")
 
 
 class Compile(Task):
