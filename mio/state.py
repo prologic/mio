@@ -50,6 +50,10 @@ typemap = {
 }
 
 
+def check_parens(s):
+    return s.count("(") == s.count(")")
+
+
 class State(object):
 
     def __init__(self, args, opts):
@@ -146,14 +150,28 @@ class State(object):
 
         print("mio {0:s}".format(version))
 
+        code = ""
+        cont = False
+
         while True:
             try:
-                code = raw_input("mio> ")
+                if cont:
+                    ps = "..... "
+                else:
+                    ps = "mio> "
+
+                code += raw_input(ps)
+
                 if code:
-                    result = self.eval(code)
-                    if result is not None:  # pragma: no cover
-                        output = format_result(result)
-                        if output is not None:
-                            print("===> {0:s}".format(output))
+                    if check_parens(code):
+                        result = self.eval(code)
+                        if result is not None:  # pragma: no cover
+                            output = format_result(result)
+                            if output is not None:
+                                print("===> {0:s}".format(output))
+                        code = ""
+                        cont = False
+                    else:
+                        cont = True
             except EOFError:  # pragma: no cover
                 raise SystemExit(0)
