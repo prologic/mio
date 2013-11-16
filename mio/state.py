@@ -5,14 +5,7 @@ from traceback import format_exc
 
 
 from .errors import Error
-from .parser import parse
-from .lexer import tokenize
 from .version import version
-from .utils import format_result, tryimport
-
-from .core import Core
-from .types import Types
-from .object import Object
 
 
 def fromDict(x):
@@ -56,10 +49,10 @@ def check_parens(s):
 
 class State(object):
 
-    def __init__(self, args, opts):
+    def __init__(self, args=None, opts=None):
         super(State, self).__init__()
 
-        self.args = args
+        self.args = args if args is not None else []
         self.opts = opts
 
     @property
@@ -71,6 +64,8 @@ class State(object):
         self._value = value
 
     def bootstrap(self):
+        from .object import Object
+
         # Fake Object to solve chicken/egg problem.
         self.root = {"Object": None}
 
@@ -85,6 +80,9 @@ class State(object):
         self.root = root
 
     def initialize(self):
+        from .core import Core
+        from .types import Types
+
         root = self.root
 
         root["Types"] = Types()
@@ -120,10 +118,15 @@ class State(object):
             return self.root[name]
 
     def eval(self, code, receiver=None, context=None, reraise=False):
+        from .parser import parse
+        from .lexer import tokenize
+
         message = None
+
         try:
             return parse(tokenize(code)).eval(self.root if receiver is None else receiver, self.root if context is None else context, message)
         except Error as e:
+            from .object import Object
             if e.args and isinstance(e.args[0], Object):
                 error = e.args[0]
                 type = str(error["type"]) if error["type"] is not None else error.type
@@ -146,6 +149,8 @@ class State(object):
         self.eval(open(filename, "r").read(), receiver=receiver, context=context)
 
     def repl(self):
+        from .utils import format_result, tryimport
+
         readline = tryimport("readline")
 
         if readline is not None:
