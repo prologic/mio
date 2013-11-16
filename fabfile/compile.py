@@ -24,7 +24,7 @@ from .utils import msg, resolvepath, tobool
 PYPY = resolvepath("$HOME/work/pypy")
 
 
-@task()
+@task(default=True)
 @hosts("localhost")
 def compile(**options):
     """Compile an executable with RPython
