@@ -12,6 +12,8 @@ mio 0.1.1.dev
 
 .. note:: This is not context aware and build up a list of known objects from ``Root``, ``Types``, ``Core`` and ``builtins``.
 
+- Many RPython compilation issues fixed.
+
 
 mio 0.1 (2013-11-14)
 ....................
