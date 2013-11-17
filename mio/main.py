@@ -13,9 +13,7 @@ VERSION = "mio v" + mio.__version__
 
 
 class Options(object):
-
-    def setoption(self, name, value):
-        setattr(self, name, value)
+    """Options Object Container"""
 
 
 def parse_bool_arg(name, argv):
@@ -37,11 +35,11 @@ def parse_arg(name, argv):
 def parse_args(argv):
     opts = Options()
 
-    opts.setoption("eval", parse_arg("-e", argv))
-    opts.setoption("nosys", parse_bool_arg('-S', argv))
-    opts.setoption("inspect", parse_bool_arg('-i', argv))
-    opts.setoption("help", parse_bool_arg("-h", argv) or parse_bool_arg("--help", argv))
-    opts.setoption("version", parse_bool_arg("-v", argv) or parse_bool_arg("--version", argv))
+    opts.eval = parse_arg("-e", argv)
+    opts.nosys = parse_bool_arg('-S', argv)
+    opts.inspect = parse_bool_arg('-i', argv)
+    opts.help = parse_bool_arg("-h", argv) or parse_bool_arg("--help", argv)
+    opts.version = parse_bool_arg("-v", argv) or parse_bool_arg("--version", argv)
 
     if opts.help:
         print(USAGE)
