@@ -1,9 +1,6 @@
 #!/usr/bin/env python
 
 
-from signal import signal, SIGINT, SIG_IGN
-
-
 import mio
 from mio import runtime
 
@@ -57,8 +54,6 @@ def parse_args(argv):
 def main(argv):
     try:
         opts, args = parse_args(argv)
-
-        signal(SIGINT, SIG_IGN)
 
         runtime.init(args, opts)
 
