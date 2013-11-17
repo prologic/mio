@@ -2,8 +2,8 @@ Changes
 -------
 
 
-mio 0.1.1.dev
-.............
+mio 0.1.1  2013-11-18
+.....................
 
 - The beginnings of a testing framework.
 - Implemented unit tests for mio builtins: ``abs``, ``all`` and ``any``.
