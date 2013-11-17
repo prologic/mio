@@ -1,4 +1,5 @@
-from os import listdir, path
+from posix import listdir
+from posixpath import dirname, splitext
 from inspect import getmembers, getmodule, isclass
 
 
@@ -8,8 +9,8 @@ from mio.object import Object
 
 
 def load_objects():
-    for filename in listdir(path.dirname(__file__)):
-        name, ext = path.splitext(filename)
+    for filename in listdir(dirname(__file__)):
+        name, ext = splitext(filename)
         if ext == ".py" and name != "__init__":
             module = __import__("mio.types.{0:s}".format(name), fromlist=["mio.types"])
             predicate = lambda x: isclass(x) and issubclass(x, Object) and getmodule(x) is module and x is not Types

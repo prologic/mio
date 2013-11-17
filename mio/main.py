@@ -69,6 +69,8 @@ def main(argv):
         return e[0]
     except Exception as e:
         print("ERROR:", e)
+        from traceback import format_exc
+        print(format_exc())
         return 1
 
 
