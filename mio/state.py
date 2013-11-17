@@ -1,7 +1,6 @@
 from __future__ import print_function
 
 from decimal import Decimal
-from traceback import format_exc
 
 
 from .errors import Error
@@ -141,7 +140,7 @@ class State(object):
             if reraise:
                 raise
         except Exception as e:  # pragma: no cover
-            print("ERROR: {0:s}\n{1:s}".format(e, format_exc()))
+            print("ERROR:", e)
             if reraise:
                 raise
 

@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 
 
-from traceback import format_exc
 from signal import signal, SIGINT, SIG_IGN
 
 
@@ -77,7 +76,6 @@ def main(argv):
         return e[0]
     except Exception as e:
         print("ERROR:", e)
-        print(format_exc())
         return 1
 
 
