@@ -32,7 +32,7 @@ def parse_arg(name, argv):
         if argv[i] == name:
             del(argv[i])
             return argv.pop(i)
-    return False
+    return ""
 
 
 def parse_args(argv):
