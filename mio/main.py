@@ -10,7 +10,7 @@ from mio import runtime
 
 
 USAGE = "mio [-e expr | -i | -S] [file | -]"
-VERSION = "mio v{0:s}".format(mio.__version__)
+VERSION = "mio v" + mio.__version__
 
 
 class Options(object):
@@ -76,7 +76,7 @@ def main(argv):
     except SystemExit as e:
         return e[0]
     except Exception as e:
-        print("ERROR: {0:s}".format(e))
+        print("ERROR:", e)
         print(format_exc())
         return 1
 
