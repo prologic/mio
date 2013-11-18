@@ -8,8 +8,8 @@ mio 0.1.2.dev
 -
 
 
-mio 0.1.1  2013-11-18
-.....................
+mio 0.1.1  (2013-11-18)
+.......................
 
 - The beginnings of a testing framework.
 - Implemented unit tests for mio builtins: ``abs``, ``all`` and ``any``.
@@ -75,8 +75,8 @@ mio 0.1 (2013-11-14)
           or nested blocks within a method.
 
 
-mio 0.0.9 2013-11-10
-....................
+mio 0.0.9 (2013-11-10)
+......................
 
 - Fixed ``[]`` syntax for creating lists.
 - Fixed ``TIterable foreac`` to work more like a for loop.
@@ -98,8 +98,8 @@ mio 0.0.9 2013-11-10
 - Implemented ``assert`` builtin.
 
 
-mio 0.0.8 2013-11-07
-....................
+mio 0.0.8 (2013-11-07)
+......................
 
 - Removed operator precedence parsing.
 
