@@ -47,6 +47,11 @@ class List(Object):
         return receiver
 
     @method()
+    def remove(self, receiver, context, m, item):
+        receiver.value.remove(item.eval(context))
+        return receiver
+
+    @method()
     def insert(self, receiver, context, m, index, value):
         receiver.value.insert(int(index.eval(context)), value.eval(context))
         return receiver

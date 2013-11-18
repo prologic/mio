@@ -99,6 +99,8 @@ hex = block(x, utils tohex(x))
 
 iter = block(iterable, iterable __iter__())
 
+len = block(xs, xs __len__())
+
 list = block(iterable,
     xs = List clone()
     iterable foreach(x, xs append(x))
