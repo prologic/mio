@@ -2,8 +2,8 @@ Changes
 -------
 
 
-mio 0.1.2.dev
-.............
+mio 0.1.2 (2013-11-19)
+......................
 
 - Moved ``File`` from types to core.
 - Allow multiple ``-e expr`` options to be given on the CLI.
