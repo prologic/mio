@@ -83,3 +83,14 @@ echo ".. code-block:: mio"
 echo "    "
 mio -v -e "s = \"this is a test\"" -e "words = s split()" -e "s find(\"is\")" -e "s find(\"test\")" | sed -e "s/^/    /"
 echo "    "
+echo
+cat <<EOF
+Functions
+---------
+
+
+EOF
+echo ".. code-block:: mio"
+echo "    "
+mio -v -e "foo = block(print\"foo\")" -e "foo()" -e "add = block(x, y, x + y)" -e "add(1, 2)" | sed -e "s/^/    /"
+echo "    "

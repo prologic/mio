@@ -91,7 +91,7 @@ Iteration
     2
     3
     mio> it = iter(xs)
-    ===> it(Object) at 0x28c9ae0:
+    ===> it(Object) at 0x1790ae0:
       N               = 2
       i               = -1
       iterable        = [1, 2, 3]
@@ -132,4 +132,26 @@ Strings
     ===> 2
     mio> s find("test")
     ===> 10
+    
+
+Functions
+---------
+
+
+.. code-block:: mio
+    
+    mio> foo = block(print"foo")
+    ===> block():
+      args            = args()
+      body            = body()
+      kwargs          = kwargs()
+    mio> foo()
+    ===> u"foo"
+    mio> add = block(x, y, x + y)
+    ===> block(x, y):
+      args            = args()
+      body            = body()
+      kwargs          = kwargs()
+    mio> add(1, 2)
+    ===> 3
     

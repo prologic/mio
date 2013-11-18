@@ -5,7 +5,8 @@ Changes
 mio 0.1.4.dev
 .............
 
-- 
+- Added "Functions" to the tutorial.
+_ 
 
 
 mio 0.1.3 (2013-11-19)
