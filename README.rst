@@ -1,9 +1,10 @@
 .. _Python Programming Language: http://www.python.org/
 .. _How To Create Your Own Freaking Awesome Programming Language: http://createyourproglang.com/
 .. _Marc-Andre Cournoye: http://macournoyer.com/
-.. _Project Website: https://mio-lang.org/
+.. _Project Website: http://mio-lang.org/
 .. _PyPi Page: http://pypi.python.org/pypi/mio-lang
-.. _Read the Docs: http://mil-lang.readthedocs.org/en/latest/
+.. _Read the Docs: http://mio-lang.readthedocs.org/en/latest/
+.. _Read the Tutorial: http://mio-lang.readthedocs.org/en/latest/tutorial.html
 .. _Downloads Page: https://bitbucket.org/prologic/mio-lang/downloads
 
 
@@ -26,8 +27,10 @@ from `Python <http://python.org>`_ (*because Python is awesome!*). This has alre
 achived in the current version. See the `RoadMap <http://mio-lang.readthedocs.org/en/latest/roadmap.html>`_
 for what might be coming up next.
 
-- **Website**: http://mio-lang.org/
-- **Docs**: http://packages.python.org/circuits or `Read the Docs`_.
+- Visit the `Project Website`_
+- `Read the Docs`_
+- `Read the Tutorial`_
+- Download it from the `Downloads Page`_
 
 .. image:: https://pypip.in/v/mio-lang/badge.png
    :target: https://crate.io/packages/mio-lang/
