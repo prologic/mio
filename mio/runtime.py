@@ -21,6 +21,18 @@ def init(args=[], opts=None):
     state.initialize()
 
 
+def types(name):
+    global state
+
+    return state.root["Types"][name]
+
+
+def core(name):
+    global state
+
+    return state.root["Core"][name]
+
+
 def find(name):
     global state
 
