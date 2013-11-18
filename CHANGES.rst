@@ -2,8 +2,8 @@ Changes
 -------
 
 
-mio 0.1.3.dev
-.............
+mio 0.1.3 (2013-11-19)
+......................
 
 - Fixed tutorial by writing a bash script that generates it (*Read the Docs forbids program-output extension*).
 
