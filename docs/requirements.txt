@@ -3,3 +3,4 @@ Sphinx-PyPI-upload
 sphinxcontrib-bitbucket
 sphinxcontrib-programoutput
 sphinxcontrib-googleanalytics
+-e hg+https://bitbucket.org/prologic/mio-lang#egg=mio_lang
