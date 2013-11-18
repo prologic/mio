@@ -12,8 +12,8 @@ Expressions
     ===> 3
     mio> 1 + 2 * 3
     ===> 9
-    mio> (1 + 2) * 3
-    ===> 9
+    mio> 1 + (2 * 3)
+    ===> 7
     
 
 .. note:: mio has no operator precedence (*in fact no operators*).
@@ -91,7 +91,7 @@ Iteration
     2
     3
     mio> it = iter(xs)
-    ===> it(Object) at 0x19f4b48:
+    ===> it(Object) at 0x28c9ae0:
       N               = 2
       i               = -1
       iterable        = [1, 2, 3]

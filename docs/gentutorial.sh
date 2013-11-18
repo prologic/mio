@@ -12,7 +12,7 @@ Expressions
 EOF
 echo ".. code-block:: mio"
 echo "    "
-mio -v -e "1 + 2" -e "1 + 2 * 3" -e "(1 + 2) * 3" | sed -e "s/^/    /"
+mio -v -e "1 + 2" -e "1 + 2 * 3" -e "1 + (2 * 3)" | sed -e "s/^/    /"
 echo "    "
 echo
 cat <<EOF
