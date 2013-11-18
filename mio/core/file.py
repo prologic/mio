@@ -1,15 +1,9 @@
 from mio import runtime
+from mio.utils import method
 from mio.object import Object
-from mio.utils import method, Null
 
 
 class File(Object):
-
-    def __init__(self, value=Null):
-        super(File, self).__init__(value=value)
-
-        self.create_methods()
-        self.parent = runtime.find("Object")
 
     def __iter__(self):
         data = self.value.read()

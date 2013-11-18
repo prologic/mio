@@ -26,8 +26,8 @@ def wrap_function(f):
 
 class FFI(Object):
 
-    def __init__(self, value=Null):
-        super(FFI, self).__init__(value=value)
+    def __init__(self):
+        super(FFI, self).__init__()
 
         self.module = None
         self.name = None

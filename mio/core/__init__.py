@@ -4,14 +4,13 @@ from inspect import getmembers, getmodule, isclass
 
 
 from mio import runtime
-from mio.utils import Null
 from mio.object import Object
 
 
 class Core(Object):
 
-    def __init__(self, value=Null):
-        super(Core, self).__init__(value=value)
+    def __init__(self):
+        super(Core, self).__init__()
 
         self.create_objects()
 

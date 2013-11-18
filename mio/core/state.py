@@ -5,8 +5,8 @@ from mio.utils import method, Null
 
 class State(Object):
 
-    def __init__(self, value=Null):
-        super(State, self).__init__(value=value)
+    def __init__(self):
+        super(State, self).__init__()
 
         self.isContinue = False
         self.isReturn = False

@@ -3,15 +3,15 @@ from os import path
 
 import mio
 from mio import runtime
+from mio.utils import method
 from mio.object import Object
-from mio.utils import method, Null
 from mio.errors import ImportError
 
 
 class Importer(Object):
 
-    def __init__(self, value=Null):
-        super(Importer, self).__init__(value=value)
+    def __init__(self):
+        super(Importer, self).__init__()
 
         self["paths"] = self.build_paths()
 

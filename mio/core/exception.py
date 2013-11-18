@@ -2,18 +2,12 @@ from sys import exc_info
 
 
 from mio import runtime
+from mio.utils import method
 from mio.object import Object
 from mio.errors import UserError
-from mio.utils import method, Null
 
 
 class Exception(Object):
-
-    def __init__(self, value=Null):
-        super(Exception, self).__init__(value=value)
-
-        self.create_methods()
-        self.parent = runtime.find("Object")
 
     def __repr__(self):
         return "{0:s}({1:s})".format(self.type, self.value or "")

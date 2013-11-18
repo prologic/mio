@@ -4,7 +4,6 @@ from inspect import getmembers, getmodule, isclass
 
 
 from mio import runtime
-from mio.utils import Null
 from mio.object import Object
 
 
@@ -21,8 +20,8 @@ def load_objects():
 
 class Types(Object):
 
-    def __init__(self, value=Null):
-        super(Types, self).__init__(value=value)
+    def __init__(self):
+        super(Types, self).__init__()
 
         self.create_objects()
 

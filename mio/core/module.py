@@ -3,15 +3,15 @@ from os import path
 
 from mio import runtime
 from mio.parser import parse
+from mio.utils import method
 from mio.object import Object
 from mio.lexer import tokenize
-from mio.utils import method, Null
 
 
 class Module(Object):
 
-    def __init__(self, value=Null):
-        super(Module, self).__init__(value=value)
+    def __init__(self):
+        super(Module, self).__init__()
 
         self.file = None
         self.name = None

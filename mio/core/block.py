@@ -5,8 +5,8 @@ from operator import attrgetter
 
 
 from mio import runtime
+from mio.utils import method
 from mio.object import Object
-from mio.utils import method, Null
 from mio.core.message import Message
 
 
@@ -25,11 +25,6 @@ class Call(Object):
 
 class Locals(Object):
     """Locals Object"""
-
-    def __init__(self, value=Null):
-        super(Locals, self).__init__(value=value)
-
-        self.parent = runtime.find("Object")
 
     @method("*")
     def args(self, receiver, context, m, name):

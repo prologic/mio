@@ -3,8 +3,8 @@ import sys
 
 import mio
 from mio import runtime
+from mio.utils import method
 from mio.object import Object
-from mio.utils import method, Null
 
 
 from .file import File
@@ -12,8 +12,8 @@ from .file import File
 
 class System(Object):
 
-    def __init__(self, value=Null):
-        super(System, self).__init__(value=value)
+    def __init__(self):
+        super(System, self).__init__()
 
         self["args"] = self.build_args()
         self["version"] = runtime.find("String").clone((mio.__version__))

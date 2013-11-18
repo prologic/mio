@@ -1,12 +1,12 @@
 from mio import runtime
+from mio.utils import method
 from mio.object import Object
-from mio.utils import method, Null
 
 
 class Error(Object):
 
-    def __init__(self, value=Null):
-        super(Error, self).__init__(value=value)
+    def __init__(self):
+        super(Error, self).__init__()
 
         self["type"] = None
         self["message"] = None

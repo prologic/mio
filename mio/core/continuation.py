@@ -2,14 +2,14 @@ from copy import copy
 
 
 from mio import runtime
-from mio.utils import method, Null
+from mio.utils import method
 from mio.object import Object
 
 
 class Continuation(Object):
 
-    def __init__(self, value=Null):
-        super(Continuation, self).__init__(value=value)
+    def __init__(self):
+        super(Continuation, self).__init__()
 
         self.context = None
         self.message = None
