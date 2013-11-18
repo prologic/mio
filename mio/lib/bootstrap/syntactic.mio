@@ -9,3 +9,11 @@ List do (
 Tuple do (
     set("[]", method(index, self __getitem__(index)))
 )
+
+Bytes do (
+    set("[]", method(index, self __getitem__(index)))
+)
+
+String do (
+    set("[]", method(index, self __getitem__(index)))
+)

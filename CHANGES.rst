@@ -10,6 +10,10 @@ mio 0.1.2.dev
 - Implemented ``len`` builtin.
 - Implemented ``List remove()`` method.
 - Implemented ``String split()`` method. 
+- Implemented ``String __getitem__()`` and ``String __len__()`` methods.
+- Implemented ``Bytes __getitem__()`` and ``Bytes __len__()`` methods.
+- Added ``[]`` syntactic sugar to ``Bytes`` and ``String`` objects.
+-
 
 
 mio 0.1.1  (2013-11-18)

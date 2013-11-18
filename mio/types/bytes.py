@@ -42,6 +42,17 @@ class Bytes(Object):
     def init(self, receiver, context, m, value=None):
         receiver.value = value or b""
 
+    # Special Methods
+
+    @method("__getitem__")
+    def getItem(self, receiver, context, m, i):
+        i = int(i.eval(context))
+        return receiver.value[i]
+
+    @method("__len__")
+    def getLen(self, receiver, context, m):
+        return runtime.find("Number").clone(len(receiver.value))
+
     # General Operations
 
     @method("+")

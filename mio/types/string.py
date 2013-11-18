@@ -47,6 +47,17 @@ class String(Object):
         receiver.value = value or u""
         return receiver
 
+    # Special Methods
+
+    @method("__getitem__")
+    def getItem(self, receiver, context, m, i):
+        i = int(i.eval(context))
+        return receiver.value[i]
+
+    @method("__len__")
+    def getLen(self, receiver, context, m):
+        return runtime.find("Number").clone(len(receiver.value))
+
     # General Operations
 
     @method("+")
