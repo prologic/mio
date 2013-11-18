@@ -8,8 +8,8 @@ mio 0.1.2.dev
 - Moved ``File`` from types to core.
 - Allow multiple ``-e expr`` options to be given on the CLI.
 - Implemented ``len`` builtin.
-- IMplemented ``List remove()`` method.
-- 
+- Implemented ``List remove()`` method.
+- Implemented ``String split()`` method. 
 
 
 mio 0.1.1  (2013-11-18)

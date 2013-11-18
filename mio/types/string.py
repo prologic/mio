@@ -70,6 +70,13 @@ class String(Object):
         return receiver.clone(receiver.value.format(*args))
 
     @method()
+    def split(self, receiver, context, m, sep=None, maxsplit=-1):
+        sep = runtime.state.frommio(sep.eval(context)) if sep is not None else sep
+        maxsplit = int(maxsplit.eval(context)) if maxsplit != -1 else maxsplit
+        xs = [runtime.types("String").clone(s) for s in receiver.value.split(sep, maxsplit)]
+        return runtime.types("List").clone(xs)
+
+    @method()
     def join(self, receiver, context, m, *args):
         if len(args) == 1 and isinstance(args[0], Message):
             args = args[0].eval(context)
