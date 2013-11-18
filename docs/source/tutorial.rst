@@ -6,7 +6,15 @@ Expressions
 -----------
 
 
-.. program-output:: mio -v -e "1 + 2" -e "1 + 2 * 3" -e "(1 + 2) * 3"
+.. code-block:: mio
+    
+    mio> 1 + 2
+    ===> 3
+    mio> 1 + 2 * 3
+    ===> 9
+    mio> (1 + 2) * 3
+    ===> 9
+    
 
 .. note:: mio has no operator precedence (*in fact no operators*).
           You **must** use explicit grouping with parenthesis where
@@ -17,34 +25,111 @@ Variables
 ---------
 
 
-.. program-output:: mio -v -e "a = 1" -e "a" -e "b = 2 * 3" -e "a + b"
+.. code-block:: mio
+    
+    mio> a = 1
+    ===> 1
+    mio> a
+    ===> 1
+    mio> b = 2 * 3
+    ===> 6
+    mio> a + b
+    ===> 7
+    
 
 
 Conditionals
 ------------
 
 
-.. program-output:: mio -v -e "a = 2" -e "(a == 1) ifTrue(print(\"a is one\")) ifFalse(print(\"a is not one\"))"
+.. code-block:: mio
+    
+    mio> a = 2
+    ===> 2
+    mio> (a == 1) ifTrue(print("a is one")) ifFalse(print("a is not one"))
+    a is not one
+    
 
 
 Lists
 -----
 
 
-.. program-output:: mio -v -e "xs = [30, 10, 5, 20]" -e "len(xs)" -e "print(xs)" -e "xs sort()" -e "xs[0]" -e "xs[-1]" -e "xs[2]" -e "xs remove(30)" -e "xs insert(1, 123")
+.. code-block:: mio
+    
+    mio> xs = [30, 10, 5, 20]
+    ===> [30, 10, 5, 20]
+    mio> len(xs)
+    ===> 4
+    mio> print(xs)
+    [30, 10, 5, 20]
+    mio> xs sort()
+    ===> [5, 10, 20, 30]
+    mio> xs[0]
+    ===> 5
+    mio> xs[-1]
+    ===> 30
+    mio> xs[2]
+    ===> 20
+    mio> xs remove(30)
+    ===> [5, 10, 20]
+    mio> xs insert(1, 123)
+    ===> [5, 123, 10, 20]
+    
 
 
 Iteration
 ---------
 
 
-.. program-output:: mio -v -e "xs = [1, 2, 3]" -e "xs foreach(x, print(x))" -e "it = iter(xs)" -e "next(it)" -e "next(it)" -e "next(it)" -e "next(it)"
+.. code-block:: mio
+    
+    mio> xs = [1, 2, 3]
+    ===> [1, 2, 3]
+    mio> xs foreach(x, print(x))
+    1
+    2
+    3
+    mio> it = iter(xs)
+    ===> it(Object) at 0x19f4b48:
+      N               = 2
+      i               = -1
+      iterable        = [1, 2, 3]
+    mio> next(it)
+    ===> 1
+    mio> next(it)
+    ===> 2
+    mio> next(it)
+    ===> 3
+    mio> next(it)
+    ===> 'UserError'
+    
 
 
 Strings
 -------
 
 
-.. program-output:: mio -v -e "a = \"foo\"" -e "b = \"bar\"" -e "c = a + b" -e "c[0]"
+.. code-block:: mio
+    
+    mio> a = "foo"
+    ===> u"foo"
+    mio> b = "bar"
+    ===> u"bar"
+    mio> c = a + b
+    ===> u"foobar"
+    mio> c[0]
+    ===> u'f'
+    
 
-.. program-output:: mio -v -e "s = \"this is a test\"" -e "words = s split()" -e "s find(\"is\")" -e "s find(\"test\")"
+.. code-block:: mio
+    
+    mio> s = "this is a test"
+    ===> u"this is a test"
+    mio> words = s split()
+    ===> [u"this", u"is", u"a", u"test"]
+    mio> s find("is")
+    ===> 2
+    mio> s find("test")
+    ===> 10
+    
