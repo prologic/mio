@@ -1,7 +1,6 @@
 TODO
 ====
 
-- Move File to Core
 - Change the way we construct user objects.
 
   - Pretty sure we can just create new instances rather than ``runtime.find(...).clone(...)``

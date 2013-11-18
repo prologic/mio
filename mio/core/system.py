@@ -7,6 +7,9 @@ from mio.object import Object
 from mio.utils import method, Null
 
 
+from .file import File
+
+
 class System(Object):
 
     def __init__(self, value=Null):
@@ -15,9 +18,9 @@ class System(Object):
         self["args"] = self.build_args()
         self["version"] = runtime.find("String").clone((mio.__version__))
 
-        self["stdin"] = runtime.find("File").clone(sys.stdin)
-        self["stdout"] = runtime.find("File").clone(sys.stdout)
-        self["stderr"] = runtime.find("File").clone(sys.stderr)
+        self["stdin"] = File(sys.stdin)
+        self["stdout"] = File(sys.stdout)
+        self["stderr"] = File(sys.stderr)
 
         self.create_methods()
         self.parent = runtime.find("Object")

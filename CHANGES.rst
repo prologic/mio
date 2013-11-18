@@ -5,7 +5,8 @@ Changes
 mio 0.1.2.dev
 .............
 
--
+- Moved ``File`` from types to core.
+- 
 
 
 mio 0.1.1  (2013-11-18)
