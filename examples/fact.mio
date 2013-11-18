@@ -1,5 +1,5 @@
 #!/usr/bin/env mio
 
-Number fact = method(reduce(block(a, x, a * x), 1..self))
+Number fact = method(reduce(block(a, x, a * x), range(1, self)))
 
 print(10 fact())

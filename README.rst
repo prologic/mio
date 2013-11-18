@@ -47,7 +47,7 @@ Examples
 
 Factorial::
     
-    Number fact = method(reduce(block(a, x, a * x), 1..self))
+    Number fact = method(reduce(block(a, x, a * x), range(1, self)))
     
 Hello World::
     

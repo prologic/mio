@@ -14,6 +14,7 @@ mio 0.1.2.dev
 - Implemented ``Bytes __getitem__()`` and ``Bytes __len__()`` methods.
 - Added ``[]`` syntactic sugar to ``Bytes`` and ``String`` objects.
 - Wrote a basic `mio tutorial <http://mio-lang.readthedocs.org/en/latest/tutorial.html>`_
+- Updated the factorial example to be a little clearer.
 
 
 mio 0.1.1  (2013-11-18)
