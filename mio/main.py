@@ -32,10 +32,19 @@ def parse_arg(name, argv):
     return ""
 
 
+def parse_list_arg(name, argv):
+    values = []
+    arg = parse_arg(name, argv)
+    while arg != "":
+        values.append(arg)
+        arg = parse_arg(name, argv)
+    return values
+
+
 def parse_args(argv):
     opts = Options()
 
-    opts.eval = parse_arg("-e", argv)
+    opts.eval = parse_list_arg("-e", argv)
     opts.nosys = parse_bool_arg('-S', argv)
     opts.inspect = parse_bool_arg('-i', argv)
     opts.verbose = parse_bool_arg("-v", argv)
@@ -62,13 +71,14 @@ def main(argv):
         runtime.init(args, opts)
 
         if opts.eval:
-            if opts.verbose:
-                print("mio>", opts.eval)
-            result = runtime.state.eval(opts.eval)
-            if opts.verbose and result is not None:
-                output = format_result(result)
-                if output is not None:
-                    print("===> {0:s}".format(output))
+            for eval in opts.eval:
+                if opts.verbose:
+                    print("mio>", eval)
+                result = runtime.state.eval(eval)
+                if opts.verbose and result is not None:
+                    output = format_result(result)
+                    if output is not None:
+                        print("===> {0:s}".format(output))
         elif args:
             runtime.state.load(args[0])
             if opts.inspect:
