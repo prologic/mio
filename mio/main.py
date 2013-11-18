@@ -1,11 +1,14 @@
 #!/usr/bin/env python
 
+from __future__ import print_function
+
 
 import mio
 from mio import runtime
+from mio.utils import format_result
 
 
-USAGE = "mio [-e expr | -i | -S] [file | -]"
+USAGE = "mio [-e expr | -i | -S | -v] [file | -]"
 VERSION = "mio v" + mio.__version__
 
 
@@ -35,8 +38,9 @@ def parse_args(argv):
     opts.eval = parse_arg("-e", argv)
     opts.nosys = parse_bool_arg('-S', argv)
     opts.inspect = parse_bool_arg('-i', argv)
-    opts.help = parse_bool_arg("-h", argv) or parse_bool_arg("--help", argv)
-    opts.version = parse_bool_arg("-v", argv) or parse_bool_arg("--version", argv)
+    opts.verbose = parse_bool_arg("-v", argv)
+    opts.help = parse_bool_arg("--help", argv)
+    opts.version = parse_bool_arg("--version", argv)
 
     if opts.help:
         print(USAGE)
@@ -58,7 +62,13 @@ def main(argv):
         runtime.init(args, opts)
 
         if opts.eval:
-            runtime.state.eval(opts.eval)
+            if opts.verbose:
+                print("mio>", opts.eval)
+            result = runtime.state.eval(opts.eval)
+            if opts.verbose and result is not None:
+                output = format_result(result)
+                if output is not None:
+                    print("===> {0:s}".format(output))
         elif args:
             runtime.state.load(args[0])
             if opts.inspect:
