@@ -22,10 +22,11 @@ Documentation
 .. toctree::
    :maxdepth: 2
 
-   todo
+   tutorial
    grammar
-   roadmap
    changes
+   roadmap
+   todo
 
 
 Indices and tables
