@@ -9,4 +9,6 @@ fi
 
 pip install -U $requirements
 
-echo "Done. Please run: fab build"
+echo "DONE!"
+echo "Please run: fab build"
+echo "For help, Type: fab help"
