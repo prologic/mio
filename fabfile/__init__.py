@@ -156,7 +156,7 @@ def release():
 
         print("Release version: {0:s}".format(version))
 
-        if prompt("Is this ok?", default="Y", validate=r"^[YyNn]?$") in "yY":
+        if prompt("Is this ok?", default="n", validate=r"^[YyNn]?$") in "yY":
             with prefix("workon test"):
                 run("hg tag {0:s}".format(version))
                 run("python setup.py egg_info sdist bdist_egg register upload")
