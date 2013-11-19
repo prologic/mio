@@ -8,6 +8,7 @@ mio 0.1.4.dev
 - Added "Functions" to the tutorial.
 - Added "Objects" to the tutorial.
 - Added "Traits" to the tutorial.
+- Added the start of a small ``functools`` library to the mio std. lib.
 
 
 mio 0.1.3 (2013-11-19)
