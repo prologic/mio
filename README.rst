@@ -89,7 +89,7 @@ extract it and install using::
     > python setup.py install
 
 You can also install the
-`latest-development version <https://bitbucket.org/prologic/mio-lang/get/tip.tar.gz#egg=mio-lang>`_ by using ``pip`` or ``easy_install``::
+`latest-development version <https://bitbucket.org/prologic/mio-lang/get/tip.tar.gz#egg=mio-lang-dev>`_ by using ``pip`` or ``easy_install``::
     
     > pip install mio-lang==dev
 
