@@ -6,7 +6,7 @@ mio 0.1.4.dev
 .............
 
 - Added "Functions" to the tutorial.
-_ 
+- Added "Objects" to the tutorial.
 
 
 mio 0.1.3 (2013-11-19)
