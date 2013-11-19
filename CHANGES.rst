@@ -9,6 +9,7 @@ mio 0.1.4.dev
 - Added "Objects" to the tutorial.
 - Added "Traits" to the tutorial.
 - Added the start of a small ``functools`` library to the mio std. lib.
+- Added ``test_builtins`` to mio. std library as a tests package.
 
 
 mio 0.1.3 (2013-11-19)
