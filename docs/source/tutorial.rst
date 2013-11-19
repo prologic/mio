@@ -1,12 +1,13 @@
+============
 mio Tutorial
 ============
 
 
 Expressions
------------
+===========
 
 
-.. code-block:: mio
+::
     
     mio> 1 + 2
     ===> 3
@@ -22,10 +23,10 @@ Expressions
 
 
 Variables
----------
+=========
 
 
-.. code-block:: mio
+::
     
     mio> a = 1
     ===> 1
@@ -39,10 +40,10 @@ Variables
 
 
 Conditionals
-------------
+============
 
 
-.. code-block:: mio
+::
     
     mio> a = 2
     ===> 2
@@ -52,10 +53,10 @@ Conditionals
 
 
 Lists
------
+=====
 
 
-.. code-block:: mio
+::
     
     mio> xs = [30, 10, 5, 20]
     ===> [30, 10, 5, 20]
@@ -79,10 +80,10 @@ Lists
 
 
 Iteration
----------
+=========
 
 
-.. code-block:: mio
+::
     
     mio> xs = [1, 2, 3]
     ===> [1, 2, 3]
@@ -91,7 +92,7 @@ Iteration
     2
     3
     mio> it = iter(xs)
-    ===> it(Object) at 0x155aae0:
+    ===> it(Object) at 0x1c83b48:
       N               = 2
       i               = -1
       iterable        = [1, 2, 3]
@@ -107,10 +108,10 @@ Iteration
 
 
 Strings
--------
+=======
 
 
-.. code-block:: mio
+::
     
     mio> a = "foo"
     ===> u"foo"
@@ -122,7 +123,7 @@ Strings
     ===> u'f'
     
 
-.. code-block:: mio
+::
     
     mio> s = "this is a test"
     ===> u"this is a test"
@@ -134,11 +135,12 @@ Strings
     ===> 10
     
 
+
 Functions
----------
+=========
 
 
-.. code-block:: mio
+::
     
     mio> foo = block(print"foo")
     ===> block():
@@ -156,44 +158,50 @@ Functions
     ===> 3
     
 
+.. note:: Functions in mio do not have access to any outside state or globals (*there are no globals in mio*)
+          with the only exception to the rule being closures.
+
+
 Objects
--------
+=======
 
 
-.. code-block:: mio
+::
     
     mio> World = Object clone()
-    ===> World(Object) at 0x1416c18
+    ===> World(Object) at 0x1449c80
     mio> World
-    ===> World(Object) at 0x1416c18
+    ===> World(Object) at 0x1449c80
     
+
 
 Attributes
 ----------
 
 
-.. code-block:: mio
+::
     
     mio> World = Object clone()
-    ===> World(Object) at 0xb24c18
+    ===> World(Object) at 0x260cc80
     mio> World
-    ===> World(Object) at 0xb24c18
+    ===> World(Object) at 0x260cc80
     mio> World name = "World!"
     ===> u"World!"
     mio> World name
     ===> u"World!"
     
 
+
 Methods
 -------
 
 
-.. code-block:: mio
+::
     
     mio> World = Object clone()
-    ===> World(Object) at 0xcdcc18
+    ===> World(Object) at 0x1daec80
     mio> World
-    ===> World(Object) at 0xcdcc18
+    ===> World(Object) at 0x1daec80
     mio> World name = "World!"
     ===> u"World!"
     mio> World name
@@ -207,3 +215,28 @@ Methods
     Hello World!
     
 
+.. note:: Methods implicitly get the receiving object as the first argument self passed.
+
+
+Traits
+======
+
+
+::
+    
+    mio> TGreetable = Object clone() do ( hello = method(print("Hello", self name)) )
+    ===> TGreetable(Object) at 0x2302ce8:
+      hello           = method()
+    mio> World = Object clone() do ( uses(TGreetable); name = "World!" )
+    ===> World(Object) at 0x2302e20:
+      name            = u"World!"
+    mio> World
+    ===> World(Object) at 0x2302e20:
+      name            = u"World!"
+    mio> World traits
+    ===> [TGreetable(Object) at 0x2302ce8]
+    mio> World behaviors
+    ===> ['hello']
+    mio> World hello()
+    Hello World!
+    
