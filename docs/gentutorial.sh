@@ -94,3 +94,37 @@ echo ".. code-block:: mio"
 echo "    "
 mio -v -e "foo = block(print\"foo\")" -e "foo()" -e "add = block(x, y, x + y)" -e "add(1, 2)" | sed -e "s/^/    /"
 echo "    "
+echo
+cat <<EOF
+Objects
+-------
+
+
+EOF
+echo ".. code-block:: mio"
+echo "    "
+mio -v -e "World = Object clone()" -e "World" | sed -e "s/^/    /"
+echo "    "
+echo
+cat <<EOF
+Attributes
+----------
+
+
+EOF
+echo ".. code-block:: mio"
+echo "    "
+mio -v -e "World = Object clone()" -e "World" -e "World name = \"World!\"" -e "World name" | sed -e "s/^/    /"
+echo "    "
+echo
+cat <<EOF
+Methods
+-------
+
+
+EOF
+echo ".. code-block:: mio"
+echo "    "
+mio -v -e "World = Object clone()" -e "World" -e "World name = \"World!\"" -e "World name" -e "World hello = method(print(\"Hello\", self name))" -e "World hello()" | sed -e "s/^/    /"
+echo "    "
+echo

@@ -91,7 +91,7 @@ Iteration
     2
     3
     mio> it = iter(xs)
-    ===> it(Object) at 0x1790ae0:
+    ===> it(Object) at 0x155aae0:
       N               = 2
       i               = -1
       iterable        = [1, 2, 3]
@@ -155,3 +155,55 @@ Functions
     mio> add(1, 2)
     ===> 3
     
+
+Objects
+-------
+
+
+.. code-block:: mio
+    
+    mio> World = Object clone()
+    ===> World(Object) at 0x1416c18
+    mio> World
+    ===> World(Object) at 0x1416c18
+    
+
+Attributes
+----------
+
+
+.. code-block:: mio
+    
+    mio> World = Object clone()
+    ===> World(Object) at 0xb24c18
+    mio> World
+    ===> World(Object) at 0xb24c18
+    mio> World name = "World!"
+    ===> u"World!"
+    mio> World name
+    ===> u"World!"
+    
+
+Methods
+-------
+
+
+.. code-block:: mio
+    
+    mio> World = Object clone()
+    ===> World(Object) at 0xcdcc18
+    mio> World
+    ===> World(Object) at 0xcdcc18
+    mio> World name = "World!"
+    ===> u"World!"
+    mio> World name
+    ===> u"World!"
+    mio> World hello = method(print("Hello", self name))
+    ===> method():
+      args            = args()
+      body            = body()
+      kwargs          = kwargs()
+    mio> World hello()
+    Hello World!
+    
+
