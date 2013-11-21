@@ -1,0 +1,4 @@
+add = block(c, y, x + y)
+div = block(c, y, x / y)
+mul = block(c, y, x * y)
+sub = block(c, y, x - y)
