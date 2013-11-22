@@ -11,6 +11,7 @@ mio 0.1.4.dev
 - Added the start of a small ``functools`` library to the mio std. lib.
 - Added ``test_builtins`` to mio. std library as a tests package.
 - Added operators module to mio std. lib.
+- Rought cut of generators implemented in CPython and mio.
 
 
 mio 0.1.3 (2013-11-19)

@@ -20,8 +20,8 @@
         )
     )
 
-    in = method(*args,
-        any(map(block(x, (self == x)), args))
+    in = method(iterable,
+        any(map(block(x, (self == x)), iterable))
     )
 )
 

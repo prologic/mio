@@ -20,7 +20,7 @@ operators = OrderedDict([
 
     ("in", 0), ("is", 0), ("or", 0), ("and", 0), ("not", 0),
 
-    ("return", 0), ("from", 1), ("import", 1), ("raise", 0), ("assert", 0),
+    ("return", 0), ("yield", 0), ("from", 1), ("import", 1), ("raise", 0), ("assert", 0),
 ])
 
 strtpl = """

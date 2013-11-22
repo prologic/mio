@@ -23,5 +23,9 @@ class TypeError(Error):
     """TypeError"""
 
 
+class StopIteration(Error):
+    """StopIteration"""
+
+
 class UserError(Error):
     """UserError"""

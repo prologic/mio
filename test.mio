@@ -1,0 +1,17 @@
+yield = block(
+    ("generator" in call sender keys) ifTrue(
+        value = call message arg(0)
+        call sender state setReturn(value)
+        value
+    ) ifFalse(
+        generator =  Generator clone()
+        call sender state setReturn(generator)
+        generator
+    )
+)
+
+foo = block(
+    yield 1
+    yield 2
+    yield 3
+)
