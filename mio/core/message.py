@@ -95,7 +95,7 @@ class Message(Object):
                 receiver = value
                 m = m.next
         except Error as e:
-            e.stack.insert(0, m)
+            e.stack.append(m)
             raise
 
         try:

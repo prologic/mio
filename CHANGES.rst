@@ -13,6 +13,7 @@ mio 0.1.4.dev
 - Added operators module to mio std. lib.
 - Rought cut of generators implemented in CPython and mio.
 - Implemented ``KeyError`` exception type and used this to guard non-existent key lookups on dicts.
+- Somewhat improved the error handling and tracebacks.
 
 
 mio 0.1.3 (2013-11-19)

@@ -123,8 +123,11 @@ class State(object):
         message = None
 
         try:
-            return parse(tokenize(code)).eval(self.root if receiver is None else receiver, self.root if context is None else context, message)
+            message = parse(tokenize(code))
+            return message.eval(self.root if receiver is None else receiver, self.root if context is None else context, message)
         except Error as e:
+            e.stack.append(message)
+
             from .object import Object
             if e.args and isinstance(e.args[0], Object):
                 error = e.args[0]
@@ -134,9 +137,9 @@ class State(object):
                 type = e.__class__.__name__
                 message = str(e)
 
-            stack = "\n".join([repr(m) for m in e.stack])
+            stack = "\n".join(["  {0:s}".format(repr(m)) for m in e.stack])
             underline = "-" * (len(type) + 1)
-            print("\n  {0:s}: {1:s}\n  {2:s}\n  {3:s}\n".format(type, message, underline, stack))
+            print("\n  {0:s}: {1:s}\n  {2:s}\n{3:s}\n".format(type, message, underline, stack))
             if reraise:
                 raise
         except Exception as e:  # pragma: no cover
