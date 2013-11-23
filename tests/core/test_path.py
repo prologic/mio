@@ -1,4 +1,10 @@
+from pytest import raises
+
+
 from os import getcwd, path
+
+
+from mio.errors import TypeError
 
 
 def test_path(mio):
@@ -30,3 +36,24 @@ def test_join(mio):
 
     pp = mio.eval("""pp = p join("bar.txt")""")
     assert pp.value == "/tmp/foo/bar.txt"
+
+
+def test_open1(mio, tmpdir):
+    foo = tmpdir.ensure("foo.txt")
+    with foo.open("w") as f:
+        f.write("Hello World!")
+
+    p = mio.eval("""p = Path clone("{0:s}")""".format(str(foo)))
+    assert p.value == str(foo)
+
+    f = mio.eval("""f = p open("r")""")
+    s = mio.eval("s = f read()")
+    assert s == "Hello World!"
+
+
+def test_open2(mio, tmpdir):
+    p = mio.eval("""p = Path clone("{0:s}")""".format(str(tmpdir)))
+    assert p.value == str(tmpdir)
+
+    with raises(TypeError):
+        mio.eval("""f = p open("r")""", reraise=True)

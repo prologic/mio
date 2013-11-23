@@ -42,9 +42,9 @@ class Path(Object):
     @method()
     def open(self, receiver, context, m, mode="r"):
         if not posixpath.isfile(receiver.value):
-            raise TypeError(self.value + " is not a file")
+            raise TypeError(receiver.value + " is not a file")
         mode = mode if mode == "r" else str(mode.eval(context))
-        return runtime.state.eval("""File clone() open("{0:s}", "{1:s}")""".format(self.value, mode))
+        return runtime.state.eval("""File clone() open("{0:s}", "{1:s}")""".format(receiver.value, mode))
 
     @method()
     def list(self, receiver, context, m, fil=None, rec=False):
