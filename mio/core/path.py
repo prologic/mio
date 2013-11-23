@@ -29,8 +29,8 @@ class Path(Object):
 
     @method()
     def init(self, receiver, context, m, path=None, expanduser=False):
-        path = posix.getcwdu() if path is None else str(path.eval(context))
-        expanduser = False if expanduser is False else bool(expanduser.eval(context))
+        path = posix.getcwdu() if path is None else str(path)
+        expanduser = bool(expanduser)
         receiver.value = posixpath.expanduser(path) if expanduser else path
         return receiver
 
