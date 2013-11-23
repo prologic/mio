@@ -1,6 +1,7 @@
 from mio import runtime
 from mio.utils import method
 from mio.object import Object
+from mio.errors import KeyError
 
 
 class Dict(Object):
@@ -35,7 +36,10 @@ class Dict(Object):
 
     @method("__getitem__")
     def getitem(self, receiver, context, m, key):
-        return receiver.value[key.eval(context)]
+        key = str(key.eval(context))
+        if key in receiver.value:
+            return receiver.value[key]
+        raise KeyError(key)
 
     @method("__setitem__")
     def setitem(self, receiver, context, m, key, value):

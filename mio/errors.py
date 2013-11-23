@@ -19,6 +19,10 @@ class IndexError(Error):
     """IndexError"""
 
 
+class KeyError(Error):
+    """KeyError"""
+
+
 class TypeError(Error):
     """TypeError"""
 
