@@ -19,18 +19,6 @@ class Path(Object):
         self.create_methods()
         self.parent = runtime.find("Object")
 
-    def __eq__(self, other):
-        return self.value == other.value
-
-    def __ne__(self, other):
-        return self.value != other.value
-
-    def __gt__(self, other):
-        return self.value > other.value
-
-    def __lt__(self, other):
-        return self.value < other.value
-
     def __repr__(self):
         return "Path({0:s})".format(repr(self.value))
 

@@ -38,6 +38,7 @@ mio 0.1.2 (2013-11-19)
 - Added ``[]`` syntactic sugar to ``Bytes`` and ``String`` objects.
 - Wrote a basic `mio tutorial <http://mio-lang.readthedocs.org/en/latest/tutorial.html>`_
 - Updated the factorial example to be a little clearer.
+- Improved Test Coverage of new features and objects.
 
 
 mio 0.1.1  (2013-11-18)
