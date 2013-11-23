@@ -126,8 +126,6 @@ class State(object):
             message = parse(tokenize(code))
             return message.eval(self.root if receiver is None else receiver, self.root if context is None else context, message)
         except Error as e:
-            e.stack.append(message)
-
             from .object import Object
             if e.args and isinstance(e.args[0], Object):
                 error = e.args[0]
