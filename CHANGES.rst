@@ -14,6 +14,8 @@ mio 0.1.4.dev
 - Rought cut of generators implemented in CPython and mio.
 - Implemented ``KeyError`` exception type and used this to guard non-existent key lookups on dicts.
 - Somewhat improved the error handling and tracebacks.
+- Improved the way generators work.
+- Added ``yield`` to the mio std lib builtins.
 
 
 mio 0.1.3 (2013-11-19)

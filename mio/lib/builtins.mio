@@ -205,6 +205,19 @@ while = block(
     None
 )
 
+yield = block(
+    ("generator" in call sender keys) ifTrue(
+        call sender generator setNextMessage(call message next)
+        value = call message arg(0)
+        call sender state setReturn(value)
+        value
+    ) ifFalse(
+        generator =  Generator clone()
+        call sender state setReturn(generator)
+        generator
+    )
+)
+
 #
 # Syntactic Sugar
 #

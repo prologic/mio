@@ -24,17 +24,13 @@ class Generator(Object):
         receiver.message = context["call"]["sender"]["call"]["message"]
         return receiver
 
+    @method()
+    def setNextMessage(self, receiver, context, m, message):
+        receiver.message = message.eval(context).next
+        return receiver
+
     @method("__next__")
     def getNext(self, receiver, context, m):
-        if receiver.message.terminator:
+        if receiver.message is None:
             raise StopIteration()
-        try:
-            return receiver.message.eval(receiver.context)
-        finally:
-            next = receiver.message
-            while next.next is not None:
-                if next.terminator:
-                    next = next.next
-                    break
-                next = next.next
-            receiver.message = next
+        return receiver.message.eval(receiver.context)
