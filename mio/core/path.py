@@ -5,6 +5,7 @@ import posixpath
 from mio import runtime
 from mio.utils import method
 from mio.object import Object
+from mio.errors import TypeError
 
 
 class Path(Object):
@@ -52,8 +53,9 @@ class Path(Object):
 
     @method()
     def open(self, receiver, context, m, mode="r"):
+        if not posixpath.isfile(receiver.value):
+            raise TypeError(self.value + " is not a file")
         mode = mode if mode == "r" else str(mode.eval(context))
-        assert posixpath.isfile(receiver.value)
         return runtime.state.eval("""File clone() open("{0:s}", "{1:s}")""".format(self.value, mode))
 
     @method()

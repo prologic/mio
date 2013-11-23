@@ -16,6 +16,7 @@ mio 0.1.4.dev
 - Somewhat improved the error handling and tracebacks.
 - Improved the way generators work.
 - Added ``yield`` to the mio std lib builtins.
+- Added ``TypeError`` guard around opening non-files with the ``Path`` object.
 
 
 mio 0.1.3 (2013-11-19)
