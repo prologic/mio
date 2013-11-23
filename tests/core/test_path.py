@@ -22,3 +22,11 @@ def test_clone1(mio):
 def test_clone2(mio):
     p = mio.eval("""Path clone("~/foo.txt", True)""")
     assert p.value == path.expanduser("~/foo.txt")
+
+
+def test_join(mio):
+    p = mio.eval("""p = Path clone("/tmp/foo")""")
+    assert p.value == "/tmp/foo"
+
+    pp = mio.eval("""pp = p join("bar.txt")""")
+    assert pp.value == "/tmp/foo/bar.txt"

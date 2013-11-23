@@ -36,8 +36,8 @@ class Path(Object):
 
     @method()
     def join(self, receiver, context, m, *args):
-        args = [str(arg.eval(context)) for arg in args]
-        return receiver.clone(posixpath.join(self.value, args))
+        args = tuple(str(arg.eval(context)) for arg in args)
+        return receiver.clone(posixpath.join(receiver.value, *args))
 
     @method()
     def open(self, receiver, context, m, mode="r"):
