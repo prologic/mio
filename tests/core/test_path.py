@@ -5,6 +5,7 @@ from os import getcwd, path
 
 
 from mio.errors import TypeError
+from mio.core.path import listdir
 
 
 def test_path(mio):
@@ -57,3 +58,14 @@ def test_open2(mio, tmpdir):
 
     with raises(TypeError):
         mio.eval("""f = p open("r")""", reraise=True)
+
+
+def test_list1(mio, tmpdir):
+    tmpdir.ensure("foo.txt")
+    tmpdir.ensure("bar.txt")
+
+    p = mio.eval("""p = Path clone("{0:s}")""".format(str(tmpdir)))
+    assert p.value == str(tmpdir)
+
+    fs = mio.eval("fs = p list()")
+    assert list(fs) == listdir(str(tmpdir))

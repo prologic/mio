@@ -8,6 +8,10 @@ from mio.object import Object
 from mio.errors import TypeError
 
 
+def listdir(path, fil=None, rec=False):
+    return posix.listdir(path)
+
+
 class Path(Object):
 
     def __init__(self, path=None, expanduser=False):
@@ -50,5 +54,5 @@ class Path(Object):
     def list(self, receiver, context, m, fil=None, rec=False):
         fil = fil.eval(context) if fil is not None else fil
         rec = bool(rec.eval(context)) if rec is not False else rec
-        paths = [receiver.clone(path) for path in posix.listdir(receiver.value)]
+        paths = [receiver.clone(path) for path in listdir(receiver.value, fil, rec)]
         return runtime.state.find("List").clone(paths)
