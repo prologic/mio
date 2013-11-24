@@ -77,7 +77,7 @@ def build(**options):
 def clean():
     """Clean up build files and directories"""
 
-    files = ["build", ".converage", "coverage", "dist", "docs/build", "*.xml"]
+    files = ["build", ".coverage", "coverage", "dist", "docs/build", "*.xml"]
 
     local("rm -rf {0:s}".format(" ".join(files)))
 
