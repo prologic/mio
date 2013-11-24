@@ -5,10 +5,9 @@ from __future__ import print_function
 
 import mio
 from mio import runtime
-from mio.utils import format_result
 
 
-USAGE = "mio [-e expr | -i | -S | -v] [file | -]"
+USAGE = "mio [-e expr | -i | -S] [file | -]"
 VERSION = "mio v" + mio.__version__
 
 
@@ -32,22 +31,12 @@ def parse_arg(name, argv):
     return ""
 
 
-def parse_list_arg(name, argv):
-    values = []
-    arg = parse_arg(name, argv)
-    while arg != "":
-        values.append(arg)
-        arg = parse_arg(name, argv)
-    return values
-
-
 def parse_args(argv):
     opts = Options()
 
-    opts.eval = parse_list_arg("-e", argv)
+    opts.eval = parse_arg("-e", argv)
     opts.nosys = parse_bool_arg('-S', argv)
     opts.inspect = parse_bool_arg('-i', argv)
-    opts.verbose = parse_bool_arg("-v", argv)
     opts.help = parse_bool_arg("--help", argv)
     opts.version = parse_bool_arg("--version", argv)
 
@@ -71,14 +60,7 @@ def main(argv):
         runtime.init(args, opts)
 
         if opts.eval:
-            for eval in opts.eval:
-                if opts.verbose:
-                    print("mio>", eval)
-                result = runtime.state.eval(eval)
-                if opts.verbose and result is not None:
-                    output = format_result(result)
-                    if output is not None:
-                        print("===> {0:s}".format(output))
+            runtime.state.eval(opts.eval)
         elif args:
             runtime.state.load(args[0])
             if opts.inspect:
@@ -87,11 +69,6 @@ def main(argv):
             runtime.state.repl()
     except SystemExit as e:
         return e[0]
-    except Exception as e:
-        print("ERROR:", e)
-        from traceback import format_exc
-        print(format_exc())
-        return 1
 
 
 def entrypoint():
@@ -101,5 +78,5 @@ def entrypoint():
     main(sys.argv)
 
 
-if __name__ == "__main__":
+if __name__ == "__main__":  # pragma: no cover
     entrypoint()
