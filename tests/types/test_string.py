@@ -77,3 +77,11 @@ def test_lower(mio):
 
 def test_upper(mio):
     assert mio.eval("\"foo\" upper()") == "FOO"
+
+
+def test_split(mio):
+    assert mio.eval("\"foo bar baz\" split()") == ["foo", "bar", "baz"]
+
+
+def test_startswith(mio):
+    assert mio.eval("\"foobar\" startswith(\"foo\")")
