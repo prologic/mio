@@ -25,7 +25,7 @@ class State(Object):
         else:
             type = "Normal"
 
-        value = str(self.value) if self.value is not Null else ""
+        value = repr(self.value) if self.value is not Null else ""
 
         return "{0:s}State({1:s})".format(type, value)
 
@@ -33,6 +33,7 @@ class State(Object):
         keys = ("isContinue", "isReturn", "isBreak",)
         for key in keys:
             setattr(self, key, False)
+        self.value = Null
 
     @property
     def stop(self):
