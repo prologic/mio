@@ -2,9 +2,26 @@ import os
 import sys
 from subprocess import Popen, PIPE
 
+
+from mio.main import USAGE, VERSION
+
+
 import main_wrapper
 
+
 TEST_FILE = os.path.join(os.path.dirname(__file__), "test.mio")
+
+
+def test_help():
+    p = Popen([sys.executable, main_wrapper.__file__, "--help"], stdout=PIPE)
+    stdout = p.communicate()[0].strip()
+    assert stdout == USAGE
+
+
+def test_version():
+    p = Popen([sys.executable, main_wrapper.__file__, "--version"], stdout=PIPE)
+    stdout = p.communicate()[0].strip()
+    assert stdout == VERSION
 
 
 def test_eval():
