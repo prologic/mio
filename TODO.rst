@@ -1,6 +1,7 @@
 TODO
 ====
 
+- Fix user errors.
 - Implement ``__slice__``, ``slice(...)`` and ``xs[start:[end][:step]``
 
 - Change the way we construct user objects.
@@ -14,7 +15,6 @@ TODO
   - Is always passed it's bound object as the first parameter ``self``.
   - Are by default bound to the context they are created in.
 
-- Implement generators and ``yield``.
 - Fix keyword argument(s) parameters.
 - Bring test coverage back up to 100%
 - Figure out a way to avoid recursion so ``loop(print("foo"))`` works as expected.
