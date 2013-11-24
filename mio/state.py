@@ -142,6 +142,8 @@ class State(object):
                 raise
         except Exception as e:  # pragma: no cover
             print("ERROR:", e)
+            from traceback import format_exc
+            print(format_exc())
             if reraise:
                 raise
 

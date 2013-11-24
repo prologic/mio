@@ -1,5 +1,6 @@
 import posix
 import posixpath
+from fnmatch import fnmatch
 
 
 from mio import runtime
@@ -9,7 +10,14 @@ from mio.errors import TypeError
 
 
 def listdir(path, fil=None, rec=False):
-    return posix.listdir(path)
+    names = [posixpath.join(path, name) for name in posix.listdir(path)]
+
+    for name in names:
+        if posixpath.isdir(name):
+            for name in listdir(name, fil, rec):
+                yield name
+        if (fil is not None and fnmatch(name, fil)) or fil is None:
+            yield name
 
 
 class Path(Object):
@@ -52,7 +60,13 @@ class Path(Object):
 
     @method()
     def list(self, receiver, context, m, fil=None, rec=False):
-        fil = fil.eval(context) if fil is not None else fil
-        rec = bool(rec.eval(context)) if rec is not False else rec
+        if fil is not None:
+            fil = fil.eval(context)
+            if fil.type == "String":
+                fil = str(fil)
+            else:
+                fil = None
+        if rec is not False:
+            rec = bool(rec.eval(context))
         paths = [receiver.clone(path) for path in listdir(receiver.value, fil, rec)]
         return runtime.state.find("List").clone(paths)

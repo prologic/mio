@@ -68,4 +68,28 @@ def test_list1(mio, tmpdir):
     assert p.value == str(tmpdir)
 
     fs = mio.eval("fs = p list()")
-    assert list(fs) == listdir(str(tmpdir))
+    assert list(fs) == list(listdir(str(tmpdir)))
+
+
+def test_list2(mio, tmpdir):
+    tmpdir.ensure("foo.txt")
+    tmpdir.ensure("bar.txt")
+    tmpdir.ensure("baz.csv")
+
+    p = mio.eval("""p = Path clone("{0:s}")""".format(str(tmpdir)))
+    assert p.value == str(tmpdir)
+
+    fs = mio.eval("""fs = p list("*.txt")""")
+    assert list(fs) == list(listdir(str(tmpdir), "*.txt"))
+
+
+def test_list3(mio, tmpdir):
+    tmpdir.ensure("foo.txt")
+    tmpdir.ensure("bar", dir=True).ensure("bar.txt")
+    tmpdir.ensure("baz", dir=True).ensure("baz.txt")
+
+    p = mio.eval("""p = Path clone("{0:s}")""".format(str(tmpdir)))
+    assert p.value == str(tmpdir)
+
+    fs = mio.eval("""fs = p list(None, True)""")
+    assert list(fs) == list(listdir(str(tmpdir), rec=True))
