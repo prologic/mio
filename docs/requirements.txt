@@ -2,4 +2,3 @@ Sphinx
 Sphinx-PyPI-upload
 sphinxcontrib-bitbucket
 ./docs/ext/autorun
--e hg+https://bitbucket.org/prologic/mio-lang#egg=mio
