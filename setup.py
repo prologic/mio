@@ -61,5 +61,5 @@ setup(
         ]
     },
     test_suite="tests.main.main",
-    zip_safe=True
+    zip_safe=False
 )
