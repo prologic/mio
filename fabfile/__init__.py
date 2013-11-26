@@ -11,9 +11,10 @@ from os import getcwd
 
 
 from fabric.tasks import Task
-from fabric.api import abort, cd, execute, hide, hosts, lcd, local, prefix, prompt, run, settings, task
+from fabric.api import abort, cd, execute, hide, hosts, local, prefix, prompt, run, settings, task
 
 
+import docs  # noqa
 import compile  # noqa
 from .utils import msg, pip, requires, resolvepath, tobool
 
@@ -93,27 +94,6 @@ def develop():
     """Build and Install in Development Mode"""
 
     return execute(build, dev=True)
-
-
-@task()
-@requires("make", "sphinx-build")
-def docs(**options):
-    """Generate the Sphinx documentation
-
-    The following options are recognized:
-
-    - ``clean`` - Perform a clean of the docs build
-    - ``view``  - Open a web browser to display the built documentation
-    """
-
-    clean = tobool(options.get("clean", False))
-    view = tobool(options.get("view", False))
-
-    with lcd("docs"):
-        local("make clean html") if clean else local("make html")
-
-        if view:
-            local("open build/html/index.html")
 
 
 @task()

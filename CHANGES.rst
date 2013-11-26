@@ -21,6 +21,7 @@ mio 0.1.4.dev
 - Improved REPL continuation output of unclosed parens.
 - Removed docs dependencies of unused sphinx extensions.
 - Added ``mio.state.State.runsource()`` which simplifies ``mio.state.State.repl()`` a bit and allows our custom ``sphinxcontrib-autorun`` ext to work.
+- Added API Docs.
 
 
 mio 0.1.3 (2013-11-19)

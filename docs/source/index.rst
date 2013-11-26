@@ -24,6 +24,7 @@ Documentation
 
    tutorial
    grammar
+   api/index
    changes
    roadmap
    todo
