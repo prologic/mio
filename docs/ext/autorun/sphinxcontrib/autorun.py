@@ -25,10 +25,10 @@ class AutoRun(object):
     pycon = os.path.join(os.path.dirname(here),'pycon.py')
     mio = os.path.join(os.path.dirname(here),'miointerpreter.py')
     config = dict(
-        pycon=sys.executable + pycon,
+        pycon=sys.executable + " " + pycon,
         pycon_prefix_chars=4,
         pycon_show_source=False,
-        mio=sys.executable + mio,
+        mio=sys.executable + " " + mio,
         mio_prefix_chars=0,
         mio_show_source=False,
         console='bash',
