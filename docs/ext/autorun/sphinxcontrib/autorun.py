@@ -8,6 +8,7 @@ Run the code and insert stdout after the code block.
 
 """
 import os
+import sys
 from subprocess import Popen,PIPE
 
 from docutils import nodes
@@ -24,14 +25,14 @@ class AutoRun(object):
     pycon = os.path.join(os.path.dirname(here),'pycon.py')
     mio = os.path.join(os.path.dirname(here),'miointerpreter.py')
     config = dict(
-        pycon = 'python ' + pycon,
-        pycon_prefix_chars = 4,
-        pycon_show_source = False,
-        mio = 'python ' + mio,
-        mio_prefix_chars = 0,
-        mio_show_source = False,
-        console = 'bash',
-        console_prefix_chars = 1 ,
+        pycon=sys.executable + pycon,
+        pycon_prefix_chars=4,
+        pycon_show_source=False,
+        mio=sys.executable + mio,
+        mio_prefix_chars=0,
+        mio_show_source=False,
+        console='bash',
+        console_prefix_chars=1,
     )
     @classmethod
     def builder_init(cls,app):
