@@ -1,3 +1,3 @@
 Sphinx
 Sphinx-PyPI-upload
--e ext/autorun
+-e ./ext/autorun
