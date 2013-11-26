@@ -5,7 +5,7 @@ Changes
 mio 0.1.5.dev
 .............
 
--
+- Don't look into ``builtins`` module for the tab-completer function of the REPL if there are no builtins. i.e: ``mio -S``
 
 
 mio 0.1.4 (2013-11-27)

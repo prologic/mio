@@ -171,7 +171,8 @@ class State(object):
             objects = self.root.attrs.keys()
             objects.extend(self.root["Types"].attrs.keys())
             objects.extend(self.root["Core"].attrs.keys())
-            objects.extend(self.root["builtins"].attrs.keys())
+            if "builtins" in self.root:
+                objects.extend(self.root["builtins"].attrs.keys())
 
             def completer(text, state):
                 options = [i for i in objects if i.startswith(text)]
