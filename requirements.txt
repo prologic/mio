@@ -1,2 +1,1 @@
 -e hg+https://bitbucket.org/prologic/funcparserlib#egg=funcparserlib
-rply==0.6.1
