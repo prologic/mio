@@ -1,19 +1,16 @@
 #!/usr/bin/python -i
 
+import sys
+
+
 from mio import lexer
 from mio import parser
 from mio import runtime
+from mio.main import parse_args
 
 
-class FakeOpts(object):
-
-    def __init__(self, **kwargs):
-        super(FakeOpts, self).__init__()
-
-        self.__dict__.update(**kwargs)
-
-opts = FakeOpts(nosys=True)
-runtime.init(opts=opts)
+opts, args = parse_args(sys.argv)
+runtime.init(args, opts)
 eval = runtime.state.eval
 
 

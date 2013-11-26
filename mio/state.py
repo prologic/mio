@@ -150,8 +150,20 @@ class State(object):
     def load(self, filename, receiver=None, context=None):
         self.eval(open(filename, "r").read(), receiver=receiver, context=context)
 
+    def runsource(self, source):
+        from .utils import format_result
+
+        if not check_parens(source):
+            return True
+
+        result = self.eval(source)
+        if result is not None:
+            output = format_result(result)
+            if output is not None:
+                print("===> {0:s}".format(output))
+
     def repl(self):
-        from .utils import format_result, tryimport
+        from .utils import tryimport
 
         readline = tryimport("readline")
 
@@ -179,7 +191,7 @@ class State(object):
         while True:
             try:
                 if cont:
-                    ps = "..... "
+                    ps = ".... "
                 else:
                     ps = "mio> "
 
@@ -187,11 +199,7 @@ class State(object):
 
                 if code:
                     if check_parens(code):
-                        result = self.eval(code)
-                        if result is not None:  # pragma: no cover
-                            output = format_result(result)
-                            if output is not None:
-                                print("===> {0:s}".format(output))
+                        self.runsource(code)
                         code = ""
                         cont = False
                     else:

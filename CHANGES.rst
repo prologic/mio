@@ -17,6 +17,10 @@ mio 0.1.4.dev
 - Improved the way generators work.
 - Added ``yield`` to the mio std lib builtins.
 - Added ``TypeError`` guard around opening non-files with the ``Path`` object.
+- Rewrote the tutorial to utilize ``sphinxcontrib-autorun`` extension with custom ``miointerpreter.py`` module.
+- Improved REPL continuation output of unclosed parens.
+- Removed docs dependencies of unused sphinx extensions.
+- Added ``mio.state.State.runsource()`` which simplifies ``mio.state.State.repl()`` a bit and allows our custom ``sphinxcontrib-autorun`` ext to work.
 
 
 mio 0.1.3 (2013-11-19)
