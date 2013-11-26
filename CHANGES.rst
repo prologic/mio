@@ -2,8 +2,8 @@ Changes
 -------
 
 
-mio 0.1.4.dev
-.............
+mio 0.1.4 (2013-11-27)
+......................
 
 - Added "Functions" to the tutorial.
 - Added "Objects" to the tutorial.
