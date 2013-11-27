@@ -27,6 +27,9 @@ from `Python <http://python.org>`_ (*because Python is awesome!*). This has alre
 achived in the current version. See the `RoadMap <http://mio-lang.readthedocs.org/en/latest/roadmap.html>`_
 for what might be coming up next.
 
+.. warning:: mio is a new programming language in early **Planning** and **Development**.
+             DO NOT USE IN PRODUCTION! USE AT YOUR OWN RISK!
+
 - Visit the `Project Website`_
 - `Read the Docs`_
 - `Read the Tutorial`_
