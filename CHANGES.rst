@@ -2,8 +2,8 @@ Changes
 -------
 
 
-mio 0.1.5.dev
-.............
+mio 0.1.5 (2013-11-28)
+......................
 
 - Don't look into ``builtins`` module for the tab-completer function of the REPL if there are no builtins. i.e: ``mio -S``
 - Added a nice big shiny red warning about mio's status.
