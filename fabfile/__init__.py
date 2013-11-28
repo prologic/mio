@@ -10,50 +10,17 @@ from __future__ import print_function
 from os import getcwd
 
 
-from fabric.tasks import Task
 from fabric.api import abort, cd, execute, hide, hosts, local, prefix, prompt, run, settings, task
 
 
 import docs  # noqa
+import help  # noqa
 import compile  # noqa
 from .utils import msg, pip, requires, resolvepath, tobool
 
 
 # Path to pypy
 PYPY = resolvepath("$HOME/work/pypy")
-
-
-@task()
-def help(name=None):
-    """Display help for a given task
-
-    Options:
-        name    - The task to display help on.
-
-    To display a list of available tasks type:
-
-        $ fab -l
-
-    To display help on a specific task type:
-
-        $ fab help:<name>
-    """
-
-    if name is None:
-        name = "help"
-
-    o = globals().get(name, None)
-    if isinstance(o, Task):
-        doc = getattr(o, "__doc__", None)
-        if doc is not None:
-            print("Help on {0:s}:".format(name))
-            print()
-            print(doc)
-        else:
-            print("No help available for {0;s}".format(name))
-    else:
-        print("No such task {0:s}".format(name))
-        print("For a list of tasks tpye: fab -l")
 
 
 @task()
