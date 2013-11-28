@@ -16,11 +16,7 @@ from fabric.api import abort, cd, execute, hide, hosts, local, prefix, prompt, r
 import docs  # noqa
 import help  # noqa
 import compile  # noqa
-from .utils import msg, pip, requires, resolvepath, tobool
-
-
-# Path to pypy
-PYPY = resolvepath("$HOME/work/pypy")
+from .utils import msg, pip, requires, tobool
 
 
 @task()
