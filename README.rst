@@ -47,6 +47,10 @@ for what might be coming up next.
    :target: https://jenkins.shiningpanda-ci.com/prologic/job/mio-lang/
    :alt: Build Status
 
+.. image:: https://requires.io/bitbucket/prologic/mio-lang/requirements.png?branch=default
+   :target: https://requires.io/bitbucket/prologic/mio-lang/requirements/?branch=default
+   :alt: Requirements Status
+
 
 Examples
 --------
