@@ -4,10 +4,6 @@ TODO
 - Fix user errors.
 - Implement ``__slice__``, ``slice(...)`` and ``xs[start:[end][:step]``
 
-- Change the way we construct user objects.
-
-  - Pretty sure we can just create new instances rather than ``runtime.find(...).clone(...)``
-
 - Change the way methods and blocks are bound and unifiy them into a single entity.
 
   - Unified method: ``method(...)``.
