@@ -102,7 +102,7 @@ def release():
         if prompt("Is this ok?", default="n", validate=r"^[YyNn]?$") in "yY":
             with prefix("workon test"):
                 run("hg tag {0:s}".format(version))
-                run("python setup.py egg_info sdist bdist_egg register upload")
+                run("python setup.py egg_info sdist bdist_egg bdist_wheel register upload")
                 run("python setup.py build_sphinx upload_sphinx")
 
         with msg("Destroying env"):

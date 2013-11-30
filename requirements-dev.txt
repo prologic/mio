@@ -1,6 +1,12 @@
-Fabric==1.8.0
 -e hg+https://bitbucket.org/prologic/funcparserlib#egg=funcparserlib
 
+# Development Tasks
+Fabric==1.8.0
+
+# Packaging
+wheel==0.22.0
+
+# Development and Testing
 pudb==2013.5.1
 tox==1.6.1
 pytest==2.4.2
