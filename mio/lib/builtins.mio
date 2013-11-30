@@ -233,9 +233,6 @@ set(":", block(
         )
         d __setitem__(key, value)
     ) ifFalse(
-        (call target keys) foreach(key,
-            print(key, ":", call target get(key))
-        )
         call target primitive(call message arg(0))
     )
 ))
