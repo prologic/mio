@@ -121,4 +121,5 @@ def sync(*args):
         local("hg fetch")
         local("hg fetch github")
         local("hg push")
+        local("hg bookmark -r tip master")
         local("hg push github")
