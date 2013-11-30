@@ -113,7 +113,7 @@ class Message(Object):
         receiver._next = None
 
     @method("eval")
-    def _eval(self, receiver, context, m, target=None):
+    def evalIn(self, receiver, context, m, target=None):
         target = target.eval(context) if target is not None else context
         return receiver.eval(target)
 
