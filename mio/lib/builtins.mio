@@ -97,7 +97,9 @@ hash = block(x, x __hash__())
 
 hex = block(x, utils tohex(x))
 
-iter = block(iterable, iterable __iter__())
+iter = block(iterable,
+    iterable __iter__()
+)
 
 len = block(xs, xs __len__())
 
@@ -212,7 +214,7 @@ yield = block(
         call sender state setReturn(value)
         value
     ) ifFalse(
-        generator =  Generator clone()
+        generator = Generator clone()
         call sender state setReturn(generator)
         generator
     )
