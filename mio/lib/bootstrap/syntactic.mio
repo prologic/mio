@@ -3,7 +3,13 @@ Dict do (
 )
 
 List do (
-    set("[]", method(index, self __getitem__(index)))
+    set("[]", method(x,
+        (x type == "Number") ifTrue(
+            self __getitem__(x)
+        ) ifFalse(
+            raise TypeError("indicies must be numbers or slices")
+        )
+    ))
 )
 
 Tuple do (

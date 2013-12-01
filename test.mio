@@ -1,5 +1,39 @@
-foo = block(
-    yield 1
-    yield 2
-    yield 3
+Slice = Object clone() do (
+
+    start = 0
+    stop = 0
+    step = 1
+
+    init = method(*args,
+        print(args)
+        (not args) ifTrue(
+            raise TypeError("Slice expects at least one argument")
+        )
+        (len(args) == 1) ifTrue(
+            self start = 0
+            self stop = args[0]
+        ) ifFalse(
+            self start = args[0]
+            self stop = args[1]
+            (len(args) == 3) ifTrue(
+                self step = args[2]
+            )
+        )
+    )
+
+    __repr__ = method(
+        (self step is None) ifTrue(
+            "slice({0}, {1})" format(self start, self stop)
+        ) ifFalse(
+            "slice({0}, {1}, {2})" format(self start, self stop, self step)
+        )
+    )
 )
+
+slice = block(*args,
+    Slice clone(*args)
+)
+
+s = slice(0, 2)
+
+xs = list(range(10))
