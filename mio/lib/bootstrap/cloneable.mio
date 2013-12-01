@@ -2,9 +2,7 @@ TCloneable = Object primitive("clone") do (
 
     clone = method(*args,
         obj = self primitive("clone")
-        Exception try (
-            obj init(*args)
-        )
+        obj init(*args)
         obj
     )
 )

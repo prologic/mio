@@ -266,6 +266,10 @@ class Object(object):
     # Object Operations
 
     @method()
+    def init(self, receiver, context, m):
+        return receiver
+
+    @method()
     def primitive(self, receiver, context, m, method, *args):
         method = str(method.eval(context))
         args = [arg.eval(context).value for arg in args]
