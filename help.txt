@@ -1,0 +1,53 @@
+>>> def foo(a, b):
+...     """Calculate the addition of a and b"""
+...     return a + b
+... 
+>>> help(foo)
+Help on function foo in module __main__:
+
+foo(a, b)
+    Calculate the addition of a and b
+
+>>> def bar(a, b):
+...     return a + b
+... 
+>>> help(bar)
+Help on function bar in module __main__:
+
+bar(a, b)
+>>> help(Foo)
+Help on class Foo in module __main__:
+
+class Foo(__builtin__.object)
+ |  Foo
+ |  
+ |  Methods defined here:
+ |  
+ |  foo(self, a, b)
+ |      Calculate a + b
+ |  
+ |  ----------------------------------------------------------------------
+ |  Data descriptors defined here:
+ |  
+ |  __dict__
+ |      dictionary for instance variables (if defined)
+ |  
+ |  __weakref__
+ |      list of weak references to the object (if defined)
+
+>>> help(Bar)
+Help on class Bar in module __main__:
+
+class Bar(__builtin__.object)
+ |  Methods defined here:
+ |  
+ |  bar(self, a, b)
+ |  
+ |  ----------------------------------------------------------------------
+ |  Data descriptors defined here:
+ |  
+ |  __dict__
+ |      dictionary for instance variables (if defined)
+ |  
+ |  __weakref__
+ |      list of weak references to the object (if defined)
