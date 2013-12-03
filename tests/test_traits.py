@@ -13,7 +13,7 @@ def test_basic_trait(mio, capfd):
         )
 
         World = Object clone() do (
-            uses(TGreeting)
+            use(TGreeting)
 
             greeting = "World!"
 
@@ -41,7 +41,7 @@ def test_hasTrait(mio):
     mio.eval("""
         TGreetable = Trait clone()
         World = Object clone() do (
-            uses(TGreetable)
+            use(TGreetable)
         )
     """)
 
@@ -52,7 +52,7 @@ def test_delTrait(mio):
     mio.eval("""
         TGreetable = Trait clone()
         World = Object clone() do (
-            uses(TGreetable)
+            use(TGreetable)
         )
     """)
 
@@ -71,7 +71,7 @@ def test_delTrait2(mio, capfd):
         )
 
         World = Object clone() do (
-            uses(TGreetable)
+            use(TGreetable)
         )
     """)
 
@@ -90,22 +90,11 @@ def test_delTrait2(mio, capfd):
         mio.eval("World hello()", reraise=True)
 
 
-def test_addTrait(mio):
-    mio.eval("""
-        TGreetable = Trait clone()
-        World = Object clone()
-    """)
-
-    assert not mio.eval("World hasTrait(TGreetable)")
-    mio.eval("World addTrait(TGreetable)")
-    assert mio.eval("World hasTrait(TGreetable)")
-
-
 def test_traits(mio):
     mio.eval("""
         TGreetable = Trait clone()
         World = Object clone() do (
-            uses(TGreetable)
+            use(TGreetable)
         )
     """)
 
@@ -122,7 +111,7 @@ def test_behaviors(mio, capfd):
         )
 
         World = Object clone() do (
-            uses(TGreetable)
+            use(TGreetable)
         )
     """)
 
@@ -141,7 +130,7 @@ def test_del_behavior(mio, capfd):
         )
 
         World = Object clone() do (
-            uses(TGreetable)
+            use(TGreetable)
         )
     """)
 
