@@ -88,6 +88,15 @@ class String(Object):
         return runtime.types("List").clone(xs)
 
     @method()
+    def strip(self, receiver, context, m, chars=None):
+        chars = runtime.state.frommio(chars.eval(context)) if chars is not None else chars
+        if chars is None:
+            value = receiver.value.strip()
+        else:
+            value = receiver.value.strip(chars)
+        return receiver.clone(value)
+
+    @method()
     def join(self, receiver, context, m, *args):
         if len(args) == 1 and isinstance(args[0], Message):
             args = args[0].eval(context)
