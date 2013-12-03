@@ -97,6 +97,27 @@ hash = block(x, x __hash__())
 
 hex = block(x, utils tohex(x))
 
+input = block(prompt,
+    search = "\n"
+    stdin = System stdin
+    stdout = System stdout
+    (prompt is not None) ifTrue(
+        stdout write(prompt)
+        stdout flush()
+    )
+    while(True,
+        line = stdin readline()
+
+        (not line) ifTrue(
+            return
+        )
+
+        (search in line) ifTrue(
+            return line strip()
+        )
+    )
+)
+
 iter = block(iterable,
     iterable __iter__()
 )
