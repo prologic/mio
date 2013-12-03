@@ -21,3 +21,4 @@ TIterable = Object clone() do (
 List uses(TIterable)
 Tuple uses(TIterable)
 Range uses(TIterable)
+String uses(TIterable)
