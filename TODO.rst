@@ -1,6 +1,14 @@
 TODO
 ====
 
+- Deal with this better and raise a better error instead of crashing.
+
+::
+    
+    x = method(1 + 1, a, b,
+        a + b
+    )
+    
 - Traits:
 
   - Traits should never have state. ``raise TypeError("traits cannot contain state")``
