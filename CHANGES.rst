@@ -42,7 +42,9 @@ e.g::
     
     World hello()
     
--
+- Added conflict resolution for traits.
+- Remvoed ``uses`` in favor of single ``use(trait, resolution)`` where **resolution** is a dict of key->value pairs that rename
+  conflicting methods of the trait being used.
 
 
 mio 0.1.5 (2013-11-28)

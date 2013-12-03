@@ -18,7 +18,7 @@ Traits TIterable = Trait clone() do (
     )
 )
 
-List uses(TIterable)
-Tuple uses(TIterable)
-Range uses(TIterable)
-String uses(TIterable)
+List use(TIterable)
+Tuple use(TIterable)
+Range use(TIterable)
+String use(TIterable)

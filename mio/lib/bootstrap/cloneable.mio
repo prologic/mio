@@ -7,4 +7,4 @@ Traits TCloneable = Trait primitive("clone") do (
     )
 )
 
-Object uses(TCloneable)
+Object use(TCloneable)

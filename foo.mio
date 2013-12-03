@@ -1,0 +1,19 @@
+TFoo = Trait clone() do (
+    foo = method(
+        print("Foo!")
+    )
+)
+
+TBar = Trait clone() do (
+    foo = method(
+        print("Bar!")
+    )
+)
+
+World = Object clone() do (
+    use(TFoo)
+    use(TBar, {"foo": "bar"})
+)
+
+World foo()
+World bar()

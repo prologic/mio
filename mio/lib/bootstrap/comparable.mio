@@ -25,4 +25,4 @@ Traits TComparable = Trait clone() do(
     )
 )
 
-Object uses(TComparable)
+Object use(TComparable)

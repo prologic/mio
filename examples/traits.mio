@@ -1,21 +1,18 @@
 #!/usr/bin/env mio
 
-TGreetable = Object clone() do (
-    name = "World"
-
+TGreetable = Trait clone() do (
     hello = method(
         print("Hello", self name)
     )
 )
 
 World = Object clone() do (
-    uses(TGreetable)
-
     name = "World!"
+    use(TGreetable)
 )
 
 adapt = block(obj, trait,
-    return (obj clone() uses(trait))
+    return (obj clone() use(trait))
 )
 
 Foo = Object clone() do (

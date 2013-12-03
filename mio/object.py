@@ -76,7 +76,7 @@ class Object(object):
     def __setitem__(self, key, value):
         self.attrs[key] = value
 
-    def __addtrait__(self, trait):
+    def __addtrait__(self, trait, **resolution):
         from .trait import Trait
 
         if not isinstance(trait, Trait):
@@ -86,11 +86,16 @@ class Object(object):
             if not self.lookup(requirement):
                 raise TypeError("Missing requirement {0:s}".format(repr(requirement)))
 
-        attrs = ((k, v) for k, v in trait.attrs.items())
-        methods = ((k, v) for k, v in attrs if callable(v) or (isinstance(v, Trait) and v.type == "Block"))
-        behaviors = ((k, v) for k, v in methods if not k in self.attrs)
+        for k, v in trait.attrs.items():
+            if k in self:
+                name = resolution.get(k, None)
+                if not name:
+                    raise TypeError("Conflicting method {0:s} and no resolution provided".format(repr(k)))
+                else:
+                    self.behaviors[name] = v
+            else:
+                self.behaviors[k] = v
 
-        self.behaviors.update(behaviors)
         self.traits.append(trait)
 
     def __deltrait__(self, trait):
@@ -171,16 +176,13 @@ class Object(object):
     # Traits Operations
 
     @method()
-    def uses(self, receiver, context, m, *traits):
-        traits = [trait.eval(context) for trait in traits]
-        for trait in traits:
-            receiver.__addtrait__(trait)
-        return receiver
-
-    @method()
-    def addTrait(self, receiver, context, m, trait):
+    def use(self, receiver, context, m, trait, resolution=None):
         trait = trait.eval(context)
-        receiver.__addtrait__(trait)
+        if resolution is not None:
+            resolution = dict((runtime.state.frommio(k), runtime.state.frommio(v)) for k, v in runtime.state.frommio(resolution.eval(context)).items())
+        else:
+            resolution = {}
+        receiver.__addtrait__(trait, **resolution)
         return receiver
 
     @method()
