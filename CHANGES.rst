@@ -45,6 +45,8 @@ e.g::
 - Added conflict resolution for traits.
 - Remvoed ``uses`` in favor of single ``use(trait, resolution)`` where **resolution** is a dict of key->value pairs that rename
   conflicting methods of the trait being used.
+- Make ``Object hasTrait()`` lookup the parent chain.
+- Abuse the ``is`` method of ``TComparble`` to be used as short-cut for: ``foo hasTrait(TFoo)``.
 
 
 mio 0.1.5 (2013-11-28)

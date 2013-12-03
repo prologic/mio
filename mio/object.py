@@ -103,6 +103,18 @@ class Object(object):
             del self.behaviors[k]
         self.traits.remove(trait)
 
+    def __hastrait__(self, trait):
+        if trait in self.traits:
+            return True
+
+        parent = self.parent
+        while parent is not None:
+            if trait in parent.traits:
+                return True
+            parent = parent.parent
+
+        return False
+
     def __repr__(self):
         type = "{0:s}({1:s})".format(self.binding, self.type) if self.binding is not None else self.type
         default = "{0:s} at {1:s}".format(type, hex(id(self)))
@@ -194,8 +206,7 @@ class Object(object):
     @method()
     def hasTrait(self, receiver, context, m, trait):
         trait = trait.eval(context)
-        test = trait in receiver.traits
-        return runtime.find("True") if test else runtime.find("False")
+        return runtime.find("True") if self.__hastrait__(trait) else runtime.find("False")
 
     @method("traits", True)
     def getTraits(self, receiver, context, m):
