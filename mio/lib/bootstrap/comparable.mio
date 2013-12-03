@@ -1,6 +1,6 @@
 Traits TComparable = Trait clone() do(
 
-    #requires(__cmp__)
+    requires("cmp")
 
     set("==", method(other, not(bool(self cmp(other)))))
     set("!=", method(other, not(self == other)))

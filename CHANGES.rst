@@ -23,6 +23,25 @@ A simple trait thus looks like::
         )
     )
     
+- Implemented ``Trait requires()`` so that traits can declare the names of methods and attribute they depend on.
+
+e.g::
+    
+    TGreetable = Trait clone() do (
+        requires("name")
+    
+        hello = method(
+            print("Hello ", self name)
+        )
+    )
+    
+    World = Object clone() do (
+        name = "World!"
+        uses(TGreetable)
+    )
+    
+    World hello()
+    
 -
 
 

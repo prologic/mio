@@ -1,6 +1,6 @@
 Traits TIterable = Trait clone() do (
 
-    #requires(__getitem__, __len__)
+    requires("__getitem__", "__len__")
 
     foreach = method(
         x = call message args at(0) name

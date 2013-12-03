@@ -82,6 +82,10 @@ class Object(object):
         if not isinstance(trait, Trait):
             raise TypeError("Trait expected but got {0:s}".format(repr(getattr(trait, "type", trait.__class__.__name__))))
 
+        for requirement in trait.requirements:
+            if not self.lookup(requirement):
+                raise TypeError("Missing requirement {0:s}".format(repr(requirement)))
+
         attrs = ((k, v) for k, v in trait.attrs.items())
         methods = ((k, v) for k, v in attrs if callable(v) or (isinstance(v, Trait) and v.type == "Block"))
         behaviors = ((k, v) for k, v in methods if not k in self.attrs)
