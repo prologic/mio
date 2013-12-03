@@ -198,15 +198,9 @@ class Object(object):
         return receiver
 
     @method()
-    def delTrait(self, receiver, context, m, trait):
-        trait = trait.eval(context)
-        receiver.__deltrait__(trait)
-        return receiver
-
-    @method()
     def hasTrait(self, receiver, context, m, trait):
         trait = trait.eval(context)
-        return runtime.find("True") if self.__hastrait__(trait) else runtime.find("False")
+        return runtime.find("True") if receiver.__hastrait__(trait) else runtime.find("False")
 
     @method("traits", True)
     def getTraits(self, receiver, context, m):
