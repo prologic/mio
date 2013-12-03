@@ -6,7 +6,7 @@ from mio.errors import AttributeError
 
 def test_basic_trait(mio, capfd):
     mio.eval("""
-        TGreeting = Object clone() do (
+        TGreeting = Trait clone() do (
             hello = method(
                 print("Hello", self getGreeting())
             )
@@ -39,7 +39,7 @@ def test_basic_trait(mio, capfd):
 
 def test_hasTrait(mio):
     mio.eval("""
-        TGreetable = Object clone()
+        TGreetable = Trait clone()
         World = Object clone() do (
             uses(TGreetable)
         )
@@ -50,7 +50,7 @@ def test_hasTrait(mio):
 
 def test_delTrait(mio):
     mio.eval("""
-        TGreetable = Object clone()
+        TGreetable = Trait clone()
         World = Object clone() do (
             uses(TGreetable)
         )
@@ -64,7 +64,7 @@ def test_delTrait(mio):
 
 def test_delTrait2(mio, capfd):
     mio.eval("""
-        TGreetable = Object clone() do (
+        TGreetable = Trait clone() do (
             hello = method(
                 print("Hello World!")
             )
@@ -92,7 +92,7 @@ def test_delTrait2(mio, capfd):
 
 def test_addTrait(mio):
     mio.eval("""
-        TGreetable = Object clone()
+        TGreetable = Trait clone()
         World = Object clone()
     """)
 
@@ -103,7 +103,7 @@ def test_addTrait(mio):
 
 def test_traits(mio):
     mio.eval("""
-        TGreetable = Object clone()
+        TGreetable = Trait clone()
         World = Object clone() do (
             uses(TGreetable)
         )
@@ -115,7 +115,7 @@ def test_traits(mio):
 
 def test_behaviors(mio, capfd):
     mio.eval("""
-        TGreetable = Object clone() do (
+        TGreetable = Trait clone() do (
             hello = method(
                 print("Hello World!")
             )
@@ -134,7 +134,7 @@ def test_behaviors(mio, capfd):
 
 def test_del_behavior(mio, capfd):
     mio.eval("""
-        TGreetable = Object clone() do (
+        TGreetable = Trait clone() do (
             hello = method(
                 print("Hello World!")
             )

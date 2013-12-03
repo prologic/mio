@@ -1,4 +1,4 @@
-TCloneable = Object primitive("clone") do (
+Traits TCloneable = Trait primitive("clone") do (
 
     clone = method(*args,
         obj = self primitive("clone")

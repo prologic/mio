@@ -77,8 +77,13 @@ class Object(object):
         self.attrs[key] = value
 
     def __addtrait__(self, trait):
+        from .trait import Trait
+
+        if not isinstance(trait, Trait):
+            raise TypeError("Trait expected but got {0:s}".format(repr(getattr(trait, "type", trait.__class__.__name__))))
+
         attrs = ((k, v) for k, v in trait.attrs.items())
-        methods = ((k, v) for k, v in attrs if v.type == "Block")
+        methods = ((k, v) for k, v in attrs if callable(v) or (isinstance(v, Trait) and v.type == "Block"))
         behaviors = ((k, v) for k, v in methods if not k in self.attrs)
 
         self.behaviors.update(behaviors)

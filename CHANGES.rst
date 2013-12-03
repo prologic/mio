@@ -10,6 +10,20 @@ mio 0.1.6.dev
 - Added ``String strip()`` method.
 - Make ``String`` use ``TIterable``.
 - Implemented ``input()`` builtin.
+- Implemented a special object ``Trait`` which all traits are cloend from.
+
+  - This means traits now cannot contain state and a ``TypeError`` is raised.
+  - Objects can only use or add traits that are inherited from the ``Trait`` object.
+
+A simple trait thus looks like::
+    
+    TFoo = Trait clone() do (
+        foo = method(
+            print("Foo!")
+        )
+    )
+    
+-
 
 
 mio 0.1.5 (2013-11-28)

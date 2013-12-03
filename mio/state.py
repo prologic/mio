@@ -64,6 +64,7 @@ class State(object):
 
     def bootstrap(self):
         from .object import Object
+        from .trait import Trait
 
         # Fake Object to solve chicken/egg problem.
         self.root = {"Object": None}
@@ -74,6 +75,7 @@ class State(object):
         root.parent = object
 
         root["Object"] = object
+        root["Trait"] = Trait()
         root["Root"] = root
 
         self.root = root
@@ -81,11 +83,13 @@ class State(object):
     def initialize(self):
         from .core import Core
         from .types import Types
+        from .traits import Traits
 
         root = self.root
 
         root["Types"] = Types()
         root["Core"] = Core()
+        root["Traits"] = Traits()
 
         # Bootstrap the system
         if self.opts is None or (self.opts is not None and not self.opts.nosys):
@@ -111,6 +115,8 @@ class State(object):
             return self.root["Types"][name]
         elif "Core" in self.root and name in self.root["Core"]:
             return self.root["Core"][name]
+        elif "Traits" in self.root and name in self.root["Traits"]:
+            return self.root["Traits"][name]
         elif "builtins" in self.root and name in self.root["builtins"]:
             return self.root["builtins"][name]
         else:

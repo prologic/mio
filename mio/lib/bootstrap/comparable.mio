@@ -1,4 +1,4 @@
- TComparable = Object clone() do(
+Traits TComparable = Trait clone() do(
 
     #requires(__cmp__)
 
