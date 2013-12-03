@@ -9,11 +9,6 @@ TODO
         a + b
     )
     
-- Traits:
-
-  - Implement conflict resolution and overrides ``uses(trait, **mapping)``
-  - Overload the ``is()`` method for trait testability. e.g: ``xs is(TIterable)``
-
 - Fix user errors.
 - Implement ``__slice__``, ``slice(...)`` and ``xs[start:[end][:step]``
 
