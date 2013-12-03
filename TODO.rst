@@ -11,9 +11,6 @@ TODO
     
 - Traits:
 
-  - Traits should never have state. ``raise TypeError("traits cannot contain state")``
-  - Put all core and std. lib traits in ``Root Traits``
-  - Implement validation and ``requires(...)``
   - Implement conflict resolution and overrides ``uses(trait, **mapping)``
   - Overload the ``is()`` method for trait testability. e.g: ``xs is(TIterable)``
 
