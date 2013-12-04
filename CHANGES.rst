@@ -2,8 +2,8 @@ Changes
 -------
 
 
-mio 0.1.6.dev
-.............
+mio 0.1.6 (2013-12-04)
+......................
 
 - Added support for packaging Python `wheels <http://pythonwheels.com/>`_.
 - Define a default ``init()`` method on ``Object`` and just make ``TCloneable init()`` just call ``init()``.
