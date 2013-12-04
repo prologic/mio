@@ -1,3 +1,14 @@
+empty = Object clone() do (
+    clone = method(empty)
+    __repr__ = __str__ = method("empty")
+)
+
+identity = block(x, x)
+
+constantly = block(x,
+    block(x)
+)
+
 complement = block(f, block(*args, not(f(*args))))
 
 even = block(x, x % 2 == 0)

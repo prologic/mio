@@ -1,0 +1,11 @@
+test_identity = block(
+    assert identity(1) == 1
+    assert identity(2) == 2
+)
+
+
+test_constantly = block(
+    f = constantly(1)
+    assert f() == 1
+    assert f(2) == 1
+)

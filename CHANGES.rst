@@ -6,6 +6,7 @@ mio 0.1.7.dev
 .............
 
 - Fixed ``Object evalArg()`` so it can take zero arguments and return ``None``. e.g: ``() a``
+- Implemented ``identity()`` and ``constantly()`` in ``functools`` std. lib and added unit tests.
 
 
 mio 0.1.6 (2013-12-04)
