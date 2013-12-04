@@ -245,7 +245,20 @@ yield = block(
 # Syntactic Sugar
 #
 
-set("()", Object get("evalArg"))
+set("()", block(*args,
+    len(args) > 1 ifTrue(
+        Tuple clone(*args)
+    ) ifFalse(
+        len(args) == 1 ifTrue(
+            args[0]
+        ) ifFalse(
+            None
+        )
+    )
+)
+
+Object get("evalArg"))
+
 set(":", block(
     (call sender has("call") and (call sender call message name == "{}")) ifTrue(
         value = call message arg(0)
