@@ -191,3 +191,24 @@ def test_primitive2(mio):
 
 def test_state(mio):
     assert repr(mio.eval("state")) == "NormalState()"
+
+
+def test_callable(mio):
+    mio.eval("""
+        Foo = Object clone() do (
+            __call__ = method("foo")
+        )
+    """)
+
+    assert mio.eval("Foo()") == "foo"
+
+
+def test_callable2(mio):
+    mio.eval("""
+        Foo = Object clone() do (
+            foo = method("foo")
+        )
+    """)
+
+    with raises(TypeError):
+        assert mio.eval("Foo()", reraise=True)
