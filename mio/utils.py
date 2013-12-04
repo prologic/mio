@@ -65,7 +65,7 @@ def format_object(o):
 
 def method(name=None, property=False):
     def wrapper(f):
-        f.name = name if name is not None else f.__name__
+        f.name = unicode(name) if name is not None else unicode(f.__name__)
         f.method = True
         f.property = property
 

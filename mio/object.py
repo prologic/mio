@@ -156,7 +156,7 @@ class Object(object):
 
     @method("del")
     def _del(self, receiver, context, m, key):
-        key = str(key.eval(context))
+        key = unicode(key.eval(context))
         value = receiver[key]
         del receiver[key]
         if isinstance(value, Object):
@@ -165,14 +165,14 @@ class Object(object):
 
     @method()
     def has(self, receiver, context, m, key):
-        key = str(key.eval(context))
+        key = unicode(key.eval(context))
         if key in receiver:
             return runtime.find("True")
         return runtime.find("False")
 
     @method()
     def set(self, receiver, context, m, key, value):
-        key = str(key.eval(context))
+        key = unicode(key.eval(context))
         value = value.eval(context)
         if isinstance(value, Object):
             value.binding = key
@@ -181,7 +181,7 @@ class Object(object):
 
     @method()
     def get(self, receiver, context, m, key, default=None):
-        key = str(key.eval(context))
+        key = unicode(key.eval(context))
         default = default.eval(context) if default else runtime.find("None")
         return receiver.attrs.get(key, default)
 
@@ -287,7 +287,7 @@ class Object(object):
 
     @method()
     def primitive(self, receiver, context, m, method, *args):
-        method = str(method.eval(context))
+        method = unicode(method.eval(context))
         args = [arg.eval(context).value for arg in args]
         if hasattr(receiver, method):
             return getattr(receiver, method)(*args)
@@ -334,4 +334,4 @@ class Object(object):
 
     @method("__str__")
     def getStr(self, receiver, context, m):
-        return runtime.find("String").clone(str(receiver))
+        return runtime.find("String").clone(unicode(receiver))
