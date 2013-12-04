@@ -6,6 +6,11 @@ def test_clone(mio):
     assert mio.eval("List clone()") == []
 
 
+def test_hash(mio):
+    l = mio.eval("List clone()")
+    l.__hash__() is None
+
+
 def test_clone_list(mio):
     assert mio.eval("List clone(List clone() append(1))") == [1]
 
@@ -99,6 +104,17 @@ def test_extend(mio):
     assert mio.eval("xs") == [1, 2, 3]
 
     assert mio.eval("xs extend(4, 5, 6)") == [1, 2, 3, 4, 5, 6]
+
+
+def test_remove(mio):
+    mio.eval("xs = List clone()")
+    mio.eval("xs append(1)")
+    mio.eval("xs append(2)")
+    mio.eval("xs append(3)")
+    assert mio.eval("xs") == [1, 2, 3]
+
+    mio.eval("xs remove(3)")
+    assert mio.eval("xs") == [1, 2]
 
 
 def test_reverse(mio):
