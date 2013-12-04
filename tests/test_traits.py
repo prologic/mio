@@ -1,7 +1,7 @@
 from pytest import raises
 
 
-from mio.errors import AttributeError
+from mio.errors import AttributeError, TypeError
 
 
 def test_basic_trait(mio, capfd):
@@ -35,6 +35,23 @@ def test_basic_trait(mio, capfd):
     mio.eval("World hello()")
     out, err = capfd.readouterr()
     assert out == "Hello John\n"
+
+
+def test_state(mio):
+    mio.eval("TGreetable = Trait clone()")
+
+    with raises(TypeError):
+        mio.eval("TGreetable greeting = \"World!\"", reraise=True)
+
+
+def test_requirements(mio):
+    mio.eval("""
+        TGreetable = Trait clone() do(
+            requires("greeting")
+        )
+    """)
+
+    mio.eval("TGreetable requirements()") == [u"greeting"]
 
 
 def test_hasTrait(mio):
