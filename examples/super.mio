@@ -1,19 +1,19 @@
 #!/usr/bin/env mio
 
-Foo = Object clone do (
+Foo = Object clone() do (
     foo = method(
         print("foo")
     )
 )
 
-Bar = Foo clone do (
+Bar = Foo clone() do (
     foo = method(
         super() foo()
         print("bar")
     )
 )
 
-World = Bar clone do (
+World = Bar clone() do (
     foo = method(
         super() foo()
         print("Hello World!")

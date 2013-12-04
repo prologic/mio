@@ -1,6 +1,7 @@
 TODO
 ====
 
+- Fix ``Object super()``. Make it a builtin.
 - Make deleting (**unusing**) triats from an object possible again? What's the use case? jer seems to think there is no valid use-case.
 
 - Deal with this better and raise a better error instead of crashing.
