@@ -7,41 +7,6 @@ from .errors import Error
 from .version import version
 
 
-def fromDict(x):
-    return dict(x.value)
-
-
-def fromBoolean(x):
-    if x.value is None:
-        return None
-    return bool(x.value)
-
-
-def toBoolean(x):
-    return "True" if x else "False"
-
-
-typemap = {
-    "tomio": {
-        dict:       "Dict",
-        list:       "List",
-        str:        "String",
-        bool:       toBoolean,
-        int:        "Number",
-        type(None): "None",
-        float:      "Number",
-        Decimal:    "Number",
-    },
-    "frommio": {
-        "Dict":    fromDict,
-        "List":    list,
-        "String":  str,
-        "Boolean": fromBoolean,
-        "Number":  float
-    }
-}
-
-
 def check_parens(s):
     return s.count("(") == s.count(")")
 
@@ -53,6 +18,57 @@ class State(object):
 
         self.args = args if args is not None else []
         self.opts = opts
+
+        self.typemap = {
+            "tomio": {
+                dict:       self.toDict,
+                list:       self.toList,
+                tuple:      self.toTuple,
+                bool:       self.toBoolean,
+                str:        "Bytes",
+                bytes:      "Bytes",
+                unicode:    "String",
+                int:        "Number",
+                type(None): "None",
+                float:      "Number",
+                Decimal:    "Number",
+            },
+            "frommio": {
+                "Dict":    self.fromDict,
+                "List":    self.fromList,
+                "Tuple":   self.fromTuple,
+                "Boolean": self.fromBoolean,
+                "Bytes":   bytes,
+                "String":  unicode,
+                "Number":  float
+            }
+        }
+
+    def fromDict(self, x):
+        return dict((self.frommio(k), self.frommio(v)) for k, v in x.value.items())
+
+    def fromList(self, xs):
+        return list(self.frommio(x) for x in xs.value)
+
+    def fromTuple(self, xs):
+        return tuple(self.frommio(x) for x in xs.value)
+
+    def fromBoolean(self, x):
+        if x.value is None:
+            return None
+        return bool(x.value)
+
+    def toDict(self, x):
+        return self.find("Dict").clone(dict(((self.tomio(k), self.tomio(v)) for k, v in x.items())))
+
+    def toList(self, xs):
+        return self.find("List").clone(list((self.tomio(x) for x in xs)))
+
+    def toTuple(self, xs):
+        return self.find("Tuple").clone(tuple((self.tomio(x) for x in xs)))
+
+    def toBoolean(self, x):
+        return self.find("True") if x else self.find("False")
 
     @property
     def value(self):
@@ -99,16 +115,19 @@ class State(object):
         del self.root["_"]
 
     def frommio(self, x, default=None):
-        return typemap["frommio"].get(x.type, lambda x: default)(x)
+        return self.typemap["frommio"].get(x.type, lambda x: default)(x)
 
     def tomio(self, x, default="None"):
-        mapto = typemap["tomio"].get(type(x), default)
+        mapto = self.typemap["tomio"].get(type(x), default)
 
-        try:
-            obj = self.find(mapto(x)) if callable(mapto) else self.find(mapto)
-            return obj.clone(x)
-        except:
-            return default
+        if callable(mapto):
+            return mapto(x)
+        else:
+            try:
+                obj = self.find(mapto(x)) if callable(mapto) else self.find(mapto)
+                return obj.clone(x)
+            except KeyError:
+                return default
 
     def find(self, name):
         if "Types" in self.root and name in self.root["Types"]:
