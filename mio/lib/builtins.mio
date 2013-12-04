@@ -147,10 +147,11 @@ map = block(f, xs,
 
 next = block(iterator,
     try (
-        iterator __next__()
+        iterator __next__
     ) catch (AttributeError,
         raise TypeError("{0} is not an iterator" format(iterator))
     )
+    iterator __next__()
 )
 
 open = block(filename,
