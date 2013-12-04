@@ -26,9 +26,9 @@ class Trait(Object):
 
     @method()
     def requires(self, receiver, context, m, *methods):
-        receiver.requirements.extend(list((method.eval(context) for method in methods)))
+        receiver.requirements.extend(list((runtime.state.frommio(method.eval(context)) for method in methods)))
         return receiver
 
     @method()
     def requirements(self, receiver, context, m):
-        return runtime.find("List").clone(receiver.requirements)
+        return runtime.state.tomio(receiver.requirements)

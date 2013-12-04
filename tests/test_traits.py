@@ -48,6 +48,48 @@ def test_hasTrait(mio):
     assert mio.eval("World hasTrait(TGreetable)")
 
 
+def test_delTrait(mio):
+    mio.eval("""
+        TGreetable = Trait clone()
+        World = Object clone() do (
+            use(TGreetable)
+        )
+    """)
+
+    assert mio.eval("World hasTrait(TGreetable)")
+    mio.eval("World delTrait(TGreetable)")
+    assert mio.eval("World behaviors") == []
+    assert not mio.eval("World hasTrait(TGreetable)")
+
+
+def test_delTrait2(mio, capfd):
+    mio.eval("""
+        TGreetable = Trait clone() do (
+            hello = method(
+                print("Hello World!")
+            )
+        )
+
+        World = Object clone() do (
+            use(TGreetable)
+        )
+    """)
+
+    assert mio.eval("World hasTrait(TGreetable)")
+    assert mio.eval("World behaviors") == ["hello"]
+
+    assert mio.eval("World hello()").value is None
+    out, err = capfd.readouterr()
+    assert out == "Hello World!\n"
+
+    mio.eval("World delTrait(TGreetable)")
+    assert mio.eval("World behaviors") == []
+    assert not mio.eval("World hasTrait(TGreetable)")
+
+    with raises(AttributeError):
+        mio.eval("World hello()", reraise=True)
+
+
 def test_traits(mio):
     mio.eval("""
         TGreetable = Trait clone()

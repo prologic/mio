@@ -20,7 +20,7 @@ class Object(object):
         self.parent = None
         self.value = value
 
-        self.traits = []
+        self.traits = {}
         self.behaviors = {}
 
         self.binding = None
@@ -92,24 +92,30 @@ class Object(object):
 
         for requirement in trait.requirements:
             if not self.lookup(requirement):
-                raise TypeError("Missing requirement {0:s}".format(repr(requirement)))
+                raise TypeError("{0:s} requires {0:s}".format(repr(trait), repr(requirement)))
 
         for k, v in trait.attrs.items():
             if k in self:
                 name = resolution.get(k, None)
                 if not name:
-                    raise TypeError("Conflicting method {0:s} and no resolution provided".format(repr(k)))
+                    raise TypeError("Method {0:s} of 1:s} conflicts with {2:s}".format(k, repr(trait), repr(self)))
                 else:
                     self.behaviors[name] = v
             else:
                 self.behaviors[k] = v
 
-        self.traits.append(trait)
+        self.traits[trait] = resolution
 
     def __deltrait__(self, trait):
+        resolution = self.traits[trait]
+
         for k, v in trait.attrs.items():
-            del self.behaviors[k]
-        self.traits.remove(trait)
+            if k in self.behaviors:
+                del self.behaviors[k]
+            else:
+                del self.behaviors[resolution[k]]
+
+        del self.traits[trait]
 
     def __hastrait__(self, trait):
         if trait in self.traits:
@@ -142,7 +148,7 @@ class Object(object):
         obj.parent = self
         obj.value = value if value is not Null else obj.value
 
-        obj.traits = []
+        obj.traits = {}
         obj.behaviors = {}
 
         self.binding = None
@@ -198,11 +204,25 @@ class Object(object):
     @method()
     def use(self, receiver, context, m, trait, resolution=None):
         trait = trait.eval(context)
-        if resolution is not None:
-            resolution = dict((runtime.state.frommio(k), runtime.state.frommio(v)) for k, v in runtime.state.frommio(resolution.eval(context)).items())
-        else:
-            resolution = {}
+
+        if receiver.__hastrait__(trait):
+            raise TypeError("{0:s} already uses 1:s}".format(repr(receiver), repr(trait)))
+
+        resolution = runtime.state.frommio(resolution.eval(context)) if resolution is not None else {}
+
         receiver.__addtrait__(trait, **resolution)
+
+        return receiver
+
+    @method()
+    def delTrait(self, receiver, context, m, trait):
+        trait = trait.eval(context)
+
+        if not receiver.__hastrait__(trait):
+            raise TypeError("{0:s} does not use {1:s}".format(repr(receiver), repr(trait)))
+
+        receiver.__deltrait__(trait)
+
         return receiver
 
     @method()
@@ -212,7 +232,7 @@ class Object(object):
 
     @method("traits", True)
     def getTraits(self, receiver, context, m):
-        return runtime.find("List").clone(receiver.traits)
+        return runtime.find("List").clone(receiver.traits.keys())
 
     @method("behaviors", True)
     def getBehaviors(self, receiver, context, m):

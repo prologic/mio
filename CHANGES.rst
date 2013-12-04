@@ -47,7 +47,6 @@ e.g::
   conflicting methods of the trait being used.
 - Make ``Object hasTrait()`` lookup the parent chain.
 - Abuse the ``is`` method of ``TComparble`` to be used as short-cut for: ``foo hasTrait(TFoo)``.
-- Removed ``Object delTrait`` -- not a common trait operation and hard to do right with renamed conflicting trait methods.
 
 
 mio 0.1.5 (2013-11-28)
