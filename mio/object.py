@@ -325,8 +325,10 @@ class Object(object):
     def evalArg(self, receiver, context, m, *args):
         if len(args) > 1:
             return runtime.find("Tuple").clone(tuple(arg.eval(context) for arg in args))
-        else:
+        elif len(args) == 1:
             return args[0].eval(context)
+        else:
+            return runtime.find("None")
 
     @method()
     def do(self, receiver, context, m, expression):
