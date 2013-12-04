@@ -36,7 +36,7 @@ class Dict(Object):
 
     @method("__getitem__")
     def getitem(self, receiver, context, m, key):
-        key = str(key.eval(context))
+        key = key.eval(context)
         if key in receiver.value:
             return receiver.value[key]
         raise KeyError(key)
