@@ -1,4 +1,5 @@
 from copy import copy
+from operator import xor
 from collections import OrderedDict
 from inspect import getmembers, ismethod
 
@@ -36,7 +37,14 @@ class Object(object):
         self.attrs.update(((v.name, v) for k, v in getmembers(self, ismethod) if getattr(v, "method", False) and k in keys))
 
     def __hash__(self):
-        return hash(self.value)
+        return (
+            reduce(xor, map(hash, self.attrs.keys()), 0) ^
+            hash(self.parent) ^
+            hash(self.value) ^
+            reduce(xor, map(hash, self.traits.keys()), 0) ^
+            reduce(xor, map(hash, self.behaviors.keys()), 0) ^
+            hash(self.binding)
+        )
 
     def __nonzero__(self):
         return bool(self.value)
