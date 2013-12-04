@@ -5,3 +5,8 @@ def test(mio):
 
     mio.eval("x()")
     assert mio.eval("i == 2")
+
+
+def test2(mio):
+    x = mio.eval("x = Continuation current")
+    assert mio.eval("x") == x
