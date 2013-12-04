@@ -48,3 +48,10 @@ class TAdaptable(Trait):
     @method("behaviors", True)
     def getBehaviors(self, receiver, context, m):
         return runtime.find("List").clone(receiver.behaviors.keys())
+
+    @method()
+    def adapt(self, receiver, context, m, trait):
+        trait = trait.eval(context)
+        obj = receiver.clone()
+        obj.__addtrait__(trait)
+        return obj

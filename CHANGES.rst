@@ -9,6 +9,11 @@ mio 0.1.7.dev
 - Implemented ``identity()`` and ``constantly()`` in ``functools`` std. lib and added unit tests.
 - Fixed typos in ``operators`` module.
 - Moved all trait related user methods to ``TAdaptable`` core trait.
+- Added ``adapt()`` method to ``TAdaptable``.
+
+.. note:: This is more or less an alias of ``use()`` except the object
+          being adapted is cloned and the original left in tact. The
+          adaptation is therefore temporary.
 
 
 mio 0.1.6 (2013-12-04)

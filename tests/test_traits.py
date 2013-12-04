@@ -54,6 +54,11 @@ def test_requirements(mio):
     mio.eval("TGreetable requirements()") == [u"greeting"]
 
 
+def test_adapt(mio):
+    mio.eval("TGreetable = Trait clone()")
+    assert mio.eval("World = Object clone() adapt(TGreetable) hasTrait(TGreetable)")
+
+
 def test_hasTrait(mio):
     mio.eval("""
         TGreetable = Trait clone()
