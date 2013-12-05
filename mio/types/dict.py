@@ -34,12 +34,16 @@ class Dict(Object):
 
     # General Operations
 
+    @method("__len__")
+    def getLen(self, receiver, context, m):
+        return runtime.find("Number").clone(len(receiver.value))
+
     @method("__getitem__")
     def getitem(self, receiver, context, m, key):
         key = key.eval(context)
         if key in receiver.value:
             return receiver.value[key]
-        raise KeyError(key)
+        raise KeyError(unicode(key))
 
     @method("__setitem__")
     def setitem(self, receiver, context, m, key, value):
