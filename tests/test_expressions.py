@@ -1,3 +1,7 @@
+def test_empty(mio):
+    assert mio.frommio(mio.eval("()")) is None
+
+
 def test_simple(mio):
     assert mio.eval("1 + 2") == 3
 

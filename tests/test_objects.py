@@ -78,6 +78,10 @@ def test_hash(mio):
     assert mio.eval("Object __hash__()") == hash(runtime.find("Object"))
 
 
+def test_hash_invalid(mio):
+    assert mio.frommio(mio.eval("Dict __hash__()")) is None
+
+
 def test_id(mio):
     assert mio.eval("(Object id) == (Object id)")
 
