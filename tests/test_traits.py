@@ -37,6 +37,42 @@ def test_basic_trait(mio, capfd):
     assert out == "Hello John\n"
 
 
+def test_basic_trait2(mio, capfd):
+    mio.eval("""
+        TGreeting = Trait clone() do (
+            hello = method(
+                print("Hello", self getGreeting())
+            )
+        )
+
+        World = Object clone() do (
+            use(TGreeting)
+
+            greeting = "World!"
+
+            getGreeting = method(
+               self greeting
+            )
+
+            setGreeting = method(aGreeting,
+                self greeting = aGreeting
+            )
+        )
+    """)
+
+    mio.eval("World hello()")
+    out, err = capfd.readouterr()
+    assert out == "Hello World!\n"
+
+    mio.eval("World setGreeting(\"John\")")
+    mio.eval("World hello()")
+    out, err = capfd.readouterr()
+    assert out == "Hello John\n"
+
+    with raises(TypeError):
+        mio.eval("World use(TGreeting)", reraise=True)
+
+
 def test_state(mio):
     mio.eval("TGreetable = Trait clone()")
 
@@ -110,6 +146,34 @@ def test_delTrait2(mio, capfd):
 
     with raises(AttributeError):
         mio.eval("World hello()", reraise=True)
+
+
+def test_delTrait3(mio, capfd):
+    mio.eval("""
+        TGreetable = Trait clone() do (
+            hello = method(
+                print("Hello World!")
+            )
+        )
+
+        World = Object clone() do (
+            use(TGreetable)
+        )
+    """)
+
+    assert mio.eval("World hasTrait(TGreetable)")
+    assert mio.eval("World behaviors") == ["hello"]
+
+    assert mio.eval("World hello()").value is None
+    out, err = capfd.readouterr()
+    assert out == "Hello World!\n"
+
+    mio.eval("World delTrait(TGreetable)")
+    assert mio.eval("World behaviors") == []
+    assert not mio.eval("World hasTrait(TGreetable)")
+
+    with raises(TypeError):
+        mio.eval("World delTrait(TGreetable)", reraise=True)
 
 
 def test_traits(mio):
