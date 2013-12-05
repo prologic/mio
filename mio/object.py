@@ -98,7 +98,7 @@ class Object(object):
             if k in self:
                 name = resolution.get(k, None)
                 if not name:
-                    raise TypeError("Method {0:s} of 1:s} conflicts with {2:s}".format(k, repr(trait), repr(self)))
+                    raise TypeError("Method {0:s} of {1:s} conflicts with {2:s}".format(k, repr(trait), repr(self)))
                 else:
                     self.behaviors[name] = v
             else:
