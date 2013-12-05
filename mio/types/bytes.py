@@ -32,10 +32,10 @@ class Bytes(Object):
     def __repr__(self):
         return "b\"{0:s}\"".format(self.value)
 
-    def __bytes__(self):
+    def __str__(self):
         return self.value
 
-    def __str__(self):
+    def __unicode__(self):
         return self.value.decode(encoding)
 
     @method()
@@ -71,12 +71,9 @@ class Bytes(Object):
         return runtime.find("Number").clone(receiver.value.find(sub, start, end))
 
     @method()
-    def join(self, receiver, context, m, *args):
-        if len(args) == 1 and isinstance(args[0], Message):
-            args = args[0].eval(context)
-        else:
-            args = [arg.eval(context) if isinstance(arg, Message) else arg for arg in args]
-        return receiver.clone(receiver.value.join(map(bytes, args)))
+    def join(self, receiver, context, m, iterable):
+        iterable = runtime.state.frommio(iterable.eval(context))
+        return receiver.clone(receiver.value.join(iterable))
 
     @method()
     def lower(self, receiver, context, m):

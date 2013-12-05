@@ -36,10 +36,10 @@ class String(Object):
     def __repr__(self):
         return "u\"{0:s}\"".format(self.value)
 
-    def __bytes__(self):
+    def __str__(self):
         return self.value.encode(encoding)
 
-    def __str__(self):
+    def __unicode__(self):
         return self.value
 
     @method()

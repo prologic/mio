@@ -48,11 +48,23 @@ def test_float(mio):
 
 
 def test_str(mio):
-    assert str(mio.eval("\"foo\"")) == "foo"
+    assert str(mio.eval("\"foo\"")) == b"foo"
+
+
+def test_unicode(mio):
+    assert unicode(mio.eval("\"foo\"")) == u"foo"
 
 
 def test_repr(mio):
     assert repr(mio.eval("\"foo\"")) == "u\"foo\""
+
+
+def test_getitem(mio):
+    assert mio.eval("\"foo\" __getitem__(0) == \"f\"")
+
+
+def test_len(mio):
+    assert mio.eval("\"foo\" __len__()") == 3
 
 
 def test_add(mio):
@@ -61,6 +73,10 @@ def test_add(mio):
 
 def test_mul(mio):
     assert mio.eval("\"a\" * 4") == "aaaa"
+
+
+def test_join(mio):
+    assert mio.eval("u\",\" join([u\"1\", u\"2\", u\"3\"]) == u\"1,2,3\"")
 
 
 def test_find(mio):
@@ -85,3 +101,15 @@ def test_split(mio):
 
 def test_startswith(mio):
     assert mio.eval("\"foobar\" startswith(\"foo\")")
+
+
+def test_strip(mio):
+    assert mio.eval("\"oofoobaroo\" strip(\"oo\") == \"foobar\"")
+
+
+def test_strip2(mio):
+    assert mio.eval("\"foobar\n\" strip() == \"foobar\"")
+
+
+def test_format(mio):
+    assert mio.eval("\"{0}{1}\" format(\"foo\", \"bar\") == \"foobar\"")
