@@ -16,20 +16,20 @@ class Range(Object):
         self.create_methods()
         self.parent = runtime.find("Object")
 
-    def __iter__(self):
-        start = self.start
-
-        if self.stop is None:
-            stop, start = start, 0
-        else:
-            stop = self.stop
-
-        step = 1 if self.step is None else self.step
-
-        if (start < stop and step > 0) or (start > stop and step < 0):
-            while start < stop:
-                yield runtime.find("Number").clone(start)
-                start += step
+#    def __iter__(self):
+#        start = self.start
+#
+#        if self.stop is None:
+#            stop, start = start, 0
+#        else:
+#            stop = self.stop
+#
+#        step = 1 if self.step is None else self.step
+#
+#        if (start < stop and step > 0) or (start > stop and step < 0):
+#            while start < stop:
+#                yield runtime.find("Number").clone(start)
+#                start += step
 
     def __repr__(self):
         keys = ("start", "stop", "step")
@@ -48,7 +48,7 @@ class Range(Object):
 
     @method()
     def setStep(self, receiver, context, m, value):
-        receiver.step = int(value.eval(context))
+        receiver.step = runtime.state.frommio(value.eval(context))
         return receiver
 
     @method("__getitem__")
