@@ -228,5 +228,5 @@ class State(object):
                         cont = False
                     else:
                         cont = True
-            except EOFError:  # pragma: no cover
+            except EOFError:
                 raise SystemExit(0)

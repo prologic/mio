@@ -40,3 +40,11 @@ def test_repl():
     p = Popen([sys.executable, main_wrapper.__file__], stdin=PIPE, stdout=PIPE)
     stdout = p.communicate("print(1 + 2)\nexit()\n")[0]
     assert stdout.split()[3] == "3"
+
+
+def test_repl_cont():
+    p = Popen([sys.executable, main_wrapper.__file__], stdin=PIPE, stdout=PIPE)
+    stdout = p.communicate("foo = block(\n    print(\"Hello World!\")\n)")[0]
+    lines = stdout.split()[3:]
+    assert lines[0] == "...."
+    assert lines[1] == "...."
