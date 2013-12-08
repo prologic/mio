@@ -13,7 +13,9 @@ from mio.errors import AttributeError, Error
 # {
 #     dict:    "Dict"
 #     list:    "List"
-#     str:     "String"
+#     tuple:   "Tuple",
+#     unicode: "String"
+#     str:     "Bytes",
 #     bool:    "Boolean"
 #     Decimal: "Number"
 # }
@@ -78,12 +80,24 @@ def test_tomio_List(mio):
     assert runtime.state.tomio([]) == mio.eval("List clone()")
 
 
+def test_frommio_Tuple(mio):
+    assert runtime.state.frommio(mio.eval("Tuple clone()")) == ()
+
+
+def test_tomio_Tuple(mio):
+    assert runtime.state.tomio(()) == mio.eval("Tuple clone()")
+
+
 def test_frommio_Dict(mio):
     assert runtime.state.frommio(mio.eval("Dict clone()")) == {}
 
 
 def test_tomio_Dict(mio):
     assert runtime.state.tomio({}) == mio.eval("Dict clone()")
+
+
+def test_tomio_default(mio):
+    assert runtime.state.frommio(runtime.state.tomio(type(None))) is None
 
 
 def test_error(mio, capfd):

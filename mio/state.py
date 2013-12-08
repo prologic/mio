@@ -123,11 +123,9 @@ class State(object):
         if callable(mapto):
             return mapto(x)
         else:
-            try:
-                obj = self.find(mapto(x)) if callable(mapto) else self.find(mapto)
-                return obj.clone(x)
-            except KeyError:
-                return default
+            if mapto in ("True", "False", "None"):
+                return self.find(mapto)
+            return self.find(mapto).clone(x)
 
     def find(self, name):
         if "Types" in self.root and name in self.root["Types"]:
