@@ -1,6 +1,6 @@
 from pytest import raises
 
-from mio.errors import IndexError, TypeError
+from mio.errors import IndexError
 
 
 def test_range_init(mio):
