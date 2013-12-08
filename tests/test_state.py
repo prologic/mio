@@ -112,3 +112,14 @@ def test_usererror(mio, capfd):
         mio.eval("raise TypeError", reraise=True)
     out, err = capfd.readouterr()
     assert out == "\n  TypeError: \n  ----------\n  raise(TypeError)\n\n"
+
+
+def test_runsource(mio):
+    assert runtime.state.runsource("(1 + 2")
+
+
+def test_runsource2(mio, capfd):
+    assert runtime.state.runsource("(1 + 2)") is None
+
+    out, err = capfd.readouterr()
+    assert out == "===> 3\n"
