@@ -37,3 +37,20 @@ def test_reset(mio):
     assert not state.isReturn
     assert state.value is Null
     assert repr(state) == "NormalState()"
+
+
+def test_state_stop(mio):
+    mio.eval("f = block(State clone() setReturn(\"foo\"))")
+    assert mio.eval("f() stop()")
+
+
+def test_state_invalid(mio):
+    assert mio.eval("state setContinue() is state")
+
+
+def test_state_invalid2(mio):
+    assert mio.eval("state setReturn() is state")
+
+
+def test_state_invalid3(mio):
+    assert mio.eval("state setBreak() is state")
