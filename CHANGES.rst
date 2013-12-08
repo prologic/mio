@@ -2,8 +2,8 @@ Changes
 -------
 
 
-mio 0.1.7.dev
-.............
+mio 0.1.7
+.........
 
 - Fixed ``Object evalArg()`` so it can take zero arguments and return ``None``. e.g: ``() a``
 - Implemented ``identity()`` and ``constantly()`` in ``functools`` std. lib and added unit tests.
