@@ -1,6 +1,3 @@
-from os import path
-
-
 from mio import runtime
 from mio.parser import parse
 from mio.utils import method
@@ -27,17 +24,13 @@ class Module(Object):
         receiver.name = name = str(name)
         receiver.file = file = str(file)
 
-        # Are we loading a package module?
-        if path.isdir(file):
-            file = path.join(file, "__init__.mio")
-
         runtime.state.load(file, receiver, receiver)
 
         return receiver
 
     @method("import")
     def _import(self, receiver, context, m, name):
-        name = name.name if name.value is None else str(name.eval(context))
+        name = name.name if name.value is None else unicode(name.eval(context))
 
         # In case we're importing from inside a module.
         if context.type == "Module" and receiver is context:
