@@ -9,6 +9,10 @@ constantly = block(x,
     block(x)
 )
 
+caller = block(*args,
+    block(f, f(*args))
+)
+
 complement = block(f, block(*args, not(f(*args))))
 
 even = block(x, x % 2 == 0)

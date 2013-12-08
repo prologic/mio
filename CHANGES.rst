@@ -5,7 +5,7 @@ Changes
 mio 0.1.8.dev
 .............
 
--
+- Implemented ``caller()`` [**functools**]
 
 
 mio 0.1.7 (2013-12-09)
