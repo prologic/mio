@@ -164,3 +164,12 @@ def test_completer6(mio, capfd):
 
     out, err = capfd.readouterr()
     assert out == "\n Core        Types      \nmio> "
+
+
+def test_completer7(mio, capfd):
+    completer = Completer(mio)
+
+    completer.display_matches("Root", ["Root Core"] * 100, 9)
+
+    out, err = capfd.readouterr()
+    assert set(out.split()[:-1]) == set(["Core"])
