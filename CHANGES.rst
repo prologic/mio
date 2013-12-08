@@ -15,6 +15,9 @@ mio 0.1.7.dev
           being adapted is cloned and the original left in tact. The
           adaptation is therefore temporary.
 
+- Added support for contextually aware tab completion.
+- Test Coverage back up to 100%
+
 
 mio 0.1.6 (2013-12-04)
 ......................

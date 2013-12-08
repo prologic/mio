@@ -1,7 +1,7 @@
 from __future__ import print_function
 
+from os import environ
 from decimal import Decimal
-
 
 from .errors import Error
 from .version import version
@@ -9,6 +9,99 @@ from .version import version
 
 def check_parens(s):
     return s.count("(") == s.count(")")
+
+
+def print_traceback(e):
+    from .object import Object
+
+    if e.args and isinstance(e.args[0], Object):
+        error = e.args[0]
+        type = str(error["type"]) if error["type"] is not None else error.type
+        message = str(error["message"]) if error["message"] is not None else ""
+    else:
+        type = e.__class__.__name__
+        message = str(e)
+
+    stack = "\n".join(["  {0:s}".format(repr(m)) for m in e.stack])
+    underline = "-" * (len(type) + 1)
+    print("\n  {0:s}: {1:s}\n  {2:s}\n{3:s}\n".format(type, message, underline, stack))
+
+
+class Completer(object):
+
+    def __init__(self, state):
+        super(Completer, self).__init__()
+
+        self.state = state
+
+        # Build up Global Objects
+        self.objects = self.state.root.attrs.keys()
+        self.objects.extend(self.state.root["Types"].attrs.keys())
+        self.objects.extend(self.state.root["Core"].attrs.keys())
+        if "builtins" in self.state.root:
+            self.objects.extend(self.state.root["builtins"].attrs.keys())
+
+    def complete(self, text, state):
+        if state == 0:
+            if " " in text:
+                self.matches = self.attr_matches(text)
+            else:
+                self.matches = self.global_matches(text)
+
+        try:
+            return self.matches[state]
+        except IndexError:
+            return None
+
+    def display_matches(self, substitution, matches, longest_match_length):
+        import readline
+
+        line_buffer = readline.get_line_buffer()
+        columns = environ.get("COLUMNS", 80)
+
+        print()
+
+        tpl = "{:<" + str(int(max(map(len, matches)) * 1.2)) + "}"
+
+        buffer = ""
+        for match in matches:
+            match = tpl.format(match[len(substitution):])
+            if len(buffer + match) > columns:
+                print(buffer)
+                buffer = ""
+            buffer += match
+
+        if buffer:
+            print(buffer)
+
+        print(self.state.prompt, end="")
+        print(line_buffer, end="")
+
+    def global_matches(self, text):
+        matches = []
+        n = len(text)
+        for word in self.objects:
+            if word[:n] == text:
+                matches.append(word)
+        return matches
+
+    def attr_matches(self, text):
+        tokens = text.split(" ")
+        expr, attr = " ".join(tokens[:-1]), tokens[-1]
+
+        try:
+            object = self.state.eval(expr, showerror=False, reraise=True)
+        except Exception:
+            return []
+
+        words = object.attrs.keys()
+
+        matches = []
+        n = len(attr)
+        for word in words:
+            if word[:n] == attr:
+                matches.append("{0:s} {1:s}".format(expr, word))
+        return matches
 
 
 class State(object):
@@ -43,6 +136,8 @@ class State(object):
                 "Number":  float
             }
         }
+
+        self.prompt = "mio> "
 
     def fromDict(self, x):
         return dict((self.frommio(k), self.frommio(v)) for k, v in x.value.items())
@@ -139,7 +234,7 @@ class State(object):
         else:
             return self.root[name]
 
-    def eval(self, code, receiver=None, context=None, reraise=False):
+    def eval(self, code, receiver=None, context=None, showerror=True, reraise=False):
         from .parser import parse
         from .lexer import tokenize
 
@@ -149,24 +244,8 @@ class State(object):
             message = parse(tokenize(code))
             return message.eval(self.root if receiver is None else receiver, self.root if context is None else context, message)
         except Error as e:
-            from .object import Object
-            if e.args and isinstance(e.args[0], Object):
-                error = e.args[0]
-                type = str(error["type"]) if error["type"] is not None else error.type
-                message = str(error["message"]) if error["message"] is not None else ""
-            else:
-                type = e.__class__.__name__
-                message = str(e)
-
-            stack = "\n".join(["  {0:s}".format(repr(m)) for m in e.stack])
-            underline = "-" * (len(type) + 1)
-            print("\n  {0:s}: {1:s}\n  {2:s}\n{3:s}\n".format(type, message, underline, stack))
-            if reraise:
-                raise
-        except Exception as e:  # pragma: no cover
-            print("ERROR:", e)
-            from traceback import format_exc
-            print(format_exc())
+            if showerror:
+                print_traceback(e)
             if reraise:
                 raise
 
@@ -191,21 +270,12 @@ class State(object):
         readline = tryimport("readline")
 
         if readline is not None:
-            objects = self.root.attrs.keys()
-            objects.extend(self.root["Types"].attrs.keys())
-            objects.extend(self.root["Core"].attrs.keys())
-            if "builtins" in self.root:
-                objects.extend(self.root["builtins"].attrs.keys())
-
-            def completer(text, state):
-                options = [i for i in objects if i.startswith(text)]
-                if state < len(options):
-                    return options[state]
-                else:
-                    return None
-
             readline.parse_and_bind("tab: complete")
-            readline.set_completer(completer)
+
+            completer = Completer(self)
+            readline.set_completer_delims("")
+            readline.set_completer(completer.complete)
+            readline.set_completion_display_matches_hook(completer.display_matches)
 
         print("mio {0:s}".format(version))
 
@@ -215,11 +285,11 @@ class State(object):
         while True:
             try:
                 if cont:
-                    ps = ".... "
+                    self.prompt = ".... "
                 else:
-                    ps = "mio> "
+                    self.prompt = "mio> "
 
-                code += raw_input(ps)
+                code += raw_input(self.prompt)
 
                 if code:
                     if check_parens(code):

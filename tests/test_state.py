@@ -6,6 +6,7 @@ from decimal import Decimal
 
 from mio import runtime
 from mio.utils import Null
+from mio.state import Completer
 from mio.errors import AttributeError, Error
 
 
@@ -123,3 +124,43 @@ def test_runsource2(mio, capfd):
 
     out, err = capfd.readouterr()
     assert out == "===> 3\n"
+
+
+def test_completer(mio):
+    completer = Completer(mio)
+
+    assert completer.complete("", 0) == "Core"
+
+
+def test_completer2(mio):
+    completer = Completer(mio)
+
+    assert completer.complete("Root ", 0) == "Root Core"
+
+
+def test_completer3(mio):
+    completer = Completer(mio)
+
+    assert completer.complete("Root bu", 0) == "Root builtins"
+
+
+def test_completer4(mio):
+    completer = Completer(mio)
+
+    assert completer.complete("Root asdf ", 0) is None
+
+
+def test_completer5(mio):
+    completer = Completer(mio)
+    assert completer.complete("", 0) == "Core"
+
+    assert completer.complete("", len(completer.matches)) is None
+
+
+def test_completer6(mio, capfd):
+    completer = Completer(mio)
+
+    completer.display_matches("Root", ["Root Core", "Root Types"], 10)
+
+    out, err = capfd.readouterr()
+    assert out == "\n Core        Types      \nmio> "
