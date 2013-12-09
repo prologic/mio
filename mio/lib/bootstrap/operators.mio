@@ -24,3 +24,7 @@ Number do(
 
     set("..", method(other, Range clone(self, other)))
 )
+
+List do(
+    set("+", method(other, self extend(other)))
+)
