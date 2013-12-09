@@ -103,7 +103,7 @@ def test_extend(mio):
     mio.eval("xs append(3)")
     assert mio.eval("xs") == [1, 2, 3]
 
-    assert mio.eval("xs extend(4, 5, 6)") == [1, 2, 3, 4, 5, 6]
+    assert mio.eval("xs extend([4, 5, 6])") == [1, 2, 3, 4, 5, 6]
 
 
 def test_remove(mio):

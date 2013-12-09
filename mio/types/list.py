@@ -61,9 +61,8 @@ class List(Object):
         return runtime.find("Number").clone(receiver.value.count(value.eval(context)))
 
     @method()
-    def extend(self, receiver, context, m, *args):
-        args = [arg.eval(context) for arg in args]
-        receiver.value.extend(args)
+    def extend(self, receiver, context, m, other):
+        receiver.value.extend(list(other.eval(context)))
         return receiver
 
     @method(property=True)
