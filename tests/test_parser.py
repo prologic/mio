@@ -144,6 +144,11 @@ def test_operators(mio):
     assert repr(chain) == "1 +(2) *(3)"
 
 
+def test_operators2(mio):
+    chain = parse(tokenize("[1] + [2]"))
+    assert repr(chain) == "[](1) +([](2))"
+
+
 def test_operators_assignment(mio):
     chain = parse(tokenize("foo = method(\n1 +1\n)"))
     assert repr(chain) == "set(foo, method(\n 1 +(1) \n))"

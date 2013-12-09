@@ -124,6 +124,12 @@ def make_chain(messages, all=True):
                         chain.previous = message
                         message.args.append(chain)
                         message.call = True
+            elif message.next is not None:
+                chain = message.next
+                message.next = None
+                chain.previous = message
+                message.args.append(chain)
+                message.call = True
         elif messages[0].terminator and not all:
             break
         else:

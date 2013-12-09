@@ -191,14 +191,16 @@ class Message(Object):
 
     @next.setter
     def next(self, message):
-        message._first = self._first
-        message._previous = self
+        if message is not None:
+            message._first = self._first
+            message._previous = self
 
         self._next = message
 
+        last = self if message is None else message
         next = self._first
         while next is not None:
-            next._last = message
+            next._last = last
             next = next._next
 
     @property

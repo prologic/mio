@@ -6,7 +6,7 @@ mio 0.1.8.dev
 .............
 
 - Implemented ``caller()`` [**functools**]
-
+- Fixed parser support for ``[1] + [2]`` --> ``[](1} +([](2))``
 
 mio 0.1.7 (2013-12-09)
 ......................
