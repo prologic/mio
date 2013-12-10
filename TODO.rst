@@ -4,8 +4,6 @@ TODO
 - Update the ``docs/source/grammar.rst`` and try to auto-generate it from the parser via ``.ebnf()``
 - Fix ``property.mio`` example and basic data descriptors.
 - Fix ``Object super()``. Make it a builtin.
-- Make deleting (**unusing**) triats from an object possible again? What's the use case? jer seems to think there is no valid use-case.
-
 - Deal with this better and raise a better error instead of crashing.
 
 ::
@@ -14,7 +12,6 @@ TODO
         a + b
     )
     
-- Fix user errors.
 - Implement ``__slice__``, ``slice(...)`` and ``xs[start:[end][:step]``
 
 - Change the way methods and blocks are bound and unifiy them into a single entity.
@@ -25,7 +22,6 @@ TODO
   - Are by default bound to the context they are created in.
 
 - Fix keyword argument(s) parameters.
-- Bring test coverage back up to 100%
 - Figure out a way to avoid recursion so ``loop(print("foo"))`` works as expected.
 - Write a testing framework for mio in mio.
 - Implement a "trace" hook into the interpreter. i.e: Python's ``sys.settrace()``
