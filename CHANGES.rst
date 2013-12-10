@@ -9,6 +9,7 @@ mio 0.1.8.dev
 - Fixed parser support for ``[1] + [2]`` --> ``[](1} +([](2))``
 - Fixed ``List extend()`` to take another list, not ``*args``.
 - Implemented ``+`` List operator.
+- Implemented ``min`` and ``max`` and added to the mio std. lib.
 
 
 mio 0.1.7 (2013-12-09)

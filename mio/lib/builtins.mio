@@ -137,12 +137,40 @@ loop = block(
     c()
 )
 
+min = block(iterable,
+    r = None
+    iterable foreach(x,
+        (r is None) ifTrue(
+            r = x
+        ) ifFalse(
+            (x < r) ifTrue(
+                r = x
+            )
+        )
+    )
+    r
+)
+
 map = block(f, xs,
     rs = List clone()
     xs foreach(x,
         rs append(f(x))
     )
     rs
+)
+
+max = block(iterable,
+    r = None
+    iterable foreach(x,
+        (r is None) ifTrue(
+            r = x
+        ) ifFalse(
+            (x > r) ifTrue(
+                r = x
+            )
+        )
+    )
+    r
 )
 
 next = block(iterator,
