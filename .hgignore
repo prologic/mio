@@ -12,3 +12,4 @@ coverage
 *egg-info
 .coverage*
 docs/build
+docs/source/api
