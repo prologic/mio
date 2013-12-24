@@ -2,8 +2,8 @@ Changes
 -------
 
 
-mio 0.1.8.dev
-.............
+mio 0.1.8 (*2013-12-24*)
+........................
 
 - Implemented ``caller()`` [**functools**]
 - Fixed parser support for ``[1] + [2]`` --> ``[](1} +([](2))``
@@ -12,8 +12,8 @@ mio 0.1.8.dev
 - Implemented ``min`` and ``max`` and added to the mio std. lib.
 
 
-mio 0.1.7 (2013-12-09)
-......................
+mio 0.1.7 (*2013-12-09*)
+........................
 
 - Fixed ``Object evalArg()`` so it can take zero arguments and return ``None``. e.g: ``() a``
 - Implemented ``identity()`` and ``constantly()`` in ``functools`` std. lib and added unit tests.
@@ -29,8 +29,8 @@ mio 0.1.7 (2013-12-09)
 - Test Coverage back up to 100%
 
 
-mio 0.1.6 (2013-12-04)
-......................
+mio 0.1.6 (*2013-12-04*)
+........................
 
 - Added support for packaging Python `wheels <http://pythonwheels.com/>`_.
 - Define a default ``init()`` method on ``Object`` and just make ``TCloneable init()`` just call ``init()``.
@@ -76,15 +76,15 @@ e.g::
 - Abuse the ``is`` method of ``TComparble`` to be used as short-cut for: ``foo hasTrait(TFoo)``.
 
 
-mio 0.1.5 (2013-11-28)
-......................
+mio 0.1.5 (*2013-11-28*)
+........................
 
 - Don't look into ``builtins`` module for the tab-completer function of the REPL if there are no builtins. i.e: ``mio -S``
 - Added a nice big shiny red warning about mio's status.
 
 
-mio 0.1.4 (2013-11-27)
-......................
+mio 0.1.4 (*2013-11-27*)
+........................
 
 - Added "Functions" to the tutorial.
 - Added "Objects" to the tutorial.
@@ -105,14 +105,14 @@ mio 0.1.4 (2013-11-27)
 - Added API Docs.
 
 
-mio 0.1.3 (2013-11-19)
-......................
+mio 0.1.3 (*2013-11-19*)
+........................
 
 - Fixed tutorial by writing a bash script that generates it (*Read the Docs forbids program-output extension*).
 
 
-mio 0.1.2 (2013-11-19)
-......................
+mio 0.1.2 (*2013-11-19*)
+........................
 
 - Moved ``File`` from types to core.
 - Allow multiple ``-e expr`` options to be given on the CLI.
@@ -127,8 +127,8 @@ mio 0.1.2 (2013-11-19)
 - Improved Test Coverage of new features and objects.
 
 
-mio 0.1.1  (2013-11-18)
-.......................
+mio 0.1.1  (*2013-11-18*)
+.........................
 
 - The beginnings of a testing framework.
 - Implemented unit tests for mio builtins: ``abs``, ``all`` and ``any``.
@@ -141,8 +141,8 @@ mio 0.1.1  (2013-11-18)
 - Implemented ``Path`` object.
 
 
-mio 0.1 (2013-11-14)
-....................
+mio 0.1 (*2013-11-14*)
+......................
 
 - Updated factorial examples
 - Added support for and a ``fab compile`` task for compiling mio with RPython
@@ -194,8 +194,8 @@ mio 0.1 (2013-11-14)
           or nested blocks within a method.
 
 
-mio 0.0.9 (2013-11-10)
-......................
+mio 0.0.9 (*2013-11-10*)
+........................
 
 - Fixed ``[]`` syntax for creating lists.
 - Fixed ``TIterable foreac`` to work more like a for loop.
@@ -217,8 +217,8 @@ mio 0.0.9 (2013-11-10)
 - Implemented ``assert`` builtin.
 
 
-mio 0.0.8 (2013-11-07)
-......................
+mio 0.0.8 (*2013-11-07*)
+........................
 
 - Removed operator precedence parsing.
 
@@ -230,8 +230,8 @@ mio 0.0.8 (2013-11-07)
 - ``from foo import *`` works again (*operator precedence parsing broke it*).
 
 
-mio 0.0.7 (2013-11-06)
-......................
+mio 0.0.7 (*2013-11-06*)
+........................
 
 - Added rudamentary stack trace support to errors. A somewhat "okay" stack trace is displayed on error(s).
 - Added ``String format`` method for performing string iterpolation. Only supports ``{0}``, ``{1}``, etc.
@@ -289,8 +289,8 @@ A further iteration would result in:
 - IMplemented the ``__get__`` part of the Data Descriptor protocol.
 
 
-mio 0.0.6 (2013-11-02)
-......................
+mio 0.0.6 (*2013-11-02*)
+........................
 
 - Allow an optional object to be passed to the ``Object id`` method.
 - Implemented ``hex`` builtin.
@@ -365,8 +365,8 @@ NEW::
 - Made it possible to import members from a module with: ``from foo import bar``
 
 
-mio 0.0.5 (2013-10-29)
-......................
+mio 0.0.5 (*2013-10-29*)
+........................
 
 - Split up core into core and types.
 - Re-implemented ``True``, ``False`` and ``None`` in mio.
