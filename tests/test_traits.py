@@ -135,7 +135,7 @@ def test_resolution2(mio):
     mio.eval("Foo = Object clone() use(TFoo) use(TBar, {\"foo\": \"bar\"})")
     assert mio.eval("Foo hasTrait(TFoo)")
     assert mio.eval("Foo hasTrait(TBar)")
-    assert mio.eval("Foo behaviors") == ["foo", "bar"]
+    assert set(mio.eval("Foo behaviors")) == set([u"foo", u"bar"])
 
 
 def test_resolution_deltrait(mio):
@@ -151,7 +151,7 @@ def test_resolution_deltrait(mio):
     mio.eval("Foo = Object clone() use(TFoo) use(TBar, {\"foo\": \"bar\"})")
     assert mio.eval("Foo hasTrait(TFoo)")
     assert mio.eval("Foo hasTrait(TBar)")
-    assert mio.eval("Foo behaviors") == ["foo", "bar"]
+    assert set(mio.eval("Foo behaviors")) == set([u"foo", u"bar"])
 
     mio.eval("Foo delTrait(TFoo)")
     assert not mio.eval("Foo hasTrait(TFoo)")

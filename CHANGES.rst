@@ -5,7 +5,8 @@ Changes
 mio 0.1.9.dev
 .............
 
--
+- Added support for testing with Jenkins for Continuous Integration
+- Fixed Traits test
 
 
 mio 0.1.8 (*2013-12-24*)
