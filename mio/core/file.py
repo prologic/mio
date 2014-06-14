@@ -63,7 +63,8 @@ class File(Object):
 
     @method()
     def readlines(self, receiver, context, m):
-        lines = [runtime.find("String").clone(line) for line in receiver.value.readlines()]
+        lines = [runtime.find("String").clone(line)
+                 for line in receiver.value.readlines()]
         return runtime.find("List").clone(lines)
 
     @method()

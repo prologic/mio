@@ -9,6 +9,7 @@ def bar(a, b):
 
 
 class Foo(object):
+
     """Foo"""
 
     def foo(self, a, b):

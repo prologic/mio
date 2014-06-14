@@ -19,19 +19,22 @@ def test_help():
 
 
 def test_version():
-    p = Popen([sys.executable, main_wrapper.__file__, "--version"], stdout=PIPE)
+    p = Popen(
+        [sys.executable, main_wrapper.__file__, "--version"], stdout=PIPE)
     stdout = p.communicate()[0].strip()
     assert stdout == VERSION
 
 
 def test_eval():
-    p = Popen([sys.executable, main_wrapper.__file__, "-e", "print(1 + 2)"], stdout=PIPE)
+    p = Popen(
+        [sys.executable, main_wrapper.__file__, "-e", "print(1 + 2)"], stdout=PIPE)
     stdout = p.communicate()[0]
     assert stdout == "3\n"
 
 
 def test_inspect():
-    p = Popen([sys.executable, main_wrapper.__file__, "-i", TEST_FILE], stdin=PIPE, stdout=PIPE)
+    p = Popen([sys.executable, main_wrapper.__file__, "-i", TEST_FILE],
+              stdin=PIPE, stdout=PIPE)
     stdout = p.communicate("exit()\n")[0]
     assert stdout.split()[0] == "3"
 

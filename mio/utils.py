@@ -6,7 +6,8 @@ from mio import runtime
 
 
 def default_repr(o):
-    type = "{0:s}({1:s})".format(o.binding, o.type) if o.binding is not None else o.type
+    type = "{0:s}({1:s})".format(
+        o.binding, o.type) if o.binding is not None else o.type
     return "{0:s} at {1:s}".format(type, hex(id(o)))
 
 
@@ -58,7 +59,8 @@ def format_object(o):
     def format_key(k):
         return str(k).ljust(15)
 
-    attrs = "\n".join(["       {0:s} = {1:s}".format(format_key(k), format_value(v)) for k, v in sorted(o.attrs.items())])
+    attrs = "\n".join(["       {0:s} = {1:s}".format(
+        format_key(k), format_value(v)) for k, v in sorted(o.attrs.items())])
 
     return "{0:s}{1:s}".format(repr(o), ":\n{0:s}".format(attrs) if attrs else "")
 
@@ -105,6 +107,7 @@ def tryimport(modules, message=None):
 
 
 class MetaNull(type):
+
     """Meta Class for Null"""
 
 

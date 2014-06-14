@@ -82,14 +82,17 @@ class String(Object):
 
     @method()
     def split(self, receiver, context, m, sep=None, maxsplit=-1):
-        sep = runtime.state.frommio(sep.eval(context)) if sep is not None else sep
+        sep = runtime.state.frommio(
+            sep.eval(context)) if sep is not None else sep
         maxsplit = int(maxsplit.eval(context)) if maxsplit != -1 else maxsplit
-        xs = [runtime.types("String").clone(s) for s in receiver.value.split(sep, maxsplit)]
+        xs = [runtime.types("String").clone(s)
+              for s in receiver.value.split(sep, maxsplit)]
         return runtime.types("List").clone(xs)
 
     @method()
     def strip(self, receiver, context, m, chars=None):
-        chars = runtime.state.frommio(chars.eval(context)) if chars is not None else chars
+        chars = runtime.state.frommio(
+            chars.eval(context)) if chars is not None else chars
         if chars is None:
             value = receiver.value.strip()
         else:
@@ -101,7 +104,8 @@ class String(Object):
         if len(args) == 1 and isinstance(args[0], Message):
             args = args[0].eval(context)
         else:
-            args = [arg.eval(context) if isinstance(arg, Message) else arg for arg in args]
+            args = [arg.eval(context) if isinstance(
+                arg, Message) else arg for arg in args]
         return receiver.clone(receiver.value.join(map(str, args)))
 
     @method()

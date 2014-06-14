@@ -22,7 +22,8 @@ def test_hash(mio):
 
 
 def test_clone_dict(mio):
-    assert mio.frommio(mio.eval("Dict clone(Dict clone() __setitem__(\"a\", 1))")) == {u"a": 1}
+    assert mio.frommio(
+        mio.eval("Dict clone(Dict clone() __setitem__(\"a\", 1))")) == {u"a": 1}
 
 
 def test_repr(mio):
@@ -35,7 +36,8 @@ def test_repr2(mio):
     mio.eval("d __setitem__(\"b\", 2)")
     mio.eval("d __setitem__(\"c\", 3)")
 
-    assert repr(mio.eval("d")) in ["{" + ", ".join(p) + "}" for p in permutations(["u\"a\": 1", "u\"b\": 2", "u\"c\": 3"])]
+    assert repr(mio.eval("d")) in [
+        "{" + ", ".join(p) + "}" for p in permutations(["u\"a\": 1", "u\"b\": 2", "u\"c\": 3"])]
 
 
 def test_setitem(mio):
@@ -45,7 +47,8 @@ def test_setitem(mio):
     mio.eval("d __setitem__(\"c\", 3)")
     assert mio.frommio(mio.eval("d")) == {u"a": 1, u"b": 2, u"c": 3}
 
-    assert mio.frommio(mio.eval("d __setitem__(\"d\", 4)")) == {u"a": 1, u"b": 2, u"c": 3, u"d": 4}
+    assert mio.frommio(mio.eval("d __setitem__(\"d\", 4)")) == {
+        u"a": 1, u"b": 2, u"c": 3, u"d": 4}
 
 
 def test_getitem(mio):
@@ -136,4 +139,5 @@ def test_items(mio):
     mio.eval("d __setitem__(\"c\", 3)")
     assert mio.frommio(mio.eval("d")) == {u"a": 1, u"b": 2, u"c": 3}
 
-    assert sorted(mio.frommio(mio.eval("d items")), key=itemgetter(0)) == [["a", 1], ["b", 2], ["c", 3]]
+    assert sorted(mio.frommio(mio.eval("d items")), key=itemgetter(0)) == [
+        ["a", 1], ["b", 2], ["c", 3]]

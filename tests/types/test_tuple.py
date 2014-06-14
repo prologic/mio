@@ -6,8 +6,8 @@ def test_clone(mio):
     assert mio.eval("Tuple clone()") == ()
 
 
-#XXX: Broken
-#def test_clone_tuple(mio):
+# XXX: Broken
+# def test_clone_tuple(mio):
 #    assert mio.eval("Tuple clone(Tuple clone((1, 2, 3)))") == (1, 2, 3)
 
 

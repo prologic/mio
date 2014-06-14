@@ -23,6 +23,7 @@ from mio.errors import AttributeError, Error
 
 
 class Foo(object):
+
     """Foo Class
 
     mio does not support coerving Python user classes, methods or

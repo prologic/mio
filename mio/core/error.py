@@ -27,5 +27,6 @@ class Error(Object):
 
     @method("__call__")
     def call(self, receiver, context, m, message=None):
-        receiver["message"] = str(message.eval(context)) if message is not None else ""
+        receiver["message"] = str(
+            message.eval(context)) if message is not None else ""
         return receiver

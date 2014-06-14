@@ -19,7 +19,8 @@ def wrap_function(f):
     @wraps(f)
     def wrapper(receiver, context, m, *args, **kwargs):
         args = tuple(runtime.state.frommio(arg.eval(context)) for arg in args)
-        kwargs = dict((k, runtime.state.frommio(v.eval(context))) for k, v in kwargs.items())
+        kwargs = dict((k, runtime.state.frommio(v.eval(context)))
+                      for k, v in kwargs.items())
         return runtime.state.tomio(f(*args, **kwargs))
     return wrapper
 
@@ -42,7 +43,8 @@ class FFI(Object):
     def create_attributes(self):
         members = dict(getmembers(self.module))
         if "__all__" in members:
-            members = dict((k, v) for k, v in members.items() if k in members["__all__"])
+            members = dict((k, v)
+                           for k, v in members.items() if k in members["__all__"])
 
         for k, v in members.items():
             if isfunction(v) or isbuiltin(v):
@@ -64,7 +66,8 @@ class FFI(Object):
 
     @method()
     def fromfile(self, receiver, context, m, filename):
-        filename = path.abspath(path.expanduser(path.expandvars(str(filename.eval(context)))))
+        filename = path.abspath(
+            path.expanduser(path.expandvars(str(filename.eval(context)))))
         name = path.splitext(path.basename(filename))[0]
         code = open(filename, "r").read()
 

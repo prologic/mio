@@ -20,10 +20,12 @@ def getargname(arg):
 
 
 class Call(Object):
+
     """Call Object"""
 
 
 class Locals(Object):
+
     """Locals Object"""
 
     @method("*")
@@ -48,7 +50,8 @@ class Block(Object):
         self.parent = runtime.find("Object")
 
     def __repr__(self):
-        args = ", ".join(chain(map(getargname, self.args), ("{0:s}={1:s}".format(str(k), repr(v)) for k, v in self.kwargs.items())))
+        args = ", ".join(chain(map(getargname, self.args), ("{0:s}={1:s}".format(
+            str(k), repr(v)) for k, v in self.kwargs.items())))
         return "{0:s}({1:s})".format("block" if self.scope is not None else "method", args)
 
     def create_locals(self, receiver, context, m):
@@ -82,13 +85,16 @@ class Block(Object):
 
         # Set positional arguments *args
         if len(self.args) == 1 and self.args[0].name == "*":
-            # XXX: Can we make this just a list of args? Or always a list of messages?
-            self.locals[self.args[0].args[0].name] = runtime.find("List").clone([arg.eval(context) if isinstance(arg, Message) else arg for arg in args if not isinstance(arg, Message) or (isinstance(arg, Message) and arg.name != "set" and not arg.args)])
+            # XXX: Can we make this just a list of args? Or always a list of
+            # messages?
+            self.locals[self.args[0].args[0].name] = runtime.find("List").clone([arg.eval(context) if isinstance(
+                arg, Message) else arg for arg in args if not isinstance(arg, Message) or (isinstance(arg, Message) and arg.name != "set" and not arg.args)])
         else:
             # Set positional arguments
             for i, arg in enumerate(self.args):
                 if i < len(args):
-                    self.locals[arg.name] = args[i].eval(context) if isinstance(args[i], Message) else args[i]
+                    self.locals[arg.name] = args[i].eval(
+                        context) if isinstance(args[i], Message) else args[i]
                 else:
                     self.locals[arg.name] = runtime.find("None")
 
@@ -98,7 +104,8 @@ class Block(Object):
             d = {}
             for arg in [arg for arg in args if arg.name == "set"]:
                 d[arg.args[0].name] = arg.eval(context)
-            self.locals[self.args[i].args[0].name] = runtime.find("Dict").clone(d)
+            self.locals[self.args[i].args[0].name] = runtime.find(
+                "Dict").clone(d)
         else:
             # Set default keyword argumetns
             for k, v in self.kwargs.items():

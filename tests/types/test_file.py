@@ -6,11 +6,14 @@ def test_repr(mio):
 def test_repr2(mio, tmpdir):
     filename = str(tmpdir.ensure("test.txt"))
 
-    file = mio.eval("file = File clone() open(\"{0:s}\", \"r\")".format(filename))
-    assert repr(file) == "File({0:s}, mode='r', state='open')".format(repr(filename))
+    file = mio.eval(
+        "file = File clone() open(\"{0:s}\", \"r\")".format(filename))
+    assert repr(file) == "File({0:s}, mode='r', state='open')".format(
+        repr(filename))
 
     mio.eval("file close()")
-    assert repr(file) == "File({0:s}, mode='r', state='closed')".format(repr(filename))
+    assert repr(file) == "File({0:s}, mode='r', state='closed')".format(
+        repr(filename))
 
 
 def test_open(mio, tmpdir):

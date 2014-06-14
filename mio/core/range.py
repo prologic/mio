@@ -33,7 +33,8 @@ class Range(Object):
 
     def __repr__(self):
         keys = ("start", "stop", "step")
-        values = [x for x in [getattr(self, key, None) for key in keys] if x is not None]
+        values = [x for x in [getattr(self, key, None)
+                              for key in keys] if x is not None]
         return "range({0:s})".format(", ".join(map(str, values)))
 
     @method()

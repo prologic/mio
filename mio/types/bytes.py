@@ -2,7 +2,6 @@ from mio import runtime
 from mio.utils import method
 from mio.object import Object
 from mio.lexer import encoding
-from mio.core.message import Message
 
 
 class Bytes(Object):
@@ -68,7 +67,9 @@ class Bytes(Object):
         sub = bytes(sub.eval(context))
         start = int(start.eval(context)) if start is not None else None
         end = int(end.eval(context)) if end is not None else None
-        return runtime.find("Number").clone(receiver.value.find(sub, start, end))
+        return runtime.find("Number").clone(
+            receiver.value.find(sub, start, end)
+        )
 
     @method()
     def join(self, receiver, context, m, iterable):

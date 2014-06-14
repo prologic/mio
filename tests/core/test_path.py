@@ -14,7 +14,8 @@ def test_path(mio):
 
 
 def test_repr(mio):
-    assert repr(mio.eval("Path")) == "Path({0:s})".format(repr(unicode(getcwd())))
+    assert repr(mio.eval("Path")) == "Path({0:s})".format(
+        repr(unicode(getcwd())))
 
 
 def test_str(mio):

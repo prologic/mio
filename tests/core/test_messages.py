@@ -95,8 +95,8 @@ def test_getLast(mio):
     assert mio.eval("o last") is o
 
 
-#XXX: Broken
-#def test_eval(mio, capfd):
+# XXX: Broken
+# def test_eval(mio, capfd):
 #    mio.eval("m = Message clone() setName(\"print\") setArgs(Message clone() setName(\"foo\") setValue(\"foo\"))")
 #    assert mio.eval("m eval()").value is None
 #    out, err = capfd.readouterr()
@@ -118,7 +118,8 @@ def test_get(mio):
 
 
 def test_state_stop(mio, capfd):
-    mio.eval("""foo = block(x = 1; print(x); state setReturn(2); print("foo"))""")
+    mio.eval(
+        """foo = block(x = 1; print(x); state setReturn(2); print("foo"))""")
     assert mio.eval("foo()") == 2
     out, err = capfd.readouterr()
     assert out == "1\n"

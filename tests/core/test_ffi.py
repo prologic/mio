@@ -57,7 +57,8 @@ def foo():
     return "Foobar!"
 ''')
 
-    foo = mio.eval('foo = FFI fromfile("{0:s}")'.format(str(tmpdir.join("foo.py"))))
+    foo = mio.eval(
+        'foo = FFI fromfile("{0:s}")'.format(str(tmpdir.join("foo.py"))))
     assert foo.type == "FFI"
     assert foo.module is not None
     assert foo.name == "foo"

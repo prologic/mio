@@ -11,7 +11,8 @@ from mio.errors import AttributeError, TypeError
 
 class Object(object):
 
-    __slots__ = ("attrs", "binding", "parent", "state", "value", "traits", "behaviors",)
+    __slots__ = (
+        "attrs", "binding", "parent", "state", "value", "traits", "behaviors",)
 
     def __init__(self, value=Null, methods=True):
         super(Object, self).__init__()
@@ -34,7 +35,8 @@ class Object(object):
 
     def create_methods(self):
         keys = self.__class__.__dict__.keys()
-        self.attrs.update(((v.name, v) for k, v in getmembers(self, ismethod) if getattr(v, "method", False) and k in keys))
+        self.attrs.update(((v.name, v) for k, v in getmembers(
+            self, ismethod) if getattr(v, "method", False) and k in keys))
 
     def __hash__(self):
         return (
@@ -79,7 +81,8 @@ class Object(object):
         try:
             return self.forward(key)
         except:
-            raise AttributeError("{0:s} has no attribute {1:s}".format(self.type, repr(key)))
+            raise AttributeError(
+                "{0:s} has no attribute {1:s}".format(self.type, repr(key)))
 
     def __setitem__(self, key, value):
         self.attrs[key] = value
@@ -88,17 +91,20 @@ class Object(object):
         from .trait import Trait
 
         if not isinstance(trait, Trait):
-            raise TypeError("Trait expected but got {0:s}".format(repr(getattr(trait, "type", trait.__class__.__name__))))
+            raise TypeError("Trait expected but got {0:s}".format(
+                repr(getattr(trait, "type", trait.__class__.__name__))))
 
         for requirement in trait.requirements:
             if not self.lookup(requirement):
-                raise TypeError("{0:s} requires {0:s}".format(repr(trait), repr(requirement)))
+                raise TypeError(
+                    "{0:s} requires {0:s}".format(repr(trait), repr(requirement)))
 
         for k, v in trait.attrs.items():
             if k in self:
                 name = resolution.get(k, None)
                 if not name:
-                    raise TypeError("Method {0:s} of {1:s} conflicts with {2:s}".format(k, repr(trait), repr(self)))
+                    raise TypeError(
+                        "Method {0:s} of {1:s} conflicts with {2:s}".format(k, repr(trait), repr(self)))
                 else:
                     self.behaviors[name] = v
             else:
@@ -130,7 +136,8 @@ class Object(object):
         return False
 
     def __repr__(self):
-        type = "{0:s}({1:s})".format(self.binding, self.type) if self.binding is not None else self.type
+        type = "{0:s}({1:s})".format(
+            self.binding, self.type) if self.binding is not None else self.type
         default = "{0:s} at {1:s}".format(type, hex(id(self)))
         return repr(self.value) if self.value is not Null else default
 
@@ -207,7 +214,8 @@ class Object(object):
 
         # Evaluate kwargs first
         ctx = runtime.find("Object").clone()
-        kwargs = OrderedDict([(arg.args[0].name, arg.eval(ctx)) for arg in args if arg.name == "set"])
+        kwargs = OrderedDict(
+            [(arg.args[0].name, arg.eval(ctx)) for arg in args if arg.name == "set"])
 
         args = [arg for arg in args if not arg.name == "set"]
 
@@ -220,7 +228,8 @@ class Object(object):
 
         # Evaluate kwargs first
         ctx = runtime.find("Object").clone()
-        kwargs = OrderedDict([(arg.args[0].name, arg.eval(ctx)) for arg in args if arg.name == "set"])
+        kwargs = OrderedDict(
+            [(arg.args[0].name, arg.eval(ctx)) for arg in args if arg.name == "set"])
 
         args = [arg for arg in args if not arg.name == "set"]
 
@@ -280,7 +289,8 @@ class Object(object):
         args = [arg.eval(context).value for arg in args]
         if hasattr(receiver, method):
             return getattr(receiver, method)(*args)
-        raise AttributeError("{0:s} has no attribute {1:s}".format(receiver.type, repr(method)))
+        raise AttributeError(
+            "{0:s} has no attribute {1:s}".format(receiver.type, repr(method)))
 
     @method()
     def evalArg(self, receiver, context, m, *args):

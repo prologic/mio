@@ -99,12 +99,14 @@ def test_format_result5(mio):
 
 def test_format_result6(mio):
     Foo = mio.eval("Foo = Object clone()")
-    assert format_result(mio.eval("Foo")) == "Foo(Object) at {0:s}".format(hex(id(Foo)))
+    assert format_result(
+        mio.eval("Foo")) == "Foo(Object) at {0:s}".format(hex(id(Foo)))
 
 
 def test_default_repr(mio):
     Foo = mio.eval("Foo = Object clone()")
-    assert default_repr(mio.eval("Foo")) == "Foo(Object) at {0:s}".format(hex(id(Foo)))
+    assert default_repr(
+        mio.eval("Foo")) == "Foo(Object) at {0:s}".format(hex(id(Foo)))
 
 
 def test_tryimport(mio):

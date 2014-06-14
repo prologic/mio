@@ -24,7 +24,8 @@ def print_traceback(e):
 
     stack = "\n".join(["  {0:s}".format(repr(m)) for m in e.stack])
     underline = "-" * (len(type) + 1)
-    print("\n  {0:s}: {1:s}\n  {2:s}\n{3:s}\n".format(type, message, underline, stack))
+    print("\n  {0:s}: {1:s}\n  {2:s}\n{3:s}\n".format(
+        type, message, underline, stack))
 
 
 class Completer(object):
@@ -250,7 +251,8 @@ class State(object):
                 raise
 
     def load(self, filename, receiver=None, context=None):
-        self.eval(open(filename, "r").read(), receiver=receiver, context=context)
+        self.eval(
+            open(filename, "r").read(), receiver=receiver, context=context)
 
     def runsource(self, source):
         from .utils import format_result
@@ -275,7 +277,8 @@ class State(object):
             completer = Completer(self)
             readline.set_completer_delims("")
             readline.set_completer(completer.complete)
-            readline.set_completion_display_matches_hook(completer.display_matches)
+            readline.set_completion_display_matches_hook(
+                completer.display_matches)
 
         print("mio {0:s}".format(version))
 

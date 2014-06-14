@@ -79,7 +79,7 @@ def reshuffle(ms):
     r = []
 
     while ms:
-        #x is not None --> not x is None
+        # x is not None --> not x is None
         if len(ms) > 1 and ms[0].name == "is" and ms[1].name == "not":
             r = r[:-1] + [ms[1], r[-1], ms[0]]
             ms = ms[2:]
@@ -101,7 +101,8 @@ def make_chain(messages, all=True):
             op = messages.pop(0)
 
             if op.name == "=" and op.next is not None and op.next.name in ("()", "[]", "{}",):
-                value = Message("()", args=[Message(op.next.name, args=op.next.args)])
+                value = Message(
+                    "()", args=[Message(op.next.name, args=op.next.args)])
             elif op.args:
                 value = Message("()", args=op.args)
             else:
@@ -113,14 +114,16 @@ def make_chain(messages, all=True):
             if messages and not message.args:
                 if operators.get(message.name) == 1:
                     arg = messages.pop(0)
-                    # Set the argument (a Message) previous attribute to the current message
+                    # Set the argument (a Message) previous attribute to the
+                    # current message
                     arg.previous = message
                     message.args.append(arg)
                     message.call = True
                 else:
                     chain = make_chain(messages, all=False)
                     if chain is not None:
-                        # Set the argument (a Message) previous attribute to the current message
+                        # Set the argument (a Message) previous attribute to
+                        # the current message
                         chain.previous = message
                         message.args.append(chain)
                         message.call = True
@@ -192,10 +195,14 @@ expression.define((
 
 message.define(((symbol + maybe(arguments)) | arguments) >> make_message)
 
-paren_arguments = op("(") + maybe(expression) + many(skip(op_(",")) + expression) + op(")")
-bracket_arguments = op("[") + maybe(expression) + many(skip(op_(",")) + expression) + op("]")
-brace_arguments = op("{") + maybe(expression) + many(skip(op_(",")) + expression) + op("}")
-arguments.define((paren_arguments | bracket_arguments | brace_arguments) >> make_arguments)
+paren_arguments = op(
+    "(") + maybe(expression) + many(skip(op_(",")) + expression) + op(")")
+bracket_arguments = op(
+    "[") + maybe(expression) + many(skip(op_(",")) + expression) + op("]")
+brace_arguments = op(
+    "{") + maybe(expression) + many(skip(op_(",")) + expression) + op("}")
+arguments.define(
+    (paren_arguments | bracket_arguments | brace_arguments) >> make_arguments)
 
 symbol.define(identifier | number | operator | string)
 

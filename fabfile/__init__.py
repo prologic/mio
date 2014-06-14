@@ -41,7 +41,10 @@ def build(**options):
 def clean():
     """Clean up build files and directories"""
 
-    files = ["build", ".cache", ".coverage", "coverage", "dist", "docs/build", "*.xml"]
+    files = [
+        "build", ".cache", ".coverage", ".tox",
+        "coverage", "dist", "docs/build", "*.xml"
+    ]
 
     local("rm -rf {0:s}".format(" ".join(files)))
 
@@ -115,7 +118,8 @@ def sync(*args):
 
     status = local("hg status", capture=True)
     if status:
-        abort("Repository is not in a clean state! Please commit, revert or shelve!")
+        abort(
+            "Repository is not in a clean state! Please commit, revert or shelve!")
 
     with settings(warn_only=True):
         local("hg fetch")

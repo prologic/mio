@@ -1,4 +1,5 @@
 class Error(Exception):
+
     """Error"""
 
     def __init__(self, *args):
@@ -8,28 +9,35 @@ class Error(Exception):
 
 
 class AttributeError(Error):
+
     """AttributeError"""
 
 
 class ImportError(Error):
+
     """ImportError"""
 
 
 class IndexError(Error):
+
     """IndexError"""
 
 
 class KeyError(Error):
+
     """KeyError"""
 
 
 class TypeError(Error):
+
     """TypeError"""
 
 
 class StopIteration(Error):
+
     """StopIteration"""
 
 
 class UserError(Error):
+
     """UserError"""

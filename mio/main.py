@@ -12,6 +12,7 @@ VERSION = "mio v" + mio.__version__
 
 
 class Options(object):
+
     """Options Object Container"""
 
 

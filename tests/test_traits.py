@@ -164,7 +164,8 @@ def test_resolution_deltrait(mio):
 
 def test_adapt(mio):
     mio.eval("TGreetable = Trait clone()")
-    assert mio.eval("World = Object clone() adapt(TGreetable) hasTrait(TGreetable)")
+    assert mio.eval(
+        "World = Object clone() adapt(TGreetable) hasTrait(TGreetable)")
 
 
 def test_hasTrait(mio):

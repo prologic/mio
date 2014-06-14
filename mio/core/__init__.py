@@ -21,8 +21,10 @@ class Core(Object):
         for filename in listdir(dirname(__file__)):
             name, ext = splitext(filename)
             if ext == ".py" and name != "__init__":
-                module = __import__("mio.core.{0:s}".format(name), fromlist=["mio.core"])
-                predicate = lambda x: isclass(x) and issubclass(x, Object) and getmodule(x) is module and x is not Core
+                module = __import__(
+                    "mio.core.{0:s}".format(name), fromlist=["mio.core"])
+                predicate = lambda x: isclass(x) and issubclass(
+                    x, Object) and getmodule(x) is module and x is not Core
                 for name, object in getmembers(module, predicate):
                     yield name, object
 

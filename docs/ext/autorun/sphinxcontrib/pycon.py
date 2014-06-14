@@ -1,7 +1,7 @@
 import sys
 from code import InteractiveInterpreter
 
-    
+
 def main():
     """
     Print lines of input along with output.
@@ -17,15 +17,14 @@ def main():
             while more:
                 next_line = source_lines.next()
                 print '...', next_line
-                source += '\n' + next_line 
+                source += '\n' + next_line
                 more = console.runsource(source)
     except StopIteration:
         if more:
             print '... '
             more = console.runsource(source + '\n')
 
-    
-    
+
 if __name__ == '__main__':
     main()
 

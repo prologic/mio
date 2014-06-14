@@ -68,5 +68,6 @@ class Path(Object):
                 fil = None
         if rec is not False:
             rec = bool(rec.eval(context))
-        paths = [receiver.clone(path) for path in listdir(receiver.value, fil, rec)]
+        paths = [receiver.clone(path)
+                 for path in listdir(receiver.value, fil, rec)]
         return runtime.state.find("List").clone(paths)

@@ -21,8 +21,10 @@ class Traits(Object):
         for filename in listdir(dirname(__file__)):
             name, ext = splitext(filename)
             if ext == ".py" and name != "__init__":
-                module = __import__("mio.traits.{0:s}".format(name), fromlist=["mio.traits"])
-                predicate = lambda x: isclass(x) and issubclass(x, Object) and getmodule(x) is module and x is not Traits
+                module = __import__(
+                    "mio.traits.{0:s}".format(name), fromlist=["mio.traits"])
+                predicate = lambda x: isclass(x) and issubclass(
+                    x, Object) and getmodule(x) is module and x is not Traits
                 for name, object in getmembers(module, predicate):
                     yield name, object
 

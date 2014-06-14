@@ -61,7 +61,8 @@ class Message(Object):
                                     receiver = obj
                                     obj = obj["__call__"]
                                 except AttributeError:
-                                    raise TypeError("{0} is not callable".format(obj))
+                                    raise TypeError(
+                                        "{0} is not callable".format(obj))
 
                             else:
                                 if "__get__" in obj:
@@ -83,7 +84,8 @@ class Message(Object):
                                     args = m.args
                             else:
                                 args = m.args
-                            runtime.state.value = value = obj(receiver, context, m, *args)
+                            runtime.state.value = value = obj(
+                                receiver, context, m, *args)
                         else:
                             runtime.state.value = value = obj
                     else:

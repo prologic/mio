@@ -17,9 +17,11 @@ class TAdaptable(Trait):
         trait = trait.eval(context)
 
         if receiver.__hastrait__(trait):
-            raise TypeError("{0:s} already uses {1:s}".format(repr(receiver), repr(trait)))
+            raise TypeError(
+                "{0:s} already uses {1:s}".format(repr(receiver), repr(trait)))
 
-        resolution = runtime.state.frommio(resolution.eval(context)) if resolution is not None else {}
+        resolution = runtime.state.frommio(
+            resolution.eval(context)) if resolution is not None else {}
 
         receiver.__addtrait__(trait, **resolution)
 
@@ -30,7 +32,8 @@ class TAdaptable(Trait):
         trait = trait.eval(context)
 
         if not receiver.__hastrait__(trait):
-            raise TypeError("{0:s} does not use {1:s}".format(repr(receiver), repr(trait)))
+            raise TypeError(
+                "{0:s} does not use {1:s}".format(repr(receiver), repr(trait)))
 
         receiver.__deltrait__(trait)
 

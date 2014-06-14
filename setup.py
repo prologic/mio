@@ -11,7 +11,8 @@ from setuptools import setup, find_packages
 version = new_module("version")
 
 exec(
-    compile(open(path.join(path.dirname(globals().get("__file__", path.join(getcwd(), "mio"))), "mio/version.py"), "r").read(), "mio/version.py", "exec"),
+    compile(open(path.join(path.dirname(globals().get("__file__", path.join(
+        getcwd(), "mio"))), "mio/version.py"), "r").read(), "mio/version.py", "exec"),
     version.__dict__
 )
 
